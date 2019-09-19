@@ -21,6 +21,7 @@ class ResultViewController: UIViewController {
         userIdentifierLabel.text = KeychainItem.currentUserIdentifier
     }
     
+    
     @IBAction func signOutButtonPressed() {
         // For the purpose of this demo app, delete the user identifier that was previously stored in the keychain.
         KeychainItem.deleteUserIdentifierFromKeychain()
@@ -41,4 +42,5 @@ class ResultViewController: UIViewController {
             self.present(viewController, animated: true, completion: nil)
         }
     }
+    
 }
