@@ -20,6 +20,7 @@
 		78B10493232F57C50051579F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 78B10492232F57C50051579F /* main.m */; };
 		78B1049D232F57C50051579F /* DarkModeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 78B1049C232F57C50051579F /* DarkModeTests.m */; };
 		78B104A8232F57C50051579F /* DarkModeUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 78B104A7232F57C50051579F /* DarkModeUITests.m */; };
+		78F54916233383D800910215 /* SLBlurView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78F54915233383D800910215 /* SLBlurView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +66,8 @@
 		78B104A3232F57C50051579F /* DarkModeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DarkModeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		78B104A7232F57C50051579F /* DarkModeUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DarkModeUITests.m; sourceTree = "<group>"; };
 		78B104A9232F57C50051579F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		78F54914233383D800910215 /* SLBlurView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLBlurView.h; sourceTree = "<group>"; };
+		78F54915233383D800910215 /* SLBlurView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLBlurView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -149,6 +152,7 @@
 				78B10484232F57C30051579F /* SceneDelegate.m */,
 				78B10486232F57C30051579F /* ViewController.h */,
 				78B10487232F57C30051579F /* ViewController.m */,
+				78F54913233383AC00910215 /* General */,
 				7851CB40233222E2002295B5 /* SLCategory */,
 				7851CB322331CC87002295B5 /* Dark */,
 				7851CB392331CD0D002295B5 /* SmallVideo */,
@@ -177,6 +181,15 @@
 				78B104A9232F57C50051579F /* Info.plist */,
 			);
 			path = DarkModeUITests;
+			sourceTree = "<group>";
+		};
+		78F54913233383AC00910215 /* General */ = {
+			isa = PBXGroup;
+			children = (
+				78F54914233383D800910215 /* SLBlurView.h */,
+				78F54915233383D800910215 /* SLBlurView.m */,
+			);
+			path = General;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -315,6 +328,7 @@
 				78B10482232F57C30051579F /* AppDelegate.m in Sources */,
 				7851CB362331CC87002295B5 /* SLDarkModeViewController.m in Sources */,
 				7851CB43233222E2002295B5 /* UIView+SLFrame.m in Sources */,
+				78F54916233383D800910215 /* SLBlurView.m in Sources */,
 				78B10493232F57C50051579F /* main.m in Sources */,
 				78B10485232F57C30051579F /* SceneDelegate.m in Sources */,
 			);
