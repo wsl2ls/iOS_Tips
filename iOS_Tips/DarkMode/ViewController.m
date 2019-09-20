@@ -31,7 +31,6 @@
 }
 
 #pragma mark - UI
-
 - (void)setupUI {
     self.navigationItem.title = @"iOS Tips";
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"cellID"];
@@ -40,7 +39,8 @@
 #pragma mark - Data
 - (void)getData {
     //tableView、UIAlertView等系统控件，在不自定义颜色的情况下，默认颜色都是动态的，支持暗黑模式
-    [self.dataSource addObjectsFromArray:@[@"暗黑/光亮模式", @"AppleId登录应用", @"微信拍摄功能"]];
+    [self.dataSource addObjectsFromArray:@[@"暗黑/光亮模式", @"AppleId登录应用(查看本仓库下的AddingTheSignInWithAppleFlowToYourApp)", @"微信拍摄功能"]];
+    [self.tableView reloadData];
 }
 
 #pragma mark - Getter
@@ -74,8 +74,7 @@
         }
             break;
         case 1: {
-            SLDarkModeViewController * darkModeViewController = [[SLDarkModeViewController alloc] init];
-            [self.navigationController pushViewController:darkModeViewController animated:YES];
+            
         }
             break;
         case 2: {

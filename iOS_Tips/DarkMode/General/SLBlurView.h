@@ -10,6 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/// 高斯模糊视图
 @interface SLBlurView : UIView
 //高斯模糊
 @property (nonatomic, strong) UIVisualEffectView *blurView;

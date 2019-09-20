@@ -15,19 +15,26 @@
  An empty implementation adversely affects performance during animation.
  */
 
+- (instancetype)initWithFrame:(CGRect)frame {
+    self = [super initWithFrame:frame];
+    if (self) {
+        self.clipsToBounds = YES;
+        self.userInteractionEnabled = YES;
+        [self addSubview:self.blurView];
+    }
+    return self;
+}
+
 - (instancetype)init {
     self = [super init];
     if (self) {
         self.clipsToBounds = YES;
         self.userInteractionEnabled = YES;
-       [self addSubview:self.blurView];
+        [self addSubview:self.blurView];
     }
     return self;
 }
-//- (void)drawRect:(CGRect)rect {
-//    [self sendSubviewToBack:self.blurView];
-//    self.blurView.frame = self.bounds;
-//}
+
 - (UIVisualEffectView *)blurView {
     if (_blurView == nil) {
         //高斯模糊
@@ -40,8 +47,8 @@
 }
 
 - (void)layoutSubviews {
-     [self sendSubviewToBack:self.blurView];
-     self.blurView.frame = self.bounds;
+    [self sendSubviewToBack:self.blurView];
+    self.blurView.frame = self.bounds;
 }
 
 
