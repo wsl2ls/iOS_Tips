@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SLAvCaptureTool : NSObject
 
 /// 摄像头采集内容展示视图
-@property (nonatomic, strong) UIView *preview;
+@property (nonatomic, strong, nullable) UIView *preview;
 /// 摄像头是否正在运行
 @property (nonatomic, assign, readonly) BOOL isRunning;
 /// 照片捕获代理 

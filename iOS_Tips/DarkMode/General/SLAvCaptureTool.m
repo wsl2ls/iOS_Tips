@@ -15,7 +15,7 @@
 @property (nonatomic, strong) AVCapturePhotoOutput * capturePhotoOutput;
 //视频输出流
 @property (nonatomic, strong) AVCaptureMovieFileOutput * captureMovieFileOutPut;
-//预览视图层
+//摄像头采集内容展示区域
 @property (nonatomic, strong) AVCaptureVideoPreviewLayer *previewLayer;
 
 @end
@@ -98,10 +98,15 @@
     return self.session.isRunning;
 }
 #pragma mark - Setter
-- (void)setPreview:(nonnull UIView *)preview {
+- (void)setPreview:(nullable UIView *)preview {
+    if (preview == nil) {
+        [self.previewLayer removeFromSuperlayer];
+    }else {
+        self.previewLayer.frame = preview.bounds;
+//        [preview.layer insertSublayer:self.previewLayer atIndex:0];
+        [preview.layer addSublayer:self.previewLayer];
+    }
     _preview = preview;
-    self.previewLayer.frame = preview.bounds;
-    [preview.layer insertSublayer:self.previewLayer atIndex:0];
 }
 
 #pragma mark - HelpMethods
@@ -150,8 +155,5 @@
         [self.captureMovieFileOutPut stopRecording];
     }
 }
-
-
-
 
 @end

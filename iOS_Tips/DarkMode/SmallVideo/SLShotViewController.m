@@ -26,6 +26,7 @@
 
 //摄像头采集工具
 @property (nonatomic, strong) SLAvCaptureTool *avCaptureTool;
+@property (nonatomic, strong) UIView *captureView; // 捕获视图
 
 @property (nonatomic, strong) UIButton *backBtn;
 //拍摄按钮
@@ -74,9 +75,10 @@
 - (void)setupUI {
     self.title = @"拍摄";
     self.view.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:self.captureView];
+    
     [self.view addSubview:self.backBtn];
     [self.view addSubview:self.shotBtn];
-    
     [self.view addSubview:self.againShotBtn];
     [self.view addSubview:self.editBtn];
     [self.view addSubview:self.saveAlbumBtn];
@@ -86,11 +88,18 @@
 - (SLAvCaptureTool *)avCaptureTool {
     if (_avCaptureTool == nil) {
         _avCaptureTool = [[SLAvCaptureTool alloc] init];
-        _avCaptureTool.preview = self.view;
+        _avCaptureTool.preview = self.captureView;
         _avCaptureTool.photoCaptureDelegate = self;
         _avCaptureTool.fileOutputRecordingDelegate = self;
     }
     return _avCaptureTool;
+}
+- (UIView *)captureView {
+    if (_captureView == nil) {
+        _captureView = [[UIView alloc] initWithFrame:self.view.bounds];
+        _captureView.backgroundColor = [UIColor whiteColor];
+    }
+    return _captureView;
 }
 - (UIButton *)backBtn {
     if (_backBtn == nil) {
@@ -251,7 +260,7 @@
 - (void)editBtnClicked:(id)sender {
     
 }
-//取消
+//再试一次
 - (void)againShotBtnClicked:(id)sender {
     [self.avCaptureTool startRunning];
     
@@ -260,11 +269,12 @@
     self.saveAlbumBtn.hidden = YES;
     self.backBtn.hidden = NO;
     self.shotBtn.hidden = NO;
+    
+    [SLAvPlayer sharedAVPlayer].monitor = nil ;
 }
-//保存
+//保存到相册
 - (void)saveAlbumBtnClicked:(id)sender {
     if(self.image) {
-        //存到相册
         UIImageWriteToSavedPhotosAlbum(self.image, self, @selector(savedPhotoImage:didFinishSavingWithError:contextInfo:), nil);
     }
     if (self.videoPath) {
@@ -349,17 +359,6 @@
     }
 }
 
-//#pragma mark - AVCaptureMetadataOutputObjectsDelegate
-////扫描完成后执行
-//-(void)captureOutput:(AVCaptureOutput *)captureOutput didOutputMetadataObjects:(NSArray *)metadataObjects fromConnection:(AVCaptureConnection *)connection{
-//
-//    if (metadataObjects.count > 0){
-//        AVMetadataMachineReadableCodeObject *metadataObject = [metadataObjects firstObject];
-//        // 扫描完成后的字符
-//        //        NSLog(@"扫描出 %@",metadataObject.stringValue);
-//    }
-//}
-
 #pragma mark - AVCapturePhotoCaptureDelegate 图片输出代理
 //捕获拍摄图片的回调
 - (void)captureOutput:(AVCapturePhotoOutput *)output didFinishProcessingPhoto:(AVCapturePhoto *)photo error:(nullable NSError *)error API_AVAILABLE(ios(11.0)) {
@@ -387,52 +386,13 @@
     self.backBtn.hidden = YES;
     self.shotBtn.hidden = YES;
     
+    self.videoPath = outputFileURL;
+    SLAvPlayer *avPlayer = [SLAvPlayer sharedAVPlayer];
+    avPlayer.url = outputFileURL;
+    avPlayer.monitor = self.captureView;
+    [avPlayer play];
     [self.avCaptureTool stopRunning];
     
-    //    UIView *view = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
-    //    [self.view addSubview:view];
-    //    SLAvPlayer *avPlayer = [SLAvPlayer sharedAVPlayer];
-    //    avPlayer.url = outputFileURL;
-    //    avPlayer.preview = view;
-    //    [avPlayer play];
-    //
-    self.videoPath = outputFileURL;
-    
 }
-
-/*
- #pragma mark- AVCaptureVideoDataOutputSampleBufferDelegate的方法
- //采集数据过程中
- - (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection{
- 
- CFDictionaryRef metadataDict = CMCopyDictionaryOfAttachments(NULL,sampleBuffer, kCMAttachmentMode_ShouldPropagate);
- NSDictionary *metadata = [[NSMutableDictionary alloc] initWithDictionary:(__bridge NSDictionary*)metadataDict];
- CFRelease(metadataDict);
- NSDictionary *exifMetadata = [[metadata objectForKey:(NSString *)kCGImagePropertyExifDictionary] mutableCopy];
- float brightnessValue = [[exifMetadata objectForKey:(NSString *)kCGImagePropertyExifBrightnessValue] floatValue];
- 
- //    NSLog(@"环境光感 ： %f",brightnessValue);
- 
- // 根据brightnessValue的值来判断是否需要打开和关闭闪光灯
- AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
- BOOL result = [device hasTorch];// 判断设备是否有闪光灯
- if ((brightnessValue < 0) && result) {
- // 环境太暗，可以打开闪光灯了
- }else if((brightnessValue > 0) && result){
- // 环境亮度可以
- }
- 
- }
- */
-
-/*
- #pragma mark - Navigation
- 
- // In a storyboard-based application, you will often want to do a little preparation before navigation
- - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
- // Get the new view controller using [segue destinationViewController].
- // Pass the selected object to the new view controller.
- }
- */
 
 @end

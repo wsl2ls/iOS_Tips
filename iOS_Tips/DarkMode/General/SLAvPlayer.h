@@ -17,12 +17,16 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSURL *url;
 /// 是否循环播放 默认YES
 @property (nonatomic, assign) BOOL isLoopPlay;
-/// 视频展示层
-@property (nonatomic, strong) UIView *preview;
+/// 视频展示区域  显示器
+@property (nonatomic, strong, nullable) UIView *monitor;
 
 + (instancetype)sharedAVPlayer;
+///开始播放
 - (void)play;
+///暂停
 - (void)pause;
+///结束播放
+- (void)stop;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -11,7 +11,7 @@
 
 @interface SLAvPlayer ()
 @property (nonatomic, strong) AVPlayer *avPlayer;
-@property (nonatomic, strong) AVPlayerLayer *playerLayer;
+@property (nonatomic, strong) AVPlayerLayer *playerLayer;  //视频显示器
 @end
 
 @implementation SLAvPlayer
@@ -40,8 +40,9 @@
     //监听是否播放完毕
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(moviePlayDidEnd:) name:AVPlayerItemDidPlayToEndTimeNotification object:self.avPlayer.currentItem];
 }
-
-#pragma mark - UI
+- (void)dealloc {
+    [self stop];
+}
 
 #pragma mark - Setter
 - (void)setUrl:(nonnull NSURL *)url {
@@ -51,9 +52,15 @@
     }
     [self.avPlayer replaceCurrentItemWithPlayerItem:[AVPlayerItem playerItemWithURL:self.url]];
 }
-- (void)setPreview:(UIView *)preview {
-    self.playerLayer.frame = preview.bounds;
-    [preview.layer insertSublayer:self.playerLayer atIndex:0];
+- (void)setMonitor:(nullable UIView *)monitor {
+    _monitor = monitor;
+    if (monitor == nil) {
+        [self.playerLayer removeFromSuperlayer];
+    }else {
+        self.playerLayer.frame = monitor.bounds;
+//        [monitor.layer insertSublayer:self.playerLayer atIndex:0];
+        [monitor.layer addSublayer:self.playerLayer];
+    }
 }
 
 #pragma mark - Getter
@@ -79,6 +86,11 @@
 }
 - (void)pause {
     [self.avPlayer pause];
+}
+- (void)stop {
+    [self.avPlayer pause];
+    self.avPlayer = nil;
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 //播放完成
 - (void)moviePlayDidEnd:(NSNotification*)notification {
