@@ -26,7 +26,7 @@
 
 //摄像头采集工具
 @property (nonatomic, strong) SLAvCaptureTool *avCaptureTool;
-@property (nonatomic, strong) UIView *captureView; // 捕获视图
+@property (nonatomic, strong) UIView *captureView; // 捕获预览视图
 
 @property (nonatomic, strong) UIButton *backBtn;
 //拍摄按钮
@@ -38,6 +38,8 @@
 @property (nonatomic, strong) SLBlurView *editBtn;
 @property (nonatomic, strong) SLBlurView *againShotBtn;
 @property (nonatomic, strong) UIButton *saveAlbumBtn;
+// 切换前后摄像头
+@property (nonatomic, strong) UIButton *switchCameraBtn;
 
 @property (nonatomic, strong) UIImage *image; //当前拍摄的照片
 @property (nonatomic, strong) NSURL *videoPath; //当前拍摄的视频路径
@@ -82,6 +84,7 @@
     [self.view addSubview:self.againShotBtn];
     [self.view addSubview:self.editBtn];
     [self.view addSubview:self.saveAlbumBtn];
+    [self.view addSubview:self.switchCameraBtn];
 }
 
 #pragma mark - Getter
@@ -197,6 +200,14 @@
     }
     return _saveAlbumBtn;
 }
+- (UIButton *)switchCameraBtn {
+    if (_switchCameraBtn == nil) {
+        _switchCameraBtn = [[UIButton alloc] initWithFrame:CGRectMake(self.view.sl_w - 30 - 30, 44 , 30, 30)];
+        [_switchCameraBtn setImage:[UIImage imageNamed:@"cameraAround"] forState:UIControlStateNormal];
+        [_switchCameraBtn addTarget:self action:@selector(switchCameraClicked:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _switchCameraBtn;
+}
 
 #pragma mark - HelpMethods
 //开始计时
@@ -307,6 +318,13 @@
         NSLog(@"保存图片成功");
     }
 }
+- (void)switchCameraClicked:(id)sender {
+    if (self.avCaptureTool.devicePosition == AVCaptureDevicePositionFront) {
+        [self.avCaptureTool switchsCamera:AVCaptureDevicePositionBack];
+    } else if(self.avCaptureTool.devicePosition == AVCaptureDevicePositionBack) {
+        [self.avCaptureTool switchsCamera:AVCaptureDevicePositionFront];
+    }
+}
 //轻触拍照
 - (void)takePicture:(UITapGestureRecognizer *)tap {
     [self.avCaptureTool outputPhoto];
@@ -392,7 +410,6 @@
     avPlayer.monitor = self.captureView;
     [avPlayer play];
     [self.avCaptureTool stopRunning];
-    
 }
 
 @end

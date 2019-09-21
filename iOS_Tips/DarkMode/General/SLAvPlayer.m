@@ -58,7 +58,7 @@
         [self.playerLayer removeFromSuperlayer];
     }else {
         self.playerLayer.frame = monitor.bounds;
-//        [monitor.layer insertSublayer:self.playerLayer atIndex:0];
+        //        [monitor.layer insertSublayer:self.playerLayer atIndex:0];
         [monitor.layer addSublayer:self.playerLayer];
     }
 }

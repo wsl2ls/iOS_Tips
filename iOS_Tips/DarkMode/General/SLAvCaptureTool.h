@@ -18,6 +18,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, nullable) UIView *preview;
 /// 摄像头是否正在运行
 @property (nonatomic, assign, readonly) BOOL isRunning;
+/// 摄像头方向
+@property (nonatomic, assign, readonly) AVCaptureDevicePosition devicePosition;
 /// 照片捕获代理 
 @property (nonatomic, weak) id <AVCapturePhotoCaptureDelegate> photoCaptureDelegate;
 /// 录制文件输出代理
@@ -34,6 +36,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)startRecordVideo;
 ///结束输出录制视频
 - (void)stopRecordVideo;
+/// 切换前/后置摄像头
+- (void)switchsCamera:(AVCaptureDevicePosition)devicePosition;
 
 @end
 
