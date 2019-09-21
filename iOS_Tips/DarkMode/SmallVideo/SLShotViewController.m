@@ -28,6 +28,8 @@
 @property (nonatomic, strong) SLAvCaptureTool *avCaptureTool;
 @property (nonatomic, strong) UIView *captureView; // 捕获预览视图
 
+// 切换前后摄像头
+@property (nonatomic, strong) UIButton *switchCameraBtn;
 @property (nonatomic, strong) UIButton *backBtn;
 //拍摄按钮
 @property (nonatomic, strong) SLBlurView *shotBtn;
@@ -38,8 +40,6 @@
 @property (nonatomic, strong) SLBlurView *editBtn;
 @property (nonatomic, strong) SLBlurView *againShotBtn;
 @property (nonatomic, strong) UIButton *saveAlbumBtn;
-// 切换前后摄像头
-@property (nonatomic, strong) UIButton *switchCameraBtn;
 
 @property (nonatomic, strong) UIImage *image; //当前拍摄的照片
 @property (nonatomic, strong) NSURL *videoPath; //当前拍摄的视频路径
@@ -108,7 +108,7 @@
     if (_backBtn == nil) {
         _backBtn = [[UIButton alloc] init];
         _backBtn.frame = CGRectMake(0, 0, 30, 30);
-        _backBtn.center = CGPointMake(self.view.frame.size.width/3/2.0, self.view.frame.size.height - 80);
+        _backBtn.center = CGPointMake((self.view.sl_w/2 - 70/2.0)/2.0, self.view.frame.size.height - 80);
         [_backBtn setImage:[UIImage imageNamed:@"back"] forState:UIControlStateNormal];
         [_backBtn addTarget:self action:@selector(backBtn:) forControlEvents:UIControlEventTouchUpInside];
     }
@@ -134,6 +134,14 @@
         [_shotBtn addSubview:self.whiteView];
     }
     return _shotBtn;
+}
+- (UIButton *)switchCameraBtn {
+    if (_switchCameraBtn == nil) {
+        _switchCameraBtn = [[UIButton alloc] initWithFrame:CGRectMake(self.view.sl_w - 30 - 30, 44 , 30, 30)];
+        [_switchCameraBtn setImage:[UIImage imageNamed:@"cameraAround"] forState:UIControlStateNormal];
+        [_switchCameraBtn addTarget:self action:@selector(switchCameraClicked:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _switchCameraBtn;
 }
 - (UIView *)whiteView {
     if (_whiteView == nil) {
@@ -178,7 +186,7 @@
 - (SLBlurView *)againShotBtn {
     if (_againShotBtn == nil) {
         _againShotBtn = [[SLBlurView alloc] initWithFrame:CGRectMake(0, 0, 70, 70)];
-        _againShotBtn.center = CGPointMake(self.view.sl_w/2/2.0, self.view.sl_h - 80);
+        _againShotBtn.center = CGPointMake((self.view.sl_w/2 - 70/2.0)/2.0, self.view.sl_h - 80);
         _againShotBtn.hidden = YES;
         _againShotBtn.layer.cornerRadius = _againShotBtn.sl_w/2.0;
         UIButton * btn = [[UIButton alloc] initWithFrame:_againShotBtn.bounds];
@@ -191,7 +199,7 @@
 - (UIButton *)saveAlbumBtn {
     if (_saveAlbumBtn == nil) {
         _saveAlbumBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 70, 70)];
-        _saveAlbumBtn.center = CGPointMake(self.view.sl_w/2.0 + self.view.sl_w/2/2.0, self.view.sl_h - 80);
+        _saveAlbumBtn.center = CGPointMake(self.view.sl_w/2.0 + 70/2.0+ (self.view.sl_w/2 - 70/2.0)/2.0, self.view.sl_h - 80);
         _saveAlbumBtn.hidden = YES;
         _saveAlbumBtn.layer.cornerRadius = _saveAlbumBtn.sl_w/2.0;
         _saveAlbumBtn.backgroundColor = [UIColor whiteColor];
@@ -199,14 +207,6 @@
         [_saveAlbumBtn addTarget:self action:@selector(saveAlbumBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _saveAlbumBtn;
-}
-- (UIButton *)switchCameraBtn {
-    if (_switchCameraBtn == nil) {
-        _switchCameraBtn = [[UIButton alloc] initWithFrame:CGRectMake(self.view.sl_w - 30 - 30, 44 , 30, 30)];
-        [_switchCameraBtn setImage:[UIImage imageNamed:@"cameraAround"] forState:UIControlStateNormal];
-        [_switchCameraBtn addTarget:self action:@selector(switchCameraClicked:) forControlEvents:UIControlEventTouchUpInside];
-    }
-    return _switchCameraBtn;
 }
 
 #pragma mark - HelpMethods
@@ -278,8 +278,10 @@
     self.againShotBtn.hidden = YES;
     self.editBtn.hidden = YES;
     self.saveAlbumBtn.hidden = YES;
+    
     self.backBtn.hidden = NO;
     self.shotBtn.hidden = NO;
+    self.switchCameraBtn.hidden = NO;
     
     [SLAvPlayer sharedAVPlayer].monitor = nil;
     [[SLAvPlayer sharedAVPlayer] pause];
@@ -387,8 +389,10 @@
     self.againShotBtn.hidden = NO;
     self.editBtn.hidden = NO;
     self.saveAlbumBtn.hidden = NO;
+    
     self.backBtn.hidden = YES;
     self.shotBtn.hidden = YES;
+    self.switchCameraBtn.hidden = YES;
 }
 #pragma mark - AVCaptureFileOutputRecordingDelegate 视频输出代理
 //开始录制
@@ -401,8 +405,10 @@
     self.againShotBtn.hidden = NO;
     self.editBtn.hidden = NO;
     self.saveAlbumBtn.hidden = NO;
+    
     self.backBtn.hidden = YES;
     self.shotBtn.hidden = YES;
+    self.switchCameraBtn.hidden = YES;
     
     self.videoPath = outputFileURL;
     SLAvPlayer *avPlayer = [SLAvPlayer sharedAVPlayer];
