@@ -270,14 +270,16 @@
     self.backBtn.hidden = NO;
     self.shotBtn.hidden = NO;
     
-    [SLAvPlayer sharedAVPlayer].monitor = nil ;
+    [SLAvPlayer sharedAVPlayer].monitor = nil;
+    [[SLAvPlayer sharedAVPlayer] pause];
+    self.videoPath = nil;
+    self.image = nil;
 }
 //保存到相册
 - (void)saveAlbumBtnClicked:(id)sender {
     if(self.image) {
         UIImageWriteToSavedPhotosAlbum(self.image, self, @selector(savedPhotoImage:didFinishSavingWithError:contextInfo:), nil);
-    }
-    if (self.videoPath) {
+    }else if (self.videoPath) {
         //视频录入完成之后在将视频保存到相簿  如果视频过大的话，建议创建一个后台任务去保存到相册
         PHPhotoLibrary *photoLibrary = [PHPhotoLibrary sharedPhotoLibrary];
         [photoLibrary performChanges:^{
@@ -285,7 +287,6 @@
         } completionHandler:^(BOOL success, NSError * _Nullable error) {
             DISPATCH_ON_MAIN_THREAD(^{
                 [self againShotBtnClicked:nil];
-                self.videoPath = nil;
             });
             if (success) {
                 NSLog(@"视频保存至相册 成功");
@@ -299,7 +300,6 @@
 - (void)savedPhotoImage:(UIImage*)image didFinishSavingWithError:(NSError *)error contextInfo: (void *)contextInfo {
     DISPATCH_ON_MAIN_THREAD(^{
         [self againShotBtnClicked:nil];
-        self.videoPath = nil;
     });
     if (error) {
         NSLog(@"保存图片出错%@", error.localizedDescription);
