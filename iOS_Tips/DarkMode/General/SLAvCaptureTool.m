@@ -45,35 +45,62 @@
     }
     return self;
 }
+#pragma mark - HelpMethods
+- (void)configure {
+    
+}
+//获取指定位置的摄像头
+- (AVCaptureDevice *)getCameraDeviceWithPosition:(AVCaptureDevicePosition)positon{
+    if (@available(iOS 10.2, *)) {
+        AVCaptureDeviceDiscoverySession *dissession = [AVCaptureDeviceDiscoverySession discoverySessionWithDeviceTypes:@[AVCaptureDeviceTypeBuiltInDualCamera,AVCaptureDeviceTypeBuiltInTelephotoCamera,AVCaptureDeviceTypeBuiltInWideAngleCamera] mediaType:AVMediaTypeVideo position:positon];
+        for (AVCaptureDevice *device in dissession.devices) {
+            if ([device position] == positon) {
+                return device;
+            }
+        }
+    } else {
+        NSArray *devices = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
+        for (AVCaptureDevice *device in devices) {
+            if ([device position] == positon) {
+                return device;
+            }
+        }
+    }
+    return nil;
+}
+//最小缩放值 焦距
+- (CGFloat)minZoomFactor {
+    CGFloat minZoomFactor = 1.0;
+    if (@available(iOS 11.0, *)) {
+        minZoomFactor = [self.videoInput device].minAvailableVideoZoomFactor;
+    }
+    return minZoomFactor;
+}
+//最大缩放值 焦距
+- (CGFloat)maxZoomFactor {
+    CGFloat maxZoomFactor = [self.videoInput device].activeFormat.videoMaxZoomFactor;
+    if (@available(iOS 11.0, *)) {
+        maxZoomFactor = [self.videoInput device].maxAvailableVideoZoomFactor;
+    }
+    if (maxZoomFactor > 6) {
+        maxZoomFactor = 6.0;
+    }
+    return maxZoomFactor;
+}
 
 #pragma mark - Getter
 - (AVCaptureSession *)session{
     if (_session == nil){
-        // 创建环境光感输出流
-        //        AVCaptureVideoDataOutput *lightOutput = [[AVCaptureVideoDataOutput alloc] init];
-        //        [lightOutput setSampleBufferDelegate:self queue:dispatch_get_main_queue()];
         _session = [[AVCaptureSession alloc] init];
         //高质量采集率
         [_session setSessionPreset:AVCaptureSessionPresetHigh];
         [_session addInput:self.videoInput]; //添加视频输入流
         [_session addInput:self.audioInput];  //添加音频输入流
         [_session addOutput:self.capturePhotoOutput]; //添加照片输出流
-        [_session addOutput:self.captureMovieFileOutPut]; //添加视频输出流
+        [_session addOutput:self.captureMovieFileOutPut]; //添加视频文件输出流
         //[_session addOutput:lightOutput];
     }
     return _session;
-}
-- (AVCaptureDeviceInput *)audioInput {
-    if (_audioInput == nil) {
-        NSError * error = nil;
-        //添加一个音频输入/捕获设备
-        AVCaptureDevice * audioCaptureDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeAudio];
-        _audioInput = [[AVCaptureDeviceInput alloc] initWithDevice:audioCaptureDevice error:&error];
-        if (error) {
-            NSLog(@"获得音频输入设备失败：%@",error.localizedDescription);
-        }
-    }
-    return _audioInput;
 }
 - (AVCaptureDeviceInput *)videoInput {
     if (_videoInput == nil) {
@@ -87,6 +114,18 @@
         }
     }
     return _videoInput;
+}
+- (AVCaptureDeviceInput *)audioInput {
+    if (_audioInput == nil) {
+        NSError * error = nil;
+        //添加一个音频输入/捕获设备
+        AVCaptureDevice * audioCaptureDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeAudio];
+        _audioInput = [[AVCaptureDeviceInput alloc] initWithDevice:audioCaptureDevice error:&error];
+        if (error) {
+            NSLog(@"获得音频输入设备失败：%@",error.localizedDescription);
+        }
+    }
+    return _audioInput;
 }
 - (AVCapturePhotoOutput *)capturePhotoOutput {
     if (_capturePhotoOutput == nil) {
@@ -112,8 +151,12 @@
     return self.session.isRunning;
 }
 - (AVCaptureDevicePosition)devicePosition {
-   return [[self.videoInput device] position];
+    return [[self.videoInput device] position];
 }
+- (CGFloat)videoZoomFactor {
+    return [self.videoInput device].videoZoomFactor;
+}
+
 #pragma mark - Setter
 - (void)setPreview:(nullable UIView *)preview {
     if (preview == nil) {
@@ -125,53 +168,44 @@
     }
     _preview = preview;
 }
-
-#pragma mark - HelpMethods
-- (void)configure {
-    
-}
-//获取指定位置的摄像头
-- (AVCaptureDevice *)getCameraDeviceWithPosition:(AVCaptureDevicePosition)positon{
-    if ([[UIDevice currentDevice].systemVersion floatValue] == 10.0) {
-        AVCaptureDeviceDiscoverySession *dissession = [AVCaptureDeviceDiscoverySession discoverySessionWithDeviceTypes:@[AVCaptureDeviceTypeBuiltInDualCamera,AVCaptureDeviceTypeBuiltInTelephotoCamera,AVCaptureDeviceTypeBuiltInWideAngleCamera] mediaType:AVMediaTypeVideo position:positon];
-        for (AVCaptureDevice *device in dissession.devices) {
-            if ([device position] == positon ) {
-                return device;
-            }
-        }
-    } else {
-        NSArray *devices = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
-        for (AVCaptureDevice *device in devices) {
-            if ([device position] == positon) {
-                return device;
-            }
+- (void)setVideoZoomFactor:(CGFloat)videoZoomFactor {
+    NSError *error = nil;
+    if (videoZoomFactor < self.maxZoomFactor &&
+        videoZoomFactor > self.minZoomFactor){
+        if ([[self.videoInput device] lockForConfiguration:&error] ) {
+            [self.videoInput device].videoZoomFactor = videoZoomFactor;
+            [[self.videoInput device] unlockForConfiguration];
+        } else {
+            NSLog( @"调节焦距失败: %@", error );
         }
     }
-    return nil;
 }
 
 #pragma mark - EventsHandle
+///启动捕获
 - (void)startRunning {
     if(!self.session.isRunning) {
         [self.session startRunning];
     }
 }
+///结束捕获
 - (void)stopRunning {
     if (self.session.isRunning) {
         [self.session stopRunning];
     }
 }
 //拍照 输出图片
-- (void)outputPhoto {
-    //输出样式设置   默认 flashMode：取值AVCaptureFlashModeAuto  autoStillImageStabilizationEnabled：取值YES
+- (void)outputPhotoWithDelegate:(id<AVCapturePhotoCaptureDelegate>)delegate {
+    //输出样式设置
     AVCapturePhotoSettings *capturePhotoSettings = [AVCapturePhotoSettings photoSettings];
     //    capturePhotoSettings.highResolutionPhotoEnabled = YES; //高分辨率
-    [self.capturePhotoOutput capturePhotoWithSettings:capturePhotoSettings delegate:self.photoCaptureDelegate];
+    capturePhotoSettings.flashMode = _flashMode;  //闪光灯 根据环境亮度自动决定是否打开闪光灯
+    [self.capturePhotoOutput capturePhotoWithSettings:capturePhotoSettings delegate:delegate];
 }
 //开始输出录制视频
-- (void)startRecordVideo {
+- (void)startRecordVideoWithDelegate:(id<AVCaptureFileOutputRecordingDelegate>)delegate {
     //获得视频输出连接
-    AVCaptureConnection * captureConnection = [_captureMovieFileOutPut connectionWithMediaType:AVMediaTypeVideo];
+    AVCaptureConnection * captureConnection = [self.captureMovieFileOutPut connectionWithMediaType:AVMediaTypeVideo];
     if ([captureConnection isVideoStabilizationSupported]) {
         captureConnection.preferredVideoStabilizationMode= AVCaptureVideoStabilizationModeAuto;
     }
@@ -182,7 +216,7 @@
         //临时存储路径
         NSString *outputVideoFielPath = [NSTemporaryDirectory() stringByAppendingString:@"myMovie.mov"];
         NSURL *fileUrl=[NSURL fileURLWithPath:outputVideoFielPath];
-        [self.captureMovieFileOutPut startRecordingToOutputFileURL:fileUrl recordingDelegate:self.fileOutputRecordingDelegate];
+        [self.captureMovieFileOutPut startRecordingToOutputFileURL:fileUrl recordingDelegate:delegate];
     }
 }
 //结束输出录制视频
@@ -211,5 +245,23 @@
     //提交新的输入对象
     [self.session commitConfiguration];
 }
-
+//设置聚焦点  默认自动聚焦模式
+- (void)focusAtPoint:(CGPoint)focalPoint {
+    //将UI坐标转化为摄像头坐标  (0,0) -> (1,1)
+    CGPoint cameraPoint = [self.previewLayer captureDevicePointOfInterestForPoint:focalPoint];
+    AVCaptureDevice *captureDevice = [self.videoInput device];
+    NSError * error;
+    //注意改变设备属性前一定要首先调用lockForConfiguration:调用完之后使用unlockForConfiguration方法解锁
+    if ([captureDevice lockForConfiguration:&error]) {
+        if ([captureDevice isFocusModeSupported:AVCaptureFocusModeAutoFocus]) {
+            [captureDevice setFocusMode:AVCaptureFocusModeAutoFocus];
+        }
+        if ([captureDevice isFocusPointOfInterestSupported]) {
+            [captureDevice setFocusPointOfInterest:cameraPoint];
+        }
+        [captureDevice unlockForConfiguration];
+    } else {
+        NSLog(@"设置聚焦点错误：%@", error.localizedDescription);
+    }
+}
 @end

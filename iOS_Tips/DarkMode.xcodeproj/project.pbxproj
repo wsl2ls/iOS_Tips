@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7804708A2338C8A000934648 /* SLShotFocusView.m in Sources */ = {isa = PBXBuildFile; fileRef = 780470892338C8A000934648 /* SLShotFocusView.m */; };
 		784B72062334685E006AEE47 /* SLAvPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 784B72052334685E006AEE47 /* SLAvPlayer.m */; };
 		784B720923348241006AEE47 /* SLAvCaptureTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 784B720823348241006AEE47 /* SLAvCaptureTool.m */; };
 		7851CB362331CC87002295B5 /* SLDarkModeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7851CB332331CC87002295B5 /* SLDarkModeViewController.m */; };
@@ -43,6 +44,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		780470882338C8A000934648 /* SLShotFocusView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLShotFocusView.h; sourceTree = "<group>"; };
+		780470892338C8A000934648 /* SLShotFocusView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLShotFocusView.m; sourceTree = "<group>"; };
 		784B72042334685E006AEE47 /* SLAvPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLAvPlayer.h; sourceTree = "<group>"; };
 		784B72052334685E006AEE47 /* SLAvPlayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLAvPlayer.m; sourceTree = "<group>"; };
 		784B720723348241006AEE47 /* SLAvCaptureTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLAvCaptureTool.h; sourceTree = "<group>"; };
@@ -116,6 +119,8 @@
 			children = (
 				7851CB3A2331CD67002295B5 /* SLShotViewController.h */,
 				7851CB3B2331CD67002295B5 /* SLShotViewController.m */,
+				780470882338C8A000934648 /* SLShotFocusView.h */,
+				780470892338C8A000934648 /* SLShotFocusView.m */,
 			);
 			path = SmallVideo;
 			sourceTree = "<group>";
@@ -337,6 +342,7 @@
 				784B72062334685E006AEE47 /* SLAvPlayer.m in Sources */,
 				784B720923348241006AEE47 /* SLAvCaptureTool.m in Sources */,
 				7851CB3C2331CD67002295B5 /* SLShotViewController.m in Sources */,
+				7804708A2338C8A000934648 /* SLShotFocusView.m in Sources */,
 				78B10482232F57C30051579F /* AppDelegate.m in Sources */,
 				7851CB362331CC87002295B5 /* SLDarkModeViewController.m in Sources */,
 				7851CB43233222E2002295B5 /* UIView+SLFrame.m in Sources */,
@@ -515,7 +521,7 @@
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = DarkMode/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -536,7 +542,7 @@
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = DarkMode/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

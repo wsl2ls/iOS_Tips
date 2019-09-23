@@ -13,6 +13,7 @@
 #import "SLBlurView.h"
 #import "SLAvPlayer.h"
 #import "SLAvCaptureTool.h"
+#import "SLShotFocusView.h"
 
 #define KMaxDurationOfVideo  15.0 //录制最大时长 s
 
@@ -36,6 +37,8 @@
 @property (nonatomic, strong) UIView *whiteView;
 //环形进度条
 @property (nonatomic, strong) CAShapeLayer *progressLayer;
+//拍摄提示语  轻触拍照 长按拍摄
+@property (nonatomic, strong)  UILabel *tipsLabel;
 
 @property (nonatomic, strong) SLBlurView *editBtn;
 @property (nonatomic, strong) SLBlurView *againShotBtn;
@@ -43,6 +46,9 @@
 
 @property (nonatomic, strong) UIImage *image; //当前拍摄的照片
 @property (nonatomic, strong) NSURL *videoPath; //当前拍摄的视频路径
+//当前焦距比例系数
+@property (nonatomic, assign) CGFloat currentZoomFactor;
+@property (nonatomic, strong) SLShotFocusView *focusView;
 
 @end
 
@@ -85,6 +91,11 @@
     [self.view addSubview:self.editBtn];
     [self.view addSubview:self.saveAlbumBtn];
     [self.view addSubview:self.switchCameraBtn];
+    
+    [self.view addSubview:self.tipsLabel];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.tipsLabel removeFromSuperview];
+    });
 }
 
 #pragma mark - Getter
@@ -92,8 +103,6 @@
     if (_avCaptureTool == nil) {
         _avCaptureTool = [[SLAvCaptureTool alloc] init];
         _avCaptureTool.preview = self.captureView;
-        _avCaptureTool.photoCaptureDelegate = self;
-        _avCaptureTool.fileOutputRecordingDelegate = self;
     }
     return _avCaptureTool;
 }
@@ -101,6 +110,12 @@
     if (_captureView == nil) {
         _captureView = [[UIView alloc] initWithFrame:self.view.bounds];
         _captureView.backgroundColor = [UIColor whiteColor];
+        _captureView.userInteractionEnabled = YES;
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapFocusing:)];
+        [_captureView addGestureRecognizer:tap];
+        
+        UIPinchGestureRecognizer  *pinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinchFocalLength:)];
+        [_captureView addGestureRecognizer:pinch];
     }
     return _captureView;
 }
@@ -108,7 +123,7 @@
     if (_backBtn == nil) {
         _backBtn = [[UIButton alloc] init];
         _backBtn.frame = CGRectMake(0, 0, 30, 30);
-        _backBtn.center = CGPointMake((self.view.sl_w/2 - 70/2.0)/2.0, self.view.frame.size.height - 80);
+        _backBtn.center = CGPointMake((self.view.sl_w/2 - 70/2.0)/2.0, self.view.sl_h - 80);
         [_backBtn setImage:[UIImage imageNamed:@"back"] forState:UIControlStateNormal];
         [_backBtn addTarget:self action:@selector(backBtn:) forControlEvents:UIControlEventTouchUpInside];
     }
@@ -119,7 +134,7 @@
         _shotBtn = [[SLBlurView alloc] init];
         _shotBtn.userInteractionEnabled = YES;
         _shotBtn.frame = CGRectMake(0, 0, 70, 70);
-        _shotBtn.center = CGPointMake(self.view.frame.size.width/2.0, self.view.frame.size.height - 80);
+        _shotBtn.center = CGPointMake(self.view.sl_w/2.0, self.view.sl_h - 80);
         _shotBtn.clipsToBounds = YES;
         _shotBtn.layer.cornerRadius = _shotBtn.sl_w/2.0;
         //轻触拍照，长按摄像
@@ -162,13 +177,30 @@
         //线头的样式
         _progressLayer.lineCap = kCALineCapButt;
         //圆环颜色
-        _progressLayer.strokeColor = [UIColor colorWithRed:45/255.0 green:175/255.0 blue:45/255.0 alpha:1].CGColor;;
+        _progressLayer.strokeColor = [UIColor colorWithRed:45/255.0 green:175/255.0 blue:45/255.0 alpha:1].CGColor;
         _progressLayer.strokeStart = 0;
         _progressLayer.strokeEnd = 0;
         //path 决定layer将被渲染成何种形状
         _progressLayer.path = path.CGPath;
     }
     return _progressLayer;
+}
+- (SLShotFocusView *)focusView {
+    if (_focusView == nil) {
+        _focusView= [[SLShotFocusView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
+        _focusView.backgroundColor = [UIColor clearColor];
+    }
+    return _focusView;
+}
+- (UILabel *)tipsLabel {
+    if (_tipsLabel == nil) {
+        _tipsLabel = [[UILabel alloc] initWithFrame:CGRectMake((self.view.sl_w - 140)/2.0, self.shotBtn.sl_y - 20 - 10, 140, 20)];
+        _tipsLabel.textColor = [UIColor whiteColor];
+        _tipsLabel.font = [UIFont systemFontOfSize:14];
+        _tipsLabel.textAlignment = NSTextAlignmentCenter;
+        _tipsLabel.text = @"轻触拍照，按住摄像";
+    }
+    return  _tipsLabel;
 }
 - (SLBlurView *)editBtn {
     if (_editBtn == nil) {
@@ -210,7 +242,7 @@
 }
 
 #pragma mark - HelpMethods
-//开始计时
+//开始计时录制
 - (void)startTimer{
     /** 创建定时器对象
      * para1: DISPATCH_SOURCE_TYPE_TIMER 为定时器类型
@@ -263,9 +295,32 @@
     dispatch_resume(_gcdTimer);
 }
 
+
 #pragma mark - EventsHandle
+//返回
 - (void)backBtn:(UIButton *)btn {
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+//聚焦手势
+- (void)tapFocusing:(UITapGestureRecognizer *)tap {
+    CGPoint point = [tap locationInView:self.captureView];
+    self.focusView.center = point;
+    if (![self.view.subviews containsObject:self.focusView]) {
+        [self.view addSubview:self.focusView];
+    }
+    [self.avCaptureTool focusAtPoint:point];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.focusView removeFromSuperview];
+    });
+}
+//调节焦距 手势
+- (void)pinchFocalLength:(UIPinchGestureRecognizer *)pinch {
+    if(pinch.state == UIGestureRecognizerStateBegan) {
+        self.currentZoomFactor = self.avCaptureTool.videoZoomFactor;
+    }
+    if (pinch.state == UIGestureRecognizerStateChanged) {
+        self.avCaptureTool.videoZoomFactor = self.currentZoomFactor * pinch.scale;
+    }
 }
 //编辑
 - (void)editBtnClicked:(id)sender {
@@ -320,6 +375,7 @@
         NSLog(@"保存图片成功");
     }
 }
+//切换前/后摄像头
 - (void)switchCameraClicked:(id)sender {
     if (self.avCaptureTool.devicePosition == AVCaptureDevicePositionFront) {
         [self.avCaptureTool switchsCamera:AVCaptureDevicePositionBack];
@@ -329,7 +385,7 @@
 }
 //轻触拍照
 - (void)takePicture:(UITapGestureRecognizer *)tap {
-    [self.avCaptureTool outputPhoto];
+    [self.avCaptureTool outputPhotoWithDelegate:self];
     NSLog(@"拍照");
 }
 //长按摄像 小视频
@@ -348,7 +404,7 @@
             [self.shotBtn.layer addSublayer:self.progressLayer];
             self.progressLayer.strokeEnd = 0;
             //开始录制视频
-            [self.avCaptureTool startRecordVideo];
+            [self.avCaptureTool startRecordVideoWithDelegate:self];
         }
             //            NSLog(@"开始摄像");
             break;
@@ -368,8 +424,7 @@
             self->_durationOfVideo = 0;
             self.progressLayer.strokeEnd = 0;
             [self.progressLayer removeFromSuperlayer];
-            
-            //            停止录制视频
+            //    结束录制视频
             [self.avCaptureTool stopRecordVideo];
         }
             //            NSLog(@"结束摄像");

@@ -1,8 +1,8 @@
 //
-//  SLShotViewController.h
+//  SLShotFocusView.h
 //  DarkMode
 //
-//  Created by wsl on 2019/9/18.
+//  Created by wsl on 2019/9/23.
 //  Copyright © 2019 wsl. All rights reserved.
 //
 
@@ -10,8 +10,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// 拍摄视图控制器
-@interface SLShotViewController : UIViewController
+/// 拍摄焦点视图
+@interface SLShotFocusView : UIView
 
 @end
 
