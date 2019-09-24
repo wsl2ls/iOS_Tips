@@ -169,8 +169,8 @@
 }
 - (void)setVideoZoomFactor:(CGFloat)videoZoomFactor {
     NSError *error = nil;
-    if (videoZoomFactor < self.maxZoomFactor &&
-        videoZoomFactor > self.minZoomFactor){
+    if (videoZoomFactor <= self.maxZoomFactor &&
+        videoZoomFactor >= self.minZoomFactor){
         if ([[self.videoInput device] lockForConfiguration:&error] ) {
             [self.videoInput device].videoZoomFactor = videoZoomFactor;
             [[self.videoInput device] unlockForConfiguration];

@@ -318,6 +318,7 @@
 - (void)pinchFocalLength:(UIPinchGestureRecognizer *)pinch {
     if(pinch.state == UIGestureRecognizerStateBegan) {
         self.currentZoomFactor = self.avCaptureTool.videoZoomFactor;
+        NSLog(@"====== %f",  self.currentZoomFactor);
     }
     if (pinch.state == UIGestureRecognizerStateChanged) {
         self.avCaptureTool.videoZoomFactor = self.currentZoomFactor * pinch.scale;
@@ -332,7 +333,7 @@
     
     self.avCaptureTool.preview = self.captureView;
     [self.avCaptureTool startRunning];
-    self.avCaptureTool.videoZoomFactor = 1;
+    self.avCaptureTool.videoZoomFactor = 1.0;
     
     self.againShotBtn.hidden = YES;
     self.editBtn.hidden = YES;
