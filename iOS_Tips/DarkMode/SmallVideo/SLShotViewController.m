@@ -27,7 +27,7 @@
 
 //摄像头采集工具
 @property (nonatomic, strong) SLAvCaptureTool *avCaptureTool;
-@property (nonatomic, strong) UIView *captureView; // 捕获预览视图
+@property (nonatomic, strong) UIImageView *captureView; // 捕获预览视图
 
 // 切换前后摄像头
 @property (nonatomic, strong) UIButton *switchCameraBtn;
@@ -65,7 +65,6 @@
 }
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
-    
     [self.avCaptureTool stopRunning];
     if (_gcdTimer) {
         dispatch_source_cancel(_gcdTimer);
@@ -74,10 +73,13 @@
 - (void)viewSafeAreaInsetsDidChange {
     [super viewSafeAreaInsetsDidChange];
     UIEdgeInsets insets = self.view.safeAreaInsets;
-    self.backBtn.frame = CGRectMake(50, self.view.frame.size.height - 50 - insets.bottom, 23, 12);
+    //    self.backBtn.frame = CGRectMake(50, self.view.frame.size.height - 50 - insets.bottom, 23, 12);
 }
 - (BOOL)prefersStatusBarHidden {
     return YES;
+}
+- (BOOL)shouldAutorotate {
+    return NO;
 }
 #pragma mark - UI
 - (void)setupUI {
@@ -108,7 +110,7 @@
 }
 - (UIView *)captureView {
     if (_captureView == nil) {
-        _captureView = [[UIView alloc] initWithFrame:self.view.bounds];
+        _captureView = [[UIImageView alloc] initWithFrame:self.view.bounds];
         _captureView.backgroundColor = [UIColor whiteColor];
         _captureView.userInteractionEnabled = YES;
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapFocusing:)];
@@ -187,7 +189,7 @@
 }
 - (SLShotFocusView *)focusView {
     if (_focusView == nil) {
-        _focusView= [[SLShotFocusView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
+        _focusView= [[SLShotFocusView alloc] initWithFrame:CGRectMake(0, 0, 80, 80)];
         _focusView.backgroundColor = [UIColor clearColor];
     }
     return _focusView;
@@ -295,7 +297,6 @@
     dispatch_resume(_gcdTimer);
 }
 
-
 #pragma mark - EventsHandle
 //返回
 - (void)backBtn:(UIButton *)btn {
@@ -326,9 +327,12 @@
 - (void)editBtnClicked:(id)sender {
     
 }
-//再试一次
+//再试一次 继续拍摄
 - (void)againShotBtnClicked:(id)sender {
+    
+    self.avCaptureTool.preview = self.captureView;
     [self.avCaptureTool startRunning];
+    self.avCaptureTool.videoZoomFactor = 1;
     
     self.againShotBtn.hidden = YES;
     self.editBtn.hidden = YES;
@@ -439,7 +443,12 @@
 - (void)captureOutput:(AVCapturePhotoOutput *)output didFinishProcessingPhoto:(AVCapturePhoto *)photo error:(nullable NSError *)error API_AVAILABLE(ios(11.0)) {
     NSData *data = [photo fileDataRepresentation];
     self.image = [UIImage imageWithData:data];
+    
+    NSLog(@"==== %ld",(long)self.image.imageOrientation);
+    
     [self.avCaptureTool stopRunning];
+    self.avCaptureTool.preview = nil;
+    self.captureView.image = [UIImage imageWithData:data];
     
     self.againShotBtn.hidden = NO;
     self.editBtn.hidden = NO;
@@ -471,6 +480,8 @@
     avPlayer.monitor = self.captureView;
     [avPlayer play];
     [self.avCaptureTool stopRunning];
+    
+    NSLog(@"结束录制 %@", error.localizedDescription);
 }
 
 @end

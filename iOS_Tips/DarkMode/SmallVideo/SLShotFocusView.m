@@ -43,15 +43,12 @@
     [self.borderPath moveToPoint:CGPointMake(rect.size.width/2.0, 0)];
     //连线 上
     [self.borderPath addLineToPoint:CGPointMake(rect.size.width/2.0, 0+8)];
-    
     [self.borderPath moveToPoint:CGPointMake(0, rect.size.width/2.0)];
     //连线 左
     [self.borderPath addLineToPoint:CGPointMake(0+8, rect.size.width/2.0)];
-
     [self.borderPath moveToPoint:CGPointMake(rect.size.width/2.0, rect.size.height)];
     //连线 下
     [self.borderPath addLineToPoint:CGPointMake(rect.size.width/2.0, rect.size.height - 8)];
-    
     [self.borderPath moveToPoint:CGPointMake(rect.size.width, rect.size.height/2.0)];
     //连线 右
     [self.borderPath addLineToPoint:CGPointMake(rect.size.width - 8, rect.size.height/2.0)];
@@ -59,7 +56,6 @@
     [self.borderPath stroke];
     // 将这个path赋值给maskLayer的path
     self.maskLayer.path = self.borderPath.CGPath;
-
 }
 - (void)layoutSubviews {
     [super layoutSubviews];

@@ -19,9 +19,9 @@ API_AVAILABLE(ios(10.0))
 @property (nonatomic, strong, nullable) UIView *preview;
 /// 摄像头是否正在运行
 @property (nonatomic, assign, readonly) BOOL isRunning;
-/// 拍摄方向
+/// 摄像头方向
 @property (nonatomic, assign, readonly) AVCaptureDevicePosition devicePosition;
-/// 闪光灯状态样式 默认是关闭的，即黑暗情况下拍照不打开闪光灯
+/// 闪光灯状态  默认是关闭的，即黑暗情况下拍照不打开闪光灯   （打开/关闭/自动）
 @property (nonatomic, assign) AVCaptureFlashMode flashMode;
 /// 当前焦距    默认最小值1  最大值6
 @property (nonatomic, assign) CGFloat videoZoomFactor;
@@ -30,14 +30,13 @@ API_AVAILABLE(ios(10.0))
 - (void)startRunning;
 ///结束捕获
 - (void)stopRunning;
-
 /// 输出图片
 /// @param delegate 照片输出代理
 - (void)outputPhotoWithDelegate:(id<AVCapturePhotoCaptureDelegate>)delegate;
 /// 开始输出录制视频
 /// @param delegate 录制文件输出代理
 - (void)startRecordVideoWithDelegate:(id<AVCaptureFileOutputRecordingDelegate>)delegate;
-///结束输出录制视频
+/// 结束输出录制视频
 - (void)stopRecordVideo;
 /// 切换前/后置摄像头
 - (void)switchsCamera:(AVCaptureDevicePosition)devicePosition;

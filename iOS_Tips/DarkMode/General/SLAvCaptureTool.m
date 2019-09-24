@@ -17,7 +17,7 @@
 @property (nonatomic, strong) AVCaptureDeviceInput *videoInput;
 //照片输出流
 @property (nonatomic, strong) AVCapturePhotoOutput *capturePhotoOutput;
-//视频输出流
+//视频文件输出流
 @property (nonatomic, strong) AVCaptureMovieFileOutput *captureMovieFileOutPut;
 //摄像头采集内容展示区域
 @property (nonatomic, strong) AVCaptureVideoPreviewLayer *previewLayer;
@@ -98,7 +98,6 @@
         [_session addInput:self.audioInput];  //添加音频输入流
         [_session addOutput:self.capturePhotoOutput]; //添加照片输出流
         [_session addOutput:self.captureMovieFileOutPut]; //添加视频文件输出流
-        //[_session addOutput:lightOutput];
     }
     return _session;
 }
@@ -143,7 +142,7 @@
 - (AVCaptureVideoPreviewLayer *)previewLayer {
     if (_previewLayer == nil) {
         _previewLayer = [AVCaptureVideoPreviewLayer layerWithSession:self.session];
-        _previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+        _previewLayer.videoGravity = AVLayerVideoGravityResizeAspect;
     }
     return _previewLayer;
 }
@@ -196,7 +195,16 @@
 }
 //拍照 输出图片
 - (void)outputPhotoWithDelegate:(id<AVCapturePhotoCaptureDelegate>)delegate {
-    //输出样式设置
+    //获得图片输出连接
+    AVCaptureConnection * captureConnection = [self.capturePhotoOutput connectionWithMediaType:AVMediaTypeVideo];
+    if ([captureConnection isVideoStabilizationSupported]) {
+        captureConnection.preferredVideoStabilizationMode= AVCaptureVideoStabilizationModeAuto;
+    }
+    // 设置是否为镜像，前置摄像头采集到的数据本来就是翻转的，这里设置为镜像把画面转回来
+    if (self.devicePosition == AVCaptureDevicePositionFront && captureConnection.supportsVideoMirroring) {
+        captureConnection.videoMirrored = YES;
+    }
+    //输出样式设置 AVVideoCodecKey:AVVideoCodecJPEG等
     AVCapturePhotoSettings *capturePhotoSettings = [AVCapturePhotoSettings photoSettings];
     //    capturePhotoSettings.highResolutionPhotoEnabled = YES; //高分辨率
     capturePhotoSettings.flashMode = _flashMode;  //闪光灯 根据环境亮度自动决定是否打开闪光灯
@@ -209,10 +217,14 @@
     if ([captureConnection isVideoStabilizationSupported]) {
         captureConnection.preferredVideoStabilizationMode= AVCaptureVideoStabilizationModeAuto;
     }
+    // 设置是否为镜像，前置摄像头采集到的数据本来就是翻转的，这里设置为镜像把画面转回来
+    if (self.devicePosition == AVCaptureDevicePositionFront && captureConnection.supportsVideoMirroring) {
+        captureConnection.videoMirrored = YES;
+    }
     //根据连接取得设备输出的数据
     if (![self.captureMovieFileOutPut isRecording]) {
         //预览图层和视频方向保持一致
-        captureConnection.videoOrientation=[self.previewLayer connection].videoOrientation;
+        //        captureConnection.videoOrientation=[self.previewLayer connection].videoOrientation;
         //临时存储路径
         NSString *outputVideoFielPath = [NSTemporaryDirectory() stringByAppendingString:@"myMovie.mov"];
         NSURL *fileUrl=[NSURL fileURLWithPath:outputVideoFielPath];
@@ -231,21 +243,20 @@
     if (self.devicePosition == devicePosition) {
         return;
     }
-    
     AVCaptureDeviceInput *videoInput = [AVCaptureDeviceInput deviceInputWithDevice:[self getCameraDeviceWithPosition:devicePosition] error:nil];
     //先开启配置，配置完成后提交配置改变
     [self.session beginConfiguration];
     //移除原有输入对象
     [self.session removeInput:self.videoInput];
     //添加新的输入对象
-    if ([self.session canAddInput:self.videoInput]) {
+    if ([self.session canAddInput:videoInput]) {
         [self.session addInput:videoInput];
         self.videoInput = videoInput;
     }
     //提交新的输入对象
     [self.session commitConfiguration];
 }
-//设置聚焦点  默认自动聚焦模式
+//设置聚焦点和模式  默认自动聚焦模式
 - (void)focusAtPoint:(CGPoint)focalPoint {
     //将UI坐标转化为摄像头坐标  (0,0) -> (1,1)
     CGPoint cameraPoint = [self.previewLayer captureDevicePointOfInterestForPoint:focalPoint];
@@ -258,6 +269,13 @@
         }
         if ([captureDevice isFocusPointOfInterestSupported]) {
             [captureDevice setFocusPointOfInterest:cameraPoint];
+        }
+        //曝光模式
+        if ([captureDevice isExposureModeSupported:AVCaptureExposureModeAutoExpose]) {
+            [captureDevice setExposureMode:AVCaptureExposureModeAutoExpose];
+        }
+        if ([captureDevice isExposurePointOfInterestSupported]) {
+            [captureDevice setExposurePointOfInterest:cameraPoint];
         }
         [captureDevice unlockForConfiguration];
     } else {

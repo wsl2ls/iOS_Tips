@@ -22,6 +22,8 @@
 	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string>此功能需要获取你的相机权限</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>此功能需要你的麦克风权限</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>此功能需要获取你的相册权限</string>
 	<key>NSPhotoLibraryUsageDescription</key>
