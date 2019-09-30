@@ -9,12 +9,9 @@
 #import "SLAvCaptureTool.h"
 #import <CoreMotion/CoreMotion.h>
 
-#define SL_kScreenWidth [UIScreen mainScreen].bounds.size.width
-#define SL_kScreenHeight [UIScreen mainScreen].bounds.size.height
-
 @interface SLAvCaptureTool () <AVCapturePhotoCaptureDelegate, AVCaptureVideoDataOutputSampleBufferDelegate, AVCaptureAudioDataOutputSampleBufferDelegate>
 
-@property (nonatomic, strong) AVCaptureSession *session;
+@property (nonatomic, strong) AVCaptureSession *session;  //采集会话
 @property (nonatomic, strong) AVCaptureVideoPreviewLayer *previewLayer;//摄像头采集内容展示区域
 
 @property (nonatomic, strong) AVCaptureDeviceInput *audioInput; //音频输入流
@@ -32,6 +29,7 @@
 @property (nonatomic, copy)  NSURL *outputFileURL; //音视频文件输出路径
 
 @property (nonatomic, assign) BOOL isRecording; //是否正在录制
+@property (nonatomic, assign) SLAvRecordType  avRecordType; //音视频录制类型 默认 SLAvRecordTypeAv
 
 @property (nonatomic, assign) UIDeviceOrientation shootingOrientation;   //拍摄时的手机方向
 @property (nonatomic, strong) CMMotionManager *motionManager;       //运动传感器  监测设备方向
@@ -169,6 +167,33 @@
         _previewLayer.videoGravity = AVLayerVideoGravityResizeAspect;
     }
     return _previewLayer;
+}
+- (AVAssetWriterInput *)assetWriterVideoInput {
+    if (!_assetWriterVideoInput) {
+        //写入视频大小
+        NSInteger numPixels = SL_kScreenWidth * SL_kScreenHeight;
+        //每像素比特
+        CGFloat bitsPerPixel = 12.0;
+        NSInteger bitsPerSecond = numPixels * bitsPerPixel;
+        // 码率和帧率设置
+        NSDictionary *compressionProperties = @{ AVVideoAverageBitRateKey : @(bitsPerSecond),
+                                                 AVVideoExpectedSourceFrameRateKey : @(15),
+                                                 AVVideoMaxKeyFrameIntervalKey : @(15),
+                                                 AVVideoProfileLevelKey : AVVideoProfileLevelH264BaselineAutoLevel };
+        CGFloat width = SL_kScreenHeight;
+        CGFloat height = SL_kScreenWidth;
+        //视频属性
+        self.videoCompressionSettings = @{ AVVideoCodecKey : AVVideoCodecH264,
+                                           AVVideoWidthKey : @(width * [UIScreen mainScreen].scale),
+                                           AVVideoHeightKey : @(height * [UIScreen mainScreen].scale),
+                                           AVVideoScalingModeKey : AVVideoScalingModeResizeAspectFill,
+                                           AVVideoCompressionPropertiesKey : compressionProperties };
+        
+        _assetWriterVideoInput = [AVAssetWriterInput assetWriterInputWithMediaType:AVMediaTypeVideo outputSettings:self.videoCompressionSettings];
+        //expectsMediaDataInRealTime 必须设为yes，需要从capture session 实时获取数据
+        _assetWriterVideoInput.expectsMediaDataInRealTime = YES;
+    }
+    return _assetWriterVideoInput;
 }
 - (AVAssetWriterInput *)assetWriterAudioInput {
     if (_assetWriterAudioInput == nil) {
@@ -344,7 +369,8 @@
     [self.capturePhotoOutput capturePhotoWithSettings:capturePhotoSettings delegate:self];
 }
 //开始输出视频帧
-- (void)startRecordVideoToOutputFileAtPath:(NSString *)path {
+- (void)startRecordVideoToOutputFileAtPath:(NSString *)path recordType:(SLAvRecordType)avRecordType{
+    _avRecordType = avRecordType;
     //移除重复文件
     if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
         [[NSFileManager defaultManager] removeItemAtPath:path error:nil];
@@ -358,45 +384,19 @@
     if (self.devicePosition == AVCaptureDevicePositionFront && captureConnection.supportsVideoMirroring) {
         captureConnection.videoMirrored = YES;
     }
-    //每次切换这个视频输出方向时，会造成摄像头的短暂黑暗
-    //    captureConnection.videoOrientation = AVCaptureVideoOrientationPortrait;
-    //写入视频大小
-    NSInteger numPixels = SL_kScreenWidth * SL_kScreenHeight;
-    //每像素比特
-    CGFloat bitsPerPixel = 12.0;
-    NSInteger bitsPerSecond = numPixels * bitsPerPixel;
-    // 码率和帧率设置
-    NSDictionary *compressionProperties = @{ AVVideoAverageBitRateKey : @(bitsPerSecond),
-                                             AVVideoExpectedSourceFrameRateKey : @(15),
-                                             AVVideoMaxKeyFrameIntervalKey : @(15),
-                                             AVVideoProfileLevelKey : AVVideoProfileLevelH264BaselineAutoLevel };
-    CGFloat width = SL_kScreenHeight;
-    CGFloat height = SL_kScreenWidth;
-    
-    //视频属性
-    self.videoCompressionSettings = @{ AVVideoCodecKey : AVVideoCodecH264,
-                                       AVVideoWidthKey : @(width * [UIScreen mainScreen].scale),
-                                       AVVideoHeightKey : @(height * [UIScreen mainScreen].scale),
-                                       AVVideoScalingModeKey : AVVideoScalingModeResizeAspectFill,
-                                       AVVideoCompressionPropertiesKey : compressionProperties };
-    
-    _assetWriterVideoInput = [AVAssetWriterInput assetWriterInputWithMediaType:AVMediaTypeVideo outputSettings:self.videoCompressionSettings];
-    //expectsMediaDataInRealTime 必须设为yes，需要从capture session 实时获取数据
-    _assetWriterVideoInput.expectsMediaDataInRealTime = YES;
-    
     //这个API 每次开始录制时设置视频输出方向，会造成摄像头的短暂黑暗，有问题的代码可以看此类文件夹下的SLAvCaptureTool-bug副本；切换摄像头时设置此属性没有较大的影响
     // captureConnection.videoOrientation = AVCaptureVideoOrientationPortrait;
     //由于上述原因，故采用在写入输出视频时调整方向
     if (self.shootingOrientation == UIDeviceOrientationLandscapeRight) {
-        _assetWriterVideoInput.transform = CGAffineTransformMakeRotation(M_PI);
+        self.assetWriterVideoInput.transform = CGAffineTransformMakeRotation(M_PI);
     } else if (self.shootingOrientation == UIDeviceOrientationLandscapeLeft) {
     } else if (self.shootingOrientation == UIDeviceOrientationPortraitUpsideDown) {
-        _assetWriterVideoInput.transform = CGAffineTransformMakeRotation(M_PI + (M_PI / 2.0));
+        self.assetWriterVideoInput.transform = CGAffineTransformMakeRotation(M_PI + (M_PI / 2.0));
     } else {
-        _assetWriterVideoInput.transform = CGAffineTransformMakeRotation(M_PI / 2.0);
+        self.assetWriterVideoInput.transform = CGAffineTransformMakeRotation(M_PI / 2.0);
     }
-    if ([self.assetWriter canAddInput:_assetWriterVideoInput]) {
-        [self.assetWriter addInput:_assetWriterVideoInput];
+    if ([self.assetWriter canAddInput:self.assetWriterVideoInput]) {
+        [self.assetWriter addInput:self.assetWriterVideoInput];
     } else {
         NSLog(@"视频写入失败");
     }
@@ -429,6 +429,7 @@
 }
 //开始录制音频
 - (void)startRecordAudioToOutputFileAtPath:(NSString *)path {
+    _avRecordType = SLAvRecordTypeAudio;
     //移除重复文件
     if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
         [[NSFileManager defaultManager] removeItemAtPath:path error:nil];
@@ -529,7 +530,7 @@
         //视频
         if (output == self.videoDataOutput) {
             @synchronized(self) {
-                if (!self.canWrite) {
+                if (!self.canWrite && self.avRecordType != SLAvRecordTypeAudio) {
                     [self.assetWriter startWriting];
                     [self.assetWriter startSessionAtSourceTime:CMSampleBufferGetPresentationTimeStamp(sampleBuffer)];
                     self.canWrite = YES;
@@ -548,7 +549,7 @@
         //音频
         if (output == self.audioDataOutput) {
             @synchronized(self) {
-                if (!self.canWrite) {
+                if (!self.canWrite && self.avRecordType == SLAvRecordTypeAudio) {
                     [self.assetWriter startWriting];
                     [self.assetWriter startSessionAtSourceTime:CMSampleBufferGetPresentationTimeStamp(sampleBuffer)];
                     self.canWrite = YES;

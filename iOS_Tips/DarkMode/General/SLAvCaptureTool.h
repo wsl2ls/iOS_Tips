@@ -10,10 +10,21 @@
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
 
+#define SL_kScreenWidth [UIScreen mainScreen].bounds.size.width
+#define SL_kScreenHeight [UIScreen mainScreen].bounds.size.height
 #define DISPATCH_ON_MAIN_THREAD(mainQueueBlock) dispatch_async(dispatch_get_main_queue(),mainQueueBlock);  //主线程操作
 
-@class SLAvCaptureTool;
+///录制音视频类型
+typedef NS_ENUM(NSUInteger, SLAvRecordType) {
+    /// 音视频
+    SLAvRecordTypeAv = 0,
+    /// 视频 无声
+    SLAvRecordTypeVideo,
+    /// 音频
+    SLAvRecordTypeAudio
+};
 
+@class SLAvCaptureTool;
 /// 捕获工具输出代理
 @protocol SLAvCaptureToolDelegate <NSObject>
 ///  完成拍照 ，返回image
@@ -31,11 +42,11 @@ API_AVAILABLE(ios(10.0))
 ///摄像头捕获工具    配置都是默认的
 @interface SLAvCaptureTool : NSObject
 
-/// 摄像头采集内容预览视图
+/// 摄像头采集内容预览视图  如果仅仅采集音频，则此属性可以不赋值
 @property (nonatomic, strong, nullable) UIView *preview;
 /// 摄像头是否正在运行
 @property (nonatomic, assign, readonly) BOOL isRunning;
-/// 摄像头方向
+/// 摄像头方向 默认后置摄像头
 @property (nonatomic, assign, readonly) AVCaptureDevicePosition devicePosition;
 /// 闪光灯状态  默认是关闭的，即黑暗情况下拍照不打开闪光灯   （打开/关闭/自动）
 @property (nonatomic, assign) AVCaptureFlashMode flashMode;
@@ -54,9 +65,10 @@ API_AVAILABLE(ios(10.0))
 - (void)switchsCamera:(AVCaptureDevicePosition)devicePosition;
 /// 输出图片
 - (void)outputPhoto;
-/// 开始录制视频
-/// @param path 录制的视频输出路径
-- (void)startRecordVideoToOutputFileAtPath:(NSString *)path;
+/// 开始录制音视频
+/// @param path 录制的音视频输出路径
+/// @param avRecordType 录制音视频类型
+- (void)startRecordVideoToOutputFileAtPath:(NSString *)path recordType:(SLAvRecordType)avRecordType;
 /// 结束录制视频
 - (void)stopRecordVideo;
 /// 开始录制音频

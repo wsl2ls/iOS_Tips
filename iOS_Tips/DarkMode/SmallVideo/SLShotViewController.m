@@ -413,7 +413,7 @@
             self.progressLayer.strokeEnd = 0;
             NSString *outputVideoFielPath = [NSTemporaryDirectory() stringByAppendingString:@"myVideo.mp4"];
             //开始录制视频
-            [self.avCaptureTool startRecordVideoToOutputFileAtPath:outputVideoFielPath];
+            [self.avCaptureTool startRecordVideoToOutputFileAtPath:outputVideoFielPath recordType:SLAvRecordTypeAv];
         }
             NSLog(@"开始摄像");
             break;
