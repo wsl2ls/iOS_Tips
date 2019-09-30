@@ -17,9 +17,7 @@
 
 #define KMaxDurationOfVideo  15.0 //录制最大时长 s
 
-#define DISPATCH_ON_MAIN_THREAD(mainQueueBlock) dispatch_async(dispatch_get_main_queue(),mainQueueBlock);  //主线程操作
-
-@interface SLShotViewController ()<AVCapturePhotoCaptureDelegate, AVCaptureFileOutputRecordingDelegate>
+@interface SLShotViewController ()<SLAvCaptureToolDelegate>
 {
     dispatch_source_t _gcdTimer; //计时器
     NSTimeInterval _durationOfVideo;  //录制视频的时长
@@ -105,13 +103,15 @@
     if (_avCaptureTool == nil) {
         _avCaptureTool = [[SLAvCaptureTool alloc] init];
         _avCaptureTool.preview = self.captureView;
+        _avCaptureTool.delegate = self;
     }
     return _avCaptureTool;
 }
 - (UIView *)captureView {
     if (_captureView == nil) {
         _captureView = [[UIImageView alloc] initWithFrame:self.view.bounds];
-        _captureView.backgroundColor = [UIColor whiteColor];
+        _captureView.contentMode = UIViewContentModeScaleAspectFit;
+        _captureView.backgroundColor = [UIColor blackColor];
         _captureView.userInteractionEnabled = YES;
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapFocusing:)];
         [_captureView addGestureRecognizer:tap];
@@ -143,6 +143,7 @@
         UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(takePicture:)];
         [_shotBtn addGestureRecognizer:tap];
         UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(videotape:)];
+        longPress.minimumPressDuration = 0.3;
         [_shotBtn addGestureRecognizer:longPress];
         //中心白色
         self.whiteView.frame = CGRectMake(0, 0, 50, 50);
@@ -189,14 +190,14 @@
 }
 - (SLShotFocusView *)focusView {
     if (_focusView == nil) {
-        _focusView= [[SLShotFocusView alloc] initWithFrame:CGRectMake(0, 0, 80, 80)];
+        _focusView= [[SLShotFocusView alloc] initWithFrame:CGRectMake(0, 0, 60, 60)];
         _focusView.backgroundColor = [UIColor clearColor];
     }
     return _focusView;
 }
 - (UILabel *)tipsLabel {
     if (_tipsLabel == nil) {
-        _tipsLabel = [[UILabel alloc] initWithFrame:CGRectMake((self.view.sl_w - 140)/2.0, self.shotBtn.sl_y - 20 - 10, 140, 20)];
+        _tipsLabel = [[UILabel alloc] initWithFrame:CGRectMake((self.view.sl_w - 140)/2.0, self.shotBtn.sl_y - 20 - 30, 140, 20)];
         _tipsLabel.textColor = [UIColor whiteColor];
         _tipsLabel.font = [UIFont systemFontOfSize:14];
         _tipsLabel.textAlignment = NSTextAlignmentCenter;
@@ -305,6 +306,9 @@
 //聚焦手势
 - (void)tapFocusing:(UITapGestureRecognizer *)tap {
     CGPoint point = [tap locationInView:self.captureView];
+    if(point.y > self.shotBtn.sl_y) {
+        return;
+    }
     self.focusView.center = point;
     if (![self.view.subviews containsObject:self.focusView]) {
         [self.view addSubview:self.focusView];
@@ -332,7 +336,7 @@
     
     self.avCaptureTool.preview = self.captureView;
     [self.avCaptureTool startRunning];
-    self.avCaptureTool.videoZoomFactor = 1;
+    self.avCaptureTool.videoZoomFactor = 1.0;
     
     self.againShotBtn.hidden = YES;
     self.editBtn.hidden = YES;
@@ -389,7 +393,7 @@
 }
 //轻触拍照
 - (void)takePicture:(UITapGestureRecognizer *)tap {
-    [self.avCaptureTool outputPhotoWithDelegate:self];
+    [self.avCaptureTool outputPhoto];
     NSLog(@"拍照");
 }
 //长按摄像 小视频
@@ -407,10 +411,11 @@
             //添加进度条
             [self.shotBtn.layer addSublayer:self.progressLayer];
             self.progressLayer.strokeEnd = 0;
+            NSString *outputVideoFielPath = [NSTemporaryDirectory() stringByAppendingString:@"myVideo.mp4"];
             //开始录制视频
-            [self.avCaptureTool startRecordVideoWithDelegate:self];
+            [self.avCaptureTool startRecordVideoToOutputFileAtPath:outputVideoFielPath];
         }
-            //            NSLog(@"开始摄像");
+            NSLog(@"开始摄像");
             break;
         case UIGestureRecognizerStateChanged:{
         }
@@ -429,26 +434,31 @@
             self.progressLayer.strokeEnd = 0;
             [self.progressLayer removeFromSuperlayer];
             //    结束录制视频
+            [self.avCaptureTool stopRunning];
+            
+            self.againShotBtn.hidden = NO;
+            self.editBtn.hidden = NO;
+            self.saveAlbumBtn.hidden = NO;
+            
+            self.backBtn.hidden = YES;
+            self.shotBtn.hidden = YES;
+            self.switchCameraBtn.hidden = YES;
+            
             [self.avCaptureTool stopRecordVideo];
         }
-            //            NSLog(@"结束摄像");
             break;
         default:
             break;
     }
 }
 
-#pragma mark - AVCapturePhotoCaptureDelegate 图片输出代理
-//捕获拍摄图片的回调
-- (void)captureOutput:(AVCapturePhotoOutput *)output didFinishProcessingPhoto:(AVCapturePhoto *)photo error:(nullable NSError *)error API_AVAILABLE(ios(11.0)) {
-    NSData *data = [photo fileDataRepresentation];
-    self.image = [UIImage imageWithData:data];
-    
-    NSLog(@"==== %ld",(long)self.image.imageOrientation);
-    
+#pragma mark - SLAvCaptureToolDelegate  图片、音视频输出代理
+//图片输出完成
+- (void)captureTool:(SLAvCaptureTool *)captureTool didOutputPhoto:(UIImage *)image error:(NSError *)error {
     [self.avCaptureTool stopRunning];
     self.avCaptureTool.preview = nil;
-    self.captureView.image = [UIImage imageWithData:data];
+    self.captureView.image = image;
+    self.image = image;
     
     self.againShotBtn.hidden = NO;
     self.editBtn.hidden = NO;
@@ -458,14 +468,8 @@
     self.shotBtn.hidden = YES;
     self.switchCameraBtn.hidden = YES;
 }
-#pragma mark - AVCaptureFileOutputRecordingDelegate 视频输出代理
-//开始录制
--(void)captureOutput:(AVCaptureFileOutput *)captureOutput didStartRecordingToOutputFileAtURL:(NSURL *)fileURL fromConnections:(NSArray *)connections{
-    NSLog(@"开始录制");
-}
-//视频录制完成
--(void)captureOutput:(AVCaptureFileOutput *)captureOutput didFinishRecordingToOutputFileAtURL:(NSURL *)outputFileURL fromConnections:(NSArray *)connections error:(NSError *)error{
-    
+//音视频输出完成
+- (void)captureTool:(SLAvCaptureTool *)captureTool didFinishRecordingToOutputFileAtURL:(NSURL *)outputFileURL error:(NSError *)error {
     self.againShotBtn.hidden = NO;
     self.editBtn.hidden = NO;
     self.saveAlbumBtn.hidden = NO;
@@ -481,7 +485,7 @@
     [avPlayer play];
     [self.avCaptureTool stopRunning];
     
-    NSLog(@"结束录制 %@", error.localizedDescription);
+    NSLog(@"结束录制");
 }
 
 @end
