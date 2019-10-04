@@ -79,6 +79,9 @@
 - (BOOL)shouldAutorotate {
     return NO;
 }
+- (void)dealloc {
+    [self.avCaptureTool removeObserver:self forKeyPath:@"shootingOrientation"];
+}
 #pragma mark - UI
 - (void)setupUI {
     self.title = @"拍摄";
@@ -96,6 +99,8 @@
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self.tipsLabel removeFromSuperview];
     });
+    //监听设备方向，旋转切换摄像头按钮
+    [self.avCaptureTool addObserver:self forKeyPath:@"shootingOrientation" options:NSKeyValueObservingOptionNew context:nil];
 }
 
 #pragma mark - Getter
@@ -142,7 +147,7 @@
         //轻触拍照，长按摄像
         UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(takePicture:)];
         [_shotBtn addGestureRecognizer:tap];
-        UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(videotape:)];
+        UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(recordVideo:)];
         longPress.minimumPressDuration = 0.3;
         [_shotBtn addGestureRecognizer:longPress];
         //中心白色
@@ -306,7 +311,7 @@
 //聚焦手势
 - (void)tapFocusing:(UITapGestureRecognizer *)tap {
     CGPoint point = [tap locationInView:self.captureView];
-    if(point.y > self.shotBtn.sl_y) {
+    if(point.y > self.shotBtn.sl_y || point.y < self.switchCameraBtn.sl_y + self.switchCameraBtn.sl_h) {
         return;
     }
     self.focusView.center = point;
@@ -397,7 +402,7 @@
     NSLog(@"拍照");
 }
 //长按摄像 小视频
-- (void)videotape:(UILongPressGestureRecognizer *)longPress {
+- (void)recordVideo:(UILongPressGestureRecognizer *)longPress {
     switch (longPress.state) {
         case UIGestureRecognizerStateBegan:{
             self.shotBtn.sl_size = CGSizeMake(100, 100);
@@ -449,6 +454,30 @@
             break;
         default:
             break;
+    }
+}
+// KVO
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
+    if ([keyPath isEqualToString:@"shootingOrientation"]) {
+        UIDeviceOrientation deviceOrientation = [change[@"new"] intValue];
+        [UIView animateWithDuration:0.3 animations:^{
+            switch (deviceOrientation) {
+                case UIDeviceOrientationPortrait:
+                     self.switchCameraBtn.transform = CGAffineTransformMakeRotation(0);
+                    break;
+                case UIDeviceOrientationLandscapeLeft:
+                     self.switchCameraBtn.transform = CGAffineTransformMakeRotation(M_PI/2.0);
+                    break;
+                case UIDeviceOrientationLandscapeRight:
+                     self.switchCameraBtn.transform = CGAffineTransformMakeRotation(-M_PI/2.0);
+                    break;
+                case UIDeviceOrientationPortraitUpsideDown:
+                     self.switchCameraBtn.transform = CGAffineTransformMakeRotation(-M_PI);
+                    break;
+                default:
+                    break;
+            }
+        }];
     }
 }
 

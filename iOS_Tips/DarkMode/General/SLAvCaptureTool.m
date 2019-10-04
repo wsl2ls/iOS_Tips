@@ -480,20 +480,35 @@
             if ((fabs(y) + 0.1f) >= fabs(x)) {
                 if (y >= 0.1f) {
                     //                    NSLog(@"Down");
+                    if (weakSelf.shootingOrientation == UIDeviceOrientationPortraitUpsideDown) {
+                        return ;
+                    }
                     weakSelf.shootingOrientation = UIDeviceOrientationPortraitUpsideDown;
                 } else {
                     //                    NSLog(@"Portrait");
+                    if (weakSelf.shootingOrientation == UIDeviceOrientationPortrait) {
+                        return ;
+                    }
                     weakSelf.shootingOrientation = UIDeviceOrientationPortrait;
                 }
             } else {
                 if (x >= 0.1f) {
                     //                    NSLog(@"Right");
+                    if (weakSelf.shootingOrientation == UIDeviceOrientationLandscapeRight) {
+                        return ;
+                    }
                     weakSelf.shootingOrientation = UIDeviceOrientationLandscapeRight;
                 } else if (x <= 0.1f) {
                     //                    NSLog(@"Left");
+                    if (weakSelf.shootingOrientation == UIDeviceOrientationLandscapeLeft) {
+                        return ;
+                    }
                     weakSelf.shootingOrientation = UIDeviceOrientationLandscapeLeft;
                 } else  {
                     //                    NSLog(@"Portrait");
+                    if (weakSelf.shootingOrientation == UIDeviceOrientationPortrait) {
+                        return ;
+                    }
                     weakSelf.shootingOrientation = UIDeviceOrientationPortrait;
                 }
             }
