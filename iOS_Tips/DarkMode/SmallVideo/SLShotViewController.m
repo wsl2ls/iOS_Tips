@@ -14,6 +14,7 @@
 #import "SLAvPlayer.h"
 #import "SLAvCaptureTool.h"
 #import "SLShotFocusView.h"
+#import "SLEditMenuView.h"
 
 #define KMaxDurationOfVideo  15.0 //录制最大时长 s
 
@@ -23,30 +24,31 @@
     NSTimeInterval _durationOfVideo;  //录制视频的时长
 }
 
-//摄像头采集工具
-@property (nonatomic, strong) SLAvCaptureTool *avCaptureTool;
+@property (nonatomic, strong) SLAvCaptureTool *avCaptureTool; //摄像头采集工具
 @property (nonatomic, strong) UIImageView *captureView; // 捕获预览视图
 
-// 切换前后摄像头
-@property (nonatomic, strong) UIButton *switchCameraBtn;
+@property (nonatomic, strong) UIButton *switchCameraBtn; // 切换前后摄像头
 @property (nonatomic, strong) UIButton *backBtn;
-//拍摄按钮
-@property (nonatomic, strong) SLBlurView *shotBtn;
-@property (nonatomic, strong) UIView *whiteView;
-//环形进度条
-@property (nonatomic, strong) CAShapeLayer *progressLayer;
-//拍摄提示语  轻触拍照 长按拍摄
-@property (nonatomic, strong)  UILabel *tipsLabel;
 
-@property (nonatomic, strong) SLBlurView *editBtn;
-@property (nonatomic, strong) SLBlurView *againShotBtn;
-@property (nonatomic, strong) UIButton *saveAlbumBtn;
+@property (nonatomic, strong) SLBlurView *shotBtn; //拍摄按钮
+@property (nonatomic, strong) UIView *whiteView; //白色圆心
+@property (nonatomic, strong) CAShapeLayer *progressLayer; //环形进度条
+@property (nonatomic, strong)  UILabel *tipsLabel; //拍摄提示语  轻触拍照 长按拍摄
+
+@property (nonatomic, strong) SLBlurView *editBtn; //编辑
+@property (nonatomic, strong) SLBlurView *againShotBtn;  // 再拍一次
+@property (nonatomic, strong) UIButton *saveAlbumBtn;  //保存到相册
 
 @property (nonatomic, strong) UIImage *image; //当前拍摄的照片
 @property (nonatomic, strong) NSURL *videoPath; //当前拍摄的视频路径
-//当前焦距比例系数
-@property (nonatomic, assign) CGFloat currentZoomFactor;
+
+@property (nonatomic, assign) CGFloat currentZoomFactor; //当前焦距比例系数
 @property (nonatomic, strong) SLShotFocusView *focusView;
+
+@property (nonatomic, strong) UIButton *cancleEditBtn; //取消编辑
+@property (nonatomic, strong) UIButton *doneEditBtn; //完成编辑
+@property (nonatomic, strong) SLEditMenuView *editMenuView; //编辑菜单栏
+
 
 @end
 
@@ -90,10 +92,15 @@
     
     [self.view addSubview:self.backBtn];
     [self.view addSubview:self.shotBtn];
+    
     [self.view addSubview:self.againShotBtn];
     [self.view addSubview:self.editBtn];
     [self.view addSubview:self.saveAlbumBtn];
     [self.view addSubview:self.switchCameraBtn];
+    
+    [self.view addSubview:self.cancleEditBtn];
+    [self.view addSubview:self.doneEditBtn];
+    [self.view addSubview:self.editMenuView];
     
     [self.view addSubview:self.tipsLabel];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -248,6 +255,37 @@
     }
     return _saveAlbumBtn;
 }
+- (UIButton *)cancleEditBtn {
+    if (_cancleEditBtn == nil) {
+        _cancleEditBtn = [[UIButton alloc] initWithFrame:CGRectMake(15, 30, 40, 30)];
+        _cancleEditBtn.hidden = YES;
+        [_cancleEditBtn setTitle:@"取消" forState:UIControlStateNormal];
+        [_cancleEditBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        _cancleEditBtn.titleLabel.font = [UIFont systemFontOfSize:14];
+        [_cancleEditBtn addTarget:self action:@selector(cancleEditBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _cancleEditBtn;
+}
+- (UIButton *)doneEditBtn {
+    if (_doneEditBtn == nil) {
+        _doneEditBtn = [[UIButton alloc] initWithFrame:CGRectMake(self.view.sl_w - 50 - 15, 30, 40, 30)];
+        _doneEditBtn.hidden = YES;
+        _doneEditBtn.backgroundColor = [UIColor colorWithRed:45/255.0 green:175/255.0 blue:45/255.0 alpha:1];
+        [_doneEditBtn setTitle:@"完成" forState:UIControlStateNormal];
+        [_doneEditBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        _doneEditBtn.titleLabel.font = [UIFont systemFontOfSize:14];
+        _doneEditBtn.layer.cornerRadius = 4;
+        [_doneEditBtn addTarget:self action:@selector(doneEditBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _doneEditBtn;
+}
+- (SLEditMenuView *)editMenuView {
+    if (!_editMenuView) {
+        _editMenuView = [[SLEditMenuView alloc] initWithFrame:CGRectMake(0, self.view.sl_h - 80, self.view.sl_w, 80)];
+        _editMenuView.hidden = YES;
+    }
+    return _editMenuView;
+}
 
 #pragma mark - HelpMethods
 //开始计时录制
@@ -310,6 +348,11 @@
 }
 //聚焦手势
 - (void)tapFocusing:(UITapGestureRecognizer *)tap {
+    //如果没在运行，取消聚焦
+    if(!self.avCaptureTool.isRunning) {
+        return;
+    }
+    
     CGPoint point = [tap locationInView:self.captureView];
     if(point.y > self.shotBtn.sl_y || point.y < self.switchCameraBtn.sl_y + self.switchCameraBtn.sl_h) {
         return;
@@ -334,7 +377,13 @@
 }
 //编辑
 - (void)editBtnClicked:(id)sender {
+    self.cancleEditBtn.hidden = NO;
+    self.doneEditBtn.hidden = NO;
+    self.editMenuView.hidden = NO;
     
+    self.againShotBtn.hidden = YES;
+    self.editBtn.hidden = YES;
+    self.saveAlbumBtn.hidden = YES;
 }
 //再试一次 继续拍摄
 - (void)againShotBtnClicked:(id)sender {
@@ -463,22 +512,33 @@
         [UIView animateWithDuration:0.3 animations:^{
             switch (deviceOrientation) {
                 case UIDeviceOrientationPortrait:
-                     self.switchCameraBtn.transform = CGAffineTransformMakeRotation(0);
+                    self.switchCameraBtn.transform = CGAffineTransformMakeRotation(0);
                     break;
                 case UIDeviceOrientationLandscapeLeft:
-                     self.switchCameraBtn.transform = CGAffineTransformMakeRotation(M_PI/2.0);
+                    self.switchCameraBtn.transform = CGAffineTransformMakeRotation(M_PI/2.0);
                     break;
                 case UIDeviceOrientationLandscapeRight:
-                     self.switchCameraBtn.transform = CGAffineTransformMakeRotation(-M_PI/2.0);
+                    self.switchCameraBtn.transform = CGAffineTransformMakeRotation(-M_PI/2.0);
                     break;
                 case UIDeviceOrientationPortraitUpsideDown:
-                     self.switchCameraBtn.transform = CGAffineTransformMakeRotation(-M_PI);
+                    self.switchCameraBtn.transform = CGAffineTransformMakeRotation(-M_PI);
                     break;
                 default:
                     break;
             }
         }];
     }
+}
+- (void)cancleEditBtnClicked:(id)sender {
+    self.cancleEditBtn.hidden = YES;
+    self.doneEditBtn.hidden = YES;
+    self.editMenuView.hidden = YES;
+    self.againShotBtn.hidden = NO;
+    self.editBtn.hidden = NO;
+    self.saveAlbumBtn.hidden = NO;
+}
+- (void)doneEditBtnClicked:(id)sender {
+    [self cancleEditBtnClicked:nil];
 }
 
 #pragma mark - SLAvCaptureToolDelegate  图片、音视频输出代理
