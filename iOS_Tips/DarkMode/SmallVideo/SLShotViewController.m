@@ -49,7 +49,6 @@
 @property (nonatomic, strong) UIButton *doneEditBtn; //完成编辑
 @property (nonatomic, strong) SLEditMenuView *editMenuView; //编辑菜单栏
 
-
 @end
 
 @implementation SLShotViewController
@@ -100,7 +99,6 @@
     
     [self.view addSubview:self.cancleEditBtn];
     [self.view addSubview:self.doneEditBtn];
-    [self.view addSubview:self.editMenuView];
     
     [self.view addSubview:self.tipsLabel];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -281,8 +279,9 @@
 }
 - (SLEditMenuView *)editMenuView {
     if (!_editMenuView) {
-        _editMenuView = [[SLEditMenuView alloc] initWithFrame:CGRectMake(0, self.view.sl_h - 80, self.view.sl_w, 80)];
+        _editMenuView = [[SLEditMenuView alloc] initWithFrame:CGRectMake(0, self.view.sl_h - 80 -  60, self.view.sl_w, 80 + 60)];
         _editMenuView.hidden = YES;
+        [self.view addSubview:_editMenuView];
     }
     return _editMenuView;
 }
