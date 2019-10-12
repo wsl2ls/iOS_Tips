@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// 拍摄焦点视图
+ /// 聚焦时的焦点视图
 @interface SLShotFocusView : UIView
 
 @end

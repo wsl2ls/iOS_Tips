@@ -7,14 +7,11 @@
 //
 
 #import "SLShotViewController.h"
-#import <AVFoundation/AVFoundation.h>
-#import <Photos/Photos.h>
 #import "UIView+SLFrame.h"
 #import "SLBlurView.h"
-#import "SLAvPlayer.h"
 #import "SLAvCaptureTool.h"
 #import "SLShotFocusView.h"
-#import "SLEditMenuView.h"
+#import "SLEditViewController.h"
 
 #define KMaxDurationOfVideo  15.0 //录制最大时长 s
 
@@ -35,19 +32,11 @@
 @property (nonatomic, strong) CAShapeLayer *progressLayer; //环形进度条
 @property (nonatomic, strong)  UILabel *tipsLabel; //拍摄提示语  轻触拍照 长按拍摄
 
-@property (nonatomic, strong) SLBlurView *editBtn; //编辑
-@property (nonatomic, strong) SLBlurView *againShotBtn;  // 再拍一次
-@property (nonatomic, strong) UIButton *saveAlbumBtn;  //保存到相册
-
 @property (nonatomic, strong) UIImage *image; //当前拍摄的照片
 @property (nonatomic, strong) NSURL *videoPath; //当前拍摄的视频路径
 
 @property (nonatomic, assign) CGFloat currentZoomFactor; //当前焦距比例系数
-@property (nonatomic, strong) SLShotFocusView *focusView;
-
-@property (nonatomic, strong) UIButton *cancleEditBtn; //取消编辑
-@property (nonatomic, strong) UIButton *doneEditBtn; //完成编辑
-@property (nonatomic, strong) SLEditMenuView *editMenuView; //编辑菜单栏
+@property (nonatomic, strong) SLShotFocusView *focusView;   //当前聚焦视图
 
 @end
 
@@ -60,6 +49,8 @@
 }
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    self.image = nil;
+    self.videoPath = nil;
     [self.avCaptureTool startRunning];
 }
 - (void)viewDidDisappear:(BOOL)animated {
@@ -91,14 +82,7 @@
     
     [self.view addSubview:self.backBtn];
     [self.view addSubview:self.shotBtn];
-    
-    [self.view addSubview:self.againShotBtn];
-    [self.view addSubview:self.editBtn];
-    [self.view addSubview:self.saveAlbumBtn];
     [self.view addSubview:self.switchCameraBtn];
-    
-    [self.view addSubview:self.cancleEditBtn];
-    [self.view addSubview:self.doneEditBtn];
     
     [self.view addSubview:self.tipsLabel];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -215,76 +199,6 @@
     }
     return  _tipsLabel;
 }
-- (SLBlurView *)editBtn {
-    if (_editBtn == nil) {
-        _editBtn = [[SLBlurView alloc] initWithFrame:CGRectMake(0, 0, 70, 70)];
-        _editBtn.center = CGPointMake(self.view.sl_w/2.0, self.view.sl_h - 80);
-        _editBtn.hidden = YES;
-        _editBtn.layer.cornerRadius = _editBtn.sl_w/2.0;
-        UIButton * btn = [[UIButton alloc] initWithFrame:_editBtn.bounds];
-        [btn setImage:[UIImage imageNamed:@"edit"] forState:UIControlStateNormal];
-        [btn addTarget:self action:@selector(editBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
-        [_editBtn addSubview:btn];
-    }
-    return _editBtn;
-}
-- (SLBlurView *)againShotBtn {
-    if (_againShotBtn == nil) {
-        _againShotBtn = [[SLBlurView alloc] initWithFrame:CGRectMake(0, 0, 70, 70)];
-        _againShotBtn.center = CGPointMake((self.view.sl_w/2 - 70/2.0)/2.0, self.view.sl_h - 80);
-        _againShotBtn.hidden = YES;
-        _againShotBtn.layer.cornerRadius = _againShotBtn.sl_w/2.0;
-        UIButton * btn = [[UIButton alloc] initWithFrame:_againShotBtn.bounds];
-        [btn setImage:[UIImage imageNamed:@"cancle"] forState:UIControlStateNormal];
-        [btn addTarget:self action:@selector(againShotBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
-        [_againShotBtn addSubview:btn];
-    }
-    return _againShotBtn;
-}
-- (UIButton *)saveAlbumBtn {
-    if (_saveAlbumBtn == nil) {
-        _saveAlbumBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 70, 70)];
-        _saveAlbumBtn.center = CGPointMake(self.view.sl_w/2.0 + 70/2.0+ (self.view.sl_w/2 - 70/2.0)/2.0, self.view.sl_h - 80);
-        _saveAlbumBtn.hidden = YES;
-        _saveAlbumBtn.layer.cornerRadius = _saveAlbumBtn.sl_w/2.0;
-        _saveAlbumBtn.backgroundColor = [UIColor whiteColor];
-        [_saveAlbumBtn setImage:[UIImage imageNamed:@"save"] forState:UIControlStateNormal];
-        [_saveAlbumBtn addTarget:self action:@selector(saveAlbumBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
-    }
-    return _saveAlbumBtn;
-}
-- (UIButton *)cancleEditBtn {
-    if (_cancleEditBtn == nil) {
-        _cancleEditBtn = [[UIButton alloc] initWithFrame:CGRectMake(15, 30, 40, 30)];
-        _cancleEditBtn.hidden = YES;
-        [_cancleEditBtn setTitle:@"取消" forState:UIControlStateNormal];
-        [_cancleEditBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        _cancleEditBtn.titleLabel.font = [UIFont systemFontOfSize:14];
-        [_cancleEditBtn addTarget:self action:@selector(cancleEditBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
-    }
-    return _cancleEditBtn;
-}
-- (UIButton *)doneEditBtn {
-    if (_doneEditBtn == nil) {
-        _doneEditBtn = [[UIButton alloc] initWithFrame:CGRectMake(self.view.sl_w - 50 - 15, 30, 40, 30)];
-        _doneEditBtn.hidden = YES;
-        _doneEditBtn.backgroundColor = [UIColor colorWithRed:45/255.0 green:175/255.0 blue:45/255.0 alpha:1];
-        [_doneEditBtn setTitle:@"完成" forState:UIControlStateNormal];
-        [_doneEditBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        _doneEditBtn.titleLabel.font = [UIFont systemFontOfSize:14];
-        _doneEditBtn.layer.cornerRadius = 4;
-        [_doneEditBtn addTarget:self action:@selector(doneEditBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
-    }
-    return _doneEditBtn;
-}
-- (SLEditMenuView *)editMenuView {
-    if (!_editMenuView) {
-        _editMenuView = [[SLEditMenuView alloc] initWithFrame:CGRectMake(0, self.view.sl_h - 80 -  60, self.view.sl_w, 80 + 60)];
-        _editMenuView.hidden = YES;
-        [self.view addSubview:_editMenuView];
-    }
-    return _editMenuView;
-}
 
 #pragma mark - HelpMethods
 //开始计时录制
@@ -374,68 +288,6 @@
         self.avCaptureTool.videoZoomFactor = self.currentZoomFactor * pinch.scale;
     }
 }
-//编辑
-- (void)editBtnClicked:(id)sender {
-    self.cancleEditBtn.hidden = NO;
-    self.doneEditBtn.hidden = NO;
-    self.editMenuView.hidden = NO;
-    
-    self.againShotBtn.hidden = YES;
-    self.editBtn.hidden = YES;
-    self.saveAlbumBtn.hidden = YES;
-}
-//再试一次 继续拍摄
-- (void)againShotBtnClicked:(id)sender {
-    
-    self.avCaptureTool.preview = self.captureView;
-    [self.avCaptureTool startRunning];
-    self.avCaptureTool.videoZoomFactor = 1.0;
-    
-    self.againShotBtn.hidden = YES;
-    self.editBtn.hidden = YES;
-    self.saveAlbumBtn.hidden = YES;
-    
-    self.backBtn.hidden = NO;
-    self.shotBtn.hidden = NO;
-    self.switchCameraBtn.hidden = NO;
-    
-    [SLAvPlayer sharedAVPlayer].monitor = nil;
-    [[SLAvPlayer sharedAVPlayer] pause];
-    self.videoPath = nil;
-    self.image = nil;
-}
-//保存到相册
-- (void)saveAlbumBtnClicked:(id)sender {
-    if(self.image) {
-        UIImageWriteToSavedPhotosAlbum(self.image, self, @selector(savedPhotoImage:didFinishSavingWithError:contextInfo:), nil);
-    }else if (self.videoPath) {
-        //视频录入完成之后在将视频保存到相簿  如果视频过大的话，建议创建一个后台任务去保存到相册
-        PHPhotoLibrary *photoLibrary = [PHPhotoLibrary sharedPhotoLibrary];
-        [photoLibrary performChanges:^{
-            [PHAssetChangeRequest creationRequestForAssetFromVideoAtFileURL:self.videoPath];
-        } completionHandler:^(BOOL success, NSError * _Nullable error) {
-            DISPATCH_ON_MAIN_THREAD(^{
-                [self againShotBtnClicked:nil];
-            });
-            if (success) {
-                NSLog(@"视频保存至相册 成功");
-            } else {
-                NSLog(@"保存视频到相册 失败 ");
-            }
-        }];
-    }
-}
-//保存图片完成后调用的方法
-- (void)savedPhotoImage:(UIImage*)image didFinishSavingWithError:(NSError *)error contextInfo: (void *)contextInfo {
-    DISPATCH_ON_MAIN_THREAD(^{
-        [self againShotBtnClicked:nil];
-    });
-    if (error) {
-        NSLog(@"保存图片出错%@", error.localizedDescription);
-    } else {
-        NSLog(@"保存图片成功");
-    }
-}
 //切换前/后摄像头
 - (void)switchCameraClicked:(id)sender {
     if (self.avCaptureTool.devicePosition == AVCaptureDevicePositionFront) {
@@ -488,15 +340,6 @@
             [self.progressLayer removeFromSuperlayer];
             //    结束录制视频
             [self.avCaptureTool stopRunning];
-            
-            self.againShotBtn.hidden = NO;
-            self.editBtn.hidden = NO;
-            self.saveAlbumBtn.hidden = NO;
-            
-            self.backBtn.hidden = YES;
-            self.shotBtn.hidden = YES;
-            self.switchCameraBtn.hidden = YES;
-            
             [self.avCaptureTool stopRecordVideo];
         }
             break;
@@ -528,52 +371,29 @@
         }];
     }
 }
-- (void)cancleEditBtnClicked:(id)sender {
-    self.cancleEditBtn.hidden = YES;
-    self.doneEditBtn.hidden = YES;
-    self.editMenuView.hidden = YES;
-    self.againShotBtn.hidden = NO;
-    self.editBtn.hidden = NO;
-    self.saveAlbumBtn.hidden = NO;
-}
-- (void)doneEditBtnClicked:(id)sender {
-    [self cancleEditBtnClicked:nil];
-}
 
 #pragma mark - SLAvCaptureToolDelegate  图片、音视频输出代理
 //图片输出完成
 - (void)captureTool:(SLAvCaptureTool *)captureTool didOutputPhoto:(UIImage *)image error:(NSError *)error {
-    [self.avCaptureTool stopRunning];
-    self.avCaptureTool.preview = nil;
-    self.captureView.image = image;
     self.image = image;
-    
-    self.againShotBtn.hidden = NO;
-    self.editBtn.hidden = NO;
-    self.saveAlbumBtn.hidden = NO;
-    
-    self.backBtn.hidden = YES;
-    self.shotBtn.hidden = YES;
-    self.switchCameraBtn.hidden = YES;
+    [self.avCaptureTool stopRunning];
+    NSLog(@"拍照结束");
+    [self shootingCompleted];
 }
 //音视频输出完成
 - (void)captureTool:(SLAvCaptureTool *)captureTool didFinishRecordingToOutputFileAtURL:(NSURL *)outputFileURL error:(NSError *)error {
-    self.againShotBtn.hidden = NO;
-    self.editBtn.hidden = NO;
-    self.saveAlbumBtn.hidden = NO;
-    
-    self.backBtn.hidden = YES;
-    self.shotBtn.hidden = YES;
-    self.switchCameraBtn.hidden = YES;
-    
     self.videoPath = outputFileURL;
-    SLAvPlayer *avPlayer = [SLAvPlayer sharedAVPlayer];
-    avPlayer.url = outputFileURL;
-    avPlayer.monitor = self.captureView;
-    [avPlayer play];
     [self.avCaptureTool stopRunning];
-    
     NSLog(@"结束录制");
+    [self shootingCompleted];
+}
+//拍摄完成
+- (void)shootingCompleted {
+    SLEditViewController * editViewController = [[SLEditViewController alloc] init];
+    editViewController.videoPath = self.videoPath;
+    editViewController.image = self.image;
+    editViewController.modalPresentationStyle = UIModalPresentationFullScreen;
+    [self presentViewController:editViewController animated:NO completion:nil];
 }
 
 @end

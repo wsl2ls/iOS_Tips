@@ -30,6 +30,7 @@
 		78E179312351A4020007E4BB /* SLShotViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E1792F2351A4020007E4BB /* SLShotViewController.m */; };
 		78E179362351A40D0007E4BB /* SLEditMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E179332351A40D0007E4BB /* SLEditMenuView.m */; };
 		78E179372351A40D0007E4BB /* SLShotFocusView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E179342351A40D0007E4BB /* SLShotFocusView.m */; };
+		78E179402351D0950007E4BB /* SLEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E1793F2351D0950007E4BB /* SLEditViewController.m */; };
 		78F54916233383D800910215 /* SLBlurView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78F54915233383D800910215 /* SLBlurView.m */; };
 /* End PBXBuildFile section */
 
@@ -93,6 +94,8 @@
 		78E179332351A40D0007E4BB /* SLEditMenuView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLEditMenuView.m; sourceTree = "<group>"; };
 		78E179342351A40D0007E4BB /* SLShotFocusView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLShotFocusView.m; sourceTree = "<group>"; };
 		78E179352351A40D0007E4BB /* SLEditMenuView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLEditMenuView.h; sourceTree = "<group>"; };
+		78E1793E2351D0950007E4BB /* SLEditViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLEditViewController.h; sourceTree = "<group>"; };
+		78E1793F2351D0950007E4BB /* SLEditViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLEditViewController.m; sourceTree = "<group>"; };
 		78F54914233383D800910215 /* SLBlurView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLBlurView.h; sourceTree = "<group>"; };
 		78F54915233383D800910215 /* SLBlurView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLBlurView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -242,6 +245,8 @@
 			children = (
 				78E179302351A4020007E4BB /* SLShotViewController.h */,
 				78E1792F2351A4020007E4BB /* SLShotViewController.m */,
+				78E1793E2351D0950007E4BB /* SLEditViewController.h */,
+				78E1793F2351D0950007E4BB /* SLEditViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -407,6 +412,7 @@
 				784B720923348241006AEE47 /* SLAvCaptureTool.m in Sources */,
 				78B10482232F57C30051579F /* AppDelegate.m in Sources */,
 				7851CB362331CC87002295B5 /* SLDarkModeViewController.m in Sources */,
+				78E179402351D0950007E4BB /* SLEditViewController.m in Sources */,
 				7851CB43233222E2002295B5 /* UIView+SLFrame.m in Sources */,
 				78E1791723517F700007E4BB /* SLImageView.m in Sources */,
 				78E1791823517F700007E4BB /* SLImage.m in Sources */,
