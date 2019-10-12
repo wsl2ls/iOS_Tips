@@ -27,6 +27,9 @@
 		78E1791B23517FC50007E4BB /* WebP.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 78E1791A23517FC50007E4BB /* WebP.framework */; };
 		78E179232351820F0007E4BB /* The love of one's life.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 78E1791F2351820F0007E4BB /* The love of one's life.mp3 */; };
 		78E1792E23519D590007E4BB /* Images.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 78E1792D23519D590007E4BB /* Images.bundle */; };
+		78E179312351A4020007E4BB /* SLShotViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E1792F2351A4020007E4BB /* SLShotViewController.m */; };
+		78E179362351A40D0007E4BB /* SLEditMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E179332351A40D0007E4BB /* SLEditMenuView.m */; };
+		78E179372351A40D0007E4BB /* SLShotFocusView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E179342351A40D0007E4BB /* SLShotFocusView.m */; };
 		78F54916233383D800910215 /* SLBlurView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78F54915233383D800910215 /* SLBlurView.m */; };
 /* End PBXBuildFile section */
 
@@ -84,6 +87,12 @@
 		78E1791A23517FC50007E4BB /* WebP.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = WebP.framework; sourceTree = "<group>"; };
 		78E1791F2351820F0007E4BB /* The love of one's life.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "The love of one's life.mp3"; sourceTree = "<group>"; };
 		78E1792D23519D590007E4BB /* Images.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Images.bundle; sourceTree = "<group>"; };
+		78E1792F2351A4020007E4BB /* SLShotViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLShotViewController.m; sourceTree = "<group>"; };
+		78E179302351A4020007E4BB /* SLShotViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLShotViewController.h; sourceTree = "<group>"; };
+		78E179322351A40D0007E4BB /* SLShotFocusView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLShotFocusView.h; sourceTree = "<group>"; };
+		78E179332351A40D0007E4BB /* SLEditMenuView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLEditMenuView.m; sourceTree = "<group>"; };
+		78E179342351A40D0007E4BB /* SLShotFocusView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLShotFocusView.m; sourceTree = "<group>"; };
+		78E179352351A40D0007E4BB /* SLEditMenuView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLEditMenuView.h; sourceTree = "<group>"; };
 		78F54914233383D800910215 /* SLBlurView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLBlurView.h; sourceTree = "<group>"; };
 		78F54915233383D800910215 /* SLBlurView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLBlurView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -220,6 +229,10 @@
 		78E1791C235181A90007E4BB /* View */ = {
 			isa = PBXGroup;
 			children = (
+				78E179352351A40D0007E4BB /* SLEditMenuView.h */,
+				78E179332351A40D0007E4BB /* SLEditMenuView.m */,
+				78E179322351A40D0007E4BB /* SLShotFocusView.h */,
+				78E179342351A40D0007E4BB /* SLShotFocusView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -227,6 +240,8 @@
 		78E1791D235181CB0007E4BB /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				78E179302351A4020007E4BB /* SLShotViewController.h */,
+				78E1792F2351A4020007E4BB /* SLShotViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -395,10 +410,13 @@
 				7851CB43233222E2002295B5 /* UIView+SLFrame.m in Sources */,
 				78E1791723517F700007E4BB /* SLImageView.m in Sources */,
 				78E1791823517F700007E4BB /* SLImage.m in Sources */,
+				78E179362351A40D0007E4BB /* SLEditMenuView.m in Sources */,
 				78F54916233383D800910215 /* SLBlurView.m in Sources */,
 				78B10493232F57C50051579F /* main.m in Sources */,
+				78E179372351A40D0007E4BB /* SLShotFocusView.m in Sources */,
 				78B10485232F57C30051579F /* SceneDelegate.m in Sources */,
 				78E1791923517F700007E4BB /* SLImageDecoder.m in Sources */,
+				78E179312351A4020007E4BB /* SLShotViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
