@@ -7,6 +7,8 @@
 //
 
 #import "SLEditMenuView.h"
+#import "SLImageView.h"
+#import "SLImage.h"
 
 /// 涂鸦子菜单 画笔颜色选择
 @interface SLSubmenuGraffitiView : UIView
@@ -71,6 +73,30 @@
 }
 @end
 
+//贴画CollectionViewCell
+@interface SLSubmenuStickingCell : UICollectionViewCell
+@property (nonatomic, strong) SLImageView *imageView;
+@end
+@implementation SLSubmenuStickingCell
+- (instancetype)initWithFrame:(CGRect)frame {
+    self = [super initWithFrame:frame];
+    if (self) {
+        self.backgroundColor = [UIColor clearColor];
+        [self setupUI];
+    }
+    return self;
+}
+- (void)setupUI {
+    _imageView = [[SLImageView alloc] init];
+    _imageView.autoPlayAnimatedImage = YES;
+    _imageView.contentMode = UIViewContentModeScaleAspectFit;
+    [self.contentView addSubview:_imageView];
+}
+- (void)setImage:(NSString *)imageName {
+    _imageView.frame = CGRectMake(0, 0, self.contentView.frame.size.width, self.contentView.frame.size.height);
+    _imageView.image = [SLImage imageNamed:imageName];
+}
+@end
 /// 贴画子菜单
 @interface SLSubmenuStickingView : UIView <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 @property (nonatomic, strong) NSMutableArray *dataSource;
@@ -99,16 +125,15 @@
         _collectionView.backgroundColor = [UIColor clearColor];
         _collectionView.delegate = self;
         _collectionView.dataSource = self;
-        _collectionView.pagingEnabled = YES;
-        [_collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"ItemId"];
+        [_collectionView registerClass:[SLSubmenuStickingCell class] forCellWithReuseIdentifier:@"ItemId"];
     }
     return _collectionView;
 }
 - (NSMutableArray *)dataSource {
     if (_dataSource == nil) {
         _dataSource = [NSMutableArray array];
-        for (int i = 0; i < 13; i++) {
-            [_dataSource addObject:@"aa"];
+        for (int i = 0; i < 20; i++) {
+            [_dataSource addObject:[NSString stringWithFormat:@"Images.bundle/%d",i]];
         }
     }
     return _dataSource;
@@ -121,8 +146,8 @@
     return self.dataSource.count;
 }
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    UICollectionViewCell * item = [collectionView dequeueReusableCellWithReuseIdentifier:@"ItemId" forIndexPath:indexPath];
-    item.backgroundColor = [UIColor orangeColor];
+    SLSubmenuStickingCell * item = [collectionView dequeueReusableCellWithReuseIdentifier:@"ItemId" forIndexPath:indexPath];
+    [item setImage:self.dataSource[indexPath.row]];
     return item;
 }
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -157,15 +182,12 @@
 @end
 @implementation SLEditMenuView
 #pragma mark - Override
-- (instancetype)init {
-    self = [super init];
+- (instancetype)initWithFrame:(CGRect)frame {
+    self = [super initWithFrame:frame];
     if (self) {
+        [self createMenus];
     }
     return self;
-}
-- (void)layoutSubviews {
-    [super layoutSubviews];
-    [self createMenus];
 }
 #pragma mark - UI
 - (void)createMenus {
@@ -205,7 +227,6 @@
     if (!_submenuSticking) {
         _submenuSticking = [[SLSubmenuStickingView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, 60)];
         _submenuSticking.hidden = YES;
-        [self addSubview:_submenuSticking];
     }
     return _submenuSticking;
 }
@@ -221,12 +242,12 @@
     SLEditMenuType editMenuType = [_menuTypes[menuBtn.tag] intValue];
     switch (editMenuType) {
         case SLEditMenuTypeGraffiti:
-            self.submenuGraffiti.hidden = !self.submenuGraffiti.hidden;
-            self.submenuSticking.hidden = YES;
+            [self hiddenView:self.submenuGraffiti hidden:!self.submenuGraffiti.hidden];
+            [self hiddenView:self.submenuSticking hidden:YES];
             break;
         case SLEditMenuTypeSticking:
-            self.submenuSticking.hidden = !self.submenuSticking.hidden;
-            self.submenuGraffiti.hidden = YES;
+            [self hiddenView:self.submenuSticking hidden:!self.submenuSticking.hidden];
+            [self hiddenView:self.submenuGraffiti hidden:YES];
             break;
         case SLEditMenuTypeText:
             break;
@@ -234,6 +255,16 @@
             break;
         default:
             break;
+    }
+}
+- (void)hiddenView:(UIView *)view hidden:(BOOL)hidden{
+    if (hidden) {
+        view.hidden = YES;
+        [view removeFromSuperview];
+        view = nil;
+    }else {
+        view.hidden = NO;
+        [self addSubview:view];
     }
 }
 
