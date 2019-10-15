@@ -7,7 +7,6 @@
 //
 
 #import "SLImageView.h"
-#import "SLImage.h"
 #include <mach/mach.h>
 
 #define SL_LOCK_VIEW(...) dispatch_semaphore_wait(view->_lock, DISPATCH_TIME_FOREVER); \
@@ -83,7 +82,6 @@ dispatch_semaphore_signal(self->_lock);
 @end
 
 #pragma mark - 帧动画ImageView
-
 @interface SLImageView () {
     @package
     CADisplayLink *_displayLink; /// 帧动画切换器
@@ -100,7 +98,6 @@ dispatch_semaphore_signal(self->_lock);
     dispatch_once_t _onceToken;
     NSOperationQueue *_requestQueue; ///< 连续获取某帧image的操作队列
 }
-
 /**
  根据当前内存大小动态计算适合的缓存帧数
  */
@@ -150,12 +147,10 @@ dispatch_semaphore_signal(self->_lock);
 @end
 
 @implementation SLImageView
-
 /**
  重置动画
  */
 - (void)resetAnimated {
-    
     dispatch_once(&_onceToken, ^{
         self->_lock = dispatch_semaphore_create(1);
         self->_buffer = [NSMutableDictionary new];
@@ -175,6 +170,7 @@ dispatch_semaphore_signal(self->_lock);
         [self didChangeValueForKey:@"currentAnimatedImageIndex"];
     }
     
+    _autoPlayAnimatedImage = YES;
     _displayLink.paused = !_currentIsPlaying;
     _time = 0;
     _curFrame = nil;
@@ -185,7 +181,6 @@ dispatch_semaphore_signal(self->_lock);
 }
 
 #pragma mark - Event Handle
-
 //切换图片帧
 - (void)playAnimationImage:(CADisplayLink *)displayLink {
     
@@ -212,24 +207,23 @@ dispatch_semaphore_signal(self->_lock);
     
     SL_LOCK(
             if (nextBufferedImage) {
-                if ((int)_incrBufferCount < _totalFrameCount) {
-                    [buffer removeObjectForKey:@(nextIndex)];
-                }
-                [self willChangeValueForKey:@"currentAnimatedImageIndex"];
-                _curIndex = nextIndex;
-                [self didChangeValueForKey:@"currentAnimatedImageIndex"];
-                _curFrame = nextBufferedImage == (id)[NSNull null] ? nil : nextBufferedImage;
-                super.image = _curFrame.image == nil ? [UIImage new] :_curFrame.image ;
-                nextIndex = (_curIndex + 1) % _totalFrameCount;
-                _bufferMiss = NO;
-                if (buffer.count == _totalFrameCount) {
-                    bufferIsFull = YES;
-                }
-            } else {
-                _bufferMiss = YES;
-            }
+        if ((int)_incrBufferCount < _totalFrameCount) {
+            [buffer removeObjectForKey:@(nextIndex)];
+        }
+        [self willChangeValueForKey:@"currentAnimatedImageIndex"];
+        _curIndex = nextIndex;
+        [self didChangeValueForKey:@"currentAnimatedImageIndex"];
+        _curFrame = nextBufferedImage == (id)[NSNull null] ? nil : nextBufferedImage;
+        super.image = _curFrame.image == nil ? [UIImage new] :_curFrame.image ;
+        nextIndex = (_curIndex + 1) % _totalFrameCount;
+        _bufferMiss = NO;
+        if (buffer.count == _totalFrameCount) {
+            bufferIsFull = YES;
+        }
+    } else {
+        _bufferMiss = YES;
+    }
             )//LOCK
-    
     
     if (!bufferIsFull && _requestQueue.operationCount == 0) {
         //异步串行队列去执行下一帧的解码任务
@@ -251,14 +245,13 @@ dispatch_semaphore_signal(self->_lock);
         SL_LOCK(
                 NSArray * keys = self->_buffer.allKeys;
                 for (NSNumber * key in keys) {
-                    if (![key isEqualToNumber:next]) { // keep the next frame for smoothly animation
-                        [self->_buffer removeObjectForKey:key];
-                    }
-                }
+            if (![key isEqualToNumber:next]) { // keep the next frame for smoothly animation
+                [self->_buffer removeObjectForKey:key];
+            }
+        }
                 )//LOCK
     }];
 }
-
 //进入后台，缓冲池里只保留下一帧
 - (void)didEnterBackground:(NSNotification *)notification{
     [_requestQueue cancelAllOperations];
@@ -266,15 +259,14 @@ dispatch_semaphore_signal(self->_lock);
     SL_LOCK(
             NSArray * keys = _buffer.allKeys;
             for (NSNumber * key in keys) {
-                if (![key isEqualToNumber:next]) { // keep the next frame for smoothly animation
-                    [_buffer removeObjectForKey:key];
-                }
-            }
+        if (![key isEqualToNumber:next]) { // keep the next frame for smoothly animation
+            [_buffer removeObjectForKey:key];
+        }
+    }
             )//LOCK
 }
 
 #pragma mark - Help Methods
-
 // 根据当前内存大小动态计算适合的缓存帧数
 - (void)calcMaxBufferCount {
     int64_t bytes = (int64_t)[_curAnimatedImage imageFrameBytes];
@@ -288,14 +280,12 @@ dispatch_semaphore_signal(self->_lock);
     maxBufferCount = SL_CLAMP(maxBufferCount, 1, 100);
     _maxBufferCount = maxBufferCount;
 }
-
 // 总共的内存大小
 - (int64_t)memoryTotal {
     int64_t mem = [[NSProcessInfo processInfo] physicalMemory];
     if (mem < -1) mem = -1;
     return mem;
 }
-
 // 空闲的内存大小
 - (int64_t)memoryFree {
     mach_port_t host_port = mach_host_self();
@@ -312,7 +302,17 @@ dispatch_semaphore_signal(self->_lock);
 }
 
 #pragma mark -  Setter And Getter
-
+- (void)setImage:(SLImage *)image{
+    [self resetAnimated];
+    _curAnimatedImage = (SLImage *)image;
+    _totalFrameCount = _curAnimatedImage.frameCount;
+    super.image = [_curAnimatedImage imageAtIndex:_curIndex];
+    [self calcMaxBufferCount];
+    [self didMoved];
+}
+- (SLImage *)animatedImage {
+    return _curAnimatedImage;
+}
 - (void)setCurrentImageIndex:(NSUInteger)currentImageIndex{
     if (!_curAnimatedImage) return;
     if (currentImageIndex >= _curAnimatedImage.frameCount) return;
@@ -334,9 +334,11 @@ dispatch_semaphore_signal(self->_lock);
         });
     });
 }
-
 - (NSUInteger)currentImageIndex{
     return _curIndex;
+}
+- (SLImageType)imageType {
+    return _curAnimatedImage.imageType;
 }
 
 #pragma mark - Overrice NSObject(NSKeyValueObservingCustomization)
@@ -349,16 +351,6 @@ dispatch_semaphore_signal(self->_lock);
 }
 
 #pragma mark - 重写系统方法
-
-- (void)setImage:(SLImage *)image{
-    [self resetAnimated];
-    _curAnimatedImage = (SLImage *)image;
-    _totalFrameCount = _curAnimatedImage.frameCount;
-    super.image = [_curAnimatedImage imageAtIndex:_curIndex];
-    [self calcMaxBufferCount];
-    [self didMoved];
-}
-
 /**
  开始动画
  */
@@ -371,7 +363,6 @@ dispatch_semaphore_signal(self->_lock);
         _currentIsPlaying = NO;
     }
 }
-
 /**
  关闭动画
  */
@@ -381,24 +372,20 @@ dispatch_semaphore_signal(self->_lock);
     _displayLink.paused = YES;
     _currentIsPlaying = NO;
 }
-
 - (void)dealloc {
     [self stopAnimating];
     [_displayLink invalidate];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
 }
-
 - (void)didMoveToWindow {
     [super didMoveToWindow];
     [self didMoved];
 }
-
 - (void)didMoveToSuperview {
     [super didMoveToSuperview];
     [self didMoved];
 }
-
 - (void)didMoved {
     if (self.autoPlayAnimatedImage) {
         if(self.superview && self.window) {

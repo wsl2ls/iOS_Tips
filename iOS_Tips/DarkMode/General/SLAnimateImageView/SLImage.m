@@ -142,7 +142,6 @@
     if (imageFrame) return imageFrame == (id)[NSNull null] ? nil : imageFrame;
     return [_imageDecoder imageFrameAtIndex:index];
 }
-
 - (UIImage *)imageAtIndex:(NSUInteger)index {
     if (index >= _imageDecoder.frameCount) return nil;
     dispatch_semaphore_wait(_preloadedLock, DISPATCH_TIME_FOREVER);
@@ -151,7 +150,6 @@
     if (imageFrame.image) return imageFrame.image == (id)[NSNull null] ? nil : imageFrame.image;
     return [_imageDecoder imageAtIndex:index];
 }
-
 /**
  某一帧持续时长
  */
@@ -163,19 +161,21 @@
     if (imageFrame.duration) return imageFrame.duration == 0 ? 0 : imageFrame.duration;
     return [_imageDecoder imageDurationAtIndex:index];
 }
-
 /**
  每一帧的字节
  */
 - (NSUInteger)imageFrameBytes{
     return _bytesPerFrame;
 }
-
 /**
  循环次数
  */
 - (NSInteger)loopCount{
     return _imageDecoder.loopCount;
+}
+/// 循环一次的时长
+- (NSTimeInterval)totalTime {
+    return _imageDecoder.totalTime;
 }
 
 @end

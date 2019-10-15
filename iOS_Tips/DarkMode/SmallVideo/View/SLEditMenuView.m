@@ -13,12 +13,24 @@
 /// 涂鸦子菜单 画笔颜色选择
 @interface SLSubmenuGraffitiView : UIView
 @property (nonatomic, assign) int currentIndex; // 当前画笔颜色索引
+@property (nonatomic, strong) UIColor *currentColor; // 当前画笔颜色
+@property (nonatomic, copy) void(^selectedLineColor)(UIColor *lineColor); //选中颜色的回调
+@property (nonatomic, copy) void(^goBack)(void); //返回上一步
 @end
 @implementation  SLSubmenuGraffitiView
+- (instancetype)initWithFrame:(CGRect)frame {
+    self = [super initWithFrame:frame];
+    if (self) {
+        _currentIndex = 0;
+        _currentColor = [UIColor whiteColor];
+    }
+    return self;
+}
 - (instancetype)init {
     self = [super init];
     if (self) {
         _currentIndex = 0;
+        _currentColor = [UIColor whiteColor];
     }
     return self;
 }
@@ -49,7 +61,12 @@
             colorBtn.layer.borderWidth = 3;
             if (i != _currentIndex) {
                 colorBtn.transform = CGAffineTransformScale(CGAffineTransformIdentity, 0.8f, 0.8f);
+                colorBtn.layer.borderWidth = 3;
+            }else {
+                colorBtn.transform = CGAffineTransformScale(CGAffineTransformIdentity, 1.0f, 1.0f);
                 colorBtn.layer.borderWidth = 4;
+                _currentColor = colors[i];
+                self.selectedLineColor(colors[i]);
             }
         }
     }
@@ -65,11 +82,13 @@
     previousBtn.layer.borderWidth = 3;
     colorBtn.transform = CGAffineTransformScale(CGAffineTransformIdentity, 1.0, 1.0);
     colorBtn.layer.borderWidth = 4;
-    _currentIndex = (int)colorBtn.tag- 10 ;
+    _currentIndex = (int)colorBtn.tag- 10;
+    _currentColor = colorBtn.backgroundColor;
+    self.selectedLineColor(colorBtn.backgroundColor);
 }
 //返回上一步
 - (void)backToPreviousStep:(id)sender {
-    
+    self.goBack();
 }
 @end
 
@@ -88,7 +107,6 @@
 }
 - (void)setupUI {
     _imageView = [[SLImageView alloc] init];
-    _imageView.autoPlayAnimatedImage = YES;
     _imageView.contentMode = UIViewContentModeScaleAspectFit;
     [self.contentView addSubview:_imageView];
 }
@@ -101,6 +119,7 @@
 @interface SLSubmenuStickingView : UIView <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 @property (nonatomic, strong) NSMutableArray *dataSource;
 @property (nonatomic, strong) UICollectionView *collectionView;
+@property (nonatomic, copy) void(^selectedImage)(SLImage *image); //选中的图片 贴画
 @end
 @implementation SLSubmenuStickingView
 - (instancetype)init {
@@ -152,6 +171,7 @@
 }
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     [collectionView deselectItemAtIndexPath:indexPath animated:NO];
+    self.selectedImage([SLImage imageNamed:self.dataSource[indexPath.row]]);
 }
 #pragma mark -  UICollectionViewDelegateFlowLayout
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -219,7 +239,14 @@
     if (!_submenuGraffiti) {
         _submenuGraffiti = [[SLSubmenuGraffitiView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, 60)];
         _submenuGraffiti.hidden = YES;
-        [self addSubview:_submenuGraffiti];
+        __weak typeof(self) weakSelf = self;
+        _submenuGraffiti.selectedLineColor = ^(UIColor *lineColor) {
+            weakSelf.selectEditMenu(SLEditMenuTypeGraffiti, @{@"lineColor":lineColor});
+        };
+        _submenuGraffiti.goBack = ^{
+            weakSelf.selectEditMenu(SLEditMenuTypeGraffiti, @{@"goBack":@(YES)});
+        };
+        //        [self addSubview:_submenuGraffiti];
     }
     return _submenuGraffiti;
 }
@@ -227,6 +254,10 @@
     if (!_submenuSticking) {
         _submenuSticking = [[SLSubmenuStickingView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, 60)];
         _submenuSticking.hidden = YES;
+        __weak typeof(self) weakSelf = self;
+        _submenuSticking.selectedImage = ^(SLImage *image) {
+            weakSelf.selectEditMenu(SLEditMenuTypeSticking, @{@"image":image});
+        };
     }
     return _submenuSticking;
 }
@@ -243,18 +274,22 @@
     switch (editMenuType) {
         case SLEditMenuTypeGraffiti:
             [self hiddenView:self.submenuGraffiti hidden:!self.submenuGraffiti.hidden];
+            self.selectEditMenu(editMenuType, @{@"hidden":@(self.submenuGraffiti.hidden), @"lineColor": self.submenuGraffiti.currentColor});
             [self hiddenView:self.submenuSticking hidden:YES];
             break;
         case SLEditMenuTypeSticking:
             [self hiddenView:self.submenuSticking hidden:!self.submenuSticking.hidden];
+            self.selectEditMenu(editMenuType, nil);
             [self hiddenView:self.submenuGraffiti hidden:YES];
             break;
         case SLEditMenuTypeText:
             [self hiddenView:self.submenuSticking hidden:YES];
+            self.selectEditMenu(editMenuType, nil);
             [self hiddenView:self.submenuGraffiti hidden:YES];
             break;
         case SLEditMenuTypeCutting:
             [self hiddenView:self.submenuSticking hidden:YES];
+            self.selectEditMenu(editMenuType, nil);
             [self hiddenView:self.submenuGraffiti hidden:YES];
             break;
         default:
@@ -265,7 +300,7 @@
     if (hidden) {
         view.hidden = YES;
         [view removeFromSuperview];
-        view = nil;
+        //        view = nil;
     }else {
         view.hidden = NO;
         [self addSubview:view];

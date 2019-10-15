@@ -14,8 +14,14 @@
 #import "SLEditViewController.h"
 #import "SLAvPlayer.h"
 #import "SLAvCaptureTool.h"
+#import "SLDrawView.h"
+#import "SLAvEditExport.h"
+#import "SLImage.h"
+#import "SLImageView.h"
 
 @interface SLEditViewController ()
+
+@property (nonatomic, strong) UIImageView *preview; // 预览视图 展示待编辑的图片或视频
 
 @property (nonatomic, strong) SLBlurView *editBtn; //编辑
 @property (nonatomic, strong) SLBlurView *againShotBtn;  // 再拍一次
@@ -24,8 +30,10 @@
 @property (nonatomic, strong) UIButton *cancleEditBtn; //取消编辑
 @property (nonatomic, strong) UIButton *doneEditBtn; //完成编辑
 @property (nonatomic, strong) SLEditMenuView *editMenuView; //编辑菜单栏
+@property (nonatomic, strong) UIButton *trashTips; //垃圾桶提示 拖拽删除 贴图或文字
 
-@property (nonatomic, strong) UIImageView *preview; // 预览视图 展示图片或视频
+@property (nonatomic, strong) SLDrawView *drawView; // 涂鸦视图
+@property (nonatomic, strong) NSMutableArray <SLImageView *> *stickerArray; // 所有的贴图
 
 @end
 
@@ -44,7 +52,7 @@
 }
 #pragma mark - UI
 - (void)setupUI {
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = [UIColor blackColor];
     [self.view addSubview:self.preview];
     if (self.image) {
         self.preview.image = self.image;
@@ -135,23 +143,76 @@
     if (!_editMenuView) {
         _editMenuView = [[SLEditMenuView alloc] initWithFrame:CGRectMake(0, self.view.sl_h - 80 -  60, self.view.sl_w, 80 + 60)];
         _editMenuView.hidden = YES;
+        __weak typeof(self) weakSelf = self;
+        _editMenuView.selectEditMenu = ^(SLEditMenuType editMenuType, NSDictionary * _Nullable setting) {
+            if (editMenuType == SLEditMenuTypeGraffiti) {
+                weakSelf.drawView.userInteractionEnabled = ![setting[@"hidden"] boolValue];
+                [weakSelf.preview insertSubview:weakSelf.drawView atIndex:1];
+                if (setting[@"lineColor"]) {
+                    weakSelf.drawView.lineColor = setting[@"lineColor"];
+                }
+                if (setting[@"goBack"]) {
+                    [weakSelf.drawView goBack];
+                }
+            }else {
+                weakSelf.drawView.userInteractionEnabled = NO;
+            }
+            if (editMenuType == SLEditMenuTypeSticking) {
+                SLImage *image = setting[@"image"];
+                if (image) {
+                    SLImageView *imageView = [[SLImageView alloc] initWithFrame:CGRectMake(50, 100, image.size.width/[UIScreen mainScreen].scale, image.size.height/[UIScreen mainScreen].scale)];
+                    imageView.userInteractionEnabled = YES;
+                    imageView.center = CGPointMake(SL_kScreenWidth/2.0, SL_kScreenHeight/2.0);
+                    imageView.image = image;
+                    [weakSelf.stickerArray addObject:imageView];
+                    [weakSelf.preview addSubview:imageView];
+                    //拖拽手势
+                    UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:weakSelf action:@selector(dragPicture:)];
+                    pan.minimumNumberOfTouches = 1;
+                    [imageView addGestureRecognizer:pan];
+                }
+            }
+        };
         [self.view addSubview:_editMenuView];
     }
     return _editMenuView;
 }
-
-#pragma mark - HelpMethods
+- (UIButton *)trashTips {
+    if (!_trashTips) {
+        _trashTips = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 100, 20)];
+        _trashTips.center = CGPointMake(SL_kScreenWidth/2.0, SL_kScreenHeight - 60);
+        [_trashTips setTitle:@"拖动到此处删除" forState:UIControlStateNormal];
+        [_trashTips setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        _trashTips.titleLabel.font = [UIFont systemFontOfSize:14];
+    }
+    return _trashTips;
+}
+- (SLDrawView *)drawView {
+    if (!_drawView) {
+        _drawView = [[SLDrawView alloc] initWithFrame:CGRectMake(0, 0, SL_kScreenWidth, SL_kScreenHeight)];
+        _drawView.backgroundColor = [UIColor clearColor];
+        __weak typeof(self) weakSelf = self;
+        _drawView.drawBegan = ^{
+            [weakSelf hiddenEditMenus:YES];
+        };
+        _drawView.drawEnded = ^{
+            [weakSelf hiddenEditMenus:NO];
+        };
+    }
+    return _drawView;
+}
+- (NSMutableArray *)stickerArray {
+    if (!_stickerArray) {
+        _stickerArray = [NSMutableArray array];
+    }
+    return _stickerArray;
+}
 
 #pragma mark - EventsHandle
 //编辑
 - (void)editBtnClicked:(id)sender {
-    self.cancleEditBtn.hidden = NO;
-    self.doneEditBtn.hidden = NO;
-    self.editMenuView.hidden = NO;
-    
-    self.againShotBtn.hidden = YES;
-    self.editBtn.hidden = YES;
-    self.saveAlbumBtn.hidden = YES;
+    [self hiddenEditMenus:NO];
+    [self hiddenPreviewButton:YES];
 }
 //再试一次 继续拍摄
 - (void)againShotBtnClicked:(id)sender {
@@ -189,17 +250,131 @@
         NSLog(@"保存图片成功");
     }
 }
+//取消编辑
 - (void)cancleEditBtnClicked:(id)sender {
-    self.cancleEditBtn.hidden = YES;
-    self.doneEditBtn.hidden = YES;
-    self.editMenuView.hidden = YES;
+    [self hiddenPreviewButton:NO];
+    [self hiddenEditMenus:YES];
     
-    self.againShotBtn.hidden = NO;
-    self.editBtn.hidden = NO;
-    self.saveAlbumBtn.hidden = NO;
+    [self.drawView removeFromSuperview];
+    for (UIView *view in self.stickerArray) {
+        [view removeFromSuperview];
+    }
 }
 - (void)doneEditBtnClicked:(id)sender {
-    [self cancleEditBtnClicked:nil];
+    [self hiddenPreviewButton:NO];
+    [self hiddenEditMenus:YES];
+    
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"The love of one's life" ofType:@"mp3"];
+    NSURL *bgsoundUrl = [NSURL fileURLWithPath:path];
+    SLAvEditExport *videoExportSession = [[SLAvEditExport alloc] initWithAsset:[AVAsset assetWithURL:self.videoPath]];
+    NSString *outputVideoFielPath = [NSTemporaryDirectory() stringByAppendingString:@"EditMyVideo.mp4"];
+    videoExportSession.outputURL = [NSURL fileURLWithPath:outputVideoFielPath];
+    videoExportSession.graffitiView = [self graffitiView];
+    videoExportSession.stickerLayers = [self stickerLayers];
+    videoExportSession.audioUrls = @[bgsoundUrl];
+    videoExportSession.isNativeAudio = YES;
+    [videoExportSession exportAsynchronouslyWithCompletionHandler:^(NSError * _Nonnull error) {
+        SLAvPlayer *avPlayer = [SLAvPlayer sharedAVPlayer];
+        avPlayer.url = videoExportSession.outputURL;
+        self.videoPath = videoExportSession.outputURL;
+        
+        [self.drawView removeFromSuperview];
+        for (UIView *view in self.stickerArray) {
+            [view removeFromSuperview];
+        }
+    } progress:^(float progress) {
+        
+    }];
+}
+// 拖拽贴图
+- (void)dragPicture:(UIPanGestureRecognizer *)pan {
+    // 返回的是相对于最原始的手指的偏移量
+    CGPoint transP = [pan translationInView:self.preview];
+    if (pan.state == UIGestureRecognizerStateBegan) {
+        [self hiddenEditMenus:YES];
+        [self.view addSubview:self.trashTips];
+    } else if (pan.state == UIGestureRecognizerStateChanged ) {
+        pan.view.center = CGPointMake(pan.view.center.x + transP.x, pan.view.center.y + transP.y);
+        [pan setTranslation:CGPointZero inView:self.preview];
+        //是否删除 确定两个rect是否相交
+        if (CGRectIntersectsRect(pan.view.frame, self.trashTips.frame)) {
+            [_trashTips setTitle:@"松手即可删除" forState:UIControlStateNormal];
+            [_trashTips setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+        }else {
+            [_trashTips setTitle:@"拖动到此处删除" forState:UIControlStateNormal];
+            [_trashTips setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        }
+    } else if (pan.state == UIGestureRecognizerStateFailed || pan.state == UIGestureRecognizerStateEnded) {
+        [self hiddenEditMenus:NO];
+        //删除拖拽的视图
+        if (CGRectIntersectsRect(pan.view.frame, self.trashTips.frame)) {
+            [pan.view  removeFromSuperview];
+        }
+        [self.trashTips removeFromSuperview];
+    }
 }
 
+#pragma mark - HelpMethods
+// 隐藏预览按钮
+- (void)hiddenPreviewButton:(BOOL)isHidden {
+    self.againShotBtn.hidden = isHidden;
+    self.editBtn.hidden = isHidden;
+    self.saveAlbumBtn.hidden = isHidden;
+}
+// 隐藏编辑时菜单按钮
+- (void)hiddenEditMenus:(BOOL)isHidden {
+    self.cancleEditBtn.hidden = isHidden;
+    self.doneEditBtn.hidden = isHidden;
+    self.editMenuView.hidden = isHidden;
+}
+// 涂鸦层
+- (UIView *)graffitiView {
+    UIView *graffitiView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SL_kScreenWidth, SL_kScreenHeight)];
+    //涂鸦
+    [graffitiView addSubview:self.drawView];
+    //    UILabel *text = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
+    //    text.text = @"王双龙";
+    //    text.backgroundColor = [UIColor blueColor];
+    //    [overlayView addSubview:text];
+    return graffitiView;
+}
+// 贴画层
+- (NSMutableArray *)stickerLayers {
+    NSMutableArray *stickerLayers = [NSMutableArray array];
+    for (SLImageView *imageView in self.stickerArray) {
+        CALayer *animatedLayer = [CALayer layer] ;
+        animatedLayer.frame = imageView.frame;
+        if (imageView.imageType == SLImageTypeGIF) {
+            CAKeyframeAnimation *gifLayerAnimation = [self animationForGifWithImage:imageView.animatedImage];
+            gifLayerAnimation.beginTime = AVCoreAnimationBeginTimeAtZero;
+            gifLayerAnimation.removedOnCompletion = NO;
+            [animatedLayer addAnimation:gifLayerAnimation forKey:@"gif"];
+        }else {
+            animatedLayer.contentsScale = [UIScreen mainScreen].scale;
+            animatedLayer.contents = (__bridge id _Nullable)(imageView.image.CGImage);
+        }
+        [stickerLayers addObject:animatedLayer];
+    }
+    return stickerLayers;
+}
+// Gif 关键帧动画
+- (CAKeyframeAnimation *)animationForGifWithImage:(SLImage *)image {
+    CAKeyframeAnimation *animation = [CAKeyframeAnimation animationWithKeyPath:@"contents"];
+    NSMutableArray * frames = [NSMutableArray new];
+    NSMutableArray *times = [NSMutableArray arrayWithCapacity:3];
+    CGFloat currentTime = 0;
+    CGFloat totalTime = image.totalTime;
+    NSInteger frameCount = image.frameCount;
+    for (int i = 0; i < frameCount; ++i) {
+        [times addObject:[NSNumber numberWithFloat:(currentTime / totalTime)]];
+        currentTime += [image imageDurationAtIndex:i];
+        [frames addObject:(__bridge id)[image imageAtIndex:i].CGImage];
+    }
+    animation.keyTimes = times;
+    animation.values = frames;
+    animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
+    animation.duration = totalTime;
+    animation.repeatCount = HUGE_VALF;
+    return animation;
+}
 @end

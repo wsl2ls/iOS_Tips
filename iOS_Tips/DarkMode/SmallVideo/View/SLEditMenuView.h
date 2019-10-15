@@ -24,6 +24,9 @@ typedef NS_ENUM(NSUInteger, SLEditMenuType) {
 /// 底部音视频编辑主菜单栏
 @interface SLEditMenuView : UIView
 
+/// 选择编辑的子菜单回调
+@property (nonatomic, copy) void(^selectEditMenu)(SLEditMenuType editMenuType,  NSDictionary * _Nullable setting);
+
 @end
 
 NS_ASSUME_NONNULL_END
