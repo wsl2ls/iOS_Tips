@@ -13,9 +13,7 @@
 @property (nonatomic, strong) AVPlayer *avPlayer;
 @property (nonatomic, strong) AVPlayerLayer *playerLayer;  //视频显示器
 @end
-
 @implementation SLAvPlayer
-
 + (instancetype)sharedAVPlayer {
     static SLAvPlayer *avPlayer = nil;
     static dispatch_once_t onceToken;
@@ -36,15 +34,19 @@
 
 #pragma mark - HelpMethods
 - (void)configure {
-    _isLoopPlay = YES;
-    //监听是否播放完毕
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(moviePlayDidEnd:) name:AVPlayerItemDidPlayToEndTimeNotification object:self.avPlayer.currentItem];
+    
+   
 }
 - (void)dealloc {
     [self stop];
 }
 
 #pragma mark - Setter
+- (void)setIsLoopPlay:(BOOL)isLoopPlay {
+    _isLoopPlay = isLoopPlay;
+     //监听是否播放完毕
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(moviePlayDidEnd:) name:AVPlayerItemDidPlayToEndTimeNotification object:self.avPlayer.currentItem];
+}
 - (void)setUrl:(nonnull NSURL *)url {
     _url = url;
     if (_url == nil) {
@@ -90,6 +92,8 @@
 - (void)stop {
     [self.avPlayer pause];
     self.avPlayer = nil;
+    [_playerLayer removeFromSuperlayer];
+    _playerLayer = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 //播放完成

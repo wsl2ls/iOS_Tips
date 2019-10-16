@@ -177,8 +177,8 @@
         NSInteger bitsPerSecond = numPixels * bitsPerPixel;
         // 码率和帧率设置
         NSDictionary *compressionProperties = @{ AVVideoAverageBitRateKey : @(bitsPerSecond),
-                                                 AVVideoExpectedSourceFrameRateKey : @(15),
-                                                 AVVideoMaxKeyFrameIntervalKey : @(15),
+                                                 AVVideoExpectedSourceFrameRateKey : @(30),
+                                                 AVVideoMaxKeyFrameIntervalKey : @(30),
                                                  AVVideoProfileLevelKey : AVVideoProfileLevelH264BaselineAutoLevel };
         CGFloat width = SL_kScreenHeight;
         CGFloat height = SL_kScreenWidth;

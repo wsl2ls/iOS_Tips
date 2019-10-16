@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SLAvPlayer : NSObject
 /// 播放源
 @property (nonatomic, strong) NSURL *url;
-/// 是否循环播放 默认YES
+/// 是否循环播放 默认NO
 @property (nonatomic, assign) BOOL isLoopPlay;
 /// 视频展示区域  显示器
 @property (nonatomic, strong, nullable) UIView *monitor;
@@ -25,7 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)play;
 ///暂停
 - (void)pause;
-///结束播放
+///结束播放 销毁播放器
 - (void)stop;
 @end
 
