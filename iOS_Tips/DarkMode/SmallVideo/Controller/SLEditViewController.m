@@ -283,7 +283,7 @@
             [view removeFromSuperview];
         }
     } progress:^(float progress) {
-        
+        NSLog(@"%f",progress);
     }];
 }
 // 拖拽贴图
@@ -296,7 +296,7 @@
     } else if (pan.state == UIGestureRecognizerStateChanged ) {
         pan.view.center = CGPointMake(pan.view.center.x + transP.x, pan.view.center.y + transP.y);
         [pan setTranslation:CGPointZero inView:self.preview];
-        //是否删除 
+        //是否删除
         if (self.trashTips.center.y < pan.view.center.y) {
             [self.trashTips setTitle:@"松手即可删除" forState:UIControlStateNormal];
             [self.trashTips setTitleColor:[UIColor redColor] forState:UIControlStateNormal];

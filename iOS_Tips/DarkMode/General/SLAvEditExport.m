@@ -9,13 +9,15 @@
 #import "SLAvEditExport.h"
 
 @interface SLAvEditExport ()
+{
+    dispatch_source_t _gcdTimer; //计时器
+}
 @property (nonatomic, strong) AVAsset *asset;  //资源文件
 @property (nonatomic, strong) AVAssetExportSession *exportSession;  //资源导出会话
 @property (nonatomic, strong) AVMutableComposition *composition;  //可变工程文件 合并音视频素材
 @property (nonatomic, strong) AVMutableVideoComposition *videoComposition;  //视频成分
 @property (nonatomic, strong) AVMutableAudioMix *audioMix;   // 音频混合
 @end
-
 @implementation SLAvEditExport
 
 - (id)initWithAsset:(AVAsset *)asset {
@@ -30,11 +32,15 @@
 }
 #pragma mark - Event Handle
 // 导出编辑的视频
-- (void)exportAsynchronouslyWithCompletionHandler:(void (^)(NSError *error))handler progress:(void (^)(float progress))progress {
+- (void)exportAsynchronouslyWithCompletionHandler:(void (^)(NSError *error))handler progress:(void (^)(float progress))exportProgress {
     [_exportSession cancelExport];
     _exportSession = nil;
     _composition = nil;
     _videoComposition = nil;
+    if (_gcdTimer) {
+        dispatch_source_cancel(_gcdTimer);
+        _gcdTimer = nil;
+    }
     
     NSError *error = nil;
     NSFileManager *fm = [NSFileManager new];
@@ -73,6 +79,31 @@
             }
         });
     }];
+    
+    [self updateExportProgress:exportProgress];
+}
+// 获取导出视频的进度
+- (void)updateExportProgress:(void (^)(float progress))exportProgress {
+    _gcdTimer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_global_queue(0, 0));
+    //定时器延迟时间
+    NSTimeInterval delayTime = 0.f;
+    //定时器间隔时间
+    NSTimeInterval timeInterval = 0.2f;
+    //设置开始时间
+    dispatch_time_t startDelayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayTime * NSEC_PER_SEC));
+    dispatch_source_set_timer(_gcdTimer, startDelayTime, timeInterval * NSEC_PER_SEC, 0.1 * NSEC_PER_SEC);
+    //    __weak typeof(self) weakSelf = self;
+    dispatch_source_set_event_handler(_gcdTimer, ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            exportProgress(self.exportSession.progress);
+        });
+        if (self.exportSession.status == AVAssetExportSessionStatusCompleted) {
+            //取消计时器
+            dispatch_source_cancel(self->_gcdTimer);
+        }
+    });
+    // 启动任务，GCD计时器创建后需要手动启动
+    dispatch_resume(_gcdTimer);
 }
 
 #pragma mark - Getter
@@ -150,6 +181,7 @@
         _videoComposition.renderSize = renderSize;
         
         /** iOS9之前的处理方法，之后使用CIFilter ，待学习*/
+        //方向
         if (orientation != UIImageOrientationUp) {
             AVAssetTrack *videoTrack = [self.composition tracksWithMediaType:AVMediaTypeVideo][0];
             AVMutableVideoCompositionInstruction *roateInstruction = [AVMutableVideoCompositionInstruction videoCompositionInstruction];

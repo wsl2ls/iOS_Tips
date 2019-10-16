@@ -34,7 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (id)initWithAsset:(AVAsset *)asset;
 
 /// 导出编辑后的视频
-- (void)exportAsynchronouslyWithCompletionHandler:(void (^)(NSError *error))handler progress:(void (^)(float progress))progress ;
+- (void)exportAsynchronouslyWithCompletionHandler:(void (^)(NSError *error))handler progress:(void (^)(float progress))exportProgress;
 
 @end
 
