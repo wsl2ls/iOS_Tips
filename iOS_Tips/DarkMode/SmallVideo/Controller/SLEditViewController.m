@@ -296,18 +296,18 @@
     } else if (pan.state == UIGestureRecognizerStateChanged ) {
         pan.view.center = CGPointMake(pan.view.center.x + transP.x, pan.view.center.y + transP.y);
         [pan setTranslation:CGPointZero inView:self.preview];
-        //是否删除 确定两个rect是否相交
-        if (CGRectIntersectsRect(pan.view.frame, self.trashTips.frame)) {
-            [_trashTips setTitle:@"松手即可删除" forState:UIControlStateNormal];
-            [_trashTips setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+        //是否删除 
+        if (self.trashTips.center.y < pan.view.center.y) {
+            [self.trashTips setTitle:@"松手即可删除" forState:UIControlStateNormal];
+            [self.trashTips setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
         }else {
-            [_trashTips setTitle:@"拖动到此处删除" forState:UIControlStateNormal];
-            [_trashTips setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            [self.trashTips setTitle:@"拖动到此处删除" forState:UIControlStateNormal];
+            [self.trashTips setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         }
     } else if (pan.state == UIGestureRecognizerStateFailed || pan.state == UIGestureRecognizerStateEnded) {
         [self hiddenEditMenus:NO];
         //删除拖拽的视图
-        if (CGRectIntersectsRect(pan.view.frame, self.trashTips.frame)) {
+        if (self.trashTips.center.y < pan.view.center.y) {
             [pan.view  removeFromSuperview];
         }
         [self.trashTips removeFromSuperview];

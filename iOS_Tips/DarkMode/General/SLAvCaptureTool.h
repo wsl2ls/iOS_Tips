@@ -65,13 +65,13 @@ API_AVAILABLE(ios(10.0))
 - (void)switchsCamera:(AVCaptureDevicePosition)devicePosition;
 /// 输出图片
 - (void)outputPhoto;
-/// 开始录制音视频
+/// 开始录制音视频  默认输出MP4
 /// @param path 录制的音视频输出路径
 /// @param avRecordType 录制音视频类型
 - (void)startRecordVideoToOutputFileAtPath:(NSString *)path recordType:(SLAvRecordType)avRecordType;
 /// 结束录制视频
 - (void)stopRecordVideo;
-/// 开始录制音频
+/// 开始录制音频 默认输出MP3
 /// @param path 录制的音频输出路径
 - (void)startRecordAudioToOutputFileAtPath:(NSString *)path;
 /// 结束录制音频
