@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7830A59E2358520200BC79BA /* SLEditTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7830A59D2358520200BC79BA /* SLEditTextView.m */; };
+		7830A5A42358904600BC79BA /* UIView+SLImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 7830A5A32358904600BC79BA /* UIView+SLImage.m */; };
 		784B72062334685E006AEE47 /* SLAvPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 784B72052334685E006AEE47 /* SLAvPlayer.m */; };
 		784B720923348241006AEE47 /* SLAvCaptureTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 784B720823348241006AEE47 /* SLAvCaptureTool.m */; };
 		7851CB362331CC87002295B5 /* SLDarkModeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7851CB332331CC87002295B5 /* SLDarkModeViewController.m */; };
@@ -54,6 +56,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		7830A59C2358520200BC79BA /* SLEditTextView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLEditTextView.h; sourceTree = "<group>"; };
+		7830A59D2358520200BC79BA /* SLEditTextView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLEditTextView.m; sourceTree = "<group>"; };
+		7830A5A22358904600BC79BA /* UIView+SLImage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+SLImage.h"; sourceTree = "<group>"; };
+		7830A5A32358904600BC79BA /* UIView+SLImage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+SLImage.m"; sourceTree = "<group>"; };
 		784B72042334685E006AEE47 /* SLAvPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLAvPlayer.h; sourceTree = "<group>"; };
 		784B72052334685E006AEE47 /* SLAvPlayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLAvPlayer.m; sourceTree = "<group>"; };
 		784B720723348241006AEE47 /* SLAvCaptureTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLAvCaptureTool.h; sourceTree = "<group>"; };
@@ -156,6 +162,8 @@
 			children = (
 				7851CB42233222E2002295B5 /* UIView+SLFrame.h */,
 				7851CB41233222E2002295B5 /* UIView+SLFrame.m */,
+				7830A5A22358904600BC79BA /* UIView+SLImage.h */,
+				7830A5A32358904600BC79BA /* UIView+SLImage.m */,
 			);
 			path = SLCategory;
 			sourceTree = "<group>";
@@ -244,6 +252,8 @@
 				78E179332351A40D0007E4BB /* SLEditMenuView.m */,
 				78FA0F9B235407E6003E456B /* SLDrawView.h */,
 				78FA0F9C235407E6003E456B /* SLDrawView.m */,
+				7830A59C2358520200BC79BA /* SLEditTextView.h */,
+				7830A59D2358520200BC79BA /* SLEditTextView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -426,6 +436,7 @@
 				78E179402351D0950007E4BB /* SLEditViewController.m in Sources */,
 				78FA0F9D235407E6003E456B /* SLDrawView.m in Sources */,
 				7851CB43233222E2002295B5 /* UIView+SLFrame.m in Sources */,
+				7830A5A42358904600BC79BA /* UIView+SLImage.m in Sources */,
 				78E1791723517F700007E4BB /* SLImageView.m in Sources */,
 				78E1791823517F700007E4BB /* SLImage.m in Sources */,
 				78E179362351A40D0007E4BB /* SLEditMenuView.m in Sources */,
@@ -434,6 +445,7 @@
 				78E179372351A40D0007E4BB /* SLShotFocusView.m in Sources */,
 				78B10485232F57C30051579F /* SceneDelegate.m in Sources */,
 				78E1791923517F700007E4BB /* SLImageDecoder.m in Sources */,
+				7830A59E2358520200BC79BA /* SLEditTextView.m in Sources */,
 				78E179312351A4020007E4BB /* SLShotViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -61,7 +61,7 @@
             colorBtn.layer.borderWidth = 3;
             if (i != _currentIndex) {
                 colorBtn.transform = CGAffineTransformScale(CGAffineTransformIdentity, 0.8f, 0.8f);
-                colorBtn.layer.borderWidth = 3;
+                colorBtn.layer.borderWidth = 2;
             }else {
                 colorBtn.transform = CGAffineTransformScale(CGAffineTransformIdentity, 1.0f, 1.0f);
                 colorBtn.layer.borderWidth = 4;
@@ -79,7 +79,7 @@
 - (void)colorBtnClicked:(UIButton *)colorBtn {
     UIButton *previousBtn = (UIButton *)[self viewWithTag:(10 + _currentIndex)];
     previousBtn.transform = CGAffineTransformScale(CGAffineTransformIdentity, 0.8f, 0.8f);
-    previousBtn.layer.borderWidth = 3;
+    previousBtn.layer.borderWidth = 2;
     colorBtn.transform = CGAffineTransformScale(CGAffineTransformIdentity, 1.0, 1.0);
     colorBtn.layer.borderWidth = 4;
     _currentIndex = (int)colorBtn.tag- 10;
@@ -219,7 +219,7 @@
     }
     _menuTypes = @[@(SLEditMenuTypeGraffiti), @(SLEditMenuTypeSticking), @(SLEditMenuTypeText), @(SLEditMenuTypeCutting)];
     _imageNames = @[@"EditMenuGraffiti", @"EditMenuSticker", @"EditMenuText", @"EditMenuCut"];
-    _imageNamesSelected = @[@"EditMenuGraffitiSelected", @"EditMenuStickerSelected", @"EditMenuTextSelected", @"EditMenuCutSelected"];
+    _imageNamesSelected = @[@"EditMenuGraffitiSelected", @"EditMenuStickerSelected", @"EditMenuText", @"EditMenuCutSelected"];
     int count = (int)_menuTypes.count;
     CGSize itemSize = CGSizeMake(20, 20);
     CGFloat space = (self.frame.size.width - count * itemSize.width)/count;

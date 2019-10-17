@@ -9,17 +9,19 @@
 #import "SLEditViewController.h"
 #import <Photos/Photos.h>
 #import "UIView+SLFrame.h"
+#import "UIView+SLImage.h"
 #import "SLBlurView.h"
 #import "SLEditMenuView.h"
 #import "SLEditViewController.h"
 #import "SLAvPlayer.h"
 #import "SLAvCaptureTool.h"
-#import "SLDrawView.h"
 #import "SLAvEditExport.h"
 #import "SLImage.h"
 #import "SLImageView.h"
+#import "SLDrawView.h"
+#import "SLEditTextView.h"
 
-@interface SLEditViewController ()<UIGestureRecognizerDelegate>
+@interface SLEditViewController () <UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong) UIImageView *preview; // 预览视图 展示待编辑的图片或视频
 
@@ -33,8 +35,7 @@
 @property (nonatomic, strong) UIButton *trashTips; //垃圾桶提示 拖拽删除 贴图或文字
 
 @property (nonatomic, strong) SLDrawView *drawView; // 涂鸦视图
-@property (nonatomic, strong) NSMutableArray <SLImageView *> *stickerArray; // 所有的贴图
-@property (nonatomic, strong) NSMutableArray <UITextView *> *textArray; // 所有的文本视图
+@property (nonatomic, strong) NSMutableArray *stickerArray; // 所有的贴图 和 文本截图
 
 @end
 
@@ -57,7 +58,7 @@
     return NO;
 }
 - (void)dealloc {
-    NSLog(@"释放了");
+    NSLog(@"编辑视图释放了");
 }
 #pragma mark - UI
 - (void)setupUI {
@@ -176,22 +177,25 @@
                     imageView.image = image;
                     [weakSelf.stickerArray addObject:imageView];
                     [weakSelf.preview addSubview:imageView];
-                    //拖拽手势
-                    UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:weakSelf action:@selector(dragPicture:)];
-                    pan.minimumNumberOfTouches = 1;
-                    [imageView addGestureRecognizer:pan];
-                    //缩放手势
-                    UIPinchGestureRecognizer *pinchGestureRecognizer = [[UIPinchGestureRecognizer alloc] initWithTarget:weakSelf
-                                                                                                                 action:@selector(pinchPicture:)];
-                    pinchGestureRecognizer.delegate = weakSelf;
-                    [imageView addGestureRecognizer:pinchGestureRecognizer];
-                    //旋转手势
-                    UIRotationGestureRecognizer *rotateRecognizer = [[UIRotationGestureRecognizer alloc] initWithTarget:weakSelf
-                                                                                                                 action:@selector(rotatePicture:)];
-                    [imageView addGestureRecognizer:rotateRecognizer];
-                    rotateRecognizer.delegate = weakSelf;
-                    
+                    [weakSelf addRotateAndPinchGestureRecognizer:imageView];
                 }
+            }
+            if (editMenuType == SLEditMenuTypeText) {
+                SLEditTextView *editTextView = [[SLEditTextView alloc] initWithFrame:CGRectMake(0, 0, SL_kScreenWidth, SL_kScreenHeight)];
+                [weakSelf.view addSubview:editTextView];
+                editTextView.editTextCompleted = ^(UITextView * _Nonnull textView) {
+                    if (textView.text.length == 0) {
+                        return;
+                    }
+                    SLImage *image = [SLImage imageWithData:UIImagePNGRepresentation([textView viewToImage:textView.bounds])];
+                    SLImageView *imageView = [[SLImageView alloc] initWithFrame:CGRectMake(0, 0, image.size.width, image.size.height)];
+                    imageView.userInteractionEnabled = YES;
+                    imageView.center = CGPointMake(SL_kScreenWidth/2.0, SL_kScreenHeight/2.0);
+                    imageView.image = image;
+                    [weakSelf.stickerArray addObject:imageView];
+                    [weakSelf.preview addSubview:imageView];
+                    [weakSelf addRotateAndPinchGestureRecognizer:imageView];
+                };
             }
         };
         [self.view addSubview:_editMenuView];
@@ -227,12 +231,6 @@
         _stickerArray = [NSMutableArray array];
     }
     return _stickerArray;
-}
-- (NSMutableArray *)textArray {
-    if (!_textArray) {
-        _textArray = [NSMutableArray array];
-    }
-    return _textArray;
 }
 
 #pragma mark - EventsHandle
@@ -314,6 +312,7 @@
     } progress:^(float progress) {
         NSLog(@"%f",progress);
     }];
+    
 }
 // 拖拽贴图
 - (void)dragPicture:(UIPanGestureRecognizer *)pan {
@@ -354,15 +353,31 @@
     rotate.view.transform = CGAffineTransformRotate(rotate.view.transform, rotate.rotation);
     // 将旋转的弧度清零(注意不是将图片旋转的弧度清零, 而是将当前手指旋转的弧度清零)
     rotate.rotation = 0;
-    NSLog(@"%f %f ",atanf(rotate.view.transform.b/rotate.view.transform.a), rotate.view.transform.a);
 }
+#pragma mark - UIGestureRecognizerDelegate
 // 该方法返回的BOOL值决定了view是否能够同时响应多个手势
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
     //     NSLog(@"%@ - %@", gestureRecognizer.class, otherGestureRecognizer.class);
     return YES;
 }
-
 #pragma mark - HelpMethods
+// 添加拖拽、缩放、旋转手势
+- (void)addRotateAndPinchGestureRecognizer:(UIView *)view {
+    //拖拽手势
+    UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(dragPicture:)];
+    pan.minimumNumberOfTouches = 1;
+    [view addGestureRecognizer:pan];
+    //缩放手势
+    UIPinchGestureRecognizer *pinchGestureRecognizer = [[UIPinchGestureRecognizer alloc] initWithTarget:self
+                                                                                                 action:@selector(pinchPicture:)];
+    pinchGestureRecognizer.delegate = self;
+    [view addGestureRecognizer:pinchGestureRecognizer];
+    //旋转手势
+    UIRotationGestureRecognizer *rotateRecognizer = [[UIRotationGestureRecognizer alloc] initWithTarget:self
+                                                                                                 action:@selector(rotatePicture:)];
+    [view addGestureRecognizer:rotateRecognizer];
+    rotateRecognizer.delegate = self;
+}
 // 隐藏预览按钮
 - (void)hiddenPreviewButton:(BOOL)isHidden {
     self.againShotBtn.hidden = isHidden;
@@ -380,23 +395,19 @@
     UIView *graffitiView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SL_kScreenWidth, SL_kScreenHeight)];
     //涂鸦
     [graffitiView addSubview:self.drawView];
-    //    UILabel *text = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
-    //    text.text = @"王双龙";
-    //    text.backgroundColor = [UIColor blueColor];
-    //    [overlayView addSubview:text];
     return graffitiView;
 }
-// 贴画层
+// 贴画层 和 文本层
 - (NSMutableArray *)stickerLayers {
     NSMutableArray *stickerLayers = [NSMutableArray array];
-    for (SLImageView *imageView in self.stickerArray) {
+    for (UIView *view in self.stickerArray) {
         CALayer *animatedLayer = [CALayer layer];
-        animatedLayer.frame = imageView.bounds;
-        CGRect changeRect =CGRectMake(0, 0, CGRectGetWidth(animatedLayer.frame)*[UIScreen mainScreen].scale, CGRectGetHeight(animatedLayer.frame)*[UIScreen mainScreen].scale);
+        animatedLayer.frame = view.bounds;
+        CGRect changeRect = CGRectMake(0, 0, CGRectGetWidth(animatedLayer.frame)*[UIScreen mainScreen].scale, CGRectGetHeight(animatedLayer.frame)*[UIScreen mainScreen].scale);
         animatedLayer.frame = CGRectMake(0, 0, CGRectGetWidth(changeRect), CGRectGetHeight(changeRect));
-        animatedLayer.position =  CGPointMake(imageView.center.x*[UIScreen mainScreen].scale, (SL_kScreenHeight - imageView.center.y)*[UIScreen mainScreen].scale);
-        
-        CGAffineTransform transform = imageView.layer.affineTransform;
+        animatedLayer.position =  CGPointMake(view.center.x*[UIScreen mainScreen].scale, (SL_kScreenHeight - view.center.y)*[UIScreen mainScreen].scale);
+        //形变
+        CGAffineTransform transform = view.transform;
         // 缩放系数
         CGFloat scale = sqrt(transform.a*transform.a + transform.c*transform.c);
         //反转 主要用来解决旋转反向的问题
@@ -404,14 +415,17 @@
         CGAffineTransform scaleTransform = CGAffineTransformScale(rotationTransform, scale, scale);
         animatedLayer.affineTransform = CGAffineTransformScale(scaleTransform, scale, scale);
         
-        if (imageView.imageType == SLImageTypeGIF) {
-            CAKeyframeAnimation *gifLayerAnimation = [self animationForGifWithImage:imageView.animatedImage];
-            gifLayerAnimation.beginTime = AVCoreAnimationBeginTimeAtZero;
-            gifLayerAnimation.removedOnCompletion = NO;
-            [animatedLayer addAnimation:gifLayerAnimation forKey:@"gif"];
-        }else {
-            animatedLayer.contentsScale = [UIScreen mainScreen].scale;
-            animatedLayer.contents = (__bridge id _Nullable)(imageView.image.CGImage);
+        if ([view isKindOfClass:[SLImageView class]]) {
+            SLImageView *imageView = (SLImageView *)view;
+            if (imageView.imageType == SLImageTypeGIF) {
+                CAKeyframeAnimation *gifLayerAnimation = [self animationForGifWithImage:imageView.animatedImage];
+                gifLayerAnimation.beginTime = AVCoreAnimationBeginTimeAtZero;
+                gifLayerAnimation.removedOnCompletion = NO;
+                [animatedLayer addAnimation:gifLayerAnimation forKey:@"gif"];
+            }else {
+                animatedLayer.contentsScale = [UIScreen mainScreen].scale;
+                animatedLayer.contents = (__bridge id _Nullable)(imageView.image.CGImage);
+            }
         }
         [stickerLayers addObject:animatedLayer];
     }

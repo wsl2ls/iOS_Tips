@@ -303,6 +303,9 @@ dispatch_semaphore_signal(self->_lock);
 
 #pragma mark -  Setter And Getter
 - (void)setImage:(SLImage *)image{
+    if ([image isMemberOfClass:[UIImage class]]) {
+        image = [SLImage imageWithData:UIImagePNGRepresentation(image)];
+    }
     [self resetAnimated];
     _curAnimatedImage = (SLImage *)image;
     _totalFrameCount = _curAnimatedImage.frameCount;

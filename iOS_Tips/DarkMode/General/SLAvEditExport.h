@@ -29,8 +29,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, nullable) NSArray <NSURL *>*audioUrls;
 /// 涂鸦层
 @property (nonatomic, strong, nullable) UIView *graffitiView;
-/// 贴图 图层集合
-@property (nonatomic, strong) NSMutableArray <CALayer *>*stickerLayers;
+/// 贴图 和文本 层集合
+@property (nonatomic, strong, nullable) NSMutableArray <CALayer *>*stickerLayers;
 
 /// 初始化
 - (id)initWithAsset:(AVAsset *)asset;
