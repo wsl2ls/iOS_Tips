@@ -128,8 +128,6 @@
 }
 - (AVMutableVideoComposition *)videoComposition {
     if (!_videoComposition) {
-        _videoComposition = [AVMutableVideoComposition videoComposition];
-        _videoComposition.frameDuration = CMTimeMake(1, 30); // 30 fps
         //资源文件的视频轨道
         AVAssetTrack *assetVideoTrack = nil;
         // 是否包含视频轨道
@@ -178,11 +176,14 @@
             default:
                 break;
         }
-        _videoComposition.renderSize = renderSize;
+        _videoSize = renderSize;
         
         /** iOS9之前的处理方法，之后使用CIFilter ，待学习*/
         //方向
-        if (orientation != UIImageOrientationUp) {
+        if (orientation != UIImageOrientationUp || self.graffitiView || self.stickerLayers.count) {
+            _videoComposition = [AVMutableVideoComposition videoComposition];
+            _videoComposition.frameDuration = CMTimeMake(1, 30); // 30 fps
+            _videoComposition.renderSize = renderSize;
             AVAssetTrack *videoTrack = [self.composition tracksWithMediaType:AVMediaTypeVideo][0];
             AVMutableVideoCompositionInstruction *roateInstruction = [AVMutableVideoCompositionInstruction videoCompositionInstruction];
             roateInstruction.timeRange = CMTimeRangeMake(kCMTimeZero, self.composition.duration);
@@ -191,28 +192,27 @@
             roateInstruction.layerInstructions = @[roateLayerInstruction];
             //将视频方向旋转加入到视频处理中
             _videoComposition.instructions = @[roateInstruction];
-        }
-        /** 涂鸦 贴图  文字 */
-        if(self.graffitiView || self.stickerLayers.count) {
-            CALayer *parentLayer = [CALayer layer];
-            CALayer *videoLayer = [CALayer layer];
-            parentLayer.frame = CGRectMake(0, 0, renderSize.width, renderSize.height);
-            videoLayer.frame = CGRectMake(0, 0, renderSize.width, renderSize.height);
-            [parentLayer addSublayer:videoLayer];
-            //涂鸦层
-            CALayer *graffitiLayer = [self graffitiViewLayer:renderSize];
-            [parentLayer addSublayer:graffitiLayer];
-            //贴画层
-            for (CALayer *gifLayer in self.stickerLayers) {
-                //注意!：Layer的frame里的单位是px 不是pt
-                CGRect changeRect =CGRectMake(CGRectGetMinX(gifLayer.frame)*[UIScreen mainScreen].scale, CGRectGetMinY(gifLayer.frame)*[UIScreen mainScreen].scale, CGRectGetWidth(gifLayer.frame)*[UIScreen mainScreen].scale, CGRectGetHeight(gifLayer.frame)*[UIScreen mainScreen].scale);
-                gifLayer.frame = CGRectMake(CGRectGetMinX(changeRect), renderSize.height - CGRectGetMaxY(changeRect), CGRectGetWidth(changeRect), CGRectGetHeight(changeRect));
-                [parentLayer addSublayer:gifLayer];
-            }
-            //文字层
             
-            _videoComposition.animationTool = [AVVideoCompositionCoreAnimationTool videoCompositionCoreAnimationToolWithPostProcessingAsVideoLayer:videoLayer inLayer:parentLayer];
+            /** 涂鸦 贴图  文字 */
+            if(self.graffitiView || self.stickerLayers.count) {
+                CALayer *parentLayer = [CALayer layer];
+                CALayer *videoLayer = [CALayer layer];
+                parentLayer.frame = CGRectMake(0, 0, renderSize.width, renderSize.height);
+                videoLayer.frame = CGRectMake(0, 0, renderSize.width, renderSize.height);
+                [parentLayer addSublayer:videoLayer];
+                //涂鸦层
+                CALayer *graffitiLayer = [self graffitiViewLayer:renderSize];
+                [parentLayer addSublayer:graffitiLayer];
+                //贴画层
+                for (CALayer *gifLayer in self.stickerLayers) {
+                    [parentLayer addSublayer:gifLayer];
+                }
+                //文字层
+    
+                _videoComposition.animationTool = [AVVideoCompositionCoreAnimationTool videoCompositionCoreAnimationToolWithPostProcessingAsVideoLayer:videoLayer inLayer:parentLayer];
+            }
         }
+        
     }
     return _videoComposition;
 }
@@ -279,7 +279,7 @@
     [graffitiLayer setMasksToBounds:YES];
     return graffitiLayer;
 }
-// 涂鸦 截图
+// 涂鸦图片
 - (UIImage *)graffitiImageForVideoSize:(CGSize)videoSize {
     UIView *graffitiView = self.graffitiView;
     if (graffitiView) {

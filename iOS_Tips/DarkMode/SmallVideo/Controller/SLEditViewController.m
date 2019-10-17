@@ -19,7 +19,7 @@
 #import "SLImage.h"
 #import "SLImageView.h"
 
-@interface SLEditViewController ()
+@interface SLEditViewController ()<UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong) UIImageView *preview; // 预览视图 展示待编辑的图片或视频
 
@@ -34,6 +34,7 @@
 
 @property (nonatomic, strong) SLDrawView *drawView; // 涂鸦视图
 @property (nonatomic, strong) NSMutableArray <SLImageView *> *stickerArray; // 所有的贴图
+@property (nonatomic, strong) NSMutableArray <UITextView *> *textArray; // 所有的文本视图
 
 @end
 
@@ -44,11 +45,19 @@
     [super viewDidLoad];
     [self setupUI];
 }
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    SLAvPlayer *avPlayer = [SLAvPlayer sharedAVPlayer];
+    [avPlayer stop];
+}
 - (BOOL)prefersStatusBarHidden {
     return YES;
 }
 - (BOOL)shouldAutorotate {
     return NO;
+}
+- (void)dealloc {
+    NSLog(@"释放了");
 }
 #pragma mark - UI
 - (void)setupUI {
@@ -59,6 +68,7 @@
     }else {
         SLAvPlayer *avPlayer = [SLAvPlayer sharedAVPlayer];
         avPlayer.url = self.videoPath;
+        avPlayer.isLoopPlay = YES;
         avPlayer.monitor = self.preview;
         [avPlayer play];
     }
@@ -160,7 +170,7 @@
             if (editMenuType == SLEditMenuTypeSticking) {
                 SLImage *image = setting[@"image"];
                 if (image) {
-                    SLImageView *imageView = [[SLImageView alloc] initWithFrame:CGRectMake(50, 100, image.size.width/[UIScreen mainScreen].scale, image.size.height/[UIScreen mainScreen].scale)];
+                    SLImageView *imageView = [[SLImageView alloc] initWithFrame:CGRectMake(0, 0, image.size.width/[UIScreen mainScreen].scale, image.size.height/[UIScreen mainScreen].scale)];
                     imageView.userInteractionEnabled = YES;
                     imageView.center = CGPointMake(SL_kScreenWidth/2.0, SL_kScreenHeight/2.0);
                     imageView.image = image;
@@ -170,6 +180,17 @@
                     UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:weakSelf action:@selector(dragPicture:)];
                     pan.minimumNumberOfTouches = 1;
                     [imageView addGestureRecognizer:pan];
+                    //缩放手势
+                    UIPinchGestureRecognizer *pinchGestureRecognizer = [[UIPinchGestureRecognizer alloc] initWithTarget:weakSelf
+                                                                                                                 action:@selector(pinchPicture:)];
+                    pinchGestureRecognizer.delegate = weakSelf;
+                    [imageView addGestureRecognizer:pinchGestureRecognizer];
+                    //旋转手势
+                    UIRotationGestureRecognizer *rotateRecognizer = [[UIRotationGestureRecognizer alloc] initWithTarget:weakSelf
+                                                                                                                 action:@selector(rotatePicture:)];
+                    [imageView addGestureRecognizer:rotateRecognizer];
+                    rotateRecognizer.delegate = weakSelf;
+                    
                 }
             }
         };
@@ -206,6 +227,12 @@
         _stickerArray = [NSMutableArray array];
     }
     return _stickerArray;
+}
+- (NSMutableArray *)textArray {
+    if (!_textArray) {
+        _textArray = [NSMutableArray array];
+    }
+    return _textArray;
 }
 
 #pragma mark - EventsHandle
@@ -260,6 +287,7 @@
         [view removeFromSuperview];
     }
 }
+//完成编辑
 - (void)doneEditBtnClicked:(id)sender {
     [self hiddenPreviewButton:NO];
     [self hiddenEditMenus:YES];
@@ -276,6 +304,7 @@
     [videoExportSession exportAsynchronouslyWithCompletionHandler:^(NSError * _Nonnull error) {
         SLAvPlayer *avPlayer = [SLAvPlayer sharedAVPlayer];
         avPlayer.url = videoExportSession.outputURL;
+        avPlayer.isLoopPlay = YES;
         self.videoPath = videoExportSession.outputURL;
         
         [self.drawView removeFromSuperview];
@@ -309,9 +338,28 @@
         //删除拖拽的视图
         if (self.trashTips.center.y < pan.view.center.y) {
             [pan.view  removeFromSuperview];
+            [self.stickerArray removeObject:(SLImageView *)pan.view];
         }
         [self.trashTips removeFromSuperview];
     }
+}
+//缩放
+- (void)pinchPicture:(UIPinchGestureRecognizer *)pinch {
+    pinch.view.transform = CGAffineTransformScale(pinch.view.transform, pinch.scale, pinch.scale);
+    pinch.scale = 1.0;
+}
+//旋转 注意：旋转之后的frame会变！！！
+- (void)rotatePicture:(UIRotationGestureRecognizer *)rotate {
+    //    NSLog(@"%@",NSStringFromCGRect(rotate.view.frame));
+    rotate.view.transform = CGAffineTransformRotate(rotate.view.transform, rotate.rotation);
+    // 将旋转的弧度清零(注意不是将图片旋转的弧度清零, 而是将当前手指旋转的弧度清零)
+    rotate.rotation = 0;
+    NSLog(@"%f %f ",atanf(rotate.view.transform.b/rotate.view.transform.a), rotate.view.transform.a);
+}
+// 该方法返回的BOOL值决定了view是否能够同时响应多个手势
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+    //     NSLog(@"%@ - %@", gestureRecognizer.class, otherGestureRecognizer.class);
+    return YES;
 }
 
 #pragma mark - HelpMethods
@@ -342,8 +390,20 @@
 - (NSMutableArray *)stickerLayers {
     NSMutableArray *stickerLayers = [NSMutableArray array];
     for (SLImageView *imageView in self.stickerArray) {
-        CALayer *animatedLayer = [CALayer layer] ;
-        animatedLayer.frame = imageView.frame;
+        CALayer *animatedLayer = [CALayer layer];
+        animatedLayer.frame = imageView.bounds;
+        CGRect changeRect =CGRectMake(0, 0, CGRectGetWidth(animatedLayer.frame)*[UIScreen mainScreen].scale, CGRectGetHeight(animatedLayer.frame)*[UIScreen mainScreen].scale);
+        animatedLayer.frame = CGRectMake(0, 0, CGRectGetWidth(changeRect), CGRectGetHeight(changeRect));
+        animatedLayer.position =  CGPointMake(imageView.center.x*[UIScreen mainScreen].scale, (SL_kScreenHeight - imageView.center.y)*[UIScreen mainScreen].scale);
+        
+        CGAffineTransform transform = imageView.layer.affineTransform;
+        // 缩放系数
+        CGFloat scale = sqrt(transform.a*transform.a + transform.c*transform.c);
+        //反转 主要用来解决旋转反向的问题
+        CGAffineTransform rotationTransform = CGAffineTransformInvert(transform);
+        CGAffineTransform scaleTransform = CGAffineTransformScale(rotationTransform, scale, scale);
+        animatedLayer.affineTransform = CGAffineTransformScale(scaleTransform, scale, scale);
+        
         if (imageView.imageType == SLImageTypeGIF) {
             CAKeyframeAnimation *gifLayerAnimation = [self animationForGifWithImage:imageView.animatedImage];
             gifLayerAnimation.beginTime = AVCoreAnimationBeginTimeAtZero;

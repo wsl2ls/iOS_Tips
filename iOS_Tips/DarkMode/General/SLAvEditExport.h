@@ -17,8 +17,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// 输出路径
 @property (nonatomic, strong) NSURL * _Nonnull outputURL;
-/// 视频裁剪范围   默认不裁剪
+/// 音视频裁剪范围   默认不裁剪
 @property (nonatomic, assign) CMTimeRange timeRange;
+/// 视频大小 注意：单位是px 不是pt  frame*[UIScreen mainScreen].scale
+@property (nonatomic, assign, readonly) CGSize videoSize;
 /// 速率 默认1.0  推荐设置范围:0.5~2.0
 @property (nonatomic, assign) float rate;
 /// 是否保留原生音频 默认YES
