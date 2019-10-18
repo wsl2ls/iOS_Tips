@@ -12,7 +12,7 @@
 
 // 涂鸦图片
 - (UIImage *)viewToImageInRect:(CGRect)range{
-    CGRect rect = self.frame;
+    CGRect rect = self.bounds;
     /** 参数取整，否则可能会出现1像素偏差 */
     /** 有小数部分才调整差值 */
 #define lfme_export_fixDecimal(d) ((fmod(d, (int)d)) > 0.59f ? ((int)(d+0.5)*1.f) : (((fmod(d, (int)d)) < 0.59f && (fmod(d, (int)d)) > 0.1f) ? ((int)(d)*1.f+0.5f) : (int)(d)*1.f))

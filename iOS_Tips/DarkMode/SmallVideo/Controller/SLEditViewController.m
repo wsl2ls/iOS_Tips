@@ -187,6 +187,7 @@
                     if (textView.text.length == 0 || textView == nil) {
                         return;
                     }
+                    textView.scrollEnabled = NO;
                     textView.center = CGPointMake(SL_kScreenWidth/2.0, SL_kScreenHeight/2.0);
                     [weakSelf.preview addSubview:textView];
                     [weakSelf.watermarkArray addObject:textView];
@@ -314,7 +315,7 @@
 - (void)singleTapAction:(UITapGestureRecognizer *)singleTap {
     [self topSelectedView:singleTap.view];
 }
-//双击 文本水印
+//双击 文本水印 开始编辑
 - (void)doubleTapAction:(UITapGestureRecognizer *)doubleTap {
     [self topSelectedView:doubleTap.view];
     doubleTap.view.hidden = YES;
@@ -332,6 +333,7 @@
         [self.watermarkArray removeObject:textV];
         [self.watermarkArray addObject:textView];
         [self.preview addSubview:textView];
+        textView.scrollEnabled = NO;
         [self addRotateAndPinchGestureRecognizer:textView];
     };
     [self.view addSubview:editTextView];

@@ -9,6 +9,15 @@
 #import "SLEditTextView.h"
 #import "UIView+SLFrame.h"
 
+
+@interface SLTextView : UITextView
+@end
+@implementation SLTextView
+
+
+
+@end
+
 @interface SLEditTextView ()<UITextViewDelegate>
 {
     CGFloat _keyboardHeight;
@@ -16,6 +25,7 @@
 @property (nonatomic, strong) UIButton *cancleEditBtn; //取消编辑
 @property (nonatomic, strong) UIButton *doneEditBtn; //完成编辑
 @property (nonatomic, strong) UITextView *textView;  //文本输入
+@property (nonatomic, strong) NSArray *colors;  //颜色集合
 
 @property (nonatomic, assign) int currentIndex; // 当前颜色索引
 @property (nonatomic, strong) UIColor *currentColor; // 当前颜色
@@ -31,6 +41,7 @@
         self.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.7];
         _currentColor = [UIColor whiteColor];
         _currentIndex = 0;
+        _colors = @[[UIColor whiteColor], [UIColor blackColor], [UIColor redColor], [UIColor yellowColor], [UIColor greenColor], [UIColor blueColor], [UIColor purpleColor]];
         [self setupUI];
     }
     return self;
@@ -51,6 +62,11 @@
         weakSelf.textView.backgroundColor = parameters[@"backgroundColor"];
         weakSelf.textView.text = parameters[@"text"];
         weakSelf.currentColor = weakSelf.textView.textColor;
+        for (UIColor *color in weakSelf.colors) {
+            if (CGColorEqualToColor(color.CGColor, weakSelf.currentColor.CGColor)) {
+                weakSelf.currentIndex = (int)[weakSelf.colors indexOfObject:color];
+            }
+        }
         [weakSelf textViewDidChange:weakSelf.textView];
     };
     [self addSubview:self.cancleEditBtn];
@@ -59,25 +75,24 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
 }
 //颜色选择菜单视图
-- (void)colorSelectionView:(CGFloat)keyboardHeight{
-    NSArray *colors = @[[UIColor clearColor], [UIColor whiteColor], [UIColor blackColor], [UIColor redColor], [UIColor yellowColor], [UIColor greenColor], [UIColor blueColor], [UIColor purpleColor]];
-    int count = (int)colors.count;
+- (void)colorSelectionView:(CGFloat)keyboardHeight {
+    int count = (int)_colors.count + 1;
     CGSize itemSize = CGSizeMake(20, 20);
     CGFloat space = (self.frame.size.width - count * itemSize.width)/(count + 1);
     for (int i = 0; i < count; i++) {
         UIButton * colorBtn = [[UIButton alloc] initWithFrame:CGRectMake(space + (itemSize.width + space)*i, self.sl_h - keyboardHeight - 20 - 20, itemSize.width, itemSize.height)];
-        colorBtn.backgroundColor = colors[i];
         [self addSubview:colorBtn];
         if (i == 0) {
             [colorBtn addTarget:self action:@selector(colorSwitchBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
             [colorBtn setImage:[UIImage imageNamed:@"EditMenuTextColor"] forState:UIControlStateNormal];
             [colorBtn setImage:[UIImage imageNamed:@"EditMenuTextBackgroundColor"] forState:UIControlStateSelected];
         }else {
-            colorBtn.tag = 10 + (i- 1);
+            colorBtn.backgroundColor = _colors[(i - 1)];
+            colorBtn.tag = 10 + (i - 1);
             [colorBtn addTarget:self action:@selector(textColorBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
             colorBtn.layer.cornerRadius = itemSize.width/2.0;
             colorBtn.layer.borderColor = [UIColor whiteColor].CGColor;
-            if(_currentIndex == i-1) {
+            if(_currentIndex == (i - 1)) {
                 colorBtn.layer.borderWidth = 4;
                 colorBtn.transform = CGAffineTransformScale(CGAffineTransformIdentity, 1.0f, 1.0f);
             }else {
@@ -127,7 +142,7 @@
 }
 
 #pragma mark - Help Methods
-
+// 返回一个文本水印视图
 - (UITextView *)copyTextView:(UITextView *)textView {
     UITextView *copyTextView = [[UITextView alloc] initWithFrame:textView.bounds];
     copyTextView.font = textView.font;
@@ -135,7 +150,8 @@
     copyTextView.backgroundColor = textView.backgroundColor;
     copyTextView.text = textView.text;
     copyTextView.editable = NO;
-    copyTextView.scrollEnabled = NO;
+    //设置为NO会影响transform旋转之后文本的显示 旋转之后再设置为NO
+    copyTextView.scrollEnabled = YES;
     return copyTextView;
 }
 
