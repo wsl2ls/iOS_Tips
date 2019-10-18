@@ -16,6 +16,7 @@
 @property (nonatomic, strong) UIButton *cancleEditBtn; //取消编辑
 @property (nonatomic, strong) UIButton *doneEditBtn; //完成编辑
 @property (nonatomic, strong) UITextView *textView;  //文本输入
+
 @property (nonatomic, assign) int currentIndex; // 当前颜色索引
 @property (nonatomic, strong) UIColor *currentColor; // 当前颜色
 @property (nonatomic, assign) BOOL colorSwitch;  // 颜色开关 0：默认设置文本颜色  1：背景颜色
@@ -28,6 +29,8 @@
     self = [super initWithFrame:frame];
     if (self) {
         self.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.7];
+        _currentColor = [UIColor whiteColor];
+        _currentIndex = 0;
         [self setupUI];
     }
     return self;
@@ -41,8 +44,15 @@
 }
 #pragma mark - UI
 - (void)setupUI {
-    _currentColor = [UIColor whiteColor];
     [self addSubview:self.textView];
+    __weak typeof(self) weakSelf = self;
+    self.configureEditParameters = ^(NSDictionary * _Nonnull parameters) {
+        weakSelf.textView.textColor = parameters[@"textColor"];
+        weakSelf.textView.backgroundColor = parameters[@"backgroundColor"];
+        weakSelf.textView.text = parameters[@"text"];
+        weakSelf.currentColor = weakSelf.textView.textColor;
+        [weakSelf textViewDidChange:weakSelf.textView];
+    };
     [self addSubview:self.cancleEditBtn];
     [self addSubview:self.doneEditBtn];
     //监听键盘frame改变
@@ -59,7 +69,7 @@
         colorBtn.backgroundColor = colors[i];
         [self addSubview:colorBtn];
         if (i == 0) {
-            [colorBtn addTarget:self action:@selector(backgroundColorBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+            [colorBtn addTarget:self action:@selector(colorSwitchBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
             [colorBtn setImage:[UIImage imageNamed:@"EditMenuTextColor"] forState:UIControlStateNormal];
             [colorBtn setImage:[UIImage imageNamed:@"EditMenuTextBackgroundColor"] forState:UIControlStateSelected];
         }else {
@@ -109,20 +119,41 @@
         _textView.textColor = _currentColor;
         _textView.scrollEnabled = NO;
         _textView.delegate = self;
+        _textView.clipsToBounds = NO;
         _textView.keyboardAppearance = UIKeyboardAppearanceDark;
         _textView.tintColor = [UIColor colorWithRed:45/255.0 green:175/255.0 blue:45/255.0 alpha:1];
     }
     return _textView;
 }
 
+#pragma mark - Help Methods
+
+- (UITextView *)copyTextView:(UITextView *)textView {
+    UITextView *copyTextView = [[UITextView alloc] initWithFrame:textView.bounds];
+    copyTextView.font = textView.font;
+    copyTextView.textColor = textView.textColor;
+    copyTextView.backgroundColor = textView.backgroundColor;
+    copyTextView.text = textView.text;
+    copyTextView.editable = NO;
+    copyTextView.scrollEnabled = NO;
+    return copyTextView;
+}
+
 #pragma mark - EventsHandle
 //取消编辑
 - (void)cancleEditBtnClicked:(id)sender {
+    [self.textView resignFirstResponder];
+    if (self.editTextCompleted) {
+        self.editTextCompleted(nil);
+    }
     [self removeFromSuperview];
 }
 //完成编辑
 - (void)doneEditBtnClicked:(id)sender {
-    self.editTextCompleted(self.textView);
+    [self.textView resignFirstResponder];
+    if (self.editTextCompleted) {
+        self.editTextCompleted([self copyTextView:self.textView]);
+    }
     [self removeFromSuperview];
 }
 //选中的当前颜色
@@ -140,8 +171,8 @@
         self.textView.textColor = colorBtn.backgroundColor;
     }
 }
-//选择当前是文本颜色还是背景颜色
-- (void)backgroundColorBtnClicked:(UIButton *)colorSwitch {
+//选择当前是文本颜色菜单还是背景颜色菜单
+- (void)colorSwitchBtnClicked:(UIButton *)colorSwitch {
     _colorSwitch = !_colorSwitch;
     colorSwitch.selected = _colorSwitch;
     if (_colorSwitch) {
@@ -165,17 +196,12 @@
 -(void)textViewDidChange:(UITextView *)textView{
     //最大高度
     CGFloat maxHeight = self.sl_h - 100 - _keyboardHeight - 20 - 20 - 20;
-    CGRect frame = textView.frame;
     CGSize constraintSize = CGSizeMake(self.sl_w - 2*30, MAXFLOAT);
     CGSize size = [textView sizeThatFits:constraintSize];
-    if (size.height<=frame.size.height) {
-    }else{
-        if (size.height >= maxHeight){
-            size.height = maxHeight;
-            textView.scrollEnabled = YES;   // 允许滚动
-        } else {
-            textView.scrollEnabled = NO;    // 不允许滚动
-        }
+    if (size.height >= maxHeight) {
+        textView.sl_y = 100 - (size.height - maxHeight);
+    } else {
+        textView.sl_y = 100;
     }
     textView.sl_h = size.height;
     textView.sl_w = size.width;

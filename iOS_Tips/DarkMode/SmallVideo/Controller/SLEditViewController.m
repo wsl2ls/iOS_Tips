@@ -23,7 +23,7 @@
 
 @interface SLEditViewController () <UIGestureRecognizerDelegate>
 
-@property (nonatomic, strong) UIImageView *preview; // 预览视图 展示待编辑的图片或视频
+@property (nonatomic, strong) UIImageView *preview; // 预览视图 展示编辑的图片或视频
 
 @property (nonatomic, strong) SLBlurView *editBtn; //编辑
 @property (nonatomic, strong) SLBlurView *againShotBtn;  // 再拍一次
@@ -35,7 +35,7 @@
 @property (nonatomic, strong) UIButton *trashTips; //垃圾桶提示 拖拽删除 贴图或文字
 
 @property (nonatomic, strong) SLDrawView *drawView; // 涂鸦视图
-@property (nonatomic, strong) NSMutableArray *stickerArray; // 所有的贴图 和 文本截图
+@property (nonatomic, strong) NSMutableArray *watermarkArray; // 水印层 所有的贴图和文本
 
 @end
 
@@ -175,7 +175,7 @@
                     imageView.userInteractionEnabled = YES;
                     imageView.center = CGPointMake(SL_kScreenWidth/2.0, SL_kScreenHeight/2.0);
                     imageView.image = image;
-                    [weakSelf.stickerArray addObject:imageView];
+                    [weakSelf.watermarkArray addObject:imageView];
                     [weakSelf.preview addSubview:imageView];
                     [weakSelf addRotateAndPinchGestureRecognizer:imageView];
                 }
@@ -183,18 +183,14 @@
             if (editMenuType == SLEditMenuTypeText) {
                 SLEditTextView *editTextView = [[SLEditTextView alloc] initWithFrame:CGRectMake(0, 0, SL_kScreenWidth, SL_kScreenHeight)];
                 [weakSelf.view addSubview:editTextView];
-                editTextView.editTextCompleted = ^(UITextView * _Nonnull textView) {
-                    if (textView.text.length == 0) {
+                editTextView.editTextCompleted = ^(UITextView * _Nullable textView) {
+                    if (textView.text.length == 0 || textView == nil) {
                         return;
                     }
-                    SLImage *image = [SLImage imageWithData:UIImagePNGRepresentation([textView viewToImage:textView.bounds])];
-                    SLImageView *imageView = [[SLImageView alloc] initWithFrame:CGRectMake(0, 0, image.size.width, image.size.height)];
-                    imageView.userInteractionEnabled = YES;
-                    imageView.center = CGPointMake(SL_kScreenWidth/2.0, SL_kScreenHeight/2.0);
-                    imageView.image = image;
-                    [weakSelf.stickerArray addObject:imageView];
-                    [weakSelf.preview addSubview:imageView];
-                    [weakSelf addRotateAndPinchGestureRecognizer:imageView];
+                    textView.center = CGPointMake(SL_kScreenWidth/2.0, SL_kScreenHeight/2.0);
+                    [weakSelf.preview addSubview:textView];
+                    [weakSelf.watermarkArray addObject:textView];
+                    [weakSelf addRotateAndPinchGestureRecognizer:textView];
                 };
             }
         };
@@ -226,11 +222,11 @@
     }
     return _drawView;
 }
-- (NSMutableArray *)stickerArray {
-    if (!_stickerArray) {
-        _stickerArray = [NSMutableArray array];
+- (NSMutableArray *)watermarkArray {
+    if (!_watermarkArray) {
+        _watermarkArray = [NSMutableArray array];
     }
-    return _stickerArray;
+    return _watermarkArray;
 }
 
 #pragma mark - EventsHandle
@@ -281,9 +277,10 @@
     [self hiddenEditMenus:YES];
     
     [self.drawView removeFromSuperview];
-    for (UIView *view in self.stickerArray) {
+    for (UIView *view in self.watermarkArray) {
         [view removeFromSuperview];
     }
+    [self.watermarkArray removeAllObjects];
 }
 //完成编辑
 - (void)doneEditBtnClicked:(id)sender {
@@ -296,7 +293,7 @@
     NSString *outputVideoFielPath = [NSTemporaryDirectory() stringByAppendingString:@"EditMyVideo.mp4"];
     videoExportSession.outputURL = [NSURL fileURLWithPath:outputVideoFielPath];
     videoExportSession.graffitiView = [self graffitiView];
-    videoExportSession.stickerLayers = [self stickerLayers];
+    videoExportSession.stickerLayers = [self watermarkLayers];
     videoExportSession.audioUrls = @[bgsoundUrl];
     videoExportSession.isNativeAudio = YES;
     [videoExportSession exportAsynchronouslyWithCompletionHandler:^(NSError * _Nonnull error) {
@@ -306,21 +303,47 @@
         self.videoPath = videoExportSession.outputURL;
         
         [self.drawView removeFromSuperview];
-        for (UIView *view in self.stickerArray) {
+        for (UIView *view in self.watermarkArray) {
             [view removeFromSuperview];
         }
     } progress:^(float progress) {
-        NSLog(@"%f",progress);
+        NSLog(@"视频导出进度 %f",progress);
     }];
-    
 }
-// 拖拽贴图
-- (void)dragPicture:(UIPanGestureRecognizer *)pan {
+// 点击水印视图
+- (void)singleTapAction:(UITapGestureRecognizer *)singleTap {
+    [self topSelectedView:singleTap.view];
+}
+//双击 文本水印
+- (void)doubleTapAction:(UITapGestureRecognizer *)doubleTap {
+    [self topSelectedView:doubleTap.view];
+    doubleTap.view.hidden = YES;
+    UITextView *textV = (UITextView *)doubleTap.view;
+    SLEditTextView *editTextView = [[SLEditTextView alloc] initWithFrame:CGRectMake(0, 0, SL_kScreenWidth, SL_kScreenHeight)];
+    editTextView.configureEditParameters(@{@"textColor":textV.textColor, @"backgroundColor":textV.backgroundColor, @"text":textV.text});
+    editTextView.editTextCompleted = ^(UITextView * _Nullable textView) {
+        doubleTap.view.hidden = NO;
+        if (textView == nil) {
+            return;
+        }
+        textView.transform = textV.transform;
+        textView.center = textV.center;
+        [textV removeFromSuperview];
+        [self.watermarkArray removeObject:textV];
+        [self.watermarkArray addObject:textView];
+        [self.preview addSubview:textView];
+        [self addRotateAndPinchGestureRecognizer:textView];
+    };
+    [self.view addSubview:editTextView];
+}
+// 拖拽水印视图
+- (void)dragAction:(UIPanGestureRecognizer *)pan {
     // 返回的是相对于最原始的手指的偏移量
     CGPoint transP = [pan translationInView:self.preview];
     if (pan.state == UIGestureRecognizerStateBegan) {
         [self hiddenEditMenus:YES];
         [self.view addSubview:self.trashTips];
+        [self topSelectedView:pan.view];
     } else if (pan.state == UIGestureRecognizerStateChanged ) {
         pan.view.center = CGPointMake(pan.view.center.x + transP.x, pan.view.center.y + transP.y);
         [pan setTranslation:CGPointZero inView:self.preview];
@@ -337,22 +360,27 @@
         //删除拖拽的视图
         if (self.trashTips.center.y < pan.view.center.y) {
             [pan.view  removeFromSuperview];
-            [self.stickerArray removeObject:(SLImageView *)pan.view];
+            [self.watermarkArray removeObject:(SLImageView *)pan.view];
         }
         [self.trashTips removeFromSuperview];
     }
 }
-//缩放
-- (void)pinchPicture:(UIPinchGestureRecognizer *)pinch {
+//缩放水印视图
+- (void)pinchAction:(UIPinchGestureRecognizer *)pinch {
+    if (pinch.state == UIGestureRecognizerStateBegan) {
+        [self topSelectedView:pinch.view];
+    }
     pinch.view.transform = CGAffineTransformScale(pinch.view.transform, pinch.scale, pinch.scale);
     pinch.scale = 1.0;
 }
-//旋转 注意：旋转之后的frame会变！！！
-- (void)rotatePicture:(UIRotationGestureRecognizer *)rotate {
-    //    NSLog(@"%@",NSStringFromCGRect(rotate.view.frame));
-    rotate.view.transform = CGAffineTransformRotate(rotate.view.transform, rotate.rotation);
+//旋转水印视图 注意：旋转之后的frame会变！！！
+- (void)rotateAction:(UIRotationGestureRecognizer *)rotation {
+    if (rotation.state == UIGestureRecognizerStateBegan) {
+        [self topSelectedView:rotation.view];
+    }
+    rotation.view.transform = CGAffineTransformRotate(rotation.view.transform, rotation.rotation);
     // 将旋转的弧度清零(注意不是将图片旋转的弧度清零, 而是将当前手指旋转的弧度清零)
-    rotate.rotation = 0;
+    rotation.rotation = 0;
 }
 #pragma mark - UIGestureRecognizerDelegate
 // 该方法返回的BOOL值决定了view是否能够同时响应多个手势
@@ -361,22 +389,40 @@
     return YES;
 }
 #pragma mark - HelpMethods
-// 添加拖拽、缩放、旋转手势
+// 添加拖拽、缩放、旋转、单击、双击手势
 - (void)addRotateAndPinchGestureRecognizer:(UIView *)view {
+    //单击手势选中
+    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(singleTapAction:)];
+    singleTap.numberOfTapsRequired = 1;
+    singleTap.numberOfTouchesRequired = 1;
+    [view addGestureRecognizer:singleTap];
+    if ([view isKindOfClass:[UITextView class]]) {
+        UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doubleTapAction:)];
+        doubleTap.numberOfTapsRequired = 2;
+        doubleTap.numberOfTouchesRequired = 1;
+        [singleTap requireGestureRecognizerToFail:doubleTap];
+        [view addGestureRecognizer:doubleTap];
+    }
     //拖拽手势
-    UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(dragPicture:)];
+    UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(dragAction:)];
     pan.minimumNumberOfTouches = 1;
     [view addGestureRecognizer:pan];
     //缩放手势
     UIPinchGestureRecognizer *pinchGestureRecognizer = [[UIPinchGestureRecognizer alloc] initWithTarget:self
-                                                                                                 action:@selector(pinchPicture:)];
+                                                                                                 action:@selector(pinchAction:)];
     pinchGestureRecognizer.delegate = self;
     [view addGestureRecognizer:pinchGestureRecognizer];
     //旋转手势
     UIRotationGestureRecognizer *rotateRecognizer = [[UIRotationGestureRecognizer alloc] initWithTarget:self
-                                                                                                 action:@selector(rotatePicture:)];
+                                                                                                 action:@selector(rotateAction:)];
     [view addGestureRecognizer:rotateRecognizer];
     rotateRecognizer.delegate = self;
+}
+//置顶视图
+- (void)topSelectedView:(UIView *)topView {
+    [self.preview bringSubviewToFront:topView];
+    [self.watermarkArray removeObject:topView];
+    [self.watermarkArray addObject:topView];
 }
 // 隐藏预览按钮
 - (void)hiddenPreviewButton:(BOOL)isHidden {
@@ -398,11 +444,12 @@
     return graffitiView;
 }
 // 贴画层 和 文本层
-- (NSMutableArray *)stickerLayers {
+- (NSMutableArray *)watermarkLayers {
     NSMutableArray *stickerLayers = [NSMutableArray array];
-    for (UIView *view in self.stickerArray) {
+    for (UIView *view in self.watermarkArray) {
         CALayer *animatedLayer = [CALayer layer];
         animatedLayer.frame = view.bounds;
+        // 像素
         CGRect changeRect = CGRectMake(0, 0, CGRectGetWidth(animatedLayer.frame)*[UIScreen mainScreen].scale, CGRectGetHeight(animatedLayer.frame)*[UIScreen mainScreen].scale);
         animatedLayer.frame = CGRectMake(0, 0, CGRectGetWidth(changeRect), CGRectGetHeight(changeRect));
         animatedLayer.position =  CGPointMake(view.center.x*[UIScreen mainScreen].scale, (SL_kScreenHeight - view.center.y)*[UIScreen mainScreen].scale);
@@ -426,6 +473,11 @@
                 animatedLayer.contentsScale = [UIScreen mainScreen].scale;
                 animatedLayer.contents = (__bridge id _Nullable)(imageView.image.CGImage);
             }
+        } else if ([view isKindOfClass:[UITextView class]]) {
+            UITextView *textView = (UITextView *)view;
+            SLImage *image = [SLImage imageWithData:UIImagePNGRepresentation([textView viewToImageInRect:textView.bounds])];
+            animatedLayer.contentsScale = [UIScreen mainScreen].scale;
+            animatedLayer.contents = (__bridge id _Nullable)(image.CGImage);
         }
         [stickerLayers addObject:animatedLayer];
     }

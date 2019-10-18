@@ -12,7 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// 视图转换为Image
 @interface UIView (SLImage)
-- (UIImage *)viewToImage:(CGRect)range;
+/// 截取视图转Image
+/// @param range 截图区域
+- (UIImage *)viewToImageInRect:(CGRect)range;
 @end
 
 NS_ASSUME_NONNULL_END
