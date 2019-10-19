@@ -8,15 +8,7 @@
 
 #import "SLEditTextView.h"
 #import "UIView+SLFrame.h"
-
-
-@interface SLTextView : UITextView
-@end
-@implementation SLTextView
-
-
-
-@end
+#import "SLPaddingLabel.h"
 
 @interface SLEditTextView ()<UITextViewDelegate>
 {
@@ -143,16 +135,16 @@
 
 #pragma mark - Help Methods
 // 返回一个文本水印视图
-- (UITextView *)copyTextView:(UITextView *)textView {
-    UITextView *copyTextView = [[UITextView alloc] initWithFrame:textView.bounds];
-    copyTextView.font = textView.font;
-    copyTextView.textColor = textView.textColor;
-    copyTextView.backgroundColor = textView.backgroundColor;
-    copyTextView.text = textView.text;
-    copyTextView.editable = NO;
-    //设置为NO会影响transform旋转之后文本的显示 旋转之后再设置为NO
-    copyTextView.scrollEnabled = YES;
-    return copyTextView;
+- (UILabel *)copyTextView:(UITextView *)textView {
+    SLPaddingLabel *label = [[SLPaddingLabel alloc] initWithFrame:textView.bounds];
+    label.font = textView.font;
+    label.userInteractionEnabled = YES;
+    label.backgroundColor = textView.backgroundColor;
+    label.textColor = textView.textColor;
+    label.textPadding = UIEdgeInsetsMake(0, 4, 0, -4);
+    label.text = textView.text;
+    label.numberOfLines = 0;
+    return label;
 }
 
 #pragma mark - EventsHandle

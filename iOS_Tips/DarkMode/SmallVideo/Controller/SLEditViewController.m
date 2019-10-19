@@ -183,15 +183,14 @@
             if (editMenuType == SLEditMenuTypeText) {
                 SLEditTextView *editTextView = [[SLEditTextView alloc] initWithFrame:CGRectMake(0, 0, SL_kScreenWidth, SL_kScreenHeight)];
                 [weakSelf.view addSubview:editTextView];
-                editTextView.editTextCompleted = ^(UITextView * _Nullable textView) {
-                    if (textView.text.length == 0 || textView == nil) {
+                editTextView.editTextCompleted = ^(UILabel * _Nullable label) {
+                    if (label.text.length == 0 || label == nil) {
                         return;
                     }
-                    textView.scrollEnabled = NO;
-                    textView.center = CGPointMake(SL_kScreenWidth/2.0, SL_kScreenHeight/2.0);
-                    [weakSelf.preview addSubview:textView];
-                    [weakSelf.watermarkArray addObject:textView];
-                    [weakSelf addRotateAndPinchGestureRecognizer:textView];
+                    label.center = CGPointMake(SL_kScreenWidth/2.0, SL_kScreenHeight/2.0);
+                    [weakSelf.preview addSubview:label];
+                    [weakSelf.watermarkArray addObject:label];
+                    [weakSelf addRotateAndPinchGestureRecognizer:label];
                 };
             }
         };
@@ -319,22 +318,21 @@
 - (void)doubleTapAction:(UITapGestureRecognizer *)doubleTap {
     [self topSelectedView:doubleTap.view];
     doubleTap.view.hidden = YES;
-    UITextView *textV = (UITextView *)doubleTap.view;
+    UILabel *tapLabel = (UILabel *)doubleTap.view;
     SLEditTextView *editTextView = [[SLEditTextView alloc] initWithFrame:CGRectMake(0, 0, SL_kScreenWidth, SL_kScreenHeight)];
-    editTextView.configureEditParameters(@{@"textColor":textV.textColor, @"backgroundColor":textV.backgroundColor, @"text":textV.text});
-    editTextView.editTextCompleted = ^(UITextView * _Nullable textView) {
+    editTextView.configureEditParameters(@{@"textColor":tapLabel.textColor, @"backgroundColor":tapLabel.backgroundColor, @"text":tapLabel.text});
+    editTextView.editTextCompleted = ^(UILabel * _Nullable label) {
         doubleTap.view.hidden = NO;
-        if (textView == nil) {
+        if (label == nil) {
             return;
         }
-        textView.transform = textV.transform;
-        textView.center = textV.center;
-        [textV removeFromSuperview];
-        [self.watermarkArray removeObject:textV];
-        [self.watermarkArray addObject:textView];
-        [self.preview addSubview:textView];
-        textView.scrollEnabled = NO;
-        [self addRotateAndPinchGestureRecognizer:textView];
+        label.transform = tapLabel.transform;
+        label.center = tapLabel.center;
+        [tapLabel removeFromSuperview];
+        [self.watermarkArray removeObject:tapLabel];
+        [self.watermarkArray addObject:label];
+        [self.preview addSubview:label];
+        [self addRotateAndPinchGestureRecognizer:label];
     };
     [self.view addSubview:editTextView];
 }
@@ -398,7 +396,7 @@
     singleTap.numberOfTapsRequired = 1;
     singleTap.numberOfTouchesRequired = 1;
     [view addGestureRecognizer:singleTap];
-    if ([view isKindOfClass:[UITextView class]]) {
+    if ([view isKindOfClass:[UILabel class]]) {
         UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doubleTapAction:)];
         doubleTap.numberOfTapsRequired = 2;
         doubleTap.numberOfTouchesRequired = 1;
@@ -475,9 +473,9 @@
                 animatedLayer.contentsScale = [UIScreen mainScreen].scale;
                 animatedLayer.contents = (__bridge id _Nullable)(imageView.image.CGImage);
             }
-        } else if ([view isKindOfClass:[UITextView class]]) {
-            UITextView *textView = (UITextView *)view;
-            SLImage *image = [SLImage imageWithData:UIImagePNGRepresentation([textView viewToImageInRect:textView.bounds])];
+        } else if ([view isKindOfClass:[UILabel class]]) {
+            UILabel *label = (UILabel *)view;
+            SLImage *image = [SLImage imageWithData:UIImagePNGRepresentation([label viewToImageInRect:label.bounds])];
             animatedLayer.contentsScale = [UIScreen mainScreen].scale;
             animatedLayer.contents = (__bridge id _Nullable)(image.CGImage);
         }
