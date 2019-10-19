@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		7822CCF8235B054200E70C29 /* SLPaddingLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7822CCF7235B054200E70C29 /* SLPaddingLabel.m */; };
+		7822CCFE235B1D5B00E70C29 /* NSObject+SLDelayPerform.m in Sources */ = {isa = PBXBuildFile; fileRef = 7822CCFD235B1D5B00E70C29 /* NSObject+SLDelayPerform.m */; };
 		7830A59E2358520200BC79BA /* SLEditTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7830A59D2358520200BC79BA /* SLEditTextView.m */; };
 		7830A5A42358904600BC79BA /* UIView+SLImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 7830A5A32358904600BC79BA /* UIView+SLImage.m */; };
 		784B72062334685E006AEE47 /* SLAvPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 784B72052334685E006AEE47 /* SLAvPlayer.m */; };
@@ -59,6 +60,8 @@
 /* Begin PBXFileReference section */
 		7822CCF6235B054200E70C29 /* SLPaddingLabel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLPaddingLabel.h; sourceTree = "<group>"; };
 		7822CCF7235B054200E70C29 /* SLPaddingLabel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLPaddingLabel.m; sourceTree = "<group>"; };
+		7822CCFC235B1D5B00E70C29 /* NSObject+SLDelayPerform.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSObject+SLDelayPerform.h"; sourceTree = "<group>"; };
+		7822CCFD235B1D5B00E70C29 /* NSObject+SLDelayPerform.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSObject+SLDelayPerform.m"; sourceTree = "<group>"; };
 		7830A59C2358520200BC79BA /* SLEditTextView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLEditTextView.h; sourceTree = "<group>"; };
 		7830A59D2358520200BC79BA /* SLEditTextView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLEditTextView.m; sourceTree = "<group>"; };
 		7830A5A22358904600BC79BA /* UIView+SLImage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+SLImage.h"; sourceTree = "<group>"; };
@@ -167,6 +170,8 @@
 				7851CB41233222E2002295B5 /* UIView+SLFrame.m */,
 				7830A5A22358904600BC79BA /* UIView+SLImage.h */,
 				7830A5A32358904600BC79BA /* UIView+SLImage.m */,
+				7822CCFC235B1D5B00E70C29 /* NSObject+SLDelayPerform.h */,
+				7822CCFD235B1D5B00E70C29 /* NSObject+SLDelayPerform.m */,
 			);
 			path = SLCategory;
 			sourceTree = "<group>";
@@ -438,6 +443,7 @@
 				784B720923348241006AEE47 /* SLAvCaptureTool.m in Sources */,
 				78B10482232F57C30051579F /* AppDelegate.m in Sources */,
 				7851CB362331CC87002295B5 /* SLDarkModeViewController.m in Sources */,
+				7822CCFE235B1D5B00E70C29 /* NSObject+SLDelayPerform.m in Sources */,
 				78E179402351D0950007E4BB /* SLEditViewController.m in Sources */,
 				78FA0F9D235407E6003E456B /* SLDrawView.m in Sources */,
 				7851CB43233222E2002295B5 /* UIView+SLFrame.m in Sources */,

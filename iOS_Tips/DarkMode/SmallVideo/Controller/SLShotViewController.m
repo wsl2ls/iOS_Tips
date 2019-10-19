@@ -12,6 +12,7 @@
 #import "SLAvCaptureTool.h"
 #import "SLShotFocusView.h"
 #import "SLEditViewController.h"
+#import "NSObject+SLDelayPerform.h"
 
 #define KMaxDurationOfVideo  15.0 //录制最大时长 s
 
@@ -275,9 +276,9 @@
         [self.view addSubview:self.focusView];
     }
     [self.avCaptureTool focusAtPoint:point];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self.focusView removeFromSuperview];
-    });
+    [self startDelayPerform:^{
+       [self.focusView removeFromSuperview];
+    } afterDelay:1.0];
 }
 //调节焦距 手势
 - (void)pinchFocalLength:(UIPinchGestureRecognizer *)pinch {
