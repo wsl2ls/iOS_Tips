@@ -70,7 +70,9 @@
         SLAvPlayer *avPlayer = [SLAvPlayer sharedAVPlayer];
         avPlayer.url = self.videoPath;
         avPlayer.isLoopPlay = YES;
+        self.preview.sl_h = self.preview.sl_w * avPlayer.naturalSize.height/avPlayer.naturalSize.width;
         avPlayer.monitor = self.preview;
+        self.preview.center = CGPointMake(self.view.sl_w/2.0, self.view.sl_h/2.0);
         [avPlayer play];
     }
     [self.view addSubview:self.againShotBtn];
@@ -88,6 +90,7 @@
         _preview.contentMode = UIViewContentModeScaleAspectFit;
         _preview.backgroundColor = [UIColor blackColor];
         _preview.userInteractionEnabled = YES;
+        _preview.clipsToBounds = YES;
     }
     return _preview;
 }
@@ -173,7 +176,7 @@
                 if (image) {
                     SLImageView *imageView = [[SLImageView alloc] initWithFrame:CGRectMake(0, 0, image.size.width/[UIScreen mainScreen].scale, image.size.height/[UIScreen mainScreen].scale)];
                     imageView.userInteractionEnabled = YES;
-                    imageView.center = CGPointMake(SL_kScreenWidth/2.0, SL_kScreenHeight/2.0);
+                    imageView.center = CGPointMake(self.preview.sl_w/2.0, self.preview.sl_h/2.0);
                     imageView.image = image;
                     [weakSelf.watermarkArray addObject:imageView];
                     [weakSelf.preview addSubview:imageView];
@@ -187,7 +190,7 @@
                     if (label.text.length == 0 || label == nil) {
                         return;
                     }
-                    label.center = CGPointMake(SL_kScreenWidth/2.0, SL_kScreenHeight/2.0);
+                    label.center = CGPointMake(self.preview.sl_w/2.0, self.preview.sl_h/2.0);
                     [weakSelf.preview addSubview:label];
                     [weakSelf.watermarkArray addObject:label];
                     [weakSelf addRotateAndPinchGestureRecognizer:label];
@@ -210,7 +213,7 @@
 }
 - (SLDrawView *)drawView {
     if (!_drawView) {
-        _drawView = [[SLDrawView alloc] initWithFrame:CGRectMake(0, 0, SL_kScreenWidth, SL_kScreenHeight)];
+        _drawView = [[SLDrawView alloc] initWithFrame:CGRectMake(0, 0, self.preview.sl_w, self.preview.sl_h)];
         _drawView.backgroundColor = [UIColor clearColor];
         __weak typeof(self) weakSelf = self;
         _drawView.drawBegan = ^{
@@ -307,7 +310,7 @@
             [view removeFromSuperview];
         }
     } progress:^(float progress) {
-        NSLog(@"视频导出进度 %f",progress);
+        //        NSLog(@"视频导出进度 %f",progress);
     }];
 }
 // 点击水印视图
@@ -336,19 +339,22 @@
     };
     [self.view addSubview:editTextView];
 }
-// 拖拽水印视图
+// 拖拽 水印视图
 - (void)dragAction:(UIPanGestureRecognizer *)pan {
     // 返回的是相对于最原始的手指的偏移量
     CGPoint transP = [pan translationInView:self.preview];
     if (pan.state == UIGestureRecognizerStateBegan) {
+        self.preview.clipsToBounds = NO;
         [self hiddenEditMenus:YES];
         [self.view addSubview:self.trashTips];
         [self topSelectedView:pan.view];
     } else if (pan.state == UIGestureRecognizerStateChanged ) {
         pan.view.center = CGPointMake(pan.view.center.x + transP.x, pan.view.center.y + transP.y);
         [pan setTranslation:CGPointZero inView:self.preview];
-        //是否删除
-        if (self.trashTips.center.y < pan.view.center.y) {
+        //获取拖拽的视图在屏幕上的位置
+        CGRect rect = [pan.view convertRect: pan.view.bounds toView:self.view];
+        //是否删除 删除视图Y < 视图中心点Y坐标
+        if (self.trashTips.center.y < rect.origin.y+rect.size.height/2.0) {
             [self.trashTips setTitle:@"松手即可删除" forState:UIControlStateNormal];
             [self.trashTips setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
         }else {
@@ -357,15 +363,21 @@
         }
     } else if (pan.state == UIGestureRecognizerStateFailed || pan.state == UIGestureRecognizerStateEnded) {
         [self hiddenEditMenus:NO];
+        self.preview.clipsToBounds = YES;
+        //获取拖拽的视图在屏幕上的位置
+        CGRect rect = [pan.view convertRect: pan.view.bounds toView:self.view];
         //删除拖拽的视图
-        if (self.trashTips.center.y < pan.view.center.y) {
+        if (self.trashTips.center.y < rect.origin.y+rect.size.height/2.0) {
             [pan.view  removeFromSuperview];
             [self.watermarkArray removeObject:(SLImageView *)pan.view];
+        }else if (pan.view.sl_y >= self.preview.sl_h) {
+            //如果出了父视图preview的范围，则置于父视图中心
+            pan.view.center = CGPointMake(self.preview.sl_w/2.0, self.preview.sl_h/2.0);
         }
         [self.trashTips removeFromSuperview];
     }
 }
-//缩放水印视图
+//缩放 水印视图
 - (void)pinchAction:(UIPinchGestureRecognizer *)pinch {
     if (pinch.state == UIGestureRecognizerStateBegan) {
         [self topSelectedView:pinch.view];
@@ -373,7 +385,7 @@
     pinch.view.transform = CGAffineTransformScale(pinch.view.transform, pinch.scale, pinch.scale);
     pinch.scale = 1.0;
 }
-//旋转水印视图 注意：旋转之后的frame会变！！！
+//旋转 水印视图 注意：旋转之后的frame会变！！！
 - (void)rotateAction:(UIRotationGestureRecognizer *)rotation {
     if (rotation.state == UIGestureRecognizerStateBegan) {
         [self topSelectedView:rotation.view];
@@ -438,8 +450,7 @@
 }
 // 涂鸦层
 - (UIView *)graffitiView {
-    UIView *graffitiView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SL_kScreenWidth, SL_kScreenHeight)];
-    //涂鸦
+    UIView *graffitiView = [[UIView alloc] initWithFrame:self.drawView.bounds];
     [graffitiView addSubview:self.drawView];
     return graffitiView;
 }
@@ -450,9 +461,12 @@
         CALayer *animatedLayer = [CALayer layer];
         animatedLayer.frame = view.bounds;
         // 像素
-        CGRect changeRect = CGRectMake(0, 0, CGRectGetWidth(animatedLayer.frame)*[UIScreen mainScreen].scale, CGRectGetHeight(animatedLayer.frame)*[UIScreen mainScreen].scale);
+        // 把水印在预览层上的坐标转换为视频资源文件上的坐标
+        CGSize scaleSize = CGSizeMake([SLAvPlayer sharedAVPlayer].naturalSize.width/self.preview.sl_w, [SLAvPlayer sharedAVPlayer].naturalSize.height/self.preview.sl_h);
+        CGRect changeRect = CGRectMake(0, 0, CGRectGetWidth(animatedLayer.frame)*scaleSize.width, CGRectGetHeight(animatedLayer.frame)*scaleSize.height);
         animatedLayer.frame = CGRectMake(0, 0, CGRectGetWidth(changeRect), CGRectGetHeight(changeRect));
-        animatedLayer.position =  CGPointMake(view.center.x*[UIScreen mainScreen].scale, (SL_kScreenHeight - view.center.y)*[UIScreen mainScreen].scale);
+        animatedLayer.position =  CGPointMake(view.center.x*scaleSize.width, (self.preview.sl_h - view.center.y)*scaleSize.height);
+        
         //形变
         CGAffineTransform transform = view.transform;
         // 缩放系数

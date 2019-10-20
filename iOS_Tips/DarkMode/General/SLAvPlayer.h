@@ -17,6 +17,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSURL *url;
 /// 是否循环播放 默认NO
 @property (nonatomic, assign) BOOL isLoopPlay;
+/// 视频尺寸  单位像素 px
+@property (nonatomic, assign, readonly) CGSize naturalSize;
 /// 视频展示区域  显示器
 @property (nonatomic, strong, nullable) UIView *monitor;
 

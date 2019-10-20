@@ -31,20 +31,33 @@
     }
     return self;
 }
-
-#pragma mark - HelpMethods
-- (void)configure {
-    
-   
-}
 - (void)dealloc {
     [self stop];
 }
 
+#pragma mark - HelpMethods
+- (void)configure {
+    
+}
+//视频的方向
+- (UIImageOrientation)orientationFromAVAssetTrack:(AVAssetTrack *)videoTrack {
+    UIImageOrientation orientation = UIImageOrientationUp;
+    CGAffineTransform t = videoTrack.preferredTransform;
+    if(t.a == 0 && t.b == 1.0 && t.c == -1.0 && t.d == 0){
+        orientation = UIImageOrientationRight;
+    }else if(t.a == 0 && t.b == -1.0 && t.c == 1.0 && t.d == 0){
+        orientation = UIImageOrientationLeft;
+    }else if(t.a == 1.0 && t.b == 0 && t.c == 0 && t.d == 1.0){
+        orientation = UIImageOrientationUp;
+    }else if(t.a == -1.0 && t.b == 0 && t.c == 0 && t.d == -1.0){
+        orientation = UIImageOrientationDown;
+    }
+    return orientation;
+}
 #pragma mark - Setter
 - (void)setIsLoopPlay:(BOOL)isLoopPlay {
     _isLoopPlay = isLoopPlay;
-     //监听是否播放完毕
+    //监听是否播放完毕
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(moviePlayDidEnd:) name:AVPlayerItemDidPlayToEndTimeNotification object:self.avPlayer.currentItem];
 }
 - (void)setUrl:(nonnull NSURL *)url {
@@ -60,8 +73,8 @@
         [self.playerLayer removeFromSuperlayer];
     }else {
         self.playerLayer.frame = monitor.bounds;
-        //        [monitor.layer insertSublayer:self.playerLayer atIndex:0];
-        [monitor.layer addSublayer:self.playerLayer];
+        [monitor.layer insertSublayer:self.playerLayer atIndex:0];
+        //        [monitor.layer addSublayer:self.playerLayer];
     }
 }
 
@@ -80,6 +93,23 @@
         _playerLayer.videoGravity =AVLayerVideoGravityResizeAspect;
     }
     return _playerLayer;
+}
+- (CGSize)naturalSize {
+    AVAsset *asset = [AVAsset assetWithURL:self.url];
+    //资源文件的视频轨道
+    AVAssetTrack *assetVideoTrack = nil;
+    if ([[asset tracksWithMediaType:AVMediaTypeVideo] count] != 0) {
+        assetVideoTrack = [asset tracksWithMediaType:AVMediaTypeVideo][0];
+    }else {
+        return CGSizeZero;
+    }
+    UIImageOrientation orientation = [self orientationFromAVAssetTrack:assetVideoTrack];
+    //视频素材原大小 像素大小px 不是pt
+    CGSize renderSize = assetVideoTrack.naturalSize;
+    if (orientation == UIImageOrientationLeft || orientation == UIImageOrientationRight ) {
+        renderSize = CGSizeMake(assetVideoTrack.naturalSize.height,assetVideoTrack.naturalSize.width);
+    }
+    return CGSizeMake(renderSize.width, renderSize.height);
 }
 
 #pragma mark - EventsHandle
