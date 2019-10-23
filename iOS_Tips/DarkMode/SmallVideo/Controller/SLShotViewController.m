@@ -187,7 +187,6 @@
 - (SLShotFocusView *)focusView {
     if (_focusView == nil) {
         _focusView= [[SLShotFocusView alloc] initWithFrame:CGRectMake(0, 0, 60, 60)];
-        _focusView.backgroundColor = [UIColor clearColor];
     }
     return _focusView;
 }

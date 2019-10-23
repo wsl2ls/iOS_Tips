@@ -16,6 +16,8 @@
 #import "SLAvPlayer.h"
 #import "SLAvCaptureTool.h"
 #import "SLAvEditExport.h"
+#import "SLEditSelectedBox.h"
+#import "NSObject+SLDelayPerform.h"
 #import "SLImage.h"
 #import "SLImageView.h"
 #import "SLDrawView.h"
@@ -37,6 +39,7 @@
 
 @property (nonatomic, strong) SLDrawView *drawView; // 涂鸦视图
 @property (nonatomic, strong) NSMutableArray *watermarkArray; // 水印层 所有的贴图和文本
+@property (nonatomic, strong) SLEditSelectedBox *selectedBox; //水印选中框
 @property (nonatomic, strong) SLEditVideoClipping * videoClippingView; //视频裁剪 子菜单视图 选择裁剪范围
 @property (nonatomic, assign) CMTime clippingBeginTime; //视频裁剪起始点
 @property (nonatomic, assign) CMTime clippingEndTime; //视频裁剪结束点
@@ -185,6 +188,10 @@
                     [weakSelf.watermarkArray addObject:imageView];
                     [weakSelf.preview addSubview:imageView];
                     [weakSelf addRotateAndPinchGestureRecognizer:imageView];
+                    [weakSelf topSelectedView:imageView];
+                    [weakSelf startDelayPerform:^{
+                        [weakSelf.selectedBox removeFromSuperview];
+                    } afterDelay:1.0];
                 }
             }
             if (editMenuType == SLEditMenuTypeText) {
@@ -198,6 +205,10 @@
                     [weakSelf.preview addSubview:label];
                     [weakSelf.watermarkArray addObject:label];
                     [weakSelf addRotateAndPinchGestureRecognizer:label];
+                    [weakSelf topSelectedView:label];
+                    [weakSelf startDelayPerform:^{
+                        [weakSelf.selectedBox removeFromSuperview];
+                    } afterDelay:1.0];
                 };
             }
             if(editMenuType == SLEditMenuTypeVideoClipping) {
@@ -246,6 +257,12 @@
         _watermarkArray = [NSMutableArray array];
     }
     return _watermarkArray;
+}
+- (SLEditSelectedBox *)selectedBox {
+    if (!_selectedBox) {
+        _selectedBox = [[SLEditSelectedBox alloc] init];
+    }
+    return _selectedBox;
 }
 - (SLEditVideoClipping *)videoClippingView {
     if (!_videoClippingView) {
@@ -342,10 +359,11 @@
 - (void)doneEditBtnClicked:(id)sender {
     [self hiddenPreviewButton:YES];
     [self hiddenEditMenus:YES];
+    [self.selectedBox removeFromSuperview];
     
     UIActivityIndicatorView *activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
     activityIndicatorView.frame = CGRectMake(0, 0, 50, 50);
-    activityIndicatorView.color = [UIColor greenColor];
+    activityIndicatorView.color = [UIColor colorWithRed:45/255.0 green:175/255.0 blue:45/255.0 alpha:1];
     activityIndicatorView.center = CGPointMake(SL_kScreenWidth/2.0, SL_kScreenHeight/2.0);
     [activityIndicatorView startAnimating];
     [self.view addSubview:activityIndicatorView];
@@ -385,6 +403,11 @@
 // 点击水印视图
 - (void)singleTapAction:(UITapGestureRecognizer *)singleTap {
     [self topSelectedView:singleTap.view];
+    if (singleTap.state == UIGestureRecognizerStateFailed || singleTap.state == UIGestureRecognizerStateEnded) {
+        [self startDelayPerform:^{
+            [self.selectedBox removeFromSuperview];
+        } afterDelay:1.0];
+    }
 }
 //双击 文本水印 开始编辑
 - (void)doubleTapAction:(UITapGestureRecognizer *)doubleTap {
@@ -405,6 +428,10 @@
         [self.watermarkArray addObject:label];
         [self.preview addSubview:label];
         [self addRotateAndPinchGestureRecognizer:label];
+        [self topSelectedView:label];
+        [self startDelayPerform:^{
+            [self.selectedBox removeFromSuperview];
+        } afterDelay:1.0];
     };
     [self.view addSubview:editTextView];
 }
@@ -444,12 +471,19 @@
             pan.view.center = CGPointMake(self.preview.sl_w/2.0, self.preview.sl_h/2.0);
         }
         [self.trashTips removeFromSuperview];
+        [self startDelayPerform:^{
+            [self.selectedBox removeFromSuperview];
+        } afterDelay:1.0];
     }
 }
 //缩放 水印视图
 - (void)pinchAction:(UIPinchGestureRecognizer *)pinch {
     if (pinch.state == UIGestureRecognizerStateBegan) {
         [self topSelectedView:pinch.view];
+    }else if (pinch.state == UIGestureRecognizerStateFailed || pinch.state == UIGestureRecognizerStateEnded){
+        [self startDelayPerform:^{
+            [self.selectedBox removeFromSuperview];
+        } afterDelay:1.0];
     }
     pinch.view.transform = CGAffineTransformScale(pinch.view.transform, pinch.scale, pinch.scale);
     pinch.scale = 1.0;
@@ -458,6 +492,10 @@
 - (void)rotateAction:(UIRotationGestureRecognizer *)rotation {
     if (rotation.state == UIGestureRecognizerStateBegan) {
         [self topSelectedView:rotation.view];
+    }else if (rotation.state == UIGestureRecognizerStateFailed || rotation.state == UIGestureRecognizerStateEnded){
+        [self startDelayPerform:^{
+            [self.selectedBox removeFromSuperview];
+        } afterDelay:1.0];
     }
     rotation.view.transform = CGAffineTransformRotate(rotation.view.transform, rotation.rotation);
     // 将旋转的弧度清零(注意不是将图片旋转的弧度清零, 而是将当前手指旋转的弧度清零)
@@ -504,6 +542,9 @@
     [self.preview bringSubviewToFront:topView];
     [self.watermarkArray removeObject:topView];
     [self.watermarkArray addObject:topView];
+    [self cancelDelayPerform]; //取消延迟执行
+    [topView addSubview:self.selectedBox];
+    self.selectedBox.frame = topView.bounds;
 }
 // 隐藏预览按钮
 - (void)hiddenPreviewButton:(BOOL)isHidden {
@@ -521,6 +562,8 @@
 - (CALayer *)graffitiLayer {
     CALayer *graffitiLayer = [CALayer layer];
     graffitiLayer.frame = self.drawView.bounds;
+    // 把水印在预览层上的坐标转换为视频资源文件上的坐标
+    // 视频Layer上的坐标系原点在左下角，单位是px像素
     CGSize scaleSize = CGSizeMake([SLAvPlayer sharedAVPlayer].naturalSize.width/self.preview.sl_w, [SLAvPlayer sharedAVPlayer].naturalSize.height/self.preview.sl_h);
     CGRect changeRect = CGRectMake(0, 0, CGRectGetWidth(graffitiLayer.frame)*scaleSize.width, CGRectGetHeight(graffitiLayer.frame)*scaleSize.height);
     graffitiLayer.frame = changeRect;
@@ -540,8 +583,8 @@
     for (UIView *view in self.watermarkArray) {
         CALayer *animatedLayer = [CALayer layer];
         animatedLayer.frame = view.bounds;
-        // 像素
         // 把水印在预览层上的坐标转换为视频资源文件上的坐标
+        // 视频Layer上的坐标系原点在左下角，单位是px像素
         CGSize scaleSize = CGSizeMake([SLAvPlayer sharedAVPlayer].naturalSize.width/self.preview.sl_w, [SLAvPlayer sharedAVPlayer].naturalSize.height/self.preview.sl_h);
         CGRect changeRect = CGRectMake(0, 0, CGRectGetWidth(animatedLayer.frame)*scaleSize.width, CGRectGetHeight(animatedLayer.frame)*scaleSize.height);
         animatedLayer.frame = changeRect;
