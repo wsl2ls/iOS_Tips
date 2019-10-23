@@ -141,7 +141,9 @@
     label.userInteractionEnabled = YES;
     label.backgroundColor = textView.backgroundColor;
     label.textColor = textView.textColor;
-    label.textPadding = UIEdgeInsetsMake(0, 4, 0, -4);
+    label.lineBreakMode = NSLineBreakByCharWrapping;
+    label.textPadding = UIEdgeInsetsMake(textView.textContainerInset.top, 4, textView.textContainerInset.bottom, 4);
+    
     label.text = textView.text;
     label.numberOfLines = 0;
     return label;
