@@ -53,6 +53,7 @@
     self.image = nil;
     self.videoPath = nil;
     [self.avCaptureTool startRunning];
+    [self focusAtPoint:CGPointMake(SL_kScreenWidth/2.0, SL_kScreenHeight/2.0)];
 }
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
@@ -266,18 +267,24 @@
     if(!self.avCaptureTool.isRunning) {
         return;
     }
-    
     CGPoint point = [tap locationInView:self.captureView];
     if(point.y > self.shotBtn.sl_y || point.y < self.switchCameraBtn.sl_y + self.switchCameraBtn.sl_h) {
         return;
     }
+    [self focusAtPoint:point];
+}
+//设置焦点视图位置
+- (void)focusAtPoint:(CGPoint)point {
     self.focusView.center = point;
-    if (![self.view.subviews containsObject:self.focusView]) {
-        [self.view addSubview:self.focusView];
-    }
+    [self.focusView removeFromSuperview];
+    [self.view addSubview:self.focusView];
+    self.focusView.transform = CGAffineTransformMakeScale(1.3, 1.3);
+    [UIView animateWithDuration:0.5 animations:^{
+        self.focusView.transform = CGAffineTransformIdentity;
+    }];
     [self.avCaptureTool focusAtPoint:point];
     [self startDelayPerform:^{
-       [self.focusView removeFromSuperview];
+        [self.focusView removeFromSuperview];
     } afterDelay:1.0];
 }
 //调节焦距 手势

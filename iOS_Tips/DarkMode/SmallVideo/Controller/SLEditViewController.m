@@ -524,7 +524,7 @@
     CGSize scaleSize = CGSizeMake([SLAvPlayer sharedAVPlayer].naturalSize.width/self.preview.sl_w, [SLAvPlayer sharedAVPlayer].naturalSize.height/self.preview.sl_h);
     CGRect changeRect = CGRectMake(0, 0, CGRectGetWidth(graffitiLayer.frame)*scaleSize.width, CGRectGetHeight(graffitiLayer.frame)*scaleSize.height);
     graffitiLayer.frame = changeRect;
-    UIImage *image = [self.drawView viewToImageInRect:self.drawView.bounds];
+    UIImage *image = [self.drawView imageByViewInRect:self.drawView.bounds];
     /** 缩放至视频大小 */
     UIGraphicsBeginImageContextWithOptions([SLAvPlayer sharedAVPlayer].naturalSize, NO, 1);
     [image drawInRect:CGRectMake(0, 0, [SLAvPlayer sharedAVPlayer].naturalSize.width, [SLAvPlayer sharedAVPlayer].naturalSize.height)];
@@ -569,7 +569,7 @@
             }
         } else if ([view isKindOfClass:[UILabel class]]) {
             UILabel *label = (UILabel *)view;
-            SLImage *image = [SLImage imageWithData:UIImagePNGRepresentation([label viewToImageInRect:label.bounds])];
+            SLImage *image = [SLImage imageWithData:UIImagePNGRepresentation([label imageByViewInRect:label.bounds])];
             animatedLayer.contentsScale = [UIScreen mainScreen].scale;
             animatedLayer.contents = (__bridge id _Nullable)(image.CGImage);
         }

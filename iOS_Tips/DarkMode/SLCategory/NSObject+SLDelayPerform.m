@@ -12,7 +12,7 @@
 static dispatch_block_t sl_delayBlock;
 
 @implementation NSObject (SLDelayPerform)
-/// 开始延迟执行  每次重新开始计时
+/// 开始延迟执行  每次调用就重新开始计时
 /// @param perform  执行内容
 /// @param delay 延迟时间
 - (void)startDelayPerform:(void(^)(void))perform afterDelay:(NSTimeInterval)delay {

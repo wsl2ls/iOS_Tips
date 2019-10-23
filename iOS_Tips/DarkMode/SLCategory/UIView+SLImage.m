@@ -11,7 +11,7 @@
 @implementation UIView (SLImage)
 
 // View 转 Image
-- (UIImage *)viewToImageInRect:(CGRect)range{
+- (UIImage *)imageByViewInRect:(CGRect)range{
     CGRect rect = self.bounds;
     /** 参数取整，否则可能会出现1像素偏差 */
     /** 有小数部分才调整差值 */
