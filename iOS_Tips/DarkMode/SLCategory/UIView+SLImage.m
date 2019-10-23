@@ -10,7 +10,7 @@
 
 @implementation UIView (SLImage)
 
-// 涂鸦图片
+// View 转 Image
 - (UIImage *)viewToImageInRect:(CGRect)range{
     CGRect rect = self.bounds;
     /** 参数取整，否则可能会出现1像素偏差 */

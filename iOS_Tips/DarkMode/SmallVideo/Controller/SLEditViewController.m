@@ -20,8 +20,9 @@
 #import "SLImageView.h"
 #import "SLDrawView.h"
 #import "SLEditTextView.h"
+#import "SLEditVideoClipping.h"
 
-@interface SLEditViewController () <UIGestureRecognizerDelegate>
+@interface SLEditViewController () <UIGestureRecognizerDelegate, SLAvPlayerDelegate>
 
 @property (nonatomic, strong) UIImageView *preview; // 预览视图 展示编辑的图片或视频
 
@@ -36,6 +37,9 @@
 
 @property (nonatomic, strong) SLDrawView *drawView; // 涂鸦视图
 @property (nonatomic, strong) NSMutableArray *watermarkArray; // 水印层 所有的贴图和文本
+@property (nonatomic, strong) SLEditVideoClipping * videoClippingView; //视频裁剪 子菜单视图 选择裁剪范围
+@property (nonatomic, assign) CMTime clippingBeginTime; //视频裁剪起始点
+@property (nonatomic, assign) CMTime clippingEndTime; //视频裁剪结束点
 
 @end
 
@@ -69,7 +73,7 @@
     }else {
         SLAvPlayer *avPlayer = [SLAvPlayer sharedAVPlayer];
         avPlayer.url = self.videoPath;
-        avPlayer.isLoopPlay = YES;
+        avPlayer.delegate = self;
         self.preview.sl_h = self.preview.sl_w * avPlayer.naturalSize.height/avPlayer.naturalSize.width;
         avPlayer.monitor = self.preview;
         self.preview.center = CGPointMake(self.view.sl_w/2.0, self.view.sl_h/2.0);
@@ -196,6 +200,18 @@
                     [weakSelf addRotateAndPinchGestureRecognizer:label];
                 };
             }
+            if(editMenuType == SLEditMenuTypeVideoClipping) {
+                weakSelf.videoClippingView.exitClipping = ^{
+                    [weakSelf hiddenEditMenus:NO];
+                    weakSelf.preview.transform = CGAffineTransformIdentity;
+                    weakSelf.preview.center = CGPointMake(SL_kScreenWidth/2.0, SL_kScreenHeight/2.0);
+                };
+                [weakSelf hiddenEditMenus:YES];
+                weakSelf.preview.transform = CGAffineTransformMakeScale((SL_kScreenWidth - 30 * 2)/SL_kScreenWidth, (SL_kScreenWidth - 30 * 2)/SL_kScreenWidth);
+                weakSelf.preview.center = CGPointMake(SL_kScreenWidth/2.0, (SL_kScreenHeight - weakSelf.videoClippingView.sl_h)/2.0);
+                weakSelf.videoClippingView.asset = [AVAsset assetWithURL:weakSelf.videoPath];
+                [weakSelf.view addSubview:weakSelf.videoClippingView];
+            }
         };
         [self.view addSubview:_editMenuView];
     }
@@ -231,8 +247,45 @@
     }
     return _watermarkArray;
 }
-
-#pragma mark - EventsHandle
+- (SLEditVideoClipping *)videoClippingView {
+    if (!_videoClippingView) {
+        _videoClippingView = [[SLEditVideoClipping alloc] initWithFrame:CGRectMake(0, SL_kScreenHeight - 110, SL_kScreenWidth, 110)];
+        _videoClippingView.backgroundColor = [UIColor blackColor];
+        __weak typeof(self) weakSelf = self;
+        _videoClippingView.selectedClippingBegin = ^(CMTime beginTime, CMTime endTime, UIGestureRecognizerState state) {
+            [[SLAvPlayer sharedAVPlayer] seekToTime:beginTime completionHandler:nil];
+            if (state == UIGestureRecognizerStateEnded) {
+                weakSelf.clippingBeginTime = beginTime;
+                [[SLAvPlayer sharedAVPlayer] play];
+                NSLog(@"裁剪范围：%.2f %.2f",CMTimeGetSeconds(weakSelf.clippingBeginTime), CMTimeGetSeconds(weakSelf.clippingEndTime));
+            }
+        };
+        _videoClippingView.selectedClippingEnd = ^(CMTime beginTime, CMTime endTime, UIGestureRecognizerState state) {
+            [[SLAvPlayer sharedAVPlayer] seekToTime:endTime completionHandler:nil];
+            if (state == UIGestureRecognizerStateEnded) {
+                weakSelf.clippingEndTime = endTime;
+                [[SLAvPlayer sharedAVPlayer] seekToTime:beginTime completionHandler:nil];
+                [[SLAvPlayer sharedAVPlayer] play];
+                NSLog(@"裁剪范围：%.2f %.2f",CMTimeGetSeconds(weakSelf.clippingBeginTime), CMTimeGetSeconds(weakSelf.clippingEndTime));
+            }
+        };
+        
+    }
+    return _videoClippingView;
+}
+- (CMTime)clippingBeginTime {
+    if (_clippingBeginTime.value == 0) {
+        _clippingBeginTime = CMTimeMake(0, self.clippingEndTime.timescale);
+    }
+    return _clippingBeginTime;
+}
+- (CMTime)clippingEndTime {
+    if (_clippingEndTime.value == 0) {
+        _clippingEndTime = [SLAvPlayer sharedAVPlayer].duration;
+    }
+    return _clippingEndTime;
+}
+#pragma mark - Events Handle
 //编辑
 - (void)editBtnClicked:(id)sender {
     [self hiddenEditMenus:NO];
@@ -285,30 +338,46 @@
     }
     [self.watermarkArray removeAllObjects];
 }
-//完成编辑
+//完成编辑 导出编辑后的视频
 - (void)doneEditBtnClicked:(id)sender {
-    [self hiddenPreviewButton:NO];
+    [self hiddenPreviewButton:YES];
     [self hiddenEditMenus:YES];
     
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"The love of one's life" ofType:@"mp3"];
-    NSURL *bgsoundUrl = [NSURL fileURLWithPath:path];
+    UIActivityIndicatorView *activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    activityIndicatorView.frame = CGRectMake(0, 0, 50, 50);
+    activityIndicatorView.color = [UIColor greenColor];
+    activityIndicatorView.center = CGPointMake(SL_kScreenWidth/2.0, SL_kScreenHeight/2.0);
+    [activityIndicatorView startAnimating];
+    [self.view addSubview:activityIndicatorView];
+    
+    //    NSString *path = [[NSBundle mainBundle] pathForResource:@"The love of one's life" ofType:@"mp3"];
+    //    NSURL *bgsoundUrl = [NSURL fileURLWithPath:path];
     SLAvEditExport *videoExportSession = [[SLAvEditExport alloc] initWithAsset:[AVAsset assetWithURL:self.videoPath]];
     NSString *outputVideoFielPath = [NSTemporaryDirectory() stringByAppendingString:@"EditMyVideo.mp4"];
     videoExportSession.outputURL = [NSURL fileURLWithPath:outputVideoFielPath];
-    videoExportSession.graffitiView = [self graffitiView];
+    videoExportSession.timeRange = CMTimeRangeMake(self.clippingBeginTime,CMTimeSubtract(self.clippingEndTime, self.clippingBeginTime));
+    videoExportSession.graffitiLayer = [self graffitiLayer];
     videoExportSession.stickerLayers = [self watermarkLayers];
-    videoExportSession.audioUrls = @[bgsoundUrl];
+    //    videoExportSession.audioUrls = @[bgsoundUrl];
     videoExportSession.isNativeAudio = YES;
     [videoExportSession exportAsynchronouslyWithCompletionHandler:^(NSError * _Nonnull error) {
         SLAvPlayer *avPlayer = [SLAvPlayer sharedAVPlayer];
         avPlayer.url = videoExportSession.outputURL;
-        avPlayer.isLoopPlay = YES;
+        avPlayer.delegate = self;
         self.videoPath = videoExportSession.outputURL;
         
+        [self hiddenPreviewButton:NO];
         [self.drawView removeFromSuperview];
         for (UIView *view in self.watermarkArray) {
             [view removeFromSuperview];
         }
+        self.videoClippingView = nil;
+        self.clippingBeginTime = kCMTimeZero;
+        self.clippingEndTime = kCMTimeZero;
+        
+        [activityIndicatorView stopAnimating];
+        [activityIndicatorView removeFromSuperview];
+        
     } progress:^(float progress) {
         //        NSLog(@"视频导出进度 %f",progress);
     }];
@@ -449,10 +518,21 @@
     self.editMenuView.hidden = isHidden;
 }
 // 涂鸦层
-- (UIView *)graffitiView {
-    UIView *graffitiView = [[UIView alloc] initWithFrame:self.drawView.bounds];
-    [graffitiView addSubview:self.drawView];
-    return graffitiView;
+- (CALayer *)graffitiLayer {
+    CALayer *graffitiLayer = [CALayer layer];
+    graffitiLayer.frame = self.drawView.bounds;
+    CGSize scaleSize = CGSizeMake([SLAvPlayer sharedAVPlayer].naturalSize.width/self.preview.sl_w, [SLAvPlayer sharedAVPlayer].naturalSize.height/self.preview.sl_h);
+    CGRect changeRect = CGRectMake(0, 0, CGRectGetWidth(graffitiLayer.frame)*scaleSize.width, CGRectGetHeight(graffitiLayer.frame)*scaleSize.height);
+    graffitiLayer.frame = changeRect;
+    UIImage *image = [self.drawView viewToImageInRect:self.drawView.bounds];
+    /** 缩放至视频大小 */
+    UIGraphicsBeginImageContextWithOptions([SLAvPlayer sharedAVPlayer].naturalSize, NO, 1);
+    [image drawInRect:CGRectMake(0, 0, [SLAvPlayer sharedAVPlayer].naturalSize.width, [SLAvPlayer sharedAVPlayer].naturalSize.height)];
+    UIImage *graffitiImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    graffitiLayer.contentsScale = [UIScreen mainScreen].scale;
+    graffitiLayer.contents = (__bridge id _Nullable)(graffitiImage.CGImage);
+    return graffitiLayer;
 }
 // 贴画层 和 文本层
 - (NSMutableArray *)watermarkLayers {
@@ -464,7 +544,7 @@
         // 把水印在预览层上的坐标转换为视频资源文件上的坐标
         CGSize scaleSize = CGSizeMake([SLAvPlayer sharedAVPlayer].naturalSize.width/self.preview.sl_w, [SLAvPlayer sharedAVPlayer].naturalSize.height/self.preview.sl_h);
         CGRect changeRect = CGRectMake(0, 0, CGRectGetWidth(animatedLayer.frame)*scaleSize.width, CGRectGetHeight(animatedLayer.frame)*scaleSize.height);
-        animatedLayer.frame = CGRectMake(0, 0, CGRectGetWidth(changeRect), CGRectGetHeight(changeRect));
+        animatedLayer.frame = changeRect;
         animatedLayer.position =  CGPointMake(view.center.x*scaleSize.width, (self.preview.sl_h - view.center.y)*scaleSize.height);
         
         //形变
@@ -517,4 +597,13 @@
     animation.repeatCount = HUGE_VALF;
     return animation;
 }
+
+#pragma mark - SLAvPlayerDelegate
+- (void)avPlayer:(SLAvPlayer *)avPlayer playingToCurrentTime:(CMTime)currentTime totalTime:(CMTime)totalTime {
+    if (CMTimeGetSeconds(currentTime) >= CMTimeGetSeconds(self.clippingEndTime)) {
+        [avPlayer seekToTime:self.clippingBeginTime completionHandler:nil];
+        [avPlayer play];
+    }
+}
+
 @end

@@ -28,13 +28,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// 添加音频
 @property (nonatomic, strong, nullable) NSArray <NSURL *>*audioUrls;
 /// 涂鸦层
-@property (nonatomic, strong, nullable) UIView *graffitiView;
+@property (nonatomic, strong, nullable) CALayer *graffitiLayer;
 /// 贴图 和文本 层集合
 @property (nonatomic, strong, nullable) NSMutableArray <CALayer *>*stickerLayers;
 
 /// 初始化
 - (id)initWithAsset:(AVAsset *)asset;
-
 /// 导出编辑后的视频
 - (void)exportAsynchronouslyWithCompletionHandler:(void (^)(NSError *error))handler progress:(void (^)(float progress))exportProgress;
 

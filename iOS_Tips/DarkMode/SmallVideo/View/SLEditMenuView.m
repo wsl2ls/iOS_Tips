@@ -217,9 +217,9 @@
         }
         [subView removeFromSuperview];
     }
-    _menuTypes = @[@(SLEditMenuTypeGraffiti), @(SLEditMenuTypeSticking), @(SLEditMenuTypeText), @(SLEditMenuTypeCutting)];
+    _menuTypes = @[@(SLEditMenuTypeGraffiti), @(SLEditMenuTypeSticking), @(SLEditMenuTypeText), @(SLEditMenuTypeVideoClipping)];
     _imageNames = @[@"EditMenuGraffiti", @"EditMenuSticker", @"EditMenuText", @"EditMenuCut"];
-    _imageNamesSelected = @[@"EditMenuGraffitiSelected", @"EditMenuStickerSelected", @"EditMenuText", @"EditMenuCutSelected"];
+    _imageNamesSelected = @[@"EditMenuGraffitiSelected", @"EditMenuStickerSelected", @"EditMenuText", @"EditMenuCut"];
     int count = (int)_menuTypes.count;
     CGSize itemSize = CGSizeMake(20, 20);
     CGFloat space = (self.frame.size.width - count * itemSize.width)/count;
@@ -246,7 +246,6 @@
         _submenuGraffiti.goBack = ^{
             weakSelf.selectEditMenu(SLEditMenuTypeGraffiti, @{@"goBack":@(YES)});
         };
-        //        [self addSubview:_submenuGraffiti];
     }
     return _submenuGraffiti;
 }
@@ -287,7 +286,7 @@
             self.selectEditMenu(editMenuType, nil);
             [self hiddenView:self.submenuGraffiti hidden:YES];
             break;
-        case SLEditMenuTypeCutting:
+        case SLEditMenuTypeVideoClipping:
             [self hiddenView:self.submenuSticking hidden:YES];
             self.selectEditMenu(editMenuType, nil);
             [self hiddenView:self.submenuGraffiti hidden:YES];

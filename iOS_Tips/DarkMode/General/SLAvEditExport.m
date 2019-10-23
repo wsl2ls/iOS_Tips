@@ -58,13 +58,14 @@
     }
     
     [self.exportSession exportAsynchronouslyWithCompletionHandler:^{
+        
         dispatch_async(dispatch_get_main_queue(), ^{
             switch ([self.exportSession status]) {
                 case AVAssetExportSessionStatusFailed:
                     NSLog(@"视频导出失败: %@", [[self.exportSession error] localizedDescription]);
                     break;
                 case AVAssetExportSessionStatusCancelled:
-                    NSLog(@"Export canceled");
+                    NSLog(@"视频导出取消");
                     break;
                 case AVAssetExportSessionStatusCompleted:
                     NSLog(@"视频导出成功");
@@ -97,7 +98,7 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             exportProgress(self.exportSession.progress);
         });
-        if (self.exportSession.status == AVAssetExportSessionStatusCompleted) {
+        if (self.exportSession.status == AVAssetExportSessionStatusCancelled || self.exportSession.status == AVAssetExportSessionStatusCompleted || self.exportSession.status == AVAssetExportSessionStatusFailed || self.exportSession.status == AVAssetExportSessionStatusUnknown) {
             //取消计时器
             dispatch_source_cancel(self->_gcdTimer);
         }
@@ -112,7 +113,7 @@
         //导出会话
         _exportSession = [[AVAssetExportSession alloc] initWithAsset:self.composition presetName:AVAssetExportPresetHighestQuality];
         /** 创建混合视频时开始剪辑 */
-        _exportSession.timeRange = self.timeRange;
+        //        _exportSession.timeRange = self.timeRange;
         _exportSession.videoComposition = self.videoComposition;
         _exportSession.outputURL = self.outputURL;
         _exportSession.outputFileType = AVFileTypeMPEG4;
@@ -180,7 +181,7 @@
         
         /** iOS9之前的处理方法，之后使用CIFilter ，待学习*/
         //方向
-        if (orientation != UIImageOrientationUp || self.graffitiView || self.stickerLayers.count) {
+        if (orientation != UIImageOrientationUp || self.graffitiLayer || self.stickerLayers.count) {
             _videoComposition = [AVMutableVideoComposition videoComposition];
             _videoComposition.frameDuration = CMTimeMake(1, 30); // 30 fps
             _videoComposition.renderSize = renderSize;
@@ -194,21 +195,21 @@
             _videoComposition.instructions = @[roateInstruction];
             
             /** 涂鸦 贴图  文字 */
-            if(self.graffitiView || self.stickerLayers.count) {
+            if(self.graffitiLayer || self.stickerLayers.count) {
                 CALayer *parentLayer = [CALayer layer];
                 CALayer *videoLayer = [CALayer layer];
                 parentLayer.frame = CGRectMake(0, 0, renderSize.width, renderSize.height);
                 videoLayer.frame = CGRectMake(0, 0, renderSize.width, renderSize.height);
                 [parentLayer addSublayer:videoLayer];
                 //涂鸦层
-                CALayer *graffitiLayer = [self graffitiViewLayer:renderSize];
-                [parentLayer addSublayer:graffitiLayer];
-                //贴画层
+                if (self.graffitiLayer) {
+                    [parentLayer addSublayer:self.graffitiLayer];
+                }
+                //贴画层 和 文本层
                 for (CALayer *gifLayer in self.stickerLayers) {
                     [parentLayer addSublayer:gifLayer];
                 }
-                //文字层
-    
+                
                 _videoComposition.animationTool = [AVVideoCompositionCoreAnimationTool videoCompositionCoreAnimationToolWithPostProcessingAsVideoLayer:videoLayer inLayer:parentLayer];
             }
         }
@@ -267,50 +268,6 @@
 }
 
 #pragma mark - Help Methods
-//生成涂鸦层
-- (CALayer *)graffitiViewLayer:(CGSize)size {
-    UIImage *watermarkImage = [self graffitiImageForVideoSize:size];
-    CALayer *graffitiLayer = [CALayer layer];
-    graffitiLayer.contentsScale = [UIScreen mainScreen].scale;
-    if (watermarkImage) {
-        graffitiLayer.contents = (__bridge id _Nullable)(watermarkImage.CGImage);
-    }
-    graffitiLayer.frame = CGRectMake(0, 0, size.width, size.height);
-    [graffitiLayer setMasksToBounds:YES];
-    return graffitiLayer;
-}
-// 涂鸦图片
-- (UIImage *)graffitiImageForVideoSize:(CGSize)videoSize {
-    UIView *graffitiView = self.graffitiView;
-    if (graffitiView) {
-        CGRect rect = graffitiView.frame;
-        /** 参数取整，否则可能会出现1像素偏差 */
-        /** 有小数部分才调整差值 */
-#define lfme_export_fixDecimal(d) ((fmod(d, (int)d)) > 0.59f ? ((int)(d+0.5)*1.f) : (((fmod(d, (int)d)) < 0.59f && (fmod(d, (int)d)) > 0.1f) ? ((int)(d)*1.f+0.5f) : (int)(d)*1.f))
-        rect.origin.x = lfme_export_fixDecimal(rect.origin.x);
-        rect.origin.y = lfme_export_fixDecimal(rect.origin.y);
-        rect.size.width = lfme_export_fixDecimal(rect.size.width);
-        rect.size.height = lfme_export_fixDecimal(rect.size.height);
-#undef lfme_export_fixDecimal
-        CGSize size = rect.size;
-        //1.开启上下文
-        UIGraphicsBeginImageContextWithOptions(size, NO, [UIScreen mainScreen].scale);
-        CGContextRef context = UIGraphicsGetCurrentContext();
-        //2.绘制图层
-        [graffitiView.layer renderInContext: context];
-        //3.从上下文中获取新图片
-        UIImage *watermarkImage = UIGraphicsGetImageFromCurrentImageContext();
-        //4.关闭图形上下文
-        UIGraphicsEndImageContext();
-        /** 缩放至视频大小 */
-        UIGraphicsBeginImageContextWithOptions(videoSize, NO, 1);
-        [watermarkImage drawInRect:CGRectMake(0, 0, videoSize.width, videoSize.height)];
-        UIImage *generatedWatermarkImage = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext();
-        return generatedWatermarkImage;
-    }
-    return nil;
-}
 //视频的方向
 - (UIImageOrientation)orientationFromAVAssetTrack:(AVAssetTrack *)videoTrack {
     UIImageOrientation orientation = UIImageOrientationUp;

@@ -18,7 +18,7 @@ typedef NS_ENUM(NSUInteger, SLEditMenuType) {
     /// 贴画
     SLEditMenuTypeSticking,
     /// 裁剪
-    SLEditMenuTypeCutting
+    SLEditMenuTypeVideoClipping
 };
 
 /// 底部音视频编辑主菜单栏

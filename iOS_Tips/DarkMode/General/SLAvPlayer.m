@@ -7,13 +7,15 @@
 //
 
 #import "SLAvPlayer.h"
-#import <AVKit/AVKit.h>
 
-@interface SLAvPlayer ()
+@interface SLAvPlayer () {
+    id _playerTimeObserver;
+}
 @property (nonatomic, strong) AVPlayer *avPlayer;
 @property (nonatomic, strong) AVPlayerLayer *playerLayer;  //视频显示器
 @end
 @implementation SLAvPlayer
+
 + (instancetype)sharedAVPlayer {
     static SLAvPlayer *avPlayer = nil;
     static dispatch_once_t onceToken;
@@ -37,7 +39,6 @@
 
 #pragma mark - HelpMethods
 - (void)configure {
-    
 }
 //视频的方向
 - (UIImageOrientation)orientationFromAVAssetTrack:(AVAssetTrack *)videoTrack {
@@ -54,12 +55,8 @@
     }
     return orientation;
 }
+
 #pragma mark - Setter
-- (void)setIsLoopPlay:(BOOL)isLoopPlay {
-    _isLoopPlay = isLoopPlay;
-    //监听是否播放完毕
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(moviePlayDidEnd:) name:AVPlayerItemDidPlayToEndTimeNotification object:self.avPlayer.currentItem];
-}
 - (void)setUrl:(nonnull NSURL *)url {
     _url = url;
     if (_url == nil) {
@@ -74,7 +71,6 @@
     }else {
         self.playerLayer.frame = monitor.bounds;
         [monitor.layer insertSublayer:self.playerLayer atIndex:0];
-        //        [monitor.layer addSublayer:self.playerLayer];
     }
 }
 
@@ -82,6 +78,23 @@
 - (AVPlayer *)avPlayer {
     if (_avPlayer == nil) {
         _avPlayer = [[AVPlayer alloc] init];
+        //播放进度观察者 设置每0.1秒执行一次
+        __weak typeof(self) weakSelf = self;
+        _playerTimeObserver = [_avPlayer addPeriodicTimeObserverForInterval:CMTimeMake(1.0, 10) queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
+            CGFloat current = CMTimeGetSeconds(time);
+            CMTime totalTime = weakSelf.avPlayer.currentItem.duration;
+            CGFloat total = CMTimeGetSeconds(totalTime);
+            if([weakSelf.delegate respondsToSelector:@selector(avPlayer:playingToCurrentTime:totalTime:)]) {
+                [weakSelf.delegate avPlayer:weakSelf playingToCurrentTime:time totalTime:totalTime];
+            }
+            if (current >= total) {
+                //播放完毕
+                if([weakSelf.delegate respondsToSelector:@selector(playDidEndOnAvplyer:)]) {
+                    [weakSelf pause];
+                    [weakSelf.delegate playDidEndOnAvplyer:weakSelf];
+                }
+            }
+        }];
     }
     return _avPlayer;
 }
@@ -94,6 +107,9 @@
     }
     return _playerLayer;
 }
+- (CMTime)duration {
+    return self.avPlayer.currentItem.duration;
+}
 - (CGSize)naturalSize {
     AVAsset *asset = [AVAsset assetWithURL:self.url];
     //资源文件的视频轨道
@@ -103,13 +119,15 @@
     }else {
         return CGSizeZero;
     }
-    UIImageOrientation orientation = [self orientationFromAVAssetTrack:assetVideoTrack];
-    //视频素材原大小 像素大小px 不是pt
+    //    UIImageOrientation orientation = [self orientationFromAVAssetTrack:assetVideoTrack];
+    //    //视频素材原大小 像素大小px 不是pt
+    //    CGSize renderSize = assetVideoTrack.naturalSize;
+    //    if (orientation == UIImageOrientationLeft || orientation == UIImageOrientationRight ) {
+    //        renderSize = CGSizeMake(assetVideoTrack.naturalSize.height,assetVideoTrack.naturalSize.width);
+    //    }
     CGSize renderSize = assetVideoTrack.naturalSize;
-    if (orientation == UIImageOrientationLeft || orientation == UIImageOrientationRight ) {
-        renderSize = CGSizeMake(assetVideoTrack.naturalSize.height,assetVideoTrack.naturalSize.width);
-    }
-    return CGSizeMake(renderSize.width, renderSize.height);
+    renderSize = CGSizeApplyAffineTransform(assetVideoTrack.naturalSize, assetVideoTrack.preferredTransform);
+    return CGSizeMake(fabs(renderSize.width), fabs(renderSize.height));
 }
 
 #pragma mark - EventsHandle
@@ -124,15 +142,11 @@
     self.avPlayer = nil;
     [_playerLayer removeFromSuperlayer];
     _playerLayer = nil;
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    _playerTimeObserver = nil;
+    _delegate = nil;
 }
-//播放完成
-- (void)moviePlayDidEnd:(NSNotification*)notification {
-    AVPlayerItem*item = [notification object];
-    if (_isLoopPlay) {
-        [item seekToTime:kCMTimeZero completionHandler:^(BOOL finished) {}];
-        [self.avPlayer play];
-    }
+- (void)seekToTime:(CMTime)time completionHandler:(void (^_Nullable)(BOOL finished))completionHandler {
+    [self.avPlayer.currentItem seekToTime:time completionHandler:completionHandler];
 }
 
 @end
