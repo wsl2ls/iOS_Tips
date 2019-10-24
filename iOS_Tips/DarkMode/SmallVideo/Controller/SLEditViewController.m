@@ -204,7 +204,7 @@
                     SLImageView *imageView = [[SLImageView alloc] initWithFrame:CGRectMake(0, 0, image.size.width/[UIScreen mainScreen].scale, image.size.height/[UIScreen mainScreen].scale)];
                     imageView.autoPlayAnimatedImage = weakSelf.editObject == SLEditObjectVideo?YES:NO;
                     imageView.userInteractionEnabled = YES;
-                    imageView.center = CGPointMake(self.preview.sl_w/2.0, self.preview.sl_h/2.0);
+                    imageView.center = CGPointMake(weakSelf.preview.sl_w/2.0, weakSelf.preview.sl_h/2.0);
                     imageView.image = image;
                     [weakSelf.watermarkArray addObject:imageView];
                     [weakSelf.preview addSubview:imageView];
@@ -222,7 +222,7 @@
                     if (label.text.length == 0 || label == nil) {
                         return;
                     }
-                    label.center = CGPointMake(self.preview.sl_w/2.0, self.preview.sl_h/2.0);
+                    label.center = CGPointMake(weakSelf.preview.sl_w/2.0, weakSelf.preview.sl_h/2.0);
                     [weakSelf.preview addSubview:label];
                     [weakSelf.watermarkArray addObject:label];
                     [weakSelf addRotateAndPinchGestureRecognizer:label];
