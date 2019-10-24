@@ -138,8 +138,8 @@
     [self.avPlayer pause];
 }
 - (void)stop {
-    [self.avPlayer pause];
-    self.avPlayer = nil;
+    [_avPlayer pause];
+    _avPlayer = nil;
     [_playerLayer removeFromSuperlayer];
     _playerLayer = nil;
     _playerTimeObserver = nil;

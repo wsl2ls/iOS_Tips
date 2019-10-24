@@ -27,6 +27,8 @@
 @interface SLEditViewController () <UIGestureRecognizerDelegate, SLAvPlayerDelegate>
 
 @property (nonatomic, strong) UIImageView *preview; // 预览视图 展示编辑的图片或视频
+@property (nonatomic, assign) SLEditObject editObject; //编辑对象
+@property (nonatomic, strong) SLAvPlayer *avPlayer;  //视频播放预览
 
 @property (nonatomic, strong) SLBlurView *editBtn; //编辑
 @property (nonatomic, strong) SLBlurView *againShotBtn;  // 再拍一次
@@ -55,8 +57,9 @@
 }
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    SLAvPlayer *avPlayer = [SLAvPlayer sharedAVPlayer];
-    [avPlayer stop];
+    _avPlayer.delegate = nil;
+    [_avPlayer stop];
+    _avPlayer = nil;
 }
 - (BOOL)prefersStatusBarHidden {
     return YES;
@@ -71,16 +74,17 @@
 - (void)setupUI {
     self.view.backgroundColor = [UIColor blackColor];
     [self.view addSubview:self.preview];
-    if (self.image) {
+    if (self.editObject == SLEditObjectPicture) {
         self.preview.image = self.image;
-    }else {
-        SLAvPlayer *avPlayer = [SLAvPlayer sharedAVPlayer];
-        avPlayer.url = self.videoPath;
-        avPlayer.delegate = self;
-        self.preview.sl_h = self.preview.sl_w * avPlayer.naturalSize.height/avPlayer.naturalSize.width;
-        avPlayer.monitor = self.preview;
+        self.preview.sl_h = self.preview.sl_w * self.image.size.height/self.image.size.width;
         self.preview.center = CGPointMake(self.view.sl_w/2.0, self.view.sl_h/2.0);
-        [avPlayer play];
+    }else if (self.editObject == SLEditObjectVideo){
+        self.avPlayer.url = self.videoPath;
+        self.avPlayer.delegate = self;
+        self.preview.sl_h = self.preview.sl_w *  self.avPlayer.naturalSize.height/ self.avPlayer.naturalSize.width;
+        self.avPlayer.monitor = self.preview;
+        self.preview.center = CGPointMake(self.view.sl_w/2.0, self.view.sl_h/2.0);
+        [ self.avPlayer play];
     }
     [self.view addSubview:self.againShotBtn];
     [self.view addSubview:self.editBtn];
@@ -100,6 +104,21 @@
         _preview.clipsToBounds = YES;
     }
     return _preview;
+}
+- (SLEditObject)editObject {
+    if (self.image) {
+        return SLEditObjectPicture;
+    }else if (self.videoPath) {
+        return SLEditObjectVideo;
+    }else {
+        return SLEditObjectUnnnow;
+    }
+}
+- (SLAvPlayer *)avPlayer {
+    if (!_avPlayer) {
+        _avPlayer = [[SLAvPlayer alloc] init];
+    }
+    return _avPlayer;
 }
 - (SLBlurView *)editBtn {
     if (_editBtn == nil) {
@@ -164,11 +183,12 @@
     if (!_editMenuView) {
         _editMenuView = [[SLEditMenuView alloc] initWithFrame:CGRectMake(0, self.view.sl_h - 80 -  60, self.view.sl_w, 80 + 60)];
         _editMenuView.hidden = YES;
+        _editMenuView.editObject = self.editObject;
         __weak typeof(self) weakSelf = self;
         _editMenuView.selectEditMenu = ^(SLEditMenuType editMenuType, NSDictionary * _Nullable setting) {
             if (editMenuType == SLEditMenuTypeGraffiti) {
                 weakSelf.drawView.userInteractionEnabled = ![setting[@"hidden"] boolValue];
-                [weakSelf.preview insertSubview:weakSelf.drawView atIndex:1];
+                [weakSelf.preview insertSubview:weakSelf.drawView atIndex:(weakSelf.editObject == SLEditObjectVideo ? 1 : 0)];
                 if (setting[@"lineColor"]) {
                     weakSelf.drawView.lineColor = setting[@"lineColor"];
                 }
@@ -182,6 +202,7 @@
                 SLImage *image = setting[@"image"];
                 if (image) {
                     SLImageView *imageView = [[SLImageView alloc] initWithFrame:CGRectMake(0, 0, image.size.width/[UIScreen mainScreen].scale, image.size.height/[UIScreen mainScreen].scale)];
+                    imageView.autoPlayAnimatedImage = weakSelf.editObject == SLEditObjectVideo?YES:NO;
                     imageView.userInteractionEnabled = YES;
                     imageView.center = CGPointMake(self.preview.sl_w/2.0, self.preview.sl_h/2.0);
                     imageView.image = image;
@@ -270,19 +291,19 @@
         _videoClippingView.backgroundColor = [UIColor blackColor];
         __weak typeof(self) weakSelf = self;
         _videoClippingView.selectedClippingBegin = ^(CMTime beginTime, CMTime endTime, UIGestureRecognizerState state) {
-            [[SLAvPlayer sharedAVPlayer] seekToTime:beginTime completionHandler:nil];
+            [weakSelf.avPlayer seekToTime:beginTime completionHandler:nil];
             if (state == UIGestureRecognizerStateEnded) {
                 weakSelf.clippingBeginTime = beginTime;
-                [[SLAvPlayer sharedAVPlayer] play];
+                [weakSelf.avPlayer  play];
                 NSLog(@"裁剪范围：%.2f %.2f",CMTimeGetSeconds(weakSelf.clippingBeginTime), CMTimeGetSeconds(weakSelf.clippingEndTime));
             }
         };
         _videoClippingView.selectedClippingEnd = ^(CMTime beginTime, CMTime endTime, UIGestureRecognizerState state) {
-            [[SLAvPlayer sharedAVPlayer] seekToTime:endTime completionHandler:nil];
+            [weakSelf.avPlayer seekToTime:endTime completionHandler:nil];
             if (state == UIGestureRecognizerStateEnded) {
                 weakSelf.clippingEndTime = endTime;
-                [[SLAvPlayer sharedAVPlayer] seekToTime:beginTime completionHandler:nil];
-                [[SLAvPlayer sharedAVPlayer] play];
+                [weakSelf.avPlayer  seekToTime:beginTime completionHandler:nil];
+                [weakSelf.avPlayer  play];
                 NSLog(@"裁剪范围：%.2f %.2f",CMTimeGetSeconds(weakSelf.clippingBeginTime), CMTimeGetSeconds(weakSelf.clippingEndTime));
             }
         };
@@ -298,7 +319,7 @@
 }
 - (CMTime)clippingEndTime {
     if (_clippingEndTime.value == 0) {
-        _clippingEndTime = [SLAvPlayer sharedAVPlayer].duration;
+        _clippingEndTime = self.avPlayer.duration;
     }
     return _clippingEndTime;
 }
@@ -348,19 +369,41 @@
 - (void)cancleEditBtnClicked:(id)sender {
     [self hiddenPreviewButton:NO];
     [self hiddenEditMenus:YES];
-    
+    _editMenuView = nil;
+    [self.selectedBox removeFromSuperview];
     [self.drawView removeFromSuperview];
     for (UIView *view in self.watermarkArray) {
         [view removeFromSuperview];
     }
     [self.watermarkArray removeAllObjects];
+    self.videoClippingView = nil;
+    self.clippingBeginTime = kCMTimeZero;
+    self.clippingEndTime = kCMTimeZero;
 }
-//完成编辑 导出编辑后的视频
+//完成编辑 导出编辑后的对象
 - (void)doneEditBtnClicked:(id)sender {
     [self hiddenPreviewButton:YES];
     [self hiddenEditMenus:YES];
+    _editMenuView = nil;
     [self.selectedBox removeFromSuperview];
-    
+    if (self.editObject == SLEditObjectPicture) {
+        [self exportEditPicture];
+    }else if (self.editObject == SLEditObjectVideo) {
+        [self exportEditVideo];
+    }
+}
+//导出编辑后的图片
+- (void)exportEditPicture {
+    self.image = [self.preview imageByViewInRect:self.preview.bounds];
+    self.preview.image = self.image;
+    [self hiddenPreviewButton:NO];
+    [self.drawView removeFromSuperview];
+    for (UIView *view in self.watermarkArray) {
+        [view removeFromSuperview];
+    }
+}
+//导出编辑后的视频
+- (void)exportEditVideo {
     UIActivityIndicatorView *activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
     activityIndicatorView.frame = CGRectMake(0, 0, 50, 50);
     activityIndicatorView.color = [UIColor colorWithRed:45/255.0 green:175/255.0 blue:45/255.0 alpha:1];
@@ -379,9 +422,8 @@
     //    videoExportSession.audioUrls = @[bgsoundUrl];
     videoExportSession.isNativeAudio = YES;
     [videoExportSession exportAsynchronouslyWithCompletionHandler:^(NSError * _Nonnull error) {
-        SLAvPlayer *avPlayer = [SLAvPlayer sharedAVPlayer];
-        avPlayer.url = videoExportSession.outputURL;
-        avPlayer.delegate = self;
+        self.avPlayer .url = videoExportSession.outputURL;
+        self.avPlayer .delegate = self;
         self.videoPath = videoExportSession.outputURL;
         
         [self hiddenPreviewButton:NO];
@@ -392,10 +434,8 @@
         self.videoClippingView = nil;
         self.clippingBeginTime = kCMTimeZero;
         self.clippingEndTime = kCMTimeZero;
-        
         [activityIndicatorView stopAnimating];
         [activityIndicatorView removeFromSuperview];
-        
     } progress:^(float progress) {
         //        NSLog(@"视频导出进度 %f",progress);
     }];
@@ -409,7 +449,7 @@
         } afterDelay:1.0];
     }
 }
-//双击 文本水印 开始编辑
+//双击 文本水印 开始编辑文本
 - (void)doubleTapAction:(UITapGestureRecognizer *)doubleTap {
     [self topSelectedView:doubleTap.view];
     doubleTap.view.hidden = YES;
@@ -564,13 +604,13 @@
     graffitiLayer.frame = self.drawView.bounds;
     // 把水印在预览层上的坐标转换为视频资源文件上的坐标
     // 视频Layer上的坐标系原点在左下角，单位是px像素
-    CGSize scaleSize = CGSizeMake([SLAvPlayer sharedAVPlayer].naturalSize.width/self.preview.sl_w, [SLAvPlayer sharedAVPlayer].naturalSize.height/self.preview.sl_h);
+    CGSize scaleSize = CGSizeMake(self.avPlayer.naturalSize.width/self.preview.sl_w, self.avPlayer.naturalSize.height/self.preview.sl_h);
     CGRect changeRect = CGRectMake(0, 0, CGRectGetWidth(graffitiLayer.frame)*scaleSize.width, CGRectGetHeight(graffitiLayer.frame)*scaleSize.height);
     graffitiLayer.frame = changeRect;
     UIImage *image = [self.drawView imageByViewInRect:self.drawView.bounds];
     /** 缩放至视频大小 */
-    UIGraphicsBeginImageContextWithOptions([SLAvPlayer sharedAVPlayer].naturalSize, NO, 1);
-    [image drawInRect:CGRectMake(0, 0, [SLAvPlayer sharedAVPlayer].naturalSize.width, [SLAvPlayer sharedAVPlayer].naturalSize.height)];
+    UIGraphicsBeginImageContextWithOptions(self.avPlayer.naturalSize, NO, 1);
+    [image drawInRect:CGRectMake(0, 0, self.avPlayer.naturalSize.width, self.avPlayer.naturalSize.height)];
     UIImage *graffitiImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     graffitiLayer.contentsScale = [UIScreen mainScreen].scale;
@@ -585,7 +625,7 @@
         animatedLayer.frame = view.bounds;
         // 把水印在预览层上的坐标转换为视频资源文件上的坐标
         // 视频Layer上的坐标系原点在左下角，单位是px像素
-        CGSize scaleSize = CGSizeMake([SLAvPlayer sharedAVPlayer].naturalSize.width/self.preview.sl_w, [SLAvPlayer sharedAVPlayer].naturalSize.height/self.preview.sl_h);
+        CGSize scaleSize = CGSizeMake(self.avPlayer.naturalSize.width/self.preview.sl_w, self.avPlayer.naturalSize.height/self.preview.sl_h);
         CGRect changeRect = CGRectMake(0, 0, CGRectGetWidth(animatedLayer.frame)*scaleSize.width, CGRectGetHeight(animatedLayer.frame)*scaleSize.height);
         animatedLayer.frame = changeRect;
         animatedLayer.position =  CGPointMake(view.center.x*scaleSize.width, (self.preview.sl_h - view.center.y)*scaleSize.height);

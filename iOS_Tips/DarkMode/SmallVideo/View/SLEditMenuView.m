@@ -205,33 +205,42 @@
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        [self createMenus];
     }
     return self;
 }
 #pragma mark - UI
-- (void)createMenus {
+- (void)createVideoEditMenus {
     for (UIView *subView in self.subviews) {
-        if (subView == _submenuGraffiti || subView == _submenuSticking) {
-            continue;
-        }
-        [subView removeFromSuperview];
-    }
-    _menuTypes = @[@(SLEditMenuTypeGraffiti), @(SLEditMenuTypeSticking), @(SLEditMenuTypeText), @(SLEditMenuTypeVideoClipping)];
-    _imageNames = @[@"EditMenuGraffiti", @"EditMenuSticker", @"EditMenuText", @"EditMenuCut"];
-    _imageNamesSelected = @[@"EditMenuGraffitiSelected", @"EditMenuStickerSelected", @"EditMenuText", @"EditMenuCut"];
-    int count = (int)_menuTypes.count;
-    CGSize itemSize = CGSizeMake(20, 20);
-    CGFloat space = (self.frame.size.width - count * itemSize.width)/count;
-    _menuBtns = [NSMutableArray array];
-    for (int i = 0; i < count; i++) {
-        UIButton * menuBtn = [[UIButton alloc] initWithFrame:CGRectMake(space/2.0 + (itemSize.width + space)*i, self.frame.size.height - 80, itemSize.width, 80)];
-        menuBtn.tag = i;
-        [menuBtn setImage:[UIImage imageNamed:_imageNames[i]] forState:UIControlStateNormal];
-        [menuBtn setImage:[UIImage imageNamed:_imageNamesSelected[i]] forState:UIControlStateSelected];
-        [menuBtn addTarget:self action:@selector(menuBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
-        [self addSubview:menuBtn];
-        [_menuBtns addObject:menuBtn];
+           if (subView == _submenuGraffiti || subView == _submenuSticking) {
+               continue;
+           }
+           [subView removeFromSuperview];
+       }
+       _menuTypes = @[@(SLEditMenuTypeGraffiti), @(SLEditMenuTypeSticking), @(SLEditMenuTypeText), @(SLEditMenuTypeVideoClipping)];
+       _imageNames = @[@"EditMenuGraffiti", @"EditMenuSticker", @"EditMenuText", @"EditMenuCut"];
+       _imageNamesSelected = @[@"EditMenuGraffitiSelected", @"EditMenuStickerSelected", @"EditMenuText", @"EditMenuCut"];
+       int count = (int)_menuTypes.count;
+       CGSize itemSize = CGSizeMake(20, 20);
+       CGFloat space = (self.frame.size.width - count * itemSize.width)/count;
+       _menuBtns = [NSMutableArray array];
+       for (int i = 0; i < count; i++) {
+           UIButton * menuBtn = [[UIButton alloc] initWithFrame:CGRectMake(space/2.0 + (itemSize.width + space)*i, self.frame.size.height - 80, itemSize.width, 80)];
+           menuBtn.tag = i;
+           [menuBtn setImage:[UIImage imageNamed:_imageNames[i]] forState:UIControlStateNormal];
+           [menuBtn setImage:[UIImage imageNamed:_imageNamesSelected[i]] forState:UIControlStateSelected];
+           [menuBtn addTarget:self action:@selector(menuBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+           [self addSubview:menuBtn];
+           [_menuBtns addObject:menuBtn];
+       }
+}
+- (void)setEditObject:(SLEditObject)editObject {
+    _editObject = editObject;
+    if (editObject == SLEditObjectPicture) {
+        [self createVideoEditMenus];
+    }else if (editObject == SLEditObjectVideo) {
+        [self createVideoEditMenus];
+    }else {
+        
     }
 }
 #pragma mark - Getter

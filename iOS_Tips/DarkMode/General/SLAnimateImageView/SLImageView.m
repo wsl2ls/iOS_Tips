@@ -104,8 +104,7 @@ dispatch_semaphore_signal(self->_lock);
 - (void)calcMaxBufferCount;
 @end
 
-#pragma mark - 后台解码
-
+#pragma mark - 解码操作
 //解码获取某帧image的线程操作
 @interface SLImageFrameDecodeOperation : NSOperation
 @property (nonatomic, weak) SLImageView *view;
@@ -170,7 +169,6 @@ dispatch_semaphore_signal(self->_lock);
         [self didChangeValueForKey:@"currentAnimatedImageIndex"];
     }
     
-    _autoPlayAnimatedImage = YES;
     _displayLink.paused = !_currentIsPlaying;
     _time = 0;
     _curFrame = nil;
@@ -183,7 +181,9 @@ dispatch_semaphore_signal(self->_lock);
 #pragma mark - Event Handle
 //切换图片帧
 - (void)playAnimationImage:(CADisplayLink *)displayLink {
-    
+    if (!_autoPlayAnimatedImage) {
+        return;
+    }
     NSMutableDictionary *buffer = _buffer;
     SLImageFrame *nextBufferedImage = nil;
     SLImageFrame *curBufferedImage = nil;
@@ -313,9 +313,6 @@ dispatch_semaphore_signal(self->_lock);
     [self calcMaxBufferCount];
     [self didMoved];
 }
-- (SLImage *)animatedImage {
-    return _curAnimatedImage;
-}
 - (void)setCurrentImageIndex:(NSUInteger)currentImageIndex{
     if (!_curAnimatedImage) return;
     if (currentImageIndex >= _curAnimatedImage.frameCount) return;
@@ -337,6 +334,9 @@ dispatch_semaphore_signal(self->_lock);
         });
     });
 }
+- (SLImage *)animatedImage {
+    return _curAnimatedImage;
+}
 - (NSUInteger)currentImageIndex{
     return _curIndex;
 }
@@ -354,6 +354,20 @@ dispatch_semaphore_signal(self->_lock);
 }
 
 #pragma mark - 重写系统方法
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        _autoPlayAnimatedImage = YES;
+    }
+    return self;
+}
+- (instancetype)initWithFrame:(CGRect)frame {
+    self = [super initWithFrame:frame];
+    if (self) {
+        _autoPlayAnimatedImage = YES;
+    }
+    return self;
+}
 /**
  开始动画
  */

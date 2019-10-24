@@ -9,6 +9,15 @@
 #import <UIKit/UIKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
+///编辑对象类型 视频 Or  图片
+typedef NS_ENUM(NSUInteger, SLEditObject) {
+    ///没有编辑对象
+    SLEditObjectUnnnow = 0,
+    /// 图片编辑
+    SLEditObjectPicture = 1,
+    /// 视频编辑
+    SLEditObjectVideo
+};
 ///视频和图片的编辑类型
 typedef NS_ENUM(NSUInteger, SLEditMenuType) {
     /// 涂鸦
@@ -17,13 +26,13 @@ typedef NS_ENUM(NSUInteger, SLEditMenuType) {
     SLEditMenuTypeText,
     /// 贴画
     SLEditMenuTypeSticking,
-    /// 裁剪
+    /// 视频裁剪
     SLEditMenuTypeVideoClipping
 };
-
-/// 底部音视频编辑主菜单栏
+/// 底部音视频、图片编辑主菜单栏
 @interface SLEditMenuView : UIView
 
+@property (nonatomic, assign) SLEditObject editObject; //编辑对象
 /// 选择编辑的子菜单回调
 @property (nonatomic, copy) void(^selectEditMenu)(SLEditMenuType editMenuType,  NSDictionary * _Nullable setting);
 
