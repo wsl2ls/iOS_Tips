@@ -40,7 +40,9 @@
 }
 - (void)didMoveToSuperview {
     [super didMoveToSuperview];
-    [self.textView becomeFirstResponder];
+    if (self.superview != nil) {
+        [self.textView becomeFirstResponder];
+    }
 }
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -68,6 +70,13 @@
 }
 //颜色选择菜单视图
 - (void)colorSelectionView:(CGFloat)keyboardHeight {
+    for (UIView *subView in self.subviews) {
+        if (subView != self.doneEditBtn || subView != self.cancleEditBtn || subView != self.textView) {
+            continue;
+        }else {
+            [subView removeFromSuperview];
+        }
+    }
     int count = (int)_colors.count + 1;
     CGSize itemSize = CGSizeMake(20, 20);
     CGFloat space = (self.frame.size.width - count * itemSize.width)/(count + 1);
@@ -143,7 +152,6 @@
     label.textColor = textView.textColor;
     label.lineBreakMode = NSLineBreakByCharWrapping;
     label.textPadding = UIEdgeInsetsMake(textView.textContainerInset.top, 4, textView.textContainerInset.bottom, 4);
-    
     label.text = textView.text;
     label.numberOfLines = 0;
     return label;

@@ -244,6 +244,12 @@
                 weakSelf.videoClippingView.asset = [AVAsset assetWithURL:weakSelf.videoPath];
                 [weakSelf.view addSubview:weakSelf.videoClippingView];
             }
+            if(editMenuType == SLEditMenuTypePictureMosaic) {
+                if (setting[@"mosaicType"]) {
+                }
+                if (setting[@"goBack"]) {
+                }
+            }
         };
         [self.view addSubview:_editMenuView];
     }
