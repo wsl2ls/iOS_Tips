@@ -190,6 +190,15 @@
 }
 @end
 
+/// 图片马赛克 子菜单  马赛克类型选择
+@interface SLSubmenuMosaicView : UIView
+
+@end
+@implementation SLSubmenuMosaicView
+
+
+@end
+
 /// 编辑主菜单
 @interface SLEditMenuView ()
 @property (nonatomic, strong) NSArray *menuTypes; //编辑类型集合
@@ -209,38 +218,60 @@
     return self;
 }
 #pragma mark - UI
+- (void)createPictureEditMenus {
+    for (UIView *subView in self.subviews) {
+        if (subView == _submenuGraffiti || subView == _submenuSticking) {
+            continue;
+        }
+        [subView removeFromSuperview];
+    }
+    _menuTypes = @[@(SLEditMenuTypeGraffiti), @(SLEditMenuTypeSticking), @(SLEditMenuTypeText),@(SLEditMenuTypePictureMosaic), @(SLEditMenuTypePictureClipping)];
+    _imageNames = @[@"EditMenuGraffiti", @"EditMenuSticker", @"EditMenuText", @"EditMenuMosaic", @"EditMenuClipImage"];
+    _imageNamesSelected = @[@"EditMenuGraffitiSelected", @"EditMenuStickerSelected", @"EditMenuText",@"EditMenuMosaicSelected",@"EditMenuClipImage"];
+    int count = (int)_menuTypes.count;
+    CGSize itemSize = CGSizeMake(20, 20);
+    CGFloat space = (self.frame.size.width - count * itemSize.width)/count;
+    _menuBtns = [NSMutableArray array];
+    for (int i = 0; i < count; i++) {
+        UIButton * menuBtn = [[UIButton alloc] initWithFrame:CGRectMake(space/2.0 + (itemSize.width + space)*i, self.frame.size.height - 80, itemSize.width, 80)];
+        menuBtn.tag = [_menuTypes[i] intValue];
+        [menuBtn setImage:[UIImage imageNamed:_imageNames[i]] forState:UIControlStateNormal];
+        [menuBtn setImage:[UIImage imageNamed:_imageNamesSelected[i]] forState:UIControlStateSelected];
+        [menuBtn addTarget:self action:@selector(menuBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+        [self addSubview:menuBtn];
+        [_menuBtns addObject:menuBtn];
+    }
+}
 - (void)createVideoEditMenus {
     for (UIView *subView in self.subviews) {
-           if (subView == _submenuGraffiti || subView == _submenuSticking) {
-               continue;
-           }
-           [subView removeFromSuperview];
-       }
-       _menuTypes = @[@(SLEditMenuTypeGraffiti), @(SLEditMenuTypeSticking), @(SLEditMenuTypeText), @(SLEditMenuTypeVideoClipping)];
-       _imageNames = @[@"EditMenuGraffiti", @"EditMenuSticker", @"EditMenuText", @"EditMenuCut"];
-       _imageNamesSelected = @[@"EditMenuGraffitiSelected", @"EditMenuStickerSelected", @"EditMenuText", @"EditMenuCut"];
-       int count = (int)_menuTypes.count;
-       CGSize itemSize = CGSizeMake(20, 20);
-       CGFloat space = (self.frame.size.width - count * itemSize.width)/count;
-       _menuBtns = [NSMutableArray array];
-       for (int i = 0; i < count; i++) {
-           UIButton * menuBtn = [[UIButton alloc] initWithFrame:CGRectMake(space/2.0 + (itemSize.width + space)*i, self.frame.size.height - 80, itemSize.width, 80)];
-           menuBtn.tag = i;
-           [menuBtn setImage:[UIImage imageNamed:_imageNames[i]] forState:UIControlStateNormal];
-           [menuBtn setImage:[UIImage imageNamed:_imageNamesSelected[i]] forState:UIControlStateSelected];
-           [menuBtn addTarget:self action:@selector(menuBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
-           [self addSubview:menuBtn];
-           [_menuBtns addObject:menuBtn];
-       }
+        if (subView == _submenuGraffiti || subView == _submenuSticking) {
+            continue;
+        }
+        [subView removeFromSuperview];
+    }
+    _menuTypes = @[@(SLEditMenuTypeGraffiti), @(SLEditMenuTypeSticking), @(SLEditMenuTypeText), @(SLEditMenuTypeVideoClipping)];
+    _imageNames = @[@"EditMenuGraffiti", @"EditMenuSticker", @"EditMenuText", @"EditMenuCut"];
+    _imageNamesSelected = @[@"EditMenuGraffitiSelected", @"EditMenuStickerSelected", @"EditMenuText", @"EditMenuCut"];
+    int count = (int)_menuTypes.count;
+    CGSize itemSize = CGSizeMake(20, 20);
+    CGFloat space = (self.frame.size.width - count * itemSize.width)/count;
+    _menuBtns = [NSMutableArray array];
+    for (int i = 0; i < count; i++) {
+        UIButton * menuBtn = [[UIButton alloc] initWithFrame:CGRectMake(space/2.0 + (itemSize.width + space)*i, self.frame.size.height - 80, itemSize.width, 80)];
+        menuBtn.tag = [_menuTypes[i] intValue];
+        [menuBtn setImage:[UIImage imageNamed:_imageNames[i]] forState:UIControlStateNormal];
+        [menuBtn setImage:[UIImage imageNamed:_imageNamesSelected[i]] forState:UIControlStateSelected];
+        [menuBtn addTarget:self action:@selector(menuBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+        [self addSubview:menuBtn];
+        [_menuBtns addObject:menuBtn];
+    }
 }
 - (void)setEditObject:(SLEditObject)editObject {
     _editObject = editObject;
     if (editObject == SLEditObjectPicture) {
-        [self createVideoEditMenus];
+        [self createPictureEditMenus];
     }else if (editObject == SLEditObjectVideo) {
         [self createVideoEditMenus];
-    }else {
-        
     }
 }
 #pragma mark - Getter
@@ -278,7 +309,7 @@
             subView.selected = NO;
         }
     }
-    SLEditMenuType editMenuType = [_menuTypes[menuBtn.tag] intValue];
+    SLEditMenuType editMenuType = menuBtn.tag;
     switch (editMenuType) {
         case SLEditMenuTypeGraffiti:
             [self hiddenView:self.submenuGraffiti hidden:!self.submenuGraffiti.hidden];
@@ -300,6 +331,16 @@
             self.selectEditMenu(editMenuType, nil);
             [self hiddenView:self.submenuGraffiti hidden:YES];
             break;
+        case SLEditMenuTypePictureMosaic:
+//            [self hiddenView:self.submenuSticking hidden:YES];
+//            self.selectEditMenu(editMenuType, nil);
+//            [self hiddenView:self.submenuGraffiti hidden:YES];
+            break;
+        case SLEditMenuTypePictureClipping:
+//            [self hiddenView:self.submenuSticking hidden:YES];
+//            self.selectEditMenu(editMenuType, nil);
+//            [self hiddenView:self.submenuGraffiti hidden:YES];
+//            break;
         default:
             break;
     }

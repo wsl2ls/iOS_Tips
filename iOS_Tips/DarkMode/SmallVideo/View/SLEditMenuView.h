@@ -21,13 +21,17 @@ typedef NS_ENUM(NSUInteger, SLEditObject) {
 ///视频和图片的编辑类型
 typedef NS_ENUM(NSUInteger, SLEditMenuType) {
     /// 涂鸦
-    SLEditMenuTypeGraffiti = 0,
+    SLEditMenuTypeGraffiti = 1,
     /// 文字
     SLEditMenuTypeText,
     /// 贴画
     SLEditMenuTypeSticking,
     /// 视频裁剪
-    SLEditMenuTypeVideoClipping
+    SLEditMenuTypeVideoClipping,
+    /// 图片马赛克
+    SLEditMenuTypePictureMosaic,
+    /// 图片裁剪
+    SLEditMenuTypePictureClipping
 };
 /// 底部音视频、图片编辑主菜单栏
 @interface SLEditMenuView : UIView
