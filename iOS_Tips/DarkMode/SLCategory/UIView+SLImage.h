@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface UIView (SLImage)
 /// 截取视图转Image
 /// @param range 截图区域
-- (UIImage *)imageByViewInRect:(CGRect)range;
+- (UIImage *)sl_imageByViewInRect:(CGRect)range;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -400,7 +400,7 @@
 }
 //导出编辑后的图片
 - (void)exportEditPicture {
-    self.image = [self.preview imageByViewInRect:self.preview.bounds];
+    self.image = [self.preview sl_imageByViewInRect:self.preview.bounds];
     self.preview.image = self.image;
     [self hiddenPreviewButton:NO];
     [self.drawView removeFromSuperview];
@@ -615,7 +615,7 @@
     CGSize scaleSize = CGSizeMake(self.avPlayer.naturalSize.width/self.preview.sl_w, self.avPlayer.naturalSize.height/self.preview.sl_h);
     CGRect changeRect = CGRectMake(0, 0, CGRectGetWidth(graffitiLayer.frame)*scaleSize.width, CGRectGetHeight(graffitiLayer.frame)*scaleSize.height);
     graffitiLayer.frame = changeRect;
-    UIImage *image = [self.drawView imageByViewInRect:self.drawView.bounds];
+    UIImage *image = [self.drawView sl_imageByViewInRect:self.drawView.bounds];
     /** 缩放至视频大小 */
     UIGraphicsBeginImageContextWithOptions(self.avPlayer.naturalSize, NO, 1);
     [image drawInRect:CGRectMake(0, 0, self.avPlayer.naturalSize.width, self.avPlayer.naturalSize.height)];
@@ -660,7 +660,7 @@
             }
         } else if ([view isKindOfClass:[UILabel class]]) {
             UILabel *label = (UILabel *)view;
-            SLImage *image = [SLImage imageWithData:UIImagePNGRepresentation([label imageByViewInRect:label.bounds])];
+            SLImage *image = [SLImage imageWithData:UIImagePNGRepresentation([label sl_imageByViewInRect:label.bounds])];
             animatedLayer.contentsScale = [UIScreen mainScreen].scale;
             animatedLayer.contents = (__bridge id _Nullable)(image.CGImage);
         }

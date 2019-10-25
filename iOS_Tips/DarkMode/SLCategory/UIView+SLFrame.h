@@ -16,6 +16,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (assign, nonatomic) CGFloat sl_w;
 @property (assign, nonatomic) CGFloat sl_h;
 @property (assign, nonatomic) CGSize sl_size;
+@property (nonatomic, assign) CGFloat sl_centerX;
+@property (nonatomic, assign) CGFloat sl_centerY;
 @property (assign, nonatomic) CGPoint sl_origin;
 
 @end
