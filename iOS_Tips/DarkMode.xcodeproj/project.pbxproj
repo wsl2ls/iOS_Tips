@@ -31,8 +31,6 @@
 		78E1791823517F700007E4BB /* SLImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E1791323517F700007E4BB /* SLImage.m */; };
 		78E1791923517F700007E4BB /* SLImageDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E1791423517F700007E4BB /* SLImageDecoder.m */; };
 		78E1791B23517FC50007E4BB /* WebP.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 78E1791A23517FC50007E4BB /* WebP.framework */; };
-		78E179232351820F0007E4BB /* The love of one's life.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 78E1791F2351820F0007E4BB /* The love of one's life.mp3 */; };
-		78E1792E23519D590007E4BB /* Images.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 78E1792D23519D590007E4BB /* Images.bundle */; };
 		78E179312351A4020007E4BB /* SLShotViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E1792F2351A4020007E4BB /* SLShotViewController.m */; };
 		78E179362351A40D0007E4BB /* SLEditMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E179332351A40D0007E4BB /* SLEditMenuView.m */; };
 		78E179372351A40D0007E4BB /* SLShotFocusView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E179342351A40D0007E4BB /* SLShotFocusView.m */; };
@@ -106,8 +104,6 @@
 		78E1791523517F700007E4BB /* SLImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLImage.h; sourceTree = "<group>"; };
 		78E1791623517F700007E4BB /* SLImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLImageView.h; sourceTree = "<group>"; };
 		78E1791A23517FC50007E4BB /* WebP.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = WebP.framework; sourceTree = "<group>"; };
-		78E1791F2351820F0007E4BB /* The love of one's life.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "The love of one's life.mp3"; sourceTree = "<group>"; };
-		78E1792D23519D590007E4BB /* Images.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Images.bundle; sourceTree = "<group>"; };
 		78E1792F2351A4020007E4BB /* SLShotViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLShotViewController.m; sourceTree = "<group>"; };
 		78E179302351A4020007E4BB /* SLShotViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLShotViewController.h; sourceTree = "<group>"; };
 		78E179322351A40D0007E4BB /* SLShotFocusView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLShotFocusView.h; sourceTree = "<group>"; };
@@ -290,8 +286,6 @@
 		78E1791E2351820F0007E4BB /* Recource */ = {
 			isa = PBXGroup;
 			children = (
-				78E1791F2351820F0007E4BB /* The love of one's life.mp3 */,
-				78E1792D23519D590007E4BB /* Images.bundle */,
 			);
 			path = Recource;
 			sourceTree = "<group>";
@@ -418,11 +412,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				78B10490232F57C50051579F /* LaunchScreen.storyboard in Resources */,
-				78E179232351820F0007E4BB /* The love of one's life.mp3 in Resources */,
 				78B1048D232F57C50051579F /* Assets.xcassets in Resources */,
 				7851CB372331CC87002295B5 /* SLDarkModeViewController.xib in Resources */,
 				78B1048B232F57C30051579F /* Main.storyboard in Resources */,
-				78E1792E23519D590007E4BB /* Images.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
