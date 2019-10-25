@@ -417,8 +417,10 @@
     [activityIndicatorView startAnimating];
     [self.view addSubview:activityIndicatorView];
     
-    //    NSString *path = [[NSBundle mainBundle] pathForResource:@"The love of one's life" ofType:@"mp3"];
-    //    NSURL *bgsoundUrl = [NSURL fileURLWithPath:path];
+//    NSString *myBundlePath = [[NSBundle mainBundle] pathForResource:@"Resources" ofType:@"bundle"];
+//    NSBundle *myBundle = [NSBundle bundleWithPath:myBundlePath];
+//    NSString *audioPath = [myBundle pathForResource:@"The love of one's life" ofType:@"mp3" inDirectory:@"Audio"];
+//    NSURL *bgsoundUrl = [NSURL fileURLWithPath:audioPath];
     SLAvEditExport *videoExportSession = [[SLAvEditExport alloc] initWithAsset:[AVAsset assetWithURL:self.videoPath]];
     NSString *outputVideoFielPath = [NSTemporaryDirectory() stringByAppendingString:@"EditMyVideo.mp4"];
     videoExportSession.outputURL = [NSURL fileURLWithPath:outputVideoFielPath];

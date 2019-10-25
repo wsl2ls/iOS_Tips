@@ -152,7 +152,7 @@
     if (_dataSource == nil) {
         _dataSource = [NSMutableArray array];
         for (int i = 0; i < 20; i++) {
-            [_dataSource addObject:[NSString stringWithFormat:@"Images.bundle/%d",i]];
+            [_dataSource addObject:[NSString stringWithFormat:@"Resources.bundle/StickingImages/stickers_%d",i]];
         }
     }
     return _dataSource;

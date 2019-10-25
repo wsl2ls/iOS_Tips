@@ -54,13 +54,18 @@
     self.videoPath = nil;
     [self.avCaptureTool startRunning];
     [self focusAtPoint:CGPointMake(SL_kScreenWidth/2.0, SL_kScreenHeight/2.0)];
+    //监听设备方向，旋转切换摄像头按钮
+    [self.avCaptureTool addObserver:self forKeyPath:@"shootingOrientation" options:NSKeyValueObservingOptionNew context:nil];
 }
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
-    [self.avCaptureTool stopRunning];
     if (_gcdTimer) {
         dispatch_source_cancel(_gcdTimer);
     }
+    [_avCaptureTool stopRunning];
+    [_avCaptureTool removeObserver:self forKeyPath:@"shootingOrientation"];
+    _avCaptureTool.delegate = nil;
+    _avCaptureTool = nil;
 }
 - (void)viewSafeAreaInsetsDidChange {
     [super viewSafeAreaInsetsDidChange];
@@ -74,7 +79,7 @@
     return NO;
 }
 - (void)dealloc {
-    [self.avCaptureTool removeObserver:self forKeyPath:@"shootingOrientation"];
+    NSLog(@"拍摄视图释放");
 }
 #pragma mark - UI
 - (void)setupUI {
@@ -90,8 +95,6 @@
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self.tipsLabel removeFromSuperview];
     });
-    //监听设备方向，旋转切换摄像头按钮
-    [self.avCaptureTool addObserver:self forKeyPath:@"shootingOrientation" options:NSKeyValueObservingOptionNew context:nil];
 }
 
 #pragma mark - Getter
