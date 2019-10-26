@@ -177,7 +177,6 @@ SLVideoClippingStateMake(BOOL position, CGFloat value, UIGestureRecognizerState 
 @property (nonatomic, strong) UIButton *doneBtn;
 @property (nonatomic, assign) CMTime beginTime; //裁剪的开始
 @property (nonatomic, assign) CMTime endTime; //裁剪的结束
-
 @end
 @implementation SLEditVideoClipping
 

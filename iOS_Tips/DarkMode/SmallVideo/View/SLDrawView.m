@@ -175,4 +175,22 @@
     [self.deleteLayerArray removeAllObjects];
     [self.deleteLineArray removeAllObjects];
 }
+#pragma mark  - 数据
+- (NSDictionary *)data {
+    if (self.lineArray.count) {
+        return @{@"kSLDrawViewData":[self.lineArray copy]};
+    }
+    return nil;
+}
+- (void)setData:(NSDictionary *)data {
+    NSArray *lineArray = data[@"kSLDrawViewData"];
+    if (lineArray.count) {
+        for (SLDrawBezierPath *path in lineArray) {
+            CAShapeLayer *slayer = [self createShapeLayer:path];
+            [self.layer addSublayer:slayer];
+            [self.layerArray addObject:slayer];
+        }
+        [self.lineArray addObjectsFromArray:lineArray];
+    }
+}
 @end

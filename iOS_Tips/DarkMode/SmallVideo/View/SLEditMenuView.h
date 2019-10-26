@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///编辑对象类型 视频 Or  图片
 typedef NS_ENUM(NSUInteger, SLEditObject) {
     ///没有编辑对象
-    SLEditObjectUnnnow = 0,
+    SLEditObjectUnknow = 0,
     /// 图片编辑
     SLEditObjectPicture = 1,
     /// 视频编辑

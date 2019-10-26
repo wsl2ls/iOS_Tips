@@ -23,6 +23,8 @@
 #import "SLDrawView.h"
 #import "SLEditTextView.h"
 #import "SLEditVideoClipping.h"
+#import "SLMosaicView.h"
+#import "UIImage+SLCommon.h"
 
 @interface SLEditViewController () <UIGestureRecognizerDelegate, SLAvPlayerDelegate>
 
@@ -45,6 +47,7 @@
 @property (nonatomic, strong) SLEditVideoClipping * videoClippingView; //视频裁剪 子菜单视图 选择裁剪范围
 @property (nonatomic, assign) CMTime clippingBeginTime; //视频裁剪起始点
 @property (nonatomic, assign) CMTime clippingEndTime; //视频裁剪结束点
+@property (nonatomic, strong) SLMosaicView *mosaicView; //马赛克画板
 
 @end
 
@@ -111,7 +114,7 @@
     }else if (self.videoPath) {
         return SLEditObjectVideo;
     }else {
-        return SLEditObjectUnnnow;
+        return SLEditObjectUnknow;
     }
 }
 - (SLAvPlayer *)avPlayer {
@@ -188,7 +191,7 @@
         _editMenuView.selectEditMenu = ^(SLEditMenuType editMenuType, NSDictionary * _Nullable setting) {
             if (editMenuType == SLEditMenuTypeGraffiti) {
                 weakSelf.drawView.userInteractionEnabled = ![setting[@"hidden"] boolValue];
-                [weakSelf.preview insertSubview:weakSelf.drawView atIndex:(weakSelf.editObject == SLEditObjectVideo ? 1 : 0)];
+                [weakSelf.preview insertSubview:weakSelf.drawView atIndex:(weakSelf.editObject == SLEditObjectVideo ? 1 : 1)];
                 if (setting[@"lineColor"]) {
                     weakSelf.drawView.lineColor = setting[@"lineColor"];
                 }
@@ -246,9 +249,15 @@
             }
             if(editMenuType == SLEditMenuTypePictureMosaic) {
                 if (setting[@"mosaicType"]) {
+                    weakSelf.mosaicView.userInteractionEnabled = ![setting[@"hidden"] boolValue];
+                    weakSelf.mosaicView.mosaicType = [setting[@"mosaicType"] integerValue];
+                    [weakSelf.preview insertSubview:weakSelf.mosaicView atIndex:(weakSelf.editObject == SLEditObjectVideo ? 1 : 0)];
                 }
                 if (setting[@"goBack"]) {
+                    [weakSelf.mosaicView goBack];
                 }
+            }else {
+                weakSelf.mosaicView.userInteractionEnabled = NO;
             }
         };
         [self.view addSubview:_editMenuView];
@@ -267,7 +276,7 @@
 }
 - (SLDrawView *)drawView {
     if (!_drawView) {
-        _drawView = [[SLDrawView alloc] initWithFrame:CGRectMake(0, 0, self.preview.sl_w, self.preview.sl_h)];
+        _drawView = [[SLDrawView alloc] initWithFrame:self.preview.bounds];
         _drawView.backgroundColor = [UIColor clearColor];
         __weak typeof(self) weakSelf = self;
         _drawView.drawBegan = ^{
@@ -329,6 +338,25 @@
     }
     return _clippingEndTime;
 }
+- (SLMosaicView *)mosaicView {
+    if (!_mosaicView) {
+        _mosaicView = [[SLMosaicView alloc] initWithFrame:self.preview.bounds];
+        __weak typeof(self) weakSelf = self;
+        _mosaicView.brushColor = ^UIColor *(CGPoint point) {
+            point.x = point.x/weakSelf.view.frame.size.width*weakSelf.preview.image.size.width;
+            point.y = point.y/weakSelf.view.frame.size.height*weakSelf.preview.image.size.height;
+            return [weakSelf.preview.image colorAtPixel:point];
+        };
+        _mosaicView.brushBegan = ^{
+            [weakSelf hiddenEditMenus:YES];
+        };
+        _mosaicView.brushEnded = ^{
+            [weakSelf hiddenEditMenus:NO];
+        };
+        _mosaicView.userInteractionEnabled = YES;
+    }
+    return _mosaicView;
+}
 #pragma mark - Events Handle
 //编辑
 - (void)editBtnClicked:(id)sender {
@@ -378,6 +406,7 @@
     _editMenuView = nil;
     [self.selectedBox removeFromSuperview];
     [self.drawView removeFromSuperview];
+    [self.mosaicView removeFromSuperview];
     for (UIView *view in self.watermarkArray) {
         [view removeFromSuperview];
     }
@@ -404,6 +433,7 @@
     self.preview.image = self.image;
     [self hiddenPreviewButton:NO];
     [self.drawView removeFromSuperview];
+    [self.mosaicView removeFromSuperview];
     for (UIView *view in self.watermarkArray) {
         [view removeFromSuperview];
     }
@@ -416,11 +446,10 @@
     activityIndicatorView.center = CGPointMake(SL_kScreenWidth/2.0, SL_kScreenHeight/2.0);
     [activityIndicatorView startAnimating];
     [self.view addSubview:activityIndicatorView];
-    
-//    NSString *myBundlePath = [[NSBundle mainBundle] pathForResource:@"Resources" ofType:@"bundle"];
-//    NSBundle *myBundle = [NSBundle bundleWithPath:myBundlePath];
-//    NSString *audioPath = [myBundle pathForResource:@"The love of one's life" ofType:@"mp3" inDirectory:@"Audio"];
-//    NSURL *bgsoundUrl = [NSURL fileURLWithPath:audioPath];
+    //    NSString *myBundlePath = [[NSBundle mainBundle] pathForResource:@"Resources" ofType:@"bundle"];
+    //    NSBundle *myBundle = [NSBundle bundleWithPath:myBundlePath];
+    //    NSString *audioPath = [myBundle pathForResource:@"The love of one's life" ofType:@"mp3" inDirectory:@"Audio"];
+    //    NSURL *bgsoundUrl = [NSURL fileURLWithPath:audioPath];
     SLAvEditExport *videoExportSession = [[SLAvEditExport alloc] initWithAsset:[AVAsset assetWithURL:self.videoPath]];
     NSString *outputVideoFielPath = [NSTemporaryDirectory() stringByAppendingString:@"EditMyVideo.mp4"];
     videoExportSession.outputURL = [NSURL fileURLWithPath:outputVideoFielPath];
@@ -436,6 +465,7 @@
         
         [self hiddenPreviewButton:NO];
         [self.drawView removeFromSuperview];
+        [self.mosaicView removeFromSuperview];
         for (UIView *view in self.watermarkArray) {
             [view removeFromSuperview];
         }
@@ -606,7 +636,7 @@
     self.doneEditBtn.hidden = isHidden;
     self.editMenuView.hidden = isHidden;
 }
-// 涂鸦层
+// 视频的涂鸦层
 - (CALayer *)graffitiLayer {
     CALayer *graffitiLayer = [CALayer layer];
     graffitiLayer.frame = self.drawView.bounds;
@@ -625,7 +655,7 @@
     graffitiLayer.contents = (__bridge id _Nullable)(graffitiImage.CGImage);
     return graffitiLayer;
 }
-// 贴画层 和 文本层
+// 视频的 贴画层 和 文本层
 - (NSMutableArray *)watermarkLayers {
     NSMutableArray *stickerLayers = [NSMutableArray array];
     for (UIView *view in self.watermarkArray) {
@@ -668,7 +698,7 @@
     }
     return stickerLayers;
 }
-// Gif 关键帧动画
+// Gif CALayer关键帧动画
 - (CAKeyframeAnimation *)animationForGifWithImage:(SLImage *)image {
     CAKeyframeAnimation *animation = [CAKeyframeAnimation animationWithKeyPath:@"contents"];
     NSMutableArray * frames = [NSMutableArray new];

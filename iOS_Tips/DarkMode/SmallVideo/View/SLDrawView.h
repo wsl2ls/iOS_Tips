@@ -28,6 +28,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// 结束绘画
 @property (nonatomic, copy) void(^drawEnded)(void);
 
+/// 数据  笔画数据
+@property (nonatomic, strong) NSDictionary *data;
+
 /// 前进一步
 - (void)goForward;
 /// 返回一步

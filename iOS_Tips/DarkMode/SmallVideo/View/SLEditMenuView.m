@@ -12,7 +12,7 @@
 
 /// 涂鸦子菜单 画笔颜色选择
 @interface SLSubmenuGraffitiView : UIView
-@property (nonatomic, assign) int currentIndex; // 当前画笔颜色索引
+@property (nonatomic, assign) int currentColorIndex; // 当前画笔颜色索引
 @property (nonatomic, strong) UIColor *currentColor; // 当前画笔颜色
 @property (nonatomic, copy) void(^selectedLineColor)(UIColor *lineColor); //选中颜色的回调
 @property (nonatomic, copy) void(^goBack)(void); //返回上一步
@@ -21,7 +21,7 @@
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        _currentIndex = 0;
+        _currentColorIndex = 0;
         _currentColor = [UIColor whiteColor];
     }
     return self;
@@ -29,7 +29,7 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
-        _currentIndex = 0;
+        _currentColorIndex = 0;
         _currentColor = [UIColor whiteColor];
     }
     return self;
@@ -59,7 +59,7 @@
             colorBtn.layer.cornerRadius = itemSize.width/2.0;
             colorBtn.layer.borderColor = [UIColor whiteColor].CGColor;
             colorBtn.layer.borderWidth = 3;
-            if (i != _currentIndex) {
+            if (i != _currentColorIndex) {
                 colorBtn.transform = CGAffineTransformScale(CGAffineTransformIdentity, 0.8f, 0.8f);
                 colorBtn.layer.borderWidth = 2;
             }else {
@@ -77,12 +77,12 @@
 }
 // 选中当前画笔颜色
 - (void)colorBtnClicked:(UIButton *)colorBtn {
-    UIButton *previousBtn = (UIButton *)[self viewWithTag:(10 + _currentIndex)];
+    UIButton *previousBtn = (UIButton *)[self viewWithTag:(10 + _currentColorIndex)];
     previousBtn.transform = CGAffineTransformScale(CGAffineTransformIdentity, 0.8f, 0.8f);
     previousBtn.layer.borderWidth = 2;
     colorBtn.transform = CGAffineTransformScale(CGAffineTransformIdentity, 1.0, 1.0);
     colorBtn.layer.borderWidth = 4;
-    _currentIndex = (int)colorBtn.tag- 10;
+    _currentColorIndex = (int)colorBtn.tag- 10;
     _currentColor = colorBtn.backgroundColor;
     self.selectedLineColor(colorBtn.backgroundColor);
 }
@@ -192,8 +192,9 @@
 
 /// 图片马赛克 子菜单  马赛克类型选择
 @interface SLSubmenuMosaicView : UIView
-@property (nonatomic, assign) NSInteger currentIndex; //当前马赛克类型索引 默认0
+@property (nonatomic, assign) NSInteger currentTypeIndex; //当前马赛克类型索引 默认0
 @property (nonatomic, copy) void(^goBack)(void); //返回上一步
+@property (nonatomic, copy) void(^selectedMosaicType)(NSInteger currentTypeIndex); // 选择马赛克类型 0：小方块 1：毛笔涂抹
 @end
 @implementation SLSubmenuMosaicView
 - (instancetype)initWithFrame:(CGRect)frame {
@@ -230,7 +231,7 @@
         }else {
             [colorBtn addTarget:self action:@selector(mosaicTypeBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
         }
-        if(i == _currentIndex) {
+        if(i == _currentTypeIndex) {
             colorBtn.selected = YES;
         }
         [colorBtn setImage:[UIImage imageNamed:imageNames[i]] forState:UIControlStateNormal];
@@ -247,9 +248,10 @@
 //马赛克类型
 - (void)mosaicTypeBtnClicked:(UIButton *)btn {
     btn.selected = !btn.selected;
-    UIButton *currentView = [self viewWithTag:(_currentIndex + 10)];
+    UIButton *currentView = [self viewWithTag:(_currentTypeIndex + 10)];
     currentView.selected = !currentView.selected;
-    _currentIndex = btn.tag - 10;
+    _currentTypeIndex = btn.tag - 10;
+    self.selectedMosaicType(_currentTypeIndex);
 }
 @end
 
@@ -339,6 +341,9 @@
         _submenuMosaic = [[SLSubmenuMosaicView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, 60)];
         _submenuMosaic.hidden = YES;
         __weak typeof(self) weakSelf = self;
+        _submenuMosaic.selectedMosaicType = ^(NSInteger currentTypeIndex) {
+            weakSelf.selectEditMenu(SLEditMenuTypePictureMosaic, @{@"mosaicType":@(currentTypeIndex)});
+        };
         _submenuMosaic.goBack = ^{
             weakSelf.selectEditMenu(SLEditMenuTypePictureMosaic, @{@"goBack":@(YES)});
         };
@@ -374,7 +379,7 @@
             break;
         case SLEditMenuTypePictureMosaic:
             [self hiddenView:self.submenuMosaic];
-            self.selectEditMenu(editMenuType, @{@"mosaicType":@(self.submenuMosaic.currentIndex)});
+            self.selectEditMenu(editMenuType, @{@"hidden":@(self.submenuMosaic.hidden), @"mosaicType":@(self.submenuMosaic.currentTypeIndex)});
             break;
         case SLEditMenuTypePictureClipping:
             [self hiddenView:self.currentSubmenu hidden:YES];

@@ -11,7 +11,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// 视频裁剪子菜单 二级菜单
+/// 视频裁剪底部子菜单 选择裁剪范围
 @interface SLEditVideoClipping : UIView
 /// 视频资源文件
 @property (nonatomic, strong) AVAsset *asset;

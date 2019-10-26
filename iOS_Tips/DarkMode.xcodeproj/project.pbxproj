@@ -17,6 +17,8 @@
 		7851CB372331CC87002295B5 /* SLDarkModeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7851CB352331CC87002295B5 /* SLDarkModeViewController.xib */; };
 		7851CB43233222E2002295B5 /* UIView+SLFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 7851CB41233222E2002295B5 /* UIView+SLFrame.m */; };
 		786147F12362A39500C5424C /* Resources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 786147F02362A39500C5424C /* Resources.bundle */; };
+		786147F42362D79000C5424C /* SLMosaicView.m in Sources */ = {isa = PBXBuildFile; fileRef = 786147F32362D79000C5424C /* SLMosaicView.m */; };
+		786147FA23630C4D00C5424C /* UIImage+SLCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 786147F923630C4D00C5424C /* UIImage+SLCommon.m */; };
 		78B10482232F57C30051579F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 78B10481232F57C30051579F /* AppDelegate.m */; };
 		78B10485232F57C30051579F /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 78B10484232F57C30051579F /* SceneDelegate.m */; };
 		78B10488232F57C30051579F /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78B10487232F57C30051579F /* ViewController.m */; };
@@ -77,6 +79,10 @@
 		7851CB41233222E2002295B5 /* UIView+SLFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+SLFrame.m"; sourceTree = "<group>"; };
 		7851CB42233222E2002295B5 /* UIView+SLFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+SLFrame.h"; sourceTree = "<group>"; };
 		786147F02362A39500C5424C /* Resources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Resources.bundle; sourceTree = "<group>"; };
+		786147F22362D78F00C5424C /* SLMosaicView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLMosaicView.h; sourceTree = "<group>"; };
+		786147F32362D79000C5424C /* SLMosaicView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLMosaicView.m; sourceTree = "<group>"; };
+		786147F823630C4D00C5424C /* UIImage+SLCommon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImage+SLCommon.h"; sourceTree = "<group>"; };
+		786147F923630C4D00C5424C /* UIImage+SLCommon.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImage+SLCommon.m"; sourceTree = "<group>"; };
 		78B1047D232F57C30051579F /* iOS - Tips.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "iOS - Tips.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		78B10480232F57C30051579F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		78B10481232F57C30051579F /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -174,6 +180,8 @@
 				7851CB41233222E2002295B5 /* UIView+SLFrame.m */,
 				7830A5A22358904600BC79BA /* UIView+SLImage.h */,
 				7830A5A32358904600BC79BA /* UIView+SLImage.m */,
+				786147F823630C4D00C5424C /* UIImage+SLCommon.h */,
+				786147F923630C4D00C5424C /* UIImage+SLCommon.m */,
 				7822CCFC235B1D5B00E70C29 /* NSObject+SLDelayPerform.h */,
 				7822CCFD235B1D5B00E70C29 /* NSObject+SLDelayPerform.m */,
 			);
@@ -266,6 +274,8 @@
 				78E179332351A40D0007E4BB /* SLEditMenuView.m */,
 				78FA0F9B235407E6003E456B /* SLDrawView.h */,
 				78FA0F9C235407E6003E456B /* SLDrawView.m */,
+				786147F22362D78F00C5424C /* SLMosaicView.h */,
+				786147F32362D79000C5424C /* SLMosaicView.m */,
 				7830A59C2358520200BC79BA /* SLEditTextView.h */,
 				7830A59D2358520200BC79BA /* SLEditTextView.m */,
 				78DAA111235FF61E00A60F64 /* SLEditVideoClipping.h */,
@@ -448,8 +458,10 @@
 				784B72062334685E006AEE47 /* SLAvPlayer.m in Sources */,
 				78DAA113235FF61E00A60F64 /* SLEditVideoClipping.m in Sources */,
 				784B720923348241006AEE47 /* SLAvCaptureTool.m in Sources */,
+				786147F42362D79000C5424C /* SLMosaicView.m in Sources */,
 				78B10482232F57C30051579F /* AppDelegate.m in Sources */,
 				7851CB362331CC87002295B5 /* SLDarkModeViewController.m in Sources */,
+				786147FA23630C4D00C5424C /* UIImage+SLCommon.m in Sources */,
 				7822CCFE235B1D5B00E70C29 /* NSObject+SLDelayPerform.m in Sources */,
 				78E179402351D0950007E4BB /* SLEditViewController.m in Sources */,
 				78FA0F9D235407E6003E456B /* SLDrawView.m in Sources */,
