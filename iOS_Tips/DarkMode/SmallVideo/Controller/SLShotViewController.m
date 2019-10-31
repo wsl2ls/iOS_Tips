@@ -13,6 +13,7 @@
 #import "SLShotFocusView.h"
 #import "SLEditViewController.h"
 #import "NSObject+SLDelayPerform.h"
+#import "SLEditImageController.h"
 
 #define KMaxDurationOfVideo  15.0 //录制最大时长 s
 
@@ -388,22 +389,23 @@
     self.image = image;
     [self.avCaptureTool stopRunning];
     NSLog(@"拍照结束");
-    [self shootingCompleted];
+    
+    SLEditImageController * editViewController = [[SLEditImageController alloc] init];
+    editViewController.image = self.image;
+    editViewController.modalPresentationStyle = UIModalPresentationFullScreen;
+    [self presentViewController:editViewController animated:NO completion:nil];
 }
 //音视频输出完成
 - (void)captureTool:(SLAvCaptureTool *)captureTool didFinishRecordingToOutputFileAtURL:(NSURL *)outputFileURL error:(NSError *)error {
     self.videoPath = outputFileURL;
     [self.avCaptureTool stopRunning];
     NSLog(@"结束录制");
-    [self shootingCompleted];
-}
-//拍摄完成
-- (void)shootingCompleted {
     SLEditViewController * editViewController = [[SLEditViewController alloc] init];
     editViewController.videoPath = self.videoPath;
     editViewController.image = self.image;
     editViewController.modalPresentationStyle = UIModalPresentationFullScreen;
     [self presentViewController:editViewController animated:NO completion:nil];
 }
+
 
 @end
