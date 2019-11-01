@@ -6,7 +6,7 @@
 //  Copyright © 2019 wsl. All rights reserved.
 //
 
-#import "SLEditViewController.h"
+#import "SLEditVideoController.h"
 #import <Photos/Photos.h>
 #import "UIView+SLFrame.h"
 #import "UIView+SLImage.h"
@@ -24,7 +24,7 @@
 #import "SLEditVideoClipping.h"
 #import "UIImage+SLCommon.h"
 
-@interface SLEditViewController () <UIGestureRecognizerDelegate, SLAvPlayerDelegate>
+@interface SLEditVideoController () <UIGestureRecognizerDelegate, SLAvPlayerDelegate>
 
 @property (nonatomic, strong) UIImageView *preview; // 预览视图 展示编辑的图片或视频
 @property (nonatomic, strong) SLAvPlayer *avPlayer;  //视频播放预览
@@ -47,7 +47,7 @@
 
 @end
 
-@implementation SLEditViewController
+@implementation SLEditVideoController
 
 #pragma mark - Override
 - (void)viewDidLoad {

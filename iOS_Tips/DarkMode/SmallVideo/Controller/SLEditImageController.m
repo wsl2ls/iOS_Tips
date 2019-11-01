@@ -21,11 +21,11 @@
 #import "SLEditTextView.h"
 #import "SLMosaicView.h"
 #import "UIImage+SLCommon.h"
-#import "SLZoomView.h"
+#import "SLImageZoomView.h"
 
-@interface SLEditImageController ()<UIGestureRecognizerDelegate, SLZoomViewDelegate>
+@interface SLEditImageController ()<UIGestureRecognizerDelegate, SLImageZoomViewDelegate>
 
-@property (nonatomic, strong) SLZoomView *zoomView; // 预览视图 展示编辑的图片 可以缩放
+@property (nonatomic, strong) SLImageZoomView *zoomView; // 预览视图 展示编辑的图片 可以缩放
 
 @property (nonatomic, strong) SLBlurView *editBtn; //编辑
 @property (nonatomic, strong) SLBlurView *againShotBtn;  // 再拍一次
@@ -163,9 +163,9 @@
 }
 
 #pragma mark - Getter
-- (SLZoomView *)zoomView {
+- (SLImageZoomView *)zoomView {
     if (_zoomView == nil) {
-        _zoomView = [[SLZoomView alloc] initWithFrame:self.view.bounds];
+        _zoomView = [[SLImageZoomView alloc] initWithFrame:self.view.bounds];
         _zoomView.backgroundColor = [UIColor blackColor];
         _zoomView.userInteractionEnabled = YES;
         _zoomView.maximumZoomScale = 4;
@@ -566,7 +566,7 @@
 }
 
 #pragma mark - SLZoomViewDelegate
-- (void)zoomViewDidEndMoveImage:(SLZoomView *)zoomView {
+- (void)zoomViewDidEndMoveImage:(SLImageZoomView *)zoomView {
     self.drawView.lineWidth = 5.0/self.zoomView.zoomScale;
     self.mosaicView.squareWidth = 15/self.zoomView.zoomScale;
     self.mosaicView.paintSize = CGSizeMake(40/self.zoomView.zoomScale, 40/self.zoomView.zoomScale);

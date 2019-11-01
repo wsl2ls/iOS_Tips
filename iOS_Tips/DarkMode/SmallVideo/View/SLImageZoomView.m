@@ -6,14 +6,14 @@
 //  Copyright © 2019 wsl. All rights reserved.
 //
 
-#import "SLZoomView.h"
+#import "SLImageZoomView.h"
 
-@interface SLZoomView ()<UIScrollViewDelegate>
+@interface SLImageZoomView ()<UIScrollViewDelegate>
 /// 是否正在移动或缩放
 @property (nonatomic, assign) BOOL isMoving;
 @end
 
-@implementation SLZoomView
+@implementation SLImageZoomView
 
 #pragma mark - Override
 - (instancetype)initWithFrame:(CGRect)frame {

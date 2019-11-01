@@ -11,7 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /// 拍摄完毕后 编辑
-@interface SLEditViewController : UIViewController
+@interface SLEditVideoController : UIViewController
 @property (nonatomic, strong) NSURL *videoPath; //当前拍摄的视频路径
 @end
 

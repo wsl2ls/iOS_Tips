@@ -20,7 +20,8 @@
 		786147F42362D79000C5424C /* SLMosaicView.m in Sources */ = {isa = PBXBuildFile; fileRef = 786147F32362D79000C5424C /* SLMosaicView.m */; };
 		786147FA23630C4D00C5424C /* UIImage+SLCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 786147F923630C4D00C5424C /* UIImage+SLCommon.m */; };
 		787F01A3236AD8A5002AC1A9 /* SLEditImageController.m in Sources */ = {isa = PBXBuildFile; fileRef = 787F01A2236AD8A5002AC1A9 /* SLEditImageController.m */; };
-		787F01A6236AF40F002AC1A9 /* SLZoomView.m in Sources */ = {isa = PBXBuildFile; fileRef = 787F01A4236AF40F002AC1A9 /* SLZoomView.m */; };
+		78A4BD45236C5DF20021AE32 /* SLEditVideoController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78A4BD44236C5DF20021AE32 /* SLEditVideoController.m */; };
+		78A4BD48236C5DFE0021AE32 /* SLImageZoomView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78A4BD47236C5DFD0021AE32 /* SLImageZoomView.m */; };
 		78B10482232F57C30051579F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 78B10481232F57C30051579F /* AppDelegate.m */; };
 		78B10485232F57C30051579F /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 78B10484232F57C30051579F /* SceneDelegate.m */; };
 		78B10488232F57C30051579F /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78B10487232F57C30051579F /* ViewController.m */; };
@@ -39,7 +40,6 @@
 		78E179312351A4020007E4BB /* SLShotViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E1792F2351A4020007E4BB /* SLShotViewController.m */; };
 		78E179362351A40D0007E4BB /* SLEditMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E179332351A40D0007E4BB /* SLEditMenuView.m */; };
 		78E179372351A40D0007E4BB /* SLShotFocusView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E179342351A40D0007E4BB /* SLShotFocusView.m */; };
-		78E179402351D0950007E4BB /* SLEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E1793F2351D0950007E4BB /* SLEditViewController.m */; };
 		78F54916233383D800910215 /* SLBlurView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78F54915233383D800910215 /* SLBlurView.m */; };
 		78FA0F9D235407E6003E456B /* SLDrawView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78FA0F9C235407E6003E456B /* SLDrawView.m */; };
 		78FA0FA02354141E003E456B /* SLAvEditExport.m in Sources */ = {isa = PBXBuildFile; fileRef = 78FA0F9F2354141E003E456B /* SLAvEditExport.m */; };
@@ -87,8 +87,10 @@
 		786147F923630C4D00C5424C /* UIImage+SLCommon.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImage+SLCommon.m"; sourceTree = "<group>"; };
 		787F01A1236AD8A5002AC1A9 /* SLEditImageController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLEditImageController.h; sourceTree = "<group>"; };
 		787F01A2236AD8A5002AC1A9 /* SLEditImageController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLEditImageController.m; sourceTree = "<group>"; };
-		787F01A4236AF40F002AC1A9 /* SLZoomView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLZoomView.m; sourceTree = "<group>"; };
-		787F01A5236AF40F002AC1A9 /* SLZoomView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLZoomView.h; sourceTree = "<group>"; };
+		78A4BD43236C5DF20021AE32 /* SLEditVideoController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLEditVideoController.h; sourceTree = "<group>"; };
+		78A4BD44236C5DF20021AE32 /* SLEditVideoController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLEditVideoController.m; sourceTree = "<group>"; };
+		78A4BD46236C5DFD0021AE32 /* SLImageZoomView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLImageZoomView.h; sourceTree = "<group>"; };
+		78A4BD47236C5DFD0021AE32 /* SLImageZoomView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLImageZoomView.m; sourceTree = "<group>"; };
 		78B1047D232F57C30051579F /* iOS - Tips.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "iOS - Tips.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		78B10480232F57C30051579F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		78B10481232F57C30051579F /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -124,8 +126,6 @@
 		78E179332351A40D0007E4BB /* SLEditMenuView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLEditMenuView.m; sourceTree = "<group>"; };
 		78E179342351A40D0007E4BB /* SLShotFocusView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLShotFocusView.m; sourceTree = "<group>"; };
 		78E179352351A40D0007E4BB /* SLEditMenuView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLEditMenuView.h; sourceTree = "<group>"; };
-		78E1793E2351D0950007E4BB /* SLEditViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLEditViewController.h; sourceTree = "<group>"; };
-		78E1793F2351D0950007E4BB /* SLEditViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLEditViewController.m; sourceTree = "<group>"; };
 		78F54914233383D800910215 /* SLBlurView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLBlurView.h; sourceTree = "<group>"; };
 		78F54915233383D800910215 /* SLBlurView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLBlurView.m; sourceTree = "<group>"; };
 		78FA0F9B235407E6003E456B /* SLDrawView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLDrawView.h; sourceTree = "<group>"; };
@@ -276,8 +276,8 @@
 				78E179342351A40D0007E4BB /* SLShotFocusView.m */,
 				78DAA1142360256200A60F64 /* SLEditSelectedBox.h */,
 				78DAA1152360256200A60F64 /* SLEditSelectedBox.m */,
-				787F01A5236AF40F002AC1A9 /* SLZoomView.h */,
-				787F01A4236AF40F002AC1A9 /* SLZoomView.m */,
+				78A4BD46236C5DFD0021AE32 /* SLImageZoomView.h */,
+				78A4BD47236C5DFD0021AE32 /* SLImageZoomView.m */,
 				78E179352351A40D0007E4BB /* SLEditMenuView.h */,
 				78E179332351A40D0007E4BB /* SLEditMenuView.m */,
 				78FA0F9B235407E6003E456B /* SLDrawView.h */,
@@ -299,8 +299,8 @@
 				78E1792F2351A4020007E4BB /* SLShotViewController.m */,
 				787F01A1236AD8A5002AC1A9 /* SLEditImageController.h */,
 				787F01A2236AD8A5002AC1A9 /* SLEditImageController.m */,
-				78E1793E2351D0950007E4BB /* SLEditViewController.h */,
-				78E1793F2351D0950007E4BB /* SLEditViewController.m */,
+				78A4BD43236C5DF20021AE32 /* SLEditVideoController.h */,
+				78A4BD44236C5DF20021AE32 /* SLEditVideoController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -469,11 +469,11 @@
 				78DAA113235FF61E00A60F64 /* SLEditVideoClipping.m in Sources */,
 				784B720923348241006AEE47 /* SLAvCaptureTool.m in Sources */,
 				786147F42362D79000C5424C /* SLMosaicView.m in Sources */,
+				78A4BD48236C5DFE0021AE32 /* SLImageZoomView.m in Sources */,
 				78B10482232F57C30051579F /* AppDelegate.m in Sources */,
 				7851CB362331CC87002295B5 /* SLDarkModeViewController.m in Sources */,
 				786147FA23630C4D00C5424C /* UIImage+SLCommon.m in Sources */,
 				7822CCFE235B1D5B00E70C29 /* NSObject+SLDelayPerform.m in Sources */,
-				78E179402351D0950007E4BB /* SLEditViewController.m in Sources */,
 				78FA0F9D235407E6003E456B /* SLDrawView.m in Sources */,
 				7851CB43233222E2002295B5 /* UIView+SLFrame.m in Sources */,
 				7830A5A42358904600BC79BA /* UIView+SLImage.m in Sources */,
@@ -484,12 +484,12 @@
 				787F01A3236AD8A5002AC1A9 /* SLEditImageController.m in Sources */,
 				78B10493232F57C50051579F /* main.m in Sources */,
 				78E179372351A40D0007E4BB /* SLShotFocusView.m in Sources */,
+				78A4BD45236C5DF20021AE32 /* SLEditVideoController.m in Sources */,
 				78B10485232F57C30051579F /* SceneDelegate.m in Sources */,
 				78E1791923517F700007E4BB /* SLImageDecoder.m in Sources */,
 				7822CCF8235B054200E70C29 /* SLPaddingLabel.m in Sources */,
 				78DAA1162360256200A60F64 /* SLEditSelectedBox.m in Sources */,
 				7830A59E2358520200BC79BA /* SLEditTextView.m in Sources */,
-				787F01A6236AF40F002AC1A9 /* SLZoomView.m in Sources */,
 				78E179312351A4020007E4BB /* SLShotViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

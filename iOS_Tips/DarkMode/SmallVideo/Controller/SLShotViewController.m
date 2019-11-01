@@ -11,7 +11,7 @@
 #import "SLBlurView.h"
 #import "SLAvCaptureTool.h"
 #import "SLShotFocusView.h"
-#import "SLEditViewController.h"
+#import "SLEditVideoController.h"
 #import "NSObject+SLDelayPerform.h"
 #import "SLEditImageController.h"
 
@@ -400,7 +400,7 @@
     self.videoPath = outputFileURL;
     [self.avCaptureTool stopRunning];
     NSLog(@"结束录制");
-    SLEditViewController * editViewController = [[SLEditViewController alloc] init];
+    SLEditVideoController * editViewController = [[SLEditVideoController alloc] init];
     editViewController.videoPath = self.videoPath;
     editViewController.modalPresentationStyle = UIModalPresentationFullScreen;
     [self presentViewController:editViewController animated:NO completion:nil];

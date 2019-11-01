@@ -10,21 +10,21 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@protocol SLZoomViewDelegate;
+@protocol SLImageZoomViewDelegate;
 /// 缩放视图 用于图片编辑
-@interface SLZoomView : UIScrollView
+@interface SLImageZoomView : UIScrollView
 @property (nonatomic, strong) UIImage *image;
 @property (nonatomic, strong) UIImageView *imageView;
-@property (nonatomic, weak) id<SLZoomViewDelegate> zoomViewDelegate;
+@property (nonatomic, weak) id<SLImageZoomViewDelegate> zoomViewDelegate;
 @end
 
 /// 缩放视图代理
-@protocol SLZoomViewDelegate <NSObject>
+@protocol SLImageZoomViewDelegate <NSObject>
 @optional
 /// 开始移动图像位置
-- (void)zoomViewDidBeginMoveImage:(SLZoomView *)zoomView;
+- (void)zoomViewDidBeginMoveImage:(SLImageZoomView *)zoomView;
 /// 结束移动图像
-- (void)zoomViewDidEndMoveImage:(SLZoomView *)zoomView;
+- (void)zoomViewDidEndMoveImage:(SLImageZoomView *)zoomView;
 @end
 
 NS_ASSUME_NONNULL_END
