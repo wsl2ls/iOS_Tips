@@ -11,7 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @protocol SLZoomViewDelegate;
-/// 缩放视图
+/// 缩放视图 用于图片编辑
 @interface SLZoomView : UIScrollView
 @property (nonatomic, strong) UIImage *image;
 @property (nonatomic, strong) UIImageView *imageView;

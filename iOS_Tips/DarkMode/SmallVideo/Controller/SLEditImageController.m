@@ -242,7 +242,6 @@
             weakSelf.editingMenuType = ![setting[@"hidden"] boolValue] ? editMenuType : SLEditMenuTypeUnknown;
             if (editMenuType == SLEditMenuTypeGraffiti) {
                 weakSelf.drawView.userInteractionEnabled = ![setting[@"hidden"] boolValue];
-                //                weakSelf.zoomView.scrollEnabled = !weakSelf.drawView.userInteractionEnabled;
                 if ([setting[@"hidden"] boolValue]) weakSelf.editingMenuType = SLEditMenuTypeUnknown;
                 [weakSelf.zoomView.imageView insertSubview:weakSelf.drawView atIndex:([weakSelf.zoomView.imageView.subviews containsObject:weakSelf.mosaicView] ? 1: 0)];
                 if (setting[@"lineColor"]) {
@@ -315,7 +314,6 @@
             if(editMenuType == SLEditMenuTypePictureMosaic) {
                 if (setting[@"mosaicType"]) {
                     weakSelf.mosaicView.userInteractionEnabled = ![setting[@"hidden"] boolValue];
-                    //                    weakSelf.zoomView.scrollEnabled = !weakSelf.mosaicView.userInteractionEnabled;
                     if ([setting[@"hidden"] boolValue]) weakSelf.editingMenuType = SLEditMenuTypeUnknown;
                     weakSelf.mosaicView.mosaicType = [setting[@"mosaicType"] integerValue];
                     [weakSelf.zoomView.imageView insertSubview:weakSelf.mosaicView atIndex:0];
@@ -423,12 +421,13 @@
 - (void)cancleEditBtnClicked:(id)sender {
     [self hiddenPreviewButton:NO];
     [self hiddenEditMenus:YES];
-    _editMenuView = nil;
     [self.selectedBox removeFromSuperview];
-    [self.drawView removeFromSuperview];
-    self.drawView = nil;
-    [self.mosaicView removeFromSuperview];
-    self.mosaicView = nil;
+    [_editMenuView removeFromSuperview];
+    _editMenuView = nil;
+    [_drawView removeFromSuperview];
+    _drawView = nil;
+    [_mosaicView removeFromSuperview];
+    _mosaicView = nil;
     for (UIView *view in self.watermarkArray) {
         [view removeFromSuperview];
     }

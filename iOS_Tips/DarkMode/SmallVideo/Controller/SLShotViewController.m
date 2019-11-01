@@ -402,7 +402,6 @@
     NSLog(@"结束录制");
     SLEditViewController * editViewController = [[SLEditViewController alloc] init];
     editViewController.videoPath = self.videoPath;
-    editViewController.image = self.image;
     editViewController.modalPresentationStyle = UIModalPresentationFullScreen;
     [self presentViewController:editViewController animated:NO completion:nil];
 }
