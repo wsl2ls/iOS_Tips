@@ -8,6 +8,14 @@
 
 #import "SLEditSelectedBox.h"
 
+
+@interface SLEditSelectedBox ()
+//@property (nonatomic, strong) CALayer *topLeft;
+//@property (nonatomic, strong) CALayer *topRight;
+//@property (nonatomic, strong) CALayer *bottomLeft;
+//@property (nonatomic, strong) CALayer *bottomRight;
+@end
+
 @implementation SLEditSelectedBox
 
 #pragma mark - Override
@@ -32,32 +40,40 @@
     self.layer.borderWidth = 2;
     self.backgroundColor = [UIColor clearColor];
     self.clipsToBounds = NO;
-    
+}
+- (void)didMoveToSuperview{
+    if (self.superview) {
+        [self.layer.sublayers makeObjectsPerformSelector:@selector(removeFromSuperlayer)];
+        // 缩放系数
+        CGAffineTransform transform = self.superview.transform;
+        CGFloat scale = sqrt(transform.a*transform.a + transform.c*transform.c);
+        scale = scale <= 1 ? 1 : scale ;
+        
+        self.layer.borderWidth = 2/scale;
+        
+        CALayer *_topLeft = [CALayer layer];
+        _topLeft.frame = CGRectMake(-2/scale, -2/scale, 6/scale, 6/scale);
+        _topLeft.backgroundColor = self.layer.borderColor;
+        [self.layer addSublayer:_topLeft];
+        
+        CALayer *_topRight = [CALayer layer];
+        _topRight.frame = CGRectMake((self.bounds.size.width - 4/scale), -2/scale, 6/scale, 6/scale);
+        _topRight.backgroundColor = self.layer.borderColor;
+        [self.layer addSublayer:_topRight];
+        
+        CALayer *_bottomLeft = [CALayer layer];
+        _bottomLeft.frame = CGRectMake(-2/scale, (self.bounds.size.height - 4/scale), 6/scale, 6/scale);
+        _bottomLeft.backgroundColor = self.layer.borderColor;
+        [self.layer addSublayer:_bottomLeft];
+        
+        CALayer *_bottomRight = [CALayer layer];
+        _bottomRight.frame = CGRectMake((self.bounds.size.width - 4/scale), (self.bounds.size.height - 4/scale), 6/scale, 6/scale);
+        _bottomRight.backgroundColor = self.layer.borderColor;
+        [self.layer addSublayer:_bottomRight];
+    }
 }
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-    [self.layer.sublayers makeObjectsPerformSelector:@selector(removeFromSuperlayer)];
-    
-    CALayer *topLeft = [CALayer layer];
-    topLeft.frame = CGRectMake(-2, -2, 6, 6);
-    topLeft.backgroundColor = self.layer.borderColor;
-    [self.layer addSublayer:topLeft];
-    
-    CALayer *topRight = [CALayer layer];
-    topRight.frame = CGRectMake(self.bounds.size.width - 4, -2, 6, 6);
-    topRight.backgroundColor = self.layer.borderColor;
-    [self.layer addSublayer:topRight];
-    
-    CALayer *bottomLeft = [CALayer layer];
-    bottomLeft.frame = CGRectMake(-2, self.frame.size.height - 4, 6, 6);
-    bottomLeft.backgroundColor = self.layer.borderColor;
-    [self.layer addSublayer:bottomLeft];
-    
-    CALayer *bottomRight = [CALayer layer];
-    bottomRight.frame = CGRectMake(self.frame.size.width - 4, self.frame.size.height - 4, 6, 6);
-    bottomRight.backgroundColor = self.layer.borderColor;
-    [self.layer addSublayer:bottomRight];
 }
-
 @end

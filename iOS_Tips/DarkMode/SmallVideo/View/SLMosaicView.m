@@ -111,8 +111,7 @@ NSString *const kLFSplashViewData_frameArray = @"LFSplashViewData_frameArray";
 /** 已显示坐标 */
 @property (nonatomic, strong) NSMutableArray <NSValue *>*frameArray;
 
-@property (nonatomic, assign) BOOL isErase;
-
+//@property (nonatomic, assign) BOOL isErase;
 @end
 
 @implementation SLMosaicView
@@ -125,6 +124,8 @@ NSString *const kLFSplashViewData_frameArray = @"LFSplashViewData_frameArray";
     return self;
 }
 
+#pragma mark - Help Methods
+//初始化
 - (void)customInit {
     _squareWidth = 15.f;
     _paintSize = CGSizeMake(50, 50);
@@ -132,14 +133,14 @@ NSString *const kLFSplashViewData_frameArray = @"LFSplashViewData_frameArray";
     _layerArray = [@[] mutableCopy];
     _frameArray = [@[] mutableCopy];
 }
-//
+//返回马赛克元素的位置
 - (CGPoint)divideMosaicPoint:(CGPoint)point {
     CGFloat scope = self.squareWidth;
     int x = point.x/scope;
     int y = point.y/scope;
     return CGPointMake(x*scope, y*scope);
 }
-
+//马赛克元素在设备上的区域
 - (NSArray <NSValue *>*)divideMosaicRect:(CGRect)rect {
     CGFloat scope = self.squareWidth;
     
@@ -169,15 +170,13 @@ NSString *const kLFSplashViewData_frameArray = @"LFSplashViewData_frameArray";
             [array addObject:value];
         }
     }
-    
     return array;
 }
-
+#pragma mark - 绘画
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     if (touches.allObjects.count == 1) {
         _isWork = NO;
         _isBegan = YES;
-        
         //1、触摸坐标
         UITouch *touch = [touches anyObject];
         CGPoint point = [touch locationInView:self];
@@ -224,7 +223,6 @@ NSString *const kLFSplashViewData_frameArray = @"LFSplashViewData_frameArray";
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
     if (_isBegan || _isWork) {
-        
         //1、触摸坐标
         UITouch *touch = [touches anyObject];
         CGPoint point = [touch locationInView:self];
@@ -237,11 +235,9 @@ NSString *const kLFSplashViewData_frameArray = @"LFSplashViewData_frameArray";
             CGPoint mosaicPoint = [self divideMosaicPoint:point];
             NSValue *value = [NSValue valueWithCGPoint:mosaicPoint];
             if (![self.frameArray containsObject:value]) {
-                
                 if (_isBegan && self.brushBegan) self.brushBegan();
                 _isWork = YES;
                 _isBegan = NO;
-                
                 [self.frameArray addObject:value];
                 //2、创建LFSplashBlur
                 SLMosaicPointElement *blur = [SLMosaicPointElement new];
@@ -323,11 +319,10 @@ NSString *const kLFSplashViewData_frameArray = @"LFSplashViewData_frameArray";
     return _isWork;
 }
 
-/** 是否可撤销 */
+/// 是否可撤销
 - (BOOL)canBack {
     return self.layerArray.count;
 }
-
 //撤销
 - (void)goBack {
     if (!self.canBack) {
@@ -341,6 +336,10 @@ NSString *const kLFSplashViewData_frameArray = @"LFSplashViewData_frameArray";
     }
     [layer removeFromSuperlayer];
     [self.layerArray removeLastObject];
+}
+- (void)clear {
+    [self.layerArray removeAllObjects];
+    [self.frameArray removeAllObjects];
 }
 
 #pragma mark  - 数据

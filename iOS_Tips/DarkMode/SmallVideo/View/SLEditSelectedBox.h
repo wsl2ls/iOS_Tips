@@ -12,7 +12,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// 水印选中框/高亮框
 @interface SLEditSelectedBox : UIView
-
 @end
 
 NS_ASSUME_NONNULL_END

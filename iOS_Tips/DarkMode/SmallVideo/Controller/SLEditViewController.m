@@ -540,11 +540,12 @@
         self.preview.clipsToBounds = YES;
         //获取拖拽的视图在屏幕上的位置
         CGRect rect = [pan.view convertRect: pan.view.bounds toView:self.view];
+        CGRect previewRect = [self.view convertRect:self.preview.frame toView:self.view];
         //删除拖拽的视图
         if (self.trashTips.center.y < rect.origin.y+rect.size.height/2.0) {
             [pan.view  removeFromSuperview];
             [self.watermarkArray removeObject:(SLImageView *)pan.view];
-        }else if (pan.view.sl_y >= self.preview.sl_h) {
+        }else if (!CGRectIntersectsRect(previewRect, rect)) {
             //如果出了父视图preview的范围，则置于父视图中心
             pan.view.center = CGPointMake(self.preview.sl_w/2.0, self.preview.sl_h/2.0);
         }
@@ -621,8 +622,8 @@
     [self.watermarkArray removeObject:topView];
     [self.watermarkArray addObject:topView];
     [self cancelDelayPerform]; //取消延迟执行
-    [topView addSubview:self.selectedBox];
     self.selectedBox.frame = topView.bounds;
+    [topView addSubview:self.selectedBox];
 }
 // 隐藏预览按钮
 - (void)hiddenPreviewButton:(BOOL)isHidden {

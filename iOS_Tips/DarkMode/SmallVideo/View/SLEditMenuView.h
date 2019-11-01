@@ -20,6 +20,8 @@ typedef NS_ENUM(NSUInteger, SLEditObject) {
 };
 ///视频和图片的编辑类型
 typedef NS_ENUM(NSUInteger, SLEditMenuType) {
+    /// 无类型
+    SLEditMenuTypeUnknown = 0,
     /// 涂鸦
     SLEditMenuTypeGraffiti = 1,
     /// 文字

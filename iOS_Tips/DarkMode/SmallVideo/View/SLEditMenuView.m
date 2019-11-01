@@ -367,11 +367,11 @@
             break;
         case SLEditMenuTypeSticking:
             [self hiddenView:self.submenuSticking];
-            self.selectEditMenu(editMenuType, nil);
+            self.selectEditMenu(editMenuType, @{@"hidden":@(self.submenuSticking.hidden)});
             break;
         case SLEditMenuTypeText:
             [self hiddenView:self.currentSubmenu hidden:YES];
-            self.selectEditMenu(editMenuType, nil);
+            self.selectEditMenu(editMenuType, @{@"hidden":@(self.submenuSticking.hidden)});
             break;
         case SLEditMenuTypeVideoClipping:
             [self hiddenView:self.currentSubmenu hidden:YES];
