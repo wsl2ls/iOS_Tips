@@ -67,8 +67,6 @@
 - (void)setImage:(UIImage *)image {
     _image = image;
     self.imageView.image = image;
-    self.imageView.frame = CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.width * self.image.size.height/self.image.size.width);
-    self.imageView.center = CGPointMake(self.bounds.size.width/2.0, self.bounds.size.height/2.0);
 }
 
 #pragma mark - UIScrollViewDelegate

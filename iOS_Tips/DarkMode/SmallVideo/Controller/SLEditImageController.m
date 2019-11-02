@@ -22,6 +22,7 @@
 #import "SLMosaicView.h"
 #import "UIImage+SLCommon.h"
 #import "SLImageZoomView.h"
+#import "SLImageClipController.h"
 
 @interface SLEditImageController ()<UIGestureRecognizerDelegate, SLImageZoomViewDelegate>
 
@@ -63,7 +64,7 @@
     return NO;
 }
 - (void)dealloc {
-    NSLog(@"编辑视图释放了");
+    NSLog(@"图片编辑视图释放了");
 }
 
 #pragma mark - UI
@@ -72,6 +73,8 @@
     [self.view addSubview:self.zoomView];
     self.zoomView.userInteractionEnabled = NO;
     self.zoomView.image = self.image;
+    self.zoomView.imageView.frame = CGRectMake(0, 0, self.zoomView.sl_w, self.zoomView.sl_w * self.image.size.height/self.image.size.width);
+    self.zoomView.imageView.center = CGPointMake(self.zoomView.sl_w/2.0, self.zoomView.sl_h/2.0);
     
     [self.view addSubview:self.againShotBtn];
     [self.view addSubview:self.editBtn];
@@ -142,6 +145,7 @@
             self.zoomView.pinchGestureRecognizer.enabled = YES;
             break;
         case SLEditMenuTypeGraffiti:
+            self.zoomView.pinchGestureRecognizer.enabled = YES;
             self.zoomView.scrollEnabled = NO;
             break;
         case SLEditMenuTypeText:
@@ -154,6 +158,7 @@
             break;
         case SLEditMenuTypePictureMosaic:
             self.zoomView.scrollEnabled = NO;
+            self.zoomView.pinchGestureRecognizer.enabled = YES;
             break;
         case SLEditMenuTypePictureClipping:
             break;
@@ -324,6 +329,12 @@
             }else {
                 weakSelf.mosaicView.userInteractionEnabled = NO;
             }
+            if (editMenuType == SLEditMenuTypePictureClipping) {
+                SLImageClipController *imageClipController = [[SLImageClipController alloc] init];
+                imageClipController.modalPresentationStyle = UIModalPresentationFullScreen;
+                imageClipController.image = weakSelf.zoomView.image;
+                [weakSelf presentViewController:imageClipController animated:NO completion:nil];
+            }
         };
         [self.view addSubview:_editMenuView];
     }
@@ -435,6 +446,8 @@
     self.zoomView.zoomScale = 1;
     self.zoomView.image = self.image;
     self.zoomView.userInteractionEnabled = NO;
+    self.zoomView.imageView.frame = CGRectMake(0, 0, self.zoomView.sl_w, self.zoomView.sl_w * self.image.size.height/self.image.size.width);
+    self.zoomView.imageView.center = CGPointMake(self.zoomView.sl_w/2.0, self.zoomView.sl_h/2.0);
 }
 //完成编辑 导出编辑后的对象
 - (void)doneEditBtnClicked:(id)sender {

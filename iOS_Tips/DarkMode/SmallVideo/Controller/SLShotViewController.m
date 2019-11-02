@@ -71,7 +71,6 @@
 - (void)viewSafeAreaInsetsDidChange {
     [super viewSafeAreaInsetsDidChange];
     UIEdgeInsets insets = self.view.safeAreaInsets;
-    //    self.backBtn.frame = CGRectMake(50, self.view.frame.size.height - 50 - insets.bottom, 23, 12);
 }
 - (BOOL)prefersStatusBarHidden {
     return YES;

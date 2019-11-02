@@ -67,7 +67,7 @@
     return NO;
 }
 - (void)dealloc {
-    NSLog(@"编辑视图释放了");
+    NSLog(@"视频编辑视图释放了");
 }
 #pragma mark - UI
 - (void)setupUI {

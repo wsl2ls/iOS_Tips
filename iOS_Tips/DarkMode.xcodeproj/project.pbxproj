@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		780F5303236D8462000D0EA8 /* SLGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = 780F5302236D8462000D0EA8 /* SLGridView.m */; };
+		780F5306236D8570000D0EA8 /* SLImageClipController.m in Sources */ = {isa = PBXBuildFile; fileRef = 780F5305236D8570000D0EA8 /* SLImageClipController.m */; };
 		7822CCF8235B054200E70C29 /* SLPaddingLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7822CCF7235B054200E70C29 /* SLPaddingLabel.m */; };
 		7822CCFE235B1D5B00E70C29 /* NSObject+SLDelayPerform.m in Sources */ = {isa = PBXBuildFile; fileRef = 7822CCFD235B1D5B00E70C29 /* NSObject+SLDelayPerform.m */; };
 		7830A59E2358520200BC79BA /* SLEditTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7830A59D2358520200BC79BA /* SLEditTextView.m */; };
@@ -63,6 +65,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		780F5301236D845B000D0EA8 /* SLGridView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLGridView.h; sourceTree = "<group>"; };
+		780F5302236D8462000D0EA8 /* SLGridView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLGridView.m; sourceTree = "<group>"; };
+		780F5304236D8570000D0EA8 /* SLImageClipController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLImageClipController.h; sourceTree = "<group>"; };
+		780F5305236D8570000D0EA8 /* SLImageClipController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLImageClipController.m; sourceTree = "<group>"; };
 		7822CCF6235B054200E70C29 /* SLPaddingLabel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLPaddingLabel.h; sourceTree = "<group>"; };
 		7822CCF7235B054200E70C29 /* SLPaddingLabel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLPaddingLabel.m; sourceTree = "<group>"; };
 		7822CCFC235B1D5B00E70C29 /* NSObject+SLDelayPerform.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSObject+SLDelayPerform.h"; sourceTree = "<group>"; };
@@ -276,6 +282,8 @@
 				78E179342351A40D0007E4BB /* SLShotFocusView.m */,
 				78DAA1142360256200A60F64 /* SLEditSelectedBox.h */,
 				78DAA1152360256200A60F64 /* SLEditSelectedBox.m */,
+				780F5301236D845B000D0EA8 /* SLGridView.h */,
+				780F5302236D8462000D0EA8 /* SLGridView.m */,
 				78A4BD46236C5DFD0021AE32 /* SLImageZoomView.h */,
 				78A4BD47236C5DFD0021AE32 /* SLImageZoomView.m */,
 				78E179352351A40D0007E4BB /* SLEditMenuView.h */,
@@ -299,6 +307,8 @@
 				78E1792F2351A4020007E4BB /* SLShotViewController.m */,
 				787F01A1236AD8A5002AC1A9 /* SLEditImageController.h */,
 				787F01A2236AD8A5002AC1A9 /* SLEditImageController.m */,
+				780F5304236D8570000D0EA8 /* SLImageClipController.h */,
+				780F5305236D8570000D0EA8 /* SLImageClipController.m */,
 				78A4BD43236C5DF20021AE32 /* SLEditVideoController.h */,
 				78A4BD44236C5DF20021AE32 /* SLEditVideoController.m */,
 			);
@@ -475,6 +485,7 @@
 				786147FA23630C4D00C5424C /* UIImage+SLCommon.m in Sources */,
 				7822CCFE235B1D5B00E70C29 /* NSObject+SLDelayPerform.m in Sources */,
 				78FA0F9D235407E6003E456B /* SLDrawView.m in Sources */,
+				780F5303236D8462000D0EA8 /* SLGridView.m in Sources */,
 				7851CB43233222E2002295B5 /* UIView+SLFrame.m in Sources */,
 				7830A5A42358904600BC79BA /* UIView+SLImage.m in Sources */,
 				78E1791723517F700007E4BB /* SLImageView.m in Sources */,
@@ -482,6 +493,7 @@
 				78E179362351A40D0007E4BB /* SLEditMenuView.m in Sources */,
 				78F54916233383D800910215 /* SLBlurView.m in Sources */,
 				787F01A3236AD8A5002AC1A9 /* SLEditImageController.m in Sources */,
+				780F5306236D8570000D0EA8 /* SLImageClipController.m in Sources */,
 				78B10493232F57C50051579F /* main.m in Sources */,
 				78E179372351A40D0007E4BB /* SLShotFocusView.m in Sources */,
 				78A4BD45236C5DF20021AE32 /* SLEditVideoController.m in Sources */,

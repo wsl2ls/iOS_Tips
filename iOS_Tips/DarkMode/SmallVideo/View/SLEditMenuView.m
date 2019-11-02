@@ -383,6 +383,7 @@
             break;
         case SLEditMenuTypePictureClipping:
             [self hiddenView:self.currentSubmenu hidden:YES];
+            self.selectEditMenu(editMenuType, nil);
             break;
         default:
             break;
