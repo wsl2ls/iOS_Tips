@@ -340,6 +340,7 @@ NSString *const kLFSplashViewData_frameArray = @"LFSplashViewData_frameArray";
 - (void)clear {
     [self.layerArray removeAllObjects];
     [self.frameArray removeAllObjects];
+    [self.layer.sublayers makeObjectsPerformSelector:@selector(removeFromSuperlayer)];
 }
 
 #pragma mark  - 数据

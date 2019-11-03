@@ -10,6 +10,34 @@
 
 @implementation UIImage (SLCommon)
 
+/// 将图片旋转弧度radians
+- (UIImage *)imageRotatedByRadians:(CGFloat)radians {
+    // calculate the size of the rotated view's containing box for our drawing space
+    CGAffineTransform t = CGAffineTransformMakeRotation(radians);
+    CGRect clipTransRect = CGRectApplyAffineTransform(CGRectMake(0,0,self.size.width, self.size.height), t);
+    CGSize rotatedSize = clipTransRect.size;
+    rotatedSize.width = ((int)(rotatedSize.width+0.5)*1.f);
+    rotatedSize.height = ((int)(rotatedSize.height+0.5)*1.f);
+    
+    // Create the bitmap context
+    UIGraphicsBeginImageContext(rotatedSize);
+    CGContextRef bitmap = UIGraphicsGetCurrentContext();
+    
+    // Move the origin to the middle of the image so we will rotate and scale around the center.
+    CGContextTranslateCTM(bitmap, rotatedSize.width/2, rotatedSize.height/2);
+    
+    // Rotate the image context
+    CGContextRotateCTM(bitmap, radians);
+    
+    // Now, draw the rotated/scaled image into the context
+    CGContextScaleCTM(bitmap, 1.0, -1.0);
+    CGContextDrawImage(bitmap, CGRectMake(-self.size.width / 2, -self.size.height / 2, self.size.width, self.size.height), [self CGImage]);
+    
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return newImage;
+}
 /// 提取图片上某位置像素的颜色
 - (UIColor *)colorAtPixel:(CGPoint)point {
     // Cancel if point is outside image coordinates

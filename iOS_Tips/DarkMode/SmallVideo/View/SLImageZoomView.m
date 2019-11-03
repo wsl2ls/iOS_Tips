@@ -51,7 +51,7 @@
 - (UIImageView *)imageView {
     if (!_imageView) {
         _imageView = [[UIImageView alloc] initWithFrame:self.bounds];
-        _imageView.contentMode = UIViewContentModeScaleAspectFit;
+//        _imageView.contentMode = UIViewContentModeScaleAspectFit;
         _imageView.userInteractionEnabled = YES;
     }
     return _imageView;

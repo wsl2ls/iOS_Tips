@@ -43,7 +43,6 @@
 @property (nonatomic, strong) SLMosaicView *mosaicView; //马赛克画板
 
 @property (nonatomic, assign) SLEditMenuType editingMenuType; //当前正在编辑的菜单类型
-@property (nonatomic, assign) BOOL isBeginEdit; //
 
 @end
 
@@ -60,10 +59,8 @@
 - (BOOL)prefersStatusBarHidden {
     return YES;
 }
-- (BOOL)shouldAutorotate {
-    return NO;
-}
 - (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     NSLog(@"图片编辑视图释放了");
 }
 
@@ -71,10 +68,15 @@
 - (void)setupUI {
     self.view.backgroundColor = [UIColor blackColor];
     [self.view addSubview:self.zoomView];
-    self.zoomView.userInteractionEnabled = NO;
+    self.zoomView.pinchGestureRecognizer.enabled = NO;
     self.zoomView.image = self.image;
     self.zoomView.imageView.frame = CGRectMake(0, 0, self.zoomView.sl_w, self.zoomView.sl_w * self.image.size.height/self.image.size.width);
-    self.zoomView.imageView.center = CGPointMake(self.zoomView.sl_w/2.0, self.zoomView.sl_h/2.0);
+    if (self.zoomView.imageView.sl_h <= self.zoomView.sl_h) {
+        self.zoomView.imageView.center = CGPointMake(self.zoomView.sl_w/2.0, self.zoomView.sl_h/2.0);
+    }
+    
+    //添加裁剪完成监听
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(imageClippingComplete:) name:@"sl_ImageClippingComplete" object:nil];
     
     [self.view addSubview:self.againShotBtn];
     [self.view addSubview:self.editBtn];
@@ -161,6 +163,8 @@
             self.zoomView.pinchGestureRecognizer.enabled = YES;
             break;
         case SLEditMenuTypePictureClipping:
+            self.zoomView.scrollEnabled = YES;
+            self.zoomView.pinchGestureRecognizer.enabled = YES;
             break;
         default:
             break;
@@ -332,7 +336,9 @@
             if (editMenuType == SLEditMenuTypePictureClipping) {
                 SLImageClipController *imageClipController = [[SLImageClipController alloc] init];
                 imageClipController.modalPresentationStyle = UIModalPresentationFullScreen;
-                imageClipController.image = weakSelf.zoomView.image;
+                [weakSelf.selectedBox removeFromSuperview];
+                UIImage *image = [weakSelf.zoomView.imageView sl_imageByViewInRect:weakSelf.zoomView.imageView.bounds];
+                imageClipController.image = image;
                 [weakSelf presentViewController:imageClipController animated:NO completion:nil];
             }
         };
@@ -403,7 +409,7 @@
 #pragma mark - Events Handle
 //编辑
 - (void)editBtnClicked:(id)sender {
-    self.zoomView.userInteractionEnabled = YES;
+    self.zoomView.pinchGestureRecognizer.enabled = YES;
     [self hiddenEditMenus:NO];
     [self hiddenPreviewButton:YES];
 }
@@ -445,9 +451,12 @@
     [self.watermarkArray removeAllObjects];
     self.zoomView.zoomScale = 1;
     self.zoomView.image = self.image;
-    self.zoomView.userInteractionEnabled = NO;
+    self.zoomView.pinchGestureRecognizer.enabled = NO;
     self.zoomView.imageView.frame = CGRectMake(0, 0, self.zoomView.sl_w, self.zoomView.sl_w * self.image.size.height/self.image.size.width);
-    self.zoomView.imageView.center = CGPointMake(self.zoomView.sl_w/2.0, self.zoomView.sl_h/2.0);
+    if (self.zoomView.imageView.sl_h <= self.zoomView.sl_h) {
+        self.zoomView.imageView.center = CGPointMake(self.zoomView.sl_w/2.0, self.zoomView.sl_h/2.0);
+    }
+    self.zoomView.contentSize = CGSizeMake(self.zoomView.imageView.sl_w, self.zoomView.imageView.sl_h);
 }
 //完成编辑 导出编辑后的对象
 - (void)doneEditBtnClicked:(id)sender {
@@ -570,7 +579,26 @@
     // 将旋转的弧度清零(注意不是将图片旋转的弧度清零, 而是将当前手指旋转的弧度清零)
     rotation.rotation = 0;
 }
-
+// 图片裁剪完成
+- (void)imageClippingComplete:(NSNotification *)notification {
+    UIImage *clipImage = notification.userInfo[@"image"];
+    self.zoomView.zoomScale = 1;
+    self.zoomView.image = clipImage;
+    self.zoomView.imageView.frame = CGRectMake(0, 0, self.zoomView.sl_w, self.zoomView.sl_w * clipImage.size.height/clipImage.size.width);
+    if (self.zoomView.imageView.sl_h <= self.zoomView.sl_h) {
+        self.zoomView.imageView.center = CGPointMake(self.zoomView.sl_w/2.0, self.zoomView.sl_h/2.0);
+    }
+    self.zoomView.contentSize = CGSizeMake(self.zoomView.imageView.sl_w, self.zoomView.imageView.sl_h);
+    
+    _drawView.frame = self.zoomView.imageView.bounds;
+    _mosaicView.frame = self.zoomView.imageView.bounds;
+    [_drawView clear];
+    [_mosaicView clear];
+    for (UIView *view in self.watermarkArray) {
+        [view removeFromSuperview];
+    }
+    [self.watermarkArray removeAllObjects];
+}
 #pragma mark - UIGestureRecognizerDelegate
 // 该方法返回的BOOL值决定了view是否能够同时响应多个手势
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {

@@ -10,6 +10,7 @@
 #import "SLImageZoomView.h"
 #import "SLGridView.h"
 #import "UIView+SLFrame.h"
+#import "UIView+SLImage.h"
 
 #define KBottomMenuHeight 100  //底部菜单高度
 #define KGridTopMargin 40  //顶部间距
@@ -25,6 +26,8 @@
 
 /// 原始位置区域
 @property (nonatomic, assign) CGRect originalRect;
+/// 最大裁剪区域
+@property (nonatomic, assign) CGRect maxGridRect;
 
 /// 裁剪区域
 //@property (nonatomic, assign) CGRect clipRect;
@@ -38,7 +41,6 @@
 @property (nonatomic, strong) UIButton *cancleClipBtn; //取消操作
 @property (nonatomic, strong) UIButton *recoveryBtn; //还原
 @property (nonatomic, strong) UIButton *doneClipBtn;  //保存操作
-
 @end
 
 @implementation SLImageClipController
@@ -46,14 +48,11 @@
 #pragma mark - Override
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = [UIColor blackColor];
     [self setupUI];
 }
 - (BOOL)prefersStatusBarHidden {
     return YES;
-}
-- (BOOL)shouldAutorotate {
-    return NO;
 }
 - (void)dealloc {
     NSLog(@"图片裁剪视图释放了");
@@ -61,9 +60,24 @@
 #pragma mark - UI
 - (void)setupUI {
     self.zoomView.image = self.image;
-    self.originalRect = self.zoomView.frame;
+    self.maxGridRect = CGRectMake(KGridLRMargin, KGridTopMargin, self.view.sl_w - KGridLRMargin * 2, self.view.sl_h - KGridTopMargin - KGridBottomMargin- KBottomMenuHeight);
+    
+    CGSize newSize = CGSizeMake(self.view.sl_w - 2 * KGridLRMargin, (self.view.sl_w - 2 * KGridLRMargin)*self.image.size.height/self.image.size.width);
+    if (newSize.height > self.maxGridRect.size.height) {
+        newSize = CGSizeMake(self.maxGridRect.size.height*self.image.size.width/self.image.size.height, self.maxGridRect.size.height);
+        self.zoomView.sl_size = newSize;
+        self.zoomView.sl_y = KGridTopMargin;
+        self.zoomView.sl_centerX = self.view.sl_w/2.0;
+    }else {
+        self.zoomView.sl_size = newSize;
+        self.zoomView.center = CGPointMake(self.view.sl_w/2.0, (self.view.sl_h - KBottomMenuHeight)/2.0);
+    }
+    
     [self.view addSubview:self.zoomView];
+    self.zoomView.imageView.frame = self.zoomView.bounds;
+    self.originalRect = self.zoomView.frame;
     self.gridView.gridRect = self.zoomView.frame;
+    self.gridView.maxGridRect = self.maxGridRect;
     [self.view addSubview:self.gridView];
     
     [self.view addSubview:self.rotateBtn];
@@ -75,9 +89,9 @@
 #pragma mark - Getter
 - (SLImageZoomView *)zoomView {
     if (!_zoomView) {
-        _zoomView = [[SLImageZoomView alloc] initWithFrame:CGRectMake(KGridLRMargin, 0, self.view.sl_w - KGridLRMargin *2,( self.view.sl_w - KGridLRMargin *2)*self.image.size.height/self.image.size.width)];
+        _zoomView = [[SLImageZoomView alloc] initWithFrame:CGRectMake(KGridLRMargin, KGridTopMargin, self.view.sl_w - KGridLRMargin *2,( self.view.sl_w - KGridLRMargin *2)*self.image.size.height/self.image.size.width)];
         _zoomView.sl_centerY = (self.view.sl_h - KBottomMenuHeight)/2.0;
-        _zoomView.backgroundColor = [UIColor greenColor];
+        _zoomView.backgroundColor = [UIColor blackColor];
         _zoomView.zoomViewDelegate = self;
     }
     return _zoomView;
@@ -85,7 +99,6 @@
 - (SLGridView *)gridView {
     if (!_gridView) {
         _gridView = [[SLGridView alloc] initWithFrame:self.view.bounds];
-        _gridView.maxGridRect = CGRectMake(KGridLRMargin, KGridTopMargin, self.view.sl_w - KGridLRMargin * 2, self.view.sl_h - KGridTopMargin - KGridBottomMargin- KBottomMenuHeight);
         _gridView.delegate = self;
     }
     return _gridView;
@@ -230,7 +243,6 @@
         case -270:  angleInRadians = -(M_PI + M_PI_2);  break;
         default:                                        break;
     }
-    
     //旋转前获得网格框在图片上选择的区域
     CGRect gridRectOfImage = [self rectOfGridOnImageByGridRect:self.gridView.gridRect];
     
@@ -272,11 +284,12 @@
     self.gridView.gridRect = self.zoomView.frame;
     _rotateAngle = 0;
 }
+//完成编辑
 - (void)doneClipClicked:(id)sender {
     [self dismissViewControllerAnimated:NO completion:nil];
-    //    UIImage *clipImage = [self.zoomView.imageView sl_imageByViewInRect:[self rectOfGridOnImageByGridRect:_gridView.gridRect]];
-    //    UIImage *roImage = [UIImage imageWithCGImage:clipImage.CGImage scale:[UIScreen mainScreen].scale orientation:self.imageOrientation];
-    //    UIImageWriteToSavedPhotosAlbum(roImage, self, @selector(savedPhotoImage:didFinishSavingWithError:contextInfo:), nil);
+    UIImage *clipImage = [self.zoomView.imageView sl_imageByViewInRect:[self rectOfGridOnImageByGridRect:_gridView.gridRect]];
+    UIImage *roImage = [UIImage imageWithCGImage:clipImage.CGImage scale:[UIScreen mainScreen].scale orientation:self.imageOrientation];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"sl_ImageClippingComplete" object:nil userInfo:@{@"image" : roImage}];
 }
 
 #pragma mark - SLGridViewDelegate
@@ -284,9 +297,7 @@
 - (void)gridViewDidBeginResizing:(SLGridView *)gridView {
     CGPoint contentOffset = self.zoomView.contentOffset;
     if (self.zoomView.contentOffset.x < 0) contentOffset.x = 0;
-    //    if (self.zoomView.contentOffset.x > self.zoomView.imageView.sl_w - self.zoomView.sl_w) contentOffset.x = self.zoomView.imageView.sl_w - self.zoomView.sl_w;
     if (self.zoomView.contentOffset.y < 0) contentOffset.y = 0;
-    //    if (self.zoomView.contentOffset.y > self.zoomView.imageView.sl_h - self.zoomView.sl_h) contentOffset.y = self.zoomView.imageView.sl_h - self.zoomView.sl_h;
     [self.zoomView setContentOffset:contentOffset animated:NO];
 }
 //正在调整
@@ -296,7 +307,6 @@
 }
 // 结束调整
 - (void)gridViewDidEndResizing:(SLGridView *)gridView {
-    
     CGRect gridRectOfImage = [self rectOfGridOnImageByGridRect:gridView.gridRect];
     //居中
     [UIView animateWithDuration:0.25
@@ -321,7 +331,6 @@
         gridView.gridRect = self.zoomView.frame;
         [self.zoomView setZoomScale:self.zoomView.zoomScale * zoomScale];
         self.zoomView.contentOffset = CGPointMake(gridRectOfImage.origin.x*self.zoomView.zoomScale, gridRectOfImage.origin.y*self.zoomView.zoomScale);
-        
     } completion:^(BOOL finished) {
         
     }];

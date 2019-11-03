@@ -63,9 +63,6 @@
 - (BOOL)prefersStatusBarHidden {
     return YES;
 }
-- (BOOL)shouldAutorotate {
-    return NO;
-}
 - (void)dealloc {
     NSLog(@"视频编辑视图释放了");
 }
@@ -489,7 +486,7 @@
     [self hiddenEditMenus:YES];
     [self.selectedBox removeFromSuperview];
     [_editMenuView removeFromSuperview];
-     _editMenuView = nil;
+    _editMenuView = nil;
     [_drawView removeFromSuperview];
     _drawView = nil;
     for (UIView *view in self.watermarkArray) {

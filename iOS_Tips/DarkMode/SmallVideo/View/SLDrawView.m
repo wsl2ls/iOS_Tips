@@ -174,6 +174,7 @@
     [self.lineArray removeAllObjects];
     [self.deleteLayerArray removeAllObjects];
     [self.deleteLineArray removeAllObjects];
+    [self.layer.sublayers makeObjectsPerformSelector:@selector(removeFromSuperlayer)];
 }
 #pragma mark  - 数据
 - (NSDictionary *)data {
