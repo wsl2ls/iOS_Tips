@@ -1,6 +1,5 @@
 //
 //  SLScrollView.m
-//  马赛克
 //
 //  Created by wsl on 2019/10/27.
 //  Copyright © 2019 wsl. All rights reserved.
