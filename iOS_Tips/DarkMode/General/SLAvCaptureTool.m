@@ -106,11 +106,11 @@
         _session = [[AVCaptureSession alloc] init];
         //高质量采集率
         [_session setSessionPreset:AVCaptureSessionPresetHigh];
-        [_session addInput:self.videoInput]; //添加视频输入流
-        [_session addInput:self.audioInput];  //添加音频输入流
-        [_session addOutput:self.capturePhotoOutput]; //添加照片输出流
-        [_session addOutput:self.videoDataOutput];  //视频数据输出流 纯画面
-        [_session addOutput:self.audioDataOutput];  //音频数据输出流
+        if([_session canAddInput:self.videoInput]) [_session addInput:self.videoInput]; //添加视频输入流
+        if([_session canAddInput:self.audioInput])  [_session addInput:self.audioInput];  //添加音频输入流
+        if([_session canAddOutput:self.capturePhotoOutput]) [_session addOutput:self.capturePhotoOutput]; //添加照片输出流
+        if([_session canAddOutput:self.videoDataOutput]) [_session addOutput:self.videoDataOutput];  //视频数据输出流 纯画面
+        if([_session canAddOutput:self.audioDataOutput]) [_session addOutput:self.audioDataOutput];  //音频数据输出流
     }
     return _session;
 }
