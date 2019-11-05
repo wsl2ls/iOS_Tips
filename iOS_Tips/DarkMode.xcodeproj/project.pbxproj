@@ -97,6 +97,7 @@
 		78A4BD44236C5DF20021AE32 /* SLEditVideoController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLEditVideoController.m; sourceTree = "<group>"; };
 		78A4BD46236C5DFD0021AE32 /* SLImageZoomView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLImageZoomView.h; sourceTree = "<group>"; };
 		78A4BD47236C5DFD0021AE32 /* SLImageZoomView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLImageZoomView.m; sourceTree = "<group>"; };
+		78AA10F42371A7B50044A6F8 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
 		78B1047D232F57C30051579F /* iOS - Tips.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "iOS - Tips.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		78B10480232F57C30051579F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		78B10481232F57C30051579F /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -200,6 +201,13 @@
 			path = SLCategory;
 			sourceTree = "<group>";
 		};
+		78AA10F32371A1EF0044A6F8 /* FaceDetect */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = FaceDetect;
+			sourceTree = "<group>";
+		};
 		78B10474232F57C30051579F = {
 			isa = PBXGroup;
 			children = (
@@ -234,6 +242,7 @@
 				7851CB40233222E2002295B5 /* SLCategory */,
 				7851CB322331CC87002295B5 /* Dark */,
 				7851CB392331CD0D002295B5 /* SmallVideo */,
+				78AA10F32371A1EF0044A6F8 /* FaceDetect */,
 				78B10489232F57C30051579F /* Main.storyboard */,
 				78B1048C232F57C50051579F /* Assets.xcassets */,
 				78B1048E232F57C50051579F /* LaunchScreen.storyboard */,
@@ -327,6 +336,7 @@
 			isa = PBXGroup;
 			children = (
 				78E1791023517F700007E4BB /* SLAnimateImageView */,
+				78AA10F42371A7B50044A6F8 /* PrefixHeader.pch */,
 				78F54914233383D800910215 /* SLBlurView.h */,
 				78F54915233383D800910215 /* SLBlurView.m */,
 				7822CCF6235B054200E70C29 /* SLPaddingLabel.h */,
@@ -678,6 +688,8 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/DarkMode/General/SLAnimateImageView",
 				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SRCROOT)/DarkMode/General/PrefixHeader.pch";
 				INFOPLIST_FILE = DarkMode/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -703,6 +715,8 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/DarkMode/General/SLAnimateImageView",
 				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SRCROOT)/DarkMode/General/PrefixHeader.pch";
 				INFOPLIST_FILE = DarkMode/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (

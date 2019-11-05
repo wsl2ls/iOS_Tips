@@ -38,8 +38,6 @@
 
 @implementation SLAvCaptureTool
 
-//@synthesize videoInput = _videoInput;
-
 + (instancetype)sharedAvCaptureTool {
     static SLAvCaptureTool *avCaptureTool = nil;
     static dispatch_once_t onceToken;
@@ -330,7 +328,7 @@
     if (self.devicePosition == AVCaptureDevicePositionFront && captureConnection.supportsVideoMirroring) {
         captureConnection.videoMirrored = YES;
     }
-    
+    //设置前置摄像头时，更改视频方向
     if (self.devicePosition == AVCaptureDevicePositionFront) {
         if (self.shootingOrientation == UIDeviceOrientationLandscapeRight) {
             captureConnection.videoOrientation = AVCaptureVideoOrientationLandscapeRight;

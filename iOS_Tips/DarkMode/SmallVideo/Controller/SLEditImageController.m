@@ -8,8 +8,6 @@
 
 #import "SLEditImageController.h"
 #import <Photos/Photos.h>
-#import "SLAvCaptureTool.h"
-#import "UIView+SLFrame.h"
 #import "UIView+SLImage.h"
 #import "SLBlurView.h"
 #import "SLEditMenuView.h"
