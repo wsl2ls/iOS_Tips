@@ -40,6 +40,8 @@
     range = CGRectMake(range.origin.x*[UIScreen mainScreen].scale, range.origin.y*[UIScreen mainScreen].scale, range.size.width*[UIScreen mainScreen].scale, range.size.height*[UIScreen mainScreen].scale);
     CGImageRef imageRefRect =CGImageCreateWithImageInRect(imageRef, range);
     UIImage *image =[[UIImage alloc] initWithCGImage:imageRefRect];
+    CGImageRelease(imageRefRect);
+    CGImageRelease(imageRef);
     return image;
 }
 
