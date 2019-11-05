@@ -38,10 +38,9 @@
     CGImageRef imageRef = fullScreenImage.CGImage;
     //注意：这里的宽/高 CGImageGetWidth(imageRef) 是图片的像素宽/高，所以计算截图区域时需要按比例来 * [UIScreen mainScreen].scale；
     range = CGRectMake(range.origin.x*[UIScreen mainScreen].scale, range.origin.y*[UIScreen mainScreen].scale, range.size.width*[UIScreen mainScreen].scale, range.size.height*[UIScreen mainScreen].scale);
-    CGImageRef imageRefRect =CGImageCreateWithImageInRect(imageRef, range);
+    CGImageRef imageRefRect = CGImageCreateWithImageInRect(imageRef, range);
     UIImage *image =[[UIImage alloc] initWithCGImage:imageRefRect];
     CGImageRelease(imageRefRect);
-    CGImageRelease(imageRef);
     return image;
 }
 

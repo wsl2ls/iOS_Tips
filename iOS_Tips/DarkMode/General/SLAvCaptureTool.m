@@ -582,5 +582,9 @@
         }
     }
 }
+/// 丢帧
+- (void)captureOutput:(AVCaptureOutput *)output didDropSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection API_AVAILABLE(ios(6.0)) {
+    
+}
 
 @end
