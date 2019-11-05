@@ -7,7 +7,6 @@
 //
 
 #import "SLEditVideoClipping.h"
-#import "UIView+SLFrame.h"
 
 ///  定义一个结构体 存储裁剪信息
 struct SLVideoClippingState {

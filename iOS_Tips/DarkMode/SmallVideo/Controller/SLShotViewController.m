@@ -7,7 +7,6 @@
 //
 
 #import "SLShotViewController.h"
-#import "UIView+SLFrame.h"
 #import "SLBlurView.h"
 #import "SLAvCaptureTool.h"
 #import "SLShotFocusView.h"

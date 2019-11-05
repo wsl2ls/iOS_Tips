@@ -7,7 +7,6 @@
 //
 
 #import "SLEditTextView.h"
-#import "UIView+SLFrame.h"
 #import "SLPaddingLabel.h"
 
 @interface SLEditTextView ()<UITextViewDelegate>

@@ -10,10 +10,6 @@
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
 
-#define SL_kScreenWidth [UIScreen mainScreen].bounds.size.width
-#define SL_kScreenHeight [UIScreen mainScreen].bounds.size.height
-#define DISPATCH_ON_MAIN_THREAD(mainQueueBlock) dispatch_async(dispatch_get_main_queue(),mainQueueBlock);  //主线程操作
-
 ///录制音视频类型
 typedef NS_ENUM(NSUInteger, SLAvRecordType) {
     /// 音视频
@@ -39,7 +35,8 @@ typedef NS_ENUM(NSUInteger, SLAvRecordType) {
 
 NS_ASSUME_NONNULL_BEGIN
 API_AVAILABLE(ios(10.0))
-///摄像头捕获工具    配置都是默认的
+
+///音视频捕获工具    配置都是默认的
 @interface SLAvCaptureTool : NSObject
 
 /// 摄像头采集内容预览视图  如果仅仅采集音频，则此属性可以不赋值
@@ -63,7 +60,7 @@ API_AVAILABLE(ios(10.0))
 - (void)focusAtPoint:(CGPoint)focalPoint;
 /// 切换前/后置摄像头
 - (void)switchsCamera:(AVCaptureDevicePosition)devicePosition;
-/// 输出图片
+/// 输出图片 拍照
 - (void)outputPhoto;
 /// 开始录制音视频  默认输出MP4
 /// @param path 录制的音视频输出路径

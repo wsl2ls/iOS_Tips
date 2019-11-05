@@ -9,7 +9,6 @@
 #import "SLImageClipController.h"
 #import "SLImageZoomView.h"
 #import "SLGridView.h"
-#import "UIView+SLFrame.h"
 #import "UIView+SLImage.h"
 
 #define KBottomMenuHeight 100  //底部菜单高度

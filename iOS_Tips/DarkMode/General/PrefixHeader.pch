@@ -1,0 +1,32 @@
+//
+//  PrefixHeader.pch
+//  DarkMode
+//
+//  Created by wsl on 2019/11/5.
+//  Copyright © 2019 wsl. All rights reserved.
+//
+
+#ifndef PrefixHeader_pch
+#define PrefixHeader_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+#ifdef __OBJC__ // 只被object－c文件所引用
+
+// 这个定义全工程都可以调用，不用重复引入
+
+/// 屏幕宽高
+#define SL_kScreenWidth [UIScreen mainScreen].bounds.size.width
+#define SL_kScreenHeight [UIScreen mainScreen].bounds.size.height
+///主线程操作
+#define DISPATCH_ON_MAIN_THREAD(mainQueueBlock) dispatch_async(dispatch_get_main_queue(),mainQueueBlock);
+
+#import "UIView+SLFrame.h"
+
+#endif
+
+
+
+#endif /* PrefixHeader_pch */
+
