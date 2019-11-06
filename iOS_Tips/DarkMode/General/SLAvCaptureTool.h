@@ -43,8 +43,6 @@ API_AVAILABLE(ios(10.0))
 @property (nonatomic, strong, nullable) UIView *preview;
 /// 摄像头是否正在运行
 @property (nonatomic, assign, readonly) BOOL isRunning;
-/// 音视频捕获类型 默认 SLAvCaptureTypeAv
-@property (nonatomic, assign) SLAvCaptureType  avCaptureType;
 /// 摄像头方向 默认后置摄像头
 @property (nonatomic, assign, readonly) AVCaptureDevicePosition devicePosition;
 /// 闪光灯状态  默认是关闭的，即黑暗情况下拍照不打开闪光灯   （打开/关闭/自动）

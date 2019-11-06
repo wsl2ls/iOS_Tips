@@ -11,7 +11,6 @@
 #import "SLShotViewController.h"
 #import "SLFaceDetectController.h"
 
-
 @interface ViewController ()<UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, strong) NSMutableArray *dataSource;
 @end
@@ -40,7 +39,7 @@
 #pragma mark - Data
 - (void)getData {
     //tableView、UIAlertView等系统控件，在不自定义颜色的情况下，默认颜色都是动态的，支持暗黑模式
-    [self.dataSource addObjectsFromArray:@[@"暗黑/光亮模式", @"AppleId登录应用(查看本仓库下的AddingTheSignInWithAppleFlowToYourApp)", @"高仿微信相机拍摄和编辑功能", @"人脸识别"]];
+    [self.dataSource addObjectsFromArray:@[@"暗黑/光亮模式", @"AppleId登录应用(查看本仓库下的AddingTheSignInWithAppleFlowToYourApp)", @"高仿微信相机拍摄和编辑功能", @"人脸检测"]];
     [self.tableView reloadData];
 }
 
@@ -56,7 +55,7 @@
 
 #pragma mark - EventsHandle
 
-#pragma mark - UITableViewDelegate, UITableViewDataSource>
+#pragma mark - UITableViewDelegate, UITableViewDataSource
 
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return self.dataSource.count;

@@ -319,13 +319,15 @@ static CGFloat THDegreesToRadians(CGFloat degrees) {
 #pragma mark - AVCaptureMetadataOutputObjectsDelegate
 //捕捉到数据
 - (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputMetadataObjects:(NSArray *)metadataObjects fromConnection:(AVCaptureConnection *)connection {
-    //使用循环，打印人脸数据
-    for (AVMetadataFaceObject *face in metadataObjects) {
-//        NSLog(@"Face detected with ID:%li",(long)face.faceID);
-//        NSLog(@"Face bounds:%@",NSStringFromCGRect(face.bounds));
+    @autoreleasepool {
+        //使用循环，打印人脸数据
+        for (AVMetadataFaceObject *face in metadataObjects) {
+            //        NSLog(@"Face detected with ID:%li",(long)face.faceID);
+            //        NSLog(@"Face bounds:%@",NSStringFromCGRect(face.bounds));
+        }
+        //将检测到的人脸标记出来
+        [self didDetectFaces:metadataObjects];
     }
-    //将检测到的人脸标记出来
-    [self didDetectFaces:metadataObjects];
 }
 
 @end
