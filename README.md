@@ -1,7 +1,7 @@
 # iOS_Tips
 iOS的一些示例，不定时更新~
 ### 目录 
-> 1、暗黑模式  2、AppleID登录应用  3、微信相机拍摄照片、小视频以及编辑功能 4、滤镜（doing） 5、人脸识别（will）
+> 1、暗黑模式  2、AppleID登录应用  3、微信相机拍摄照片、小视频以及编辑功能 4、人脸识别  5、滤镜（doing）
 
 ## 1、 暗黑模式适配
 
@@ -33,9 +33,11 @@ iOS的一些示例，不定时更新~
 |![图片编辑](https://upload-images.jianshu.io/upload_images/1708447-5f53acb267b67dcc.gif?imageMogr2/auto-orient/strip)|![图片裁剪](https://upload-images.jianshu.io/upload_images/1708447-fa99b90ec357da91.gif?imageMogr2/auto-orient/strip)|
 
 
-## 4、滤镜 （doing）
+## 4、人脸识别 
 
-## 5、人脸识别 （will）
+
+
+## 5、滤镜 （doing）
 
 
 
