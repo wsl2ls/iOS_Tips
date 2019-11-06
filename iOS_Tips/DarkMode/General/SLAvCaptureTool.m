@@ -29,7 +29,6 @@
 @property (nonatomic, copy)  NSURL *outputFileURL; //音视频文件输出路径
 
 @property (nonatomic, assign) BOOL isRecording; //是否正在录制
-@property (nonatomic, assign) SLAvRecordType  avRecordType; //音视频录制类型 默认 SLAvRecordTypeAv
 
 @property (nonatomic, assign) UIDeviceOrientation shootingOrientation;   //拍摄时的手机方向
 @property (nonatomic, strong) CMMotionManager *motionManager;       //运动传感器  监测设备方向
@@ -367,8 +366,8 @@
     [self.capturePhotoOutput capturePhotoWithSettings:capturePhotoSettings delegate:self];
 }
 //开始输出视频帧
-- (void)startRecordVideoToOutputFileAtPath:(NSString *)path recordType:(SLAvRecordType)avRecordType{
-    _avRecordType = avRecordType;
+- (void)startRecordVideoToOutputFileAtPath:(NSString *)path recordType:(SLAvCaptureType)avCaptureType{
+    _avCaptureType = avCaptureType;
     //移除重复文件
     if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
         [[NSFileManager defaultManager] removeItemAtPath:path error:nil];
@@ -427,7 +426,7 @@
 }
 //开始录制音频
 - (void)startRecordAudioToOutputFileAtPath:(NSString *)path {
-    _avRecordType = SLAvRecordTypeAudio;
+    _avCaptureType = SLAvCaptureTypeAudio;
     //移除重复文件
     if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
         [[NSFileManager defaultManager] removeItemAtPath:path error:nil];
@@ -543,7 +542,7 @@
         //视频
         if (output == self.videoDataOutput) {
             @synchronized(self) {
-                if (!self.canWrite && self.avRecordType != SLAvRecordTypeAudio) {
+                if (!self.canWrite && self.avCaptureType != SLAvCaptureTypeAudio) {
                     [self.assetWriter startWriting];
                     [self.assetWriter startSessionAtSourceTime:CMSampleBufferGetPresentationTimeStamp(sampleBuffer)];
                     self.canWrite = YES;
@@ -562,7 +561,7 @@
         //音频
         if (output == self.audioDataOutput) {
             @synchronized(self) {
-                if (!self.canWrite && self.avRecordType == SLAvRecordTypeAudio) {
+                if (!self.canWrite && self.avCaptureType == SLAvCaptureTypeAudio) {
                     [self.assetWriter startWriting];
                     [self.assetWriter startSessionAtSourceTime:CMSampleBufferGetPresentationTimeStamp(sampleBuffer)];
                     self.canWrite = YES;

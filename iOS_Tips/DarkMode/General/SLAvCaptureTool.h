@@ -10,14 +10,14 @@
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
 
-///录制音视频类型
-typedef NS_ENUM(NSUInteger, SLAvRecordType) {
-    /// 音视频
-    SLAvRecordTypeAv = 0,
-    /// 视频 无声
-    SLAvRecordTypeVideo,
+///音视频捕获类型
+typedef NS_ENUM(NSUInteger, SLAvCaptureType) {
+    /// 音视频  默认
+    SLAvCaptureTypeAv = 0,
+    /// 纯视频 无音频
+    SLAvCaptureTypeVideo,
     /// 音频
-    SLAvRecordTypeAudio
+    SLAvCaptureTypeAudio
 };
 
 @class SLAvCaptureTool;
@@ -43,6 +43,8 @@ API_AVAILABLE(ios(10.0))
 @property (nonatomic, strong, nullable) UIView *preview;
 /// 摄像头是否正在运行
 @property (nonatomic, assign, readonly) BOOL isRunning;
+/// 音视频捕获类型 默认 SLAvCaptureTypeAv
+@property (nonatomic, assign) SLAvCaptureType  avCaptureType;
 /// 摄像头方向 默认后置摄像头
 @property (nonatomic, assign, readonly) AVCaptureDevicePosition devicePosition;
 /// 闪光灯状态  默认是关闭的，即黑暗情况下拍照不打开闪光灯   （打开/关闭/自动）
@@ -65,7 +67,7 @@ API_AVAILABLE(ios(10.0))
 /// 开始录制音视频  默认输出MP4
 /// @param path 录制的音视频输出路径
 /// @param avRecordType 录制音视频类型
-- (void)startRecordVideoToOutputFileAtPath:(NSString *)path recordType:(SLAvRecordType)avRecordType;
+- (void)startRecordVideoToOutputFileAtPath:(NSString *)path recordType:(SLAvCaptureType)avRecordType;
 /// 结束录制视频
 - (void)stopRecordVideo;
 /// 开始录制音频 默认输出MP3
