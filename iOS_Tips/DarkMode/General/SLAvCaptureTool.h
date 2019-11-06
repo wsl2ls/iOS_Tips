@@ -31,6 +31,13 @@ typedef NS_ENUM(NSUInteger, SLAvCaptureType) {
 /// @param outputFileURL 文件地址
 /// @param error 错误信息
 - (void)captureTool:(SLAvCaptureTool *_Nonnull)captureTool didFinishRecordingToOutputFileAtURL:(NSURL *_Nullable)outputFileURL error:(nullable NSError *)error;
+
+/// 实时输出采集的音视频样本  提供对外接口 方便自定义处理
+/// @param captureTool captureTool
+/// @param sampleBuffer 样本缓冲
+/// @param connection 输入和输出之前的连接
+- (void)captureTool:(SLAvCaptureTool *_Nonnull)captureTool didOutputVideoSampleBuffer:(CMSampleBufferRef _Nonnull )sampleBuffer fromConnection:(AVCaptureConnection *_Nonnull)connection;
+- (void)captureTool:(SLAvCaptureTool *_Nonnull)captureTool didOutputAudioSampleBuffer:(CMSampleBufferRef _Nonnull )sampleBuffer fromConnection:(AVCaptureConnection *_Nonnull)connection;
 @end
 
 NS_ASSUME_NONNULL_BEGIN

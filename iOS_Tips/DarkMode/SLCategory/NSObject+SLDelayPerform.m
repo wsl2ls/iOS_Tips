@@ -8,7 +8,7 @@
 
 #import "NSObject+SLDelayPerform.h"
 
-//延迟执行的回调
+//延迟执行的回调 静态全局变量
 static dispatch_block_t sl_delayBlock;
 
 @implementation NSObject (SLDelayPerform)

@@ -23,14 +23,13 @@
 @property (nonatomic, strong) AVAssetWriter *assetWriter;   //音视频数据流文件写入
 @property (nonatomic, strong) AVAssetWriterInput *assetWriterVideoInput;  //写入视频文件
 @property (nonatomic, strong) AVAssetWriterInput *assetWriterAudioInput;  //写入音频文件
-@property (nonatomic, strong) NSDictionary *videoCompressionSettings;
-@property (nonatomic, strong) NSDictionary *audioCompressionSettings;
+@property (nonatomic, strong) NSDictionary *videoCompressionSettings; //视频写入配置
+@property (nonatomic, strong) NSDictionary *audioCompressionSettings;  //音频写入配置
 @property (nonatomic, assign) BOOL canWrite; //是否能写入
 @property (nonatomic, copy)  NSURL *outputFileURL; //音视频文件输出路径
 
 @property (nonatomic, assign) BOOL isRecording; //是否正在录制
-/// 音视频捕获类型 默认 SLAvCaptureTypeAv
-@property (nonatomic, assign) SLAvCaptureType  avCaptureType;
+@property (nonatomic, assign) SLAvCaptureType  avCaptureType; //音视频捕获类型 默认 SLAvCaptureTypeAv
 
 @property (nonatomic, assign) UIDeviceOrientation shootingOrientation;   //拍摄时的手机方向
 @property (nonatomic, strong) CMMotionManager *motionManager;       //运动传感器  监测设备方向
@@ -534,49 +533,72 @@
 }
 
 #pragma mark -  AVCaptureVideoDataOutputSampleBufferDelegate AVCaptureAudioDataOutputSampleBufferDelegate 实时输出帧内容
-/// 实时输出音视频帧内容
+/// 实时输出采集到的音视频帧内容
 - (void)captureOutput:(AVCaptureOutput *)output didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection {
+    //提供对外接口，方便自定义处理
+    if (output == self.videoDataOutput) {
+        if([self.delegate respondsToSelector:@selector(captureTool:didOutputVideoSampleBuffer:fromConnection:)]) {
+            [self.delegate captureTool:self didOutputVideoSampleBuffer:sampleBuffer fromConnection:connection];
+        }
+    }
+    if (output == self.audioDataOutput) {
+        if([self.delegate respondsToSelector:@selector(captureTool:didOutputAudioSampleBuffer:fromConnection:)]) {
+            [self.delegate captureTool:self didOutputAudioSampleBuffer:sampleBuffer fromConnection:connection];
+        }
+    }
+    
+    
     if(!_isRecording || sampleBuffer == NULL) {
         return;
     }
+    if (output == self.videoDataOutput) {
+        //写入视频
+        [self writerVideoSampleBuffer:sampleBuffer fromConnection:connection];
+    }
+    if (output == self.audioDataOutput) {
+        //写入音频
+        [self writerAudioSampleBuffer:sampleBuffer fromConnection:connection];
+    }
+}
+//实时写入输出的视频
+- (void)writerVideoSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection {
     @autoreleasepool {
-        //视频
-        if (output == self.videoDataOutput) {
-            @synchronized(self) {
-                if (!self.canWrite && (self.avCaptureType == SLAvCaptureTypeAv || self.avCaptureType == SLAvCaptureTypeVideo)) {
-                    [self.assetWriter startWriting];
-                    [self.assetWriter startSessionAtSourceTime:CMSampleBufferGetPresentationTimeStamp(sampleBuffer)];
-                    self.canWrite = YES;
-                }
-                //写入视频数据
-                if (self.assetWriterVideoInput.readyForMoreMediaData) {
-                    BOOL success = [self.assetWriterVideoInput appendSampleBuffer:sampleBuffer];
-                    if (!success) {
-                        @synchronized (self) {
-                            [self stopRecordVideo];
-                        }
+        @synchronized(self) {
+            if (!self.canWrite && (self.avCaptureType == SLAvCaptureTypeAv || self.avCaptureType == SLAvCaptureTypeVideo)) {
+                [self.assetWriter startWriting];
+                [self.assetWriter startSessionAtSourceTime:CMSampleBufferGetPresentationTimeStamp(sampleBuffer)];
+                self.canWrite = YES;
+            }
+            //写入视频数据
+            if (self.assetWriterVideoInput.readyForMoreMediaData) {
+                BOOL success = [self.assetWriterVideoInput appendSampleBuffer:sampleBuffer];
+                if (!success) {
+                    @synchronized (self) {
+                        [self stopRecordVideo];
                     }
                 }
             }
         }
-        //音频
-        if (output == self.audioDataOutput) {
-            @synchronized(self) {
-                if (!self.canWrite && self.avCaptureType == SLAvCaptureTypeAudio) {
-                    [self.assetWriter startWriting];
-                    [self.assetWriter startSessionAtSourceTime:CMSampleBufferGetPresentationTimeStamp(sampleBuffer)];
-                    self.canWrite = YES;
-                }
-                if (self.assetWriterAudioInput.readyForMoreMediaData) {
-                    //写入音频数据
-                    BOOL success = [self.assetWriterAudioInput appendSampleBuffer:sampleBuffer];
-                    if (!success) {
-                        @synchronized (self) {
-                            if (self.avCaptureType == SLAvCaptureTypeAudio) {
-                                 [self stopRecordAudio];
-                            }else if (self.avCaptureType == SLAvCaptureTypeAv) {
-                                 [self stopRecordVideo];
-                            }
+    }
+}
+//实时写入输出的音频
+- (void)writerAudioSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection {
+    @autoreleasepool {
+        @synchronized(self) {
+            if (!self.canWrite && self.avCaptureType == SLAvCaptureTypeAudio) {
+                [self.assetWriter startWriting];
+                [self.assetWriter startSessionAtSourceTime:CMSampleBufferGetPresentationTimeStamp(sampleBuffer)];
+                self.canWrite = YES;
+            }
+            if (self.assetWriterAudioInput.readyForMoreMediaData) {
+                //写入音频数据
+                BOOL success = [self.assetWriterAudioInput appendSampleBuffer:sampleBuffer];
+                if (!success) {
+                    @synchronized (self) {
+                        if (self.avCaptureType == SLAvCaptureTypeAudio) {
+                            [self stopRecordAudio];
+                        }else if (self.avCaptureType == SLAvCaptureTypeAv) {
+                            [self stopRecordVideo];
                         }
                     }
                 }
@@ -584,6 +606,7 @@
         }
     }
 }
+
 /// 丢帧
 - (void)captureOutput:(AVCaptureOutput *)output didDropSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection API_AVAILABLE(ios(6.0)) {
     
