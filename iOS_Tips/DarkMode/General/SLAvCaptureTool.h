@@ -46,7 +46,7 @@ API_AVAILABLE(ios(10.0))
 ///音视频捕获工具    配置都是默认的
 @interface SLAvCaptureTool : NSObject
 
-/// 摄像头采集内容预览视图  如果仅仅采集音频，则此属性可以不赋值
+/// 摄像头采集内容预览视图  
 @property (nonatomic, strong, nullable) UIView *preview;
 /// 摄像头是否正在运行
 @property (nonatomic, assign, readonly) BOOL isRunning;
@@ -69,9 +69,9 @@ API_AVAILABLE(ios(10.0))
 - (void)switchsCamera:(AVCaptureDevicePosition)devicePosition;
 /// 输出图片 拍照
 - (void)outputPhoto;
-/// 开始录制音视频  默认输出MP4
+/// 开始录制视频  默认输出MP4
 /// @param path 录制的音视频输出路径
-/// @param avRecordType 录制音视频类型
+/// @param avRecordType 录制视频类型
 - (void)startRecordVideoToOutputFileAtPath:(NSString *)path recordType:(SLAvCaptureType)avRecordType;
 /// 结束录制视频
 - (void)stopRecordVideo;

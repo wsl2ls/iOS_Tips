@@ -365,7 +365,7 @@
     capturePhotoSettings.flashMode = _flashMode;  //闪光灯 根据环境亮度自动决定是否打开闪光灯
     [self.capturePhotoOutput capturePhotoWithSettings:capturePhotoSettings delegate:self];
 }
-//开始输出视频帧
+//开始录制视频
 - (void)startRecordVideoToOutputFileAtPath:(NSString *)path recordType:(SLAvCaptureType)avCaptureType{
     self.avCaptureType = avCaptureType;
     //移除重复文件
