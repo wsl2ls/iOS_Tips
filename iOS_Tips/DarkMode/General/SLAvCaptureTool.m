@@ -416,7 +416,7 @@
                 weakSelf.assetWriterAudioInput = nil;
                 weakSelf.assetWriterVideoInput = nil;
                 if ([weakSelf.delegate respondsToSelector:@selector(captureTool:didFinishRecordingToOutputFileAtURL:error:)]) {
-                    DISPATCH_ON_MAIN_THREAD(^{
+                    SL_DISPATCH_ON_MAIN_THREAD(^{
                         [weakSelf.delegate captureTool:weakSelf didFinishRecordingToOutputFileAtURL:weakSelf.outputFileURL error:weakSelf.assetWriter.error];
                     });
                 }
@@ -456,7 +456,7 @@
                 weakSelf.assetWriterAudioInput = nil;
                 weakSelf.assetWriterVideoInput = nil;
                 if ([weakSelf.delegate respondsToSelector:@selector(captureTool:didFinishRecordingToOutputFileAtURL:error:)]) {
-                    DISPATCH_ON_MAIN_THREAD(^{
+                    SL_DISPATCH_ON_MAIN_THREAD(^{
                         [weakSelf.delegate captureTool:weakSelf didFinishRecordingToOutputFileAtURL:weakSelf.outputFileURL error:weakSelf.assetWriter.error];
                     });
                 }

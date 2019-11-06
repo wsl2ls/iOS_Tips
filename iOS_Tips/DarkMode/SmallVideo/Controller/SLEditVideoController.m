@@ -120,7 +120,7 @@
     [self.preview bringSubviewToFront:topView];
     [self.watermarkArray removeObject:topView];
     [self.watermarkArray addObject:topView];
-    [self cancelDelayPerform]; //取消延迟执行
+    [self sl_cancelDelayPerform]; //取消延迟执行
     self.selectedBox.frame = topView.bounds;
     [topView addSubview:self.selectedBox];
 }
@@ -326,7 +326,7 @@
                     [weakSelf.preview addSubview:imageView];
                     [weakSelf addRotateAndPinchGestureRecognizer:imageView];
                     [weakSelf topSelectedView:imageView];
-                    [weakSelf startDelayPerform:^{
+                    [weakSelf sl_startDelayPerform:^{
                         [weakSelf.selectedBox removeFromSuperview];
                     } afterDelay:1.0];
                 }
@@ -343,7 +343,7 @@
                     [weakSelf.watermarkArray addObject:label];
                     [weakSelf addRotateAndPinchGestureRecognizer:label];
                     [weakSelf topSelectedView:label];
-                    [weakSelf startDelayPerform:^{
+                    [weakSelf sl_startDelayPerform:^{
                         [weakSelf.selectedBox removeFromSuperview];
                     } afterDelay:1.0];
                 };
@@ -457,7 +457,7 @@
     [photoLibrary performChanges:^{
         [PHAssetChangeRequest creationRequestForAssetFromVideoAtFileURL:self.videoPath];
     } completionHandler:^(BOOL success, NSError * _Nullable error) {
-        DISPATCH_ON_MAIN_THREAD(^{
+        SL_DISPATCH_ON_MAIN_THREAD(^{
             [self againShotBtnClicked:nil];
         });
         if (success) {
@@ -470,7 +470,7 @@
 }
 //保存图片完成后调用的方法
 - (void)savedPhotoImage:(UIImage*)image didFinishSavingWithError:(NSError *)error contextInfo: (void *)contextInfo {
-    DISPATCH_ON_MAIN_THREAD(^{
+    SL_DISPATCH_ON_MAIN_THREAD(^{
         [self againShotBtnClicked:nil];
     });
     if (error) {
@@ -536,7 +536,7 @@
 - (void)singleTapAction:(UITapGestureRecognizer *)singleTap {
     [self topSelectedView:singleTap.view];
     if (singleTap.state == UIGestureRecognizerStateFailed || singleTap.state == UIGestureRecognizerStateEnded) {
-        [self startDelayPerform:^{
+        [self sl_startDelayPerform:^{
             [self.selectedBox removeFromSuperview];
         } afterDelay:1.0];
     }
@@ -561,7 +561,7 @@
         [self.preview addSubview:label];
         [self addRotateAndPinchGestureRecognizer:label];
         [self topSelectedView:label];
-        [self startDelayPerform:^{
+        [self sl_startDelayPerform:^{
             [self.selectedBox removeFromSuperview];
         } afterDelay:1.0];
     };
@@ -604,7 +604,7 @@
             pan.view.center = CGPointMake(self.preview.sl_w/2.0, self.preview.sl_h/2.0);
         }
         [self.trashTips removeFromSuperview];
-        [self startDelayPerform:^{
+        [self sl_startDelayPerform:^{
             [self.selectedBox removeFromSuperview];
         } afterDelay:1.0];
     }
@@ -614,7 +614,7 @@
     if (pinch.state == UIGestureRecognizerStateBegan) {
         [self topSelectedView:pinch.view];
     }else if (pinch.state == UIGestureRecognizerStateFailed || pinch.state == UIGestureRecognizerStateEnded){
-        [self startDelayPerform:^{
+        [self sl_startDelayPerform:^{
             [self.selectedBox removeFromSuperview];
         } afterDelay:1.0];
     }
@@ -626,7 +626,7 @@
     if (rotation.state == UIGestureRecognizerStateBegan) {
         [self topSelectedView:rotation.view];
     }else if (rotation.state == UIGestureRecognizerStateFailed || rotation.state == UIGestureRecognizerStateEnded){
-        [self startDelayPerform:^{
+        [self sl_startDelayPerform:^{
             [self.selectedBox removeFromSuperview];
         } afterDelay:1.0];
     }
