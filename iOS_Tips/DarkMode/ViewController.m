@@ -9,6 +9,7 @@
 #import "ViewController.h"
 #import "SLDarkModeViewController.h"
 #import "SLShotViewController.h"
+#import "SLFaceDetectController.h"
 
 
 @interface ViewController ()<UITableViewDelegate, UITableViewDataSource>
@@ -83,6 +84,13 @@
             [self presentViewController:shotViewController animated:YES completion:nil];
         }
             break;
+        case 3: {
+            SLFaceDetectController * faceDetectController = [[SLFaceDetectController alloc] init];
+            faceDetectController.modalPresentationStyle = UIModalPresentationFullScreen;
+            [self presentViewController:faceDetectController animated:YES completion:nil];
+        }
+            break;
+            
         default:
             break;
     }

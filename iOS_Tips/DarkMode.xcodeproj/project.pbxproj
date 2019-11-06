@@ -18,6 +18,7 @@
 		7851CB362331CC87002295B5 /* SLDarkModeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7851CB332331CC87002295B5 /* SLDarkModeViewController.m */; };
 		7851CB372331CC87002295B5 /* SLDarkModeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7851CB352331CC87002295B5 /* SLDarkModeViewController.xib */; };
 		7851CB43233222E2002295B5 /* UIView+SLFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 7851CB41233222E2002295B5 /* UIView+SLFrame.m */; };
+		7857977823725C21004CD664 /* SLFaceDetectController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7857977723725C21004CD664 /* SLFaceDetectController.m */; };
 		786147F12362A39500C5424C /* Resources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 786147F02362A39500C5424C /* Resources.bundle */; };
 		786147F42362D79000C5424C /* SLMosaicView.m in Sources */ = {isa = PBXBuildFile; fileRef = 786147F32362D79000C5424C /* SLMosaicView.m */; };
 		786147FA23630C4D00C5424C /* UIImage+SLCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 786147F923630C4D00C5424C /* UIImage+SLCommon.m */; };
@@ -86,6 +87,8 @@
 		7851CB352331CC87002295B5 /* SLDarkModeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SLDarkModeViewController.xib; sourceTree = "<group>"; };
 		7851CB41233222E2002295B5 /* UIView+SLFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+SLFrame.m"; sourceTree = "<group>"; };
 		7851CB42233222E2002295B5 /* UIView+SLFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+SLFrame.h"; sourceTree = "<group>"; };
+		7857977623725C21004CD664 /* SLFaceDetectController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLFaceDetectController.h; sourceTree = "<group>"; };
+		7857977723725C21004CD664 /* SLFaceDetectController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLFaceDetectController.m; sourceTree = "<group>"; };
 		786147F02362A39500C5424C /* Resources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Resources.bundle; sourceTree = "<group>"; };
 		786147F22362D78F00C5424C /* SLMosaicView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLMosaicView.h; sourceTree = "<group>"; };
 		786147F32362D79000C5424C /* SLMosaicView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLMosaicView.m; sourceTree = "<group>"; };
@@ -204,6 +207,8 @@
 		78AA10F32371A1EF0044A6F8 /* FaceDetect */ = {
 			isa = PBXGroup;
 			children = (
+				7857977623725C21004CD664 /* SLFaceDetectController.h */,
+				7857977723725C21004CD664 /* SLFaceDetectController.m */,
 			);
 			path = FaceDetect;
 			sourceTree = "<group>";
@@ -483,6 +488,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7857977823725C21004CD664 /* SLFaceDetectController.m in Sources */,
 				78B10488232F57C30051579F /* ViewController.m in Sources */,
 				78FA0FA02354141E003E456B /* SLAvEditExport.m in Sources */,
 				784B72062334685E006AEE47 /* SLAvPlayer.m in Sources */,
