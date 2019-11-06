@@ -119,7 +119,7 @@
     [self.zoomView.imageView bringSubviewToFront:topView];
     [self.watermarkArray removeObject:topView];
     [self.watermarkArray addObject:topView];
-    [self cancelDelayPerform]; //取消延迟执行
+    [self sl_cancelDelayPerform]; //取消延迟执行
     self.selectedBox.frame = topView.bounds;
     [topView addSubview:self.selectedBox];
 }
@@ -284,7 +284,7 @@
                     [weakSelf.zoomView.imageView addSubview:imageView];
                     [weakSelf addRotateAndPinchGestureRecognizer:imageView];
                     [weakSelf topSelectedView:imageView];
-                    [weakSelf startDelayPerform:^{
+                    [weakSelf sl_startDelayPerform:^{
                         [weakSelf.selectedBox removeFromSuperview];
                     } afterDelay:1.0];
                 }
@@ -313,7 +313,7 @@
                     [weakSelf.watermarkArray addObject:label];
                     [weakSelf addRotateAndPinchGestureRecognizer:label];
                     [weakSelf topSelectedView:label];
-                    [weakSelf startDelayPerform:^{
+                    [weakSelf sl_startDelayPerform:^{
                         [weakSelf.selectedBox removeFromSuperview];
                     } afterDelay:1.0];
                 };
@@ -392,7 +392,7 @@
             point.y = point.y/weakSelf.view.frame.size.height*weakSelf.zoomView.image.size.height;
             point.x = point.x/self.zoomView.zoomScale;
             point.y = point.y/self.zoomView.zoomScale;
-            return [weakSelf.zoomView.image colorAtPixel:point];
+            return [weakSelf.zoomView.image sl_colorAtPixel:point];
         };
         _mosaicView.brushBegan = ^{
             [weakSelf hiddenEditMenus:YES];
@@ -423,7 +423,7 @@
 }
 //保存图片完成后调用的方法
 - (void)savedPhotoImage:(UIImage*)image didFinishSavingWithError:(NSError *)error contextInfo: (void *)contextInfo {
-    DISPATCH_ON_MAIN_THREAD(^{
+    SL_DISPATCH_ON_MAIN_THREAD(^{
         [self againShotBtnClicked:nil];
     });
     if (error) {
@@ -466,7 +466,7 @@
 - (void)singleTapAction:(UITapGestureRecognizer *)singleTap {
     [self topSelectedView:singleTap.view];
     if (singleTap.state == UIGestureRecognizerStateFailed || singleTap.state == UIGestureRecognizerStateEnded) {
-        [self startDelayPerform:^{
+        [self sl_startDelayPerform:^{
             [self.selectedBox removeFromSuperview];
         } afterDelay:1.0];
     }
@@ -491,7 +491,7 @@
         [self.zoomView.imageView addSubview:label];
         [self addRotateAndPinchGestureRecognizer:label];
         [self topSelectedView:label];
-        [self startDelayPerform:^{
+        [self sl_startDelayPerform:^{
             [self.selectedBox removeFromSuperview];
         } afterDelay:1.0];
     };
@@ -543,7 +543,7 @@
             pan.view.center = center;
         }
         [self.trashTips removeFromSuperview];
-        [self startDelayPerform:^{
+        [self sl_startDelayPerform:^{
             [self.selectedBox removeFromSuperview];
         } afterDelay:1.0];
     }
@@ -555,7 +555,7 @@
         self.zoomView.pinchGestureRecognizer.enabled = NO;
         self.zoomView.imageView.clipsToBounds = NO;
     }else if (pinch.state == UIGestureRecognizerStateFailed || pinch.state == UIGestureRecognizerStateEnded){
-        [self startDelayPerform:^{
+        [self sl_startDelayPerform:^{
             [self.selectedBox removeFromSuperview];
         } afterDelay:1.0];
         self.zoomView.pinchGestureRecognizer.enabled = YES;
@@ -569,7 +569,7 @@
     if (rotation.state == UIGestureRecognizerStateBegan) {
         [self topSelectedView:rotation.view];
     }else if (rotation.state == UIGestureRecognizerStateFailed || rotation.state == UIGestureRecognizerStateEnded){
-        [self startDelayPerform:^{
+        [self sl_startDelayPerform:^{
             [self.selectedBox removeFromSuperview];
         } afterDelay:1.0];
     }

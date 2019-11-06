@@ -232,14 +232,14 @@
     //    __weak typeof(self) weakSelf = self;
     dispatch_source_set_event_handler(_gcdTimer, ^{
         self->_durationOfVideo+= timeInterval;
-        DISPATCH_ON_MAIN_THREAD(^{
+        SL_DISPATCH_ON_MAIN_THREAD(^{
             //主线程更新UI
             self.progressLayer.strokeEnd = self->_durationOfVideo/KMaxDurationOfVideo;
         });
         
         if(self->_durationOfVideo > KMaxDurationOfVideo) {
             NSLog(@"时长 %f", self->_durationOfVideo);
-            DISPATCH_ON_MAIN_THREAD(^{
+            SL_DISPATCH_ON_MAIN_THREAD(^{
                 self.progressLayer.strokeEnd = 1;
             });
             
@@ -284,7 +284,7 @@
         self.focusView.transform = CGAffineTransformIdentity;
     }];
     [self.avCaptureTool focusAtPoint:point];
-    [self startDelayPerform:^{
+    [self sl_startDelayPerform:^{
         [self.focusView removeFromSuperview];
     } afterDelay:1.0];
 }

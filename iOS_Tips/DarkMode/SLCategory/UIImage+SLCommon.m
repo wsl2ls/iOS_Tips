@@ -11,7 +11,7 @@
 @implementation UIImage (SLCommon)
 
 /// 将图片旋转弧度radians
-- (UIImage *)imageRotatedByRadians:(CGFloat)radians {
+- (UIImage *)sl_imageRotatedByRadians:(CGFloat)radians {
     // calculate the size of the rotated view's containing box for our drawing space
     CGAffineTransform t = CGAffineTransformMakeRotation(radians);
     CGRect clipTransRect = CGRectApplyAffineTransform(CGRectMake(0,0,self.size.width, self.size.height), t);
@@ -39,7 +39,7 @@
     return newImage;
 }
 /// 提取图片上某位置像素的颜色
-- (UIColor *)colorAtPixel:(CGPoint)point {
+- (UIColor *)sl_colorAtPixel:(CGPoint)point {
     // Cancel if point is outside image coordinates
     if (!CGRectContainsPoint(CGRectMake(0.0f, 0.0f, self.size.width, self.size.height), point)) {
         return nil;

@@ -3,7 +3,7 @@
 //  DarkMode
 //
 //  Created by wsl on 2019/11/6.
-//  Copyright © 2019 wsl. All rights reserved.
+//  Copyright © 2019 https://github.com/wsl2ls/iOS_Tips.git All rights reserved.
 //
 
 #import "SLFaceDetectController.h"
@@ -36,8 +36,8 @@
     [self.view addSubview:self.switchCameraBtn];
     [self.view addSubview:self.backBtn];
 }
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     [self.session startRunning];
 }
 - (void)viewDidDisappear:(BOOL)animated {

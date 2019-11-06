@@ -3,7 +3,7 @@
 //  DarkMode
 //
 //  Created by wsl on 2019/11/5.
-//  Copyright © 2019 wsl. All rights reserved.
+//  Copyright © 2019 https://github.com/wsl2ls/iOS_Tips.git All rights reserved.
 //
 
 #ifndef PrefixHeader_pch
@@ -16,11 +16,49 @@
 
 // 这个定义全工程都可以调用，不用重复引入
 
+///我的简书和Github地址
+#define SL_JianShuUrl @"https://www.jianshu.com/u/e15d1f644bea"
+#define SL_GithubUrl @"https://github.com/wsl2ls/iOS_Tips.git"
+
+//----------------------About UI  ----------------------------
+
 /// 屏幕宽高
 #define SL_kScreenWidth [UIScreen mainScreen].bounds.size.width
 #define SL_kScreenHeight [UIScreen mainScreen].bounds.size.height
+
+/// 弱引用对象
+#define SL_WeakSelf __weak typeof(self) weakSelf = self;
+
 ///主线程操作
-#define DISPATCH_ON_MAIN_THREAD(mainQueueBlock) dispatch_async(dispatch_get_main_queue(),mainQueueBlock);
+#define SL_DISPATCH_ON_MAIN_THREAD(mainQueueBlock) dispatch_async(dispatch_get_main_queue(),mainQueueBlock);
+
+//----------------------About Color 颜色 ----------------------------
+
+/// 随机颜色
+#define SL_UIColorFromRandomColor [UIColor colorWithRed:arc4random()%255/255.0 green:arc4random()%255/255.0 blue:arc4random()%255/255.0 alpha:1.0]
+/// rgb颜色
+#define SL_UIColorFromRGB(r,g,b,a) [UIColor colorWithRed:(r)/255.0f green:(g)/255.0f blue:(b)/255.0f alpha:(a)]
+/// 16进制 颜色
+#define SL_UIColorFromHex(rgbValue, a) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:(a)]
+
+//----------------------About log 打印日志 ----------------------------
+
+/// 打印
+#define NSLog(...) printf("%f %s %ld :%s\n",[[NSDate date]timeIntervalSince1970],strrchr(__FILE__,'/'),[[NSNumber numberWithInt:__LINE__] integerValue],[[NSString stringWithFormat:__VA_ARGS__]UTF8String]);
+//Using dlog to print while in debug model.        调试状态下打印日志
+#ifdef DEBUG
+#   define SL_Log(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
+#else
+#   define SL_Log(...)
+#endif
+/// debug模式  弹窗输出
+#ifdef DEBUG
+#   define SL_ULog(fmt, ...)  { UIAlertView *alert = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"%s\n [Line %d] ", __PRETTY_FUNCTION__, __LINE__] message:[NSString stringWithFormat:fmt, ##__VA_ARGS__]  delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil]; [alert show]; }
+#else
+#   define SL_ULog(...)
+#endif
+
+
 
 #import "UIView+SLFrame.h"
 
