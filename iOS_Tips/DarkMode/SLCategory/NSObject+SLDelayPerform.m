@@ -12,10 +12,10 @@
 static dispatch_block_t sl_delayBlock;
 
 @implementation NSObject (SLDelayPerform)
-/// 开始延迟执行  每次调用就重新开始计时
+/// 开始延迟执行  每次调用就重新开始计时   用完记得 执行sl_cancelDelayPerform
 /// @param perform  执行内容
 /// @param delay 延迟时间
-- (void)sl_startDelayPerform:(void(^)(void))perform afterDelay:(NSTimeInterval)delay {
++ (void)sl_startDelayPerform:(void(^)(void))perform afterDelay:(NSTimeInterval)delay {
     if (sl_delayBlock != nil) {
         dispatch_block_cancel(sl_delayBlock);
         sl_delayBlock = nil;
@@ -28,7 +28,7 @@ static dispatch_block_t sl_delayBlock;
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delay * NSEC_PER_SEC)), dispatch_get_main_queue(),sl_delayBlock);
 }
 ///取消延迟执行
-- (void)sl_cancelDelayPerform {
++ (void)sl_cancelDelayPerform {
     if (sl_delayBlock != nil) {
         dispatch_block_cancel(sl_delayBlock);
         sl_delayBlock = nil;

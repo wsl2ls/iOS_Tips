@@ -120,7 +120,7 @@
     [self.preview bringSubviewToFront:topView];
     [self.watermarkArray removeObject:topView];
     [self.watermarkArray addObject:topView];
-    [self sl_cancelDelayPerform]; //取消延迟执行
+    [NSObject sl_cancelDelayPerform]; //取消延迟执行
     self.selectedBox.frame = topView.bounds;
     [topView addSubview:self.selectedBox];
 }
@@ -326,7 +326,7 @@
                     [weakSelf.preview addSubview:imageView];
                     [weakSelf addRotateAndPinchGestureRecognizer:imageView];
                     [weakSelf topSelectedView:imageView];
-                    [weakSelf sl_startDelayPerform:^{
+                    [NSObject sl_startDelayPerform:^{
                         [weakSelf.selectedBox removeFromSuperview];
                     } afterDelay:1.0];
                 }
@@ -343,7 +343,7 @@
                     [weakSelf.watermarkArray addObject:label];
                     [weakSelf addRotateAndPinchGestureRecognizer:label];
                     [weakSelf topSelectedView:label];
-                    [weakSelf sl_startDelayPerform:^{
+                    [NSObject sl_startDelayPerform:^{
                         [weakSelf.selectedBox removeFromSuperview];
                     } afterDelay:1.0];
                 };
@@ -536,7 +536,7 @@
 - (void)singleTapAction:(UITapGestureRecognizer *)singleTap {
     [self topSelectedView:singleTap.view];
     if (singleTap.state == UIGestureRecognizerStateFailed || singleTap.state == UIGestureRecognizerStateEnded) {
-        [self sl_startDelayPerform:^{
+        [NSObject sl_startDelayPerform:^{
             [self.selectedBox removeFromSuperview];
         } afterDelay:1.0];
     }
@@ -561,7 +561,7 @@
         [self.preview addSubview:label];
         [self addRotateAndPinchGestureRecognizer:label];
         [self topSelectedView:label];
-        [self sl_startDelayPerform:^{
+        [NSObject sl_startDelayPerform:^{
             [self.selectedBox removeFromSuperview];
         } afterDelay:1.0];
     };
@@ -604,7 +604,7 @@
             pan.view.center = CGPointMake(self.preview.sl_w/2.0, self.preview.sl_h/2.0);
         }
         [self.trashTips removeFromSuperview];
-        [self sl_startDelayPerform:^{
+        [NSObject sl_startDelayPerform:^{
             [self.selectedBox removeFromSuperview];
         } afterDelay:1.0];
     }
@@ -614,7 +614,7 @@
     if (pinch.state == UIGestureRecognizerStateBegan) {
         [self topSelectedView:pinch.view];
     }else if (pinch.state == UIGestureRecognizerStateFailed || pinch.state == UIGestureRecognizerStateEnded){
-        [self sl_startDelayPerform:^{
+        [NSObject sl_startDelayPerform:^{
             [self.selectedBox removeFromSuperview];
         } afterDelay:1.0];
     }
@@ -626,7 +626,7 @@
     if (rotation.state == UIGestureRecognizerStateBegan) {
         [self topSelectedView:rotation.view];
     }else if (rotation.state == UIGestureRecognizerStateFailed || rotation.state == UIGestureRecognizerStateEnded){
-        [self sl_startDelayPerform:^{
+        [NSObject sl_startDelayPerform:^{
             [self.selectedBox removeFromSuperview];
         } afterDelay:1.0];
     }

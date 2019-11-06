@@ -61,11 +61,13 @@
     [super viewDidDisappear:animated];
     if (_gcdTimer) {
         dispatch_source_cancel(_gcdTimer);
+        _gcdTimer = nil;
     }
     [_avCaptureTool stopRunning];
     [_avCaptureTool removeObserver:self forKeyPath:@"shootingOrientation"];
     _avCaptureTool.delegate = nil;
     _avCaptureTool = nil;
+    [NSObject sl_cancelDelayPerform];
 }
 - (void)viewSafeAreaInsetsDidChange {
     [super viewSafeAreaInsetsDidChange];
@@ -284,8 +286,9 @@
         self.focusView.transform = CGAffineTransformIdentity;
     }];
     [self.avCaptureTool focusAtPoint:point];
-    [self sl_startDelayPerform:^{
-        [self.focusView removeFromSuperview];
+    SL_WeakSelf;
+    [NSObject sl_startDelayPerform:^{
+        [weakSelf.focusView removeFromSuperview];
     } afterDelay:1.0];
 }
 //调节焦距 手势
