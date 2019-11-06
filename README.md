@@ -15,7 +15,7 @@ iOS的一些示例，不定时更新~
 > 效果描述：  
 > * 1、自定义相机 拍摄视频和照片
 > * 2、切换前后摄像头、调整焦距/设置聚焦点、横屏拍摄
-> * 3、视频编辑：涂鸦、gif贴图、文字水印、视频裁剪 、添加背景音乐> 
+> * 3、视频编辑：涂鸦、gif贴图、文字水印、视频裁剪 、添加背景音乐 
 > * 4 、图片编辑：涂鸦、贴图、文字水印、马赛克、图片裁剪
 
 |![拍摄视频.gif](https://upload-images.jianshu.io/upload_images/1708447-0c93cbc1fd0222af.gif?imageMogr2/auto-orient/strip)|![拍摄照片](https://upload-images.jianshu.io/upload_images/1708447-866d269f0082e9dd.gif?imageMogr2/auto-orient/strip)
