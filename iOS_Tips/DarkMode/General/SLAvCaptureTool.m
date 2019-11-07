@@ -228,7 +228,9 @@
 #pragma mark - Setter
 - (void)setOutputFileURL:(NSURL *)outputFileURL {
     _outputFileURL = outputFileURL;
-    if (_assetWriter == nil) {
+    if (self.avCaptureType == SLAvCaptureTypeAudio) {
+        _assetWriter = [AVAssetWriter assetWriterWithURL:outputFileURL fileType:AVFileTypeAC3 error:nil];
+    } else if (self.avCaptureType == SLAvCaptureTypeVideo || self.avCaptureType == SLAvCaptureTypeAv) {
         _assetWriter = [AVAssetWriter assetWriterWithURL:outputFileURL fileType:AVFileTypeMPEG4 error:nil];
     }
 }
