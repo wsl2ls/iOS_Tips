@@ -547,7 +547,6 @@
         }
     }
     
-    
     if(!_isRecording || sampleBuffer == NULL) {
         return;
     }
