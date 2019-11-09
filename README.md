@@ -1,5 +1,8 @@
 # iOS_Tips
 iOS的一些示例，不定时更新~
+
+简书地址：https://www.jianshu.com/p/a2a04cabb98d
+
 ### 目录 
 > 1、暗黑模式  2、AppleID登录应用  3、微信相机拍摄照片、小视频以及编辑功能 4、人脸识别  5、滤镜（doing）
 
