@@ -1,32 +1,35 @@
 //
-//  SLShotViewController.m
+//  SLFilterViewController.m
 //  DarkMode
 //
-//  Created by wsl on 2019/9/18.
-//  Copyright © 2019 wsl. All rights reserved.
+//  Created by wsl on 2019/11/7.
+//  Copyright © 2019 https://github.com/wsl2ls   ----- . All rights reserved.
 //
 
-#import "SLShotViewController.h"
+#import "SLFilterViewController.h"
 #import "SLBlurView.h"
-#import "SLAvCaptureTool.h"
 #import "SLShotFocusView.h"
 #import "SLEditVideoController.h"
 #import "NSObject+SLDelayPerform.h"
 #import "SLEditImageController.h"
+#import "SLAvCaptureSession.h"
+#import "SLAvWriterInput.h"
 
 #define KMaxDurationOfVideo  15.0 //录制最大时长 s
 
-@interface SLShotViewController ()<SLAvCaptureToolDelegate>
+@interface SLFilterViewController ()<SLAvCaptureSessionDelegate, SLAvWriterInputDelegate>
 {
     dispatch_source_t _gcdTimer; //计时器
     NSTimeInterval _durationOfVideo;  //录制视频的时长
 }
 
-@property (nonatomic, strong) SLAvCaptureTool *avCaptureTool; //摄像头采集工具
-@property (nonatomic, strong) UIImageView *captureView; // 捕获预览视图
+@property (nonatomic, strong) SLAvCaptureSession *avCaptureSession; //摄像头采集工具
+@property (nonatomic, strong) SLAvWriterInput *avWriterInput;  //音视频写入输出文件
 
+@property (nonatomic, strong) UIImageView *captureView; // 预览视图
 @property (nonatomic, strong) UIButton *switchCameraBtn; // 切换前后摄像头
 @property (nonatomic, strong) UIButton *backBtn;
+@property (nonatomic, strong) UIButton *switchFilter; //随机切换滤镜
 
 @property (nonatomic, strong) SLBlurView *shotBtn; //拍摄按钮
 @property (nonatomic, strong) UIView *whiteView; //白色圆心
@@ -39,9 +42,15 @@
 @property (nonatomic, assign) CGFloat currentZoomFactor; //当前焦距比例系数
 @property (nonatomic, strong) SLShotFocusView *focusView;   //当前聚焦视图
 
+@property (nonatomic, assign) BOOL isRecording; //是否正在录制
+
+@property (nonatomic, strong) CIFilter* filter;  //滤镜
+@property (nonatomic, strong) NSMutableArray <NSString *> *filterArray;
+@property (nonatomic, strong) CIContext* context;
+
 @end
 
-@implementation SLShotViewController
+@implementation SLFilterViewController
 
 #pragma mark - OverWrite
 - (void)viewDidLoad {
@@ -52,10 +61,13 @@
     [super viewWillAppear:animated];
     self.image = nil;
     self.videoPath = nil;
-    [self.avCaptureTool startRunning];
+    [self.avCaptureSession startRunning];
     [self focusAtPoint:CGPointMake(SL_kScreenWidth/2.0, SL_kScreenHeight/2.0)];
     //监听设备方向，旋转切换摄像头按钮
-    [self.avCaptureTool addObserver:self forKeyPath:@"shootingOrientation" options:NSKeyValueObservingOptionNew context:nil];
+    [self.avCaptureSession addObserver:self forKeyPath:@"shootingOrientation" options:NSKeyValueObservingOptionNew context:nil];
+}
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
 }
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
@@ -63,8 +75,8 @@
         dispatch_source_cancel(_gcdTimer);
         _gcdTimer = nil;
     }
-    [_avCaptureTool stopRunning];
-    [_avCaptureTool removeObserver:self forKeyPath:@"shootingOrientation"];
+    [_avCaptureSession stopRunning];
+    [_avCaptureSession removeObserver:self forKeyPath:@"shootingOrientation"];
     [NSObject sl_cancelDelayPerform];
 }
 - (void)viewSafeAreaInsetsDidChange {
@@ -78,9 +90,9 @@
     return NO;
 }
 - (void)dealloc {
-    _avCaptureTool.delegate = nil;
-    _avCaptureTool = nil;
-    NSLog(@"拍摄视图释放");
+    _avCaptureSession.delegate = nil;
+    _avCaptureSession = nil;
+    NSLog(@"滤镜视图释放");
 }
 #pragma mark - UI
 - (void)setupUI {
@@ -91,6 +103,7 @@
     [self.view addSubview:self.backBtn];
     [self.view addSubview:self.shotBtn];
     [self.view addSubview:self.switchCameraBtn];
+    [self.view addSubview:self.switchFilter];
     
     [self.view addSubview:self.tipsLabel];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -99,13 +112,19 @@
 }
 
 #pragma mark - Getter
-- (SLAvCaptureTool *)avCaptureTool {
-    if (_avCaptureTool == nil) {
-        _avCaptureTool = [[SLAvCaptureTool alloc] init];
-        _avCaptureTool.preview = self.captureView;
-        _avCaptureTool.delegate = self;
+- (SLAvCaptureSession *)avCaptureSession {
+    if (_avCaptureSession == nil) {
+        _avCaptureSession = [[SLAvCaptureSession alloc] init];
+        _avCaptureSession.delegate = self;
     }
-    return _avCaptureTool;
+    return _avCaptureSession;
+}
+- (SLAvWriterInput *)avWriterInput {
+    if (!_avWriterInput) {
+        _avWriterInput = [[SLAvWriterInput alloc] init];
+        _avWriterInput.delegate = self;
+    }
+    return _avWriterInput;
 }
 - (UIView *)captureView {
     if (_captureView == nil) {
@@ -115,7 +134,6 @@
         _captureView.userInteractionEnabled = YES;
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapFocusing:)];
         [_captureView addGestureRecognizer:tap];
-        
         UIPinchGestureRecognizer  *pinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinchFocalLength:)];
         [_captureView addGestureRecognizer:pinch];
     }
@@ -161,6 +179,16 @@
     }
     return _switchCameraBtn;
 }
+- (UIButton *)switchFilter {
+    if (_switchFilter == nil) {
+        _switchFilter = [[UIButton alloc] initWithFrame:CGRectMake( 30, 44 , 80, 30)];
+        [_switchFilter setTitle:@"切换滤镜" forState:UIControlStateNormal];
+        [_switchFilter setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        _switchFilter.titleLabel.font = [UIFont systemFontOfSize:16];
+        [_switchFilter addTarget:self action:@selector(switchFilterClicked:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _switchFilter;
+}
 - (UIView *)whiteView {
     if (_whiteView == nil) {
         _whiteView = [UIView new];
@@ -203,6 +231,33 @@
         _tipsLabel.text = @"轻触拍照，按住摄像";
     }
     return  _tipsLabel;
+}
+-(CIContext *)context{
+    // default creates a context based on GPU
+    if (_context == nil) {
+        _context = [CIContext contextWithOptions:nil];
+    }
+    return _context;
+}
+- (CIFilter *)filter{
+    if (_filter == nil) {
+        _filter = [CIFilter filterWithName:self.filterArray[arc4random()%self.filterArray.count]];
+    }
+    return _filter;
+}
+- (NSMutableArray *)filterArray {
+    if (!_filterArray) {
+        _filterArray = [NSMutableArray array];
+        [_filterArray addObject:@"CIPhotoEffectFade"];
+        [_filterArray addObject:@"CIColorInvert"];
+        [_filterArray addObject:@"CIPhotoEffectTonal"];
+        [_filterArray addObject:@"CIPhotoEffectProcess"];
+        [_filterArray addObject:@"CIPhotoEffectChrome"];
+        [_filterArray addObject:@"CIPhotoEffectTransfer"];
+        [_filterArray addObject:@"CIPhotoEffectNoir"];
+        [_filterArray addObject:@"CIPhotoEffectInstant"];
+    }
+    return _filterArray;
 }
 
 #pragma mark - HelpMethods
@@ -252,7 +307,8 @@
             self->_durationOfVideo = 0;
             [self.progressLayer removeFromSuperlayer];
             //停止录制
-            [self.avCaptureTool stopRecordVideo];
+            [self.avWriterInput finishWriting];
+            self.isRecording = NO;
         }
     });
     // 启动任务，GCD计时器创建后需要手动启动
@@ -267,7 +323,7 @@
 //聚焦手势
 - (void)tapFocusing:(UITapGestureRecognizer *)tap {
     //如果没在运行，取消聚焦
-    if(!self.avCaptureTool.isRunning) {
+    if(!self.avCaptureSession.isRunning) {
         return;
     }
     CGPoint point = [tap locationInView:self.captureView];
@@ -285,7 +341,7 @@
     [UIView animateWithDuration:0.5 animations:^{
         self.focusView.transform = CGAffineTransformIdentity;
     }];
-    [self.avCaptureTool focusAtPoint:point];
+    [self.avCaptureSession focusAtPoint:point];
     SL_WeakSelf;
     [NSObject sl_startDelayPerform:^{
         [weakSelf.focusView removeFromSuperview];
@@ -294,23 +350,50 @@
 //调节焦距 手势
 - (void)pinchFocalLength:(UIPinchGestureRecognizer *)pinch {
     if(pinch.state == UIGestureRecognizerStateBegan) {
-        self.currentZoomFactor = self.avCaptureTool.videoZoomFactor;
+        self.currentZoomFactor = self.avCaptureSession.videoZoomFactor;
     }
     if (pinch.state == UIGestureRecognizerStateChanged) {
-        self.avCaptureTool.videoZoomFactor = self.currentZoomFactor * pinch.scale;
+        self.avCaptureSession.videoZoomFactor = self.currentZoomFactor * pinch.scale;
     }
 }
 //切换前/后摄像头
 - (void)switchCameraClicked:(id)sender {
-    if (self.avCaptureTool.devicePosition == AVCaptureDevicePositionFront) {
-        [self.avCaptureTool switchsCamera:AVCaptureDevicePositionBack];
-    } else if(self.avCaptureTool.devicePosition == AVCaptureDevicePositionBack) {
-        [self.avCaptureTool switchsCamera:AVCaptureDevicePositionFront];
+    if (self.avCaptureSession.devicePosition == AVCaptureDevicePositionFront) {
+        [self.avCaptureSession switchsCamera:AVCaptureDevicePositionBack];
+    } else if(self.avCaptureSession.devicePosition == AVCaptureDevicePositionBack) {
+        [self.avCaptureSession switchsCamera:AVCaptureDevicePositionFront];
     }
+}
+//随机切换滤镜
+- (void)switchFilterClicked:(id)sender {
+    _filter = [CIFilter filterWithName:self.filterArray[arc4random()%self.filterArray.count]];
 }
 //轻触拍照
 - (void)takePicture:(UITapGestureRecognizer *)tap {
-    [self.avCaptureTool outputPhoto];
+    [self.avCaptureSession stopRunning];
+    UIImageOrientation imageOrientation = UIImageOrientationUp;
+    switch (self.avCaptureSession.shootingOrientation) {
+        case UIDeviceOrientationLandscapeLeft:
+            imageOrientation = UIImageOrientationLeft;
+            break;
+        case UIDeviceOrientationLandscapeRight:
+            imageOrientation = UIImageOrientationRight;
+            break;
+        case UIDeviceOrientationPortraitUpsideDown:
+            imageOrientation = UIImageOrientationDown;
+            break;
+        default:
+            break;
+    }
+    UIImage *image = [UIImage imageWithCGImage:self.captureView.image.CGImage scale:[UIScreen mainScreen].scale orientation:imageOrientation];
+    self.captureView.image = image;
+    self.image = image;
+    
+    NSLog(@"拍照结束");
+    SLEditImageController * editViewController = [[SLEditImageController alloc] init];
+    editViewController.image = self.image;
+    editViewController.modalPresentationStyle = UIModalPresentationFullScreen;
+    [self presentViewController:editViewController animated:NO completion:nil];
     NSLog(@"拍照");
 }
 //长按摄像 小视频
@@ -330,7 +413,8 @@
             self.progressLayer.strokeEnd = 0;
             NSString *outputVideoFielPath = [NSTemporaryDirectory() stringByAppendingString:@"myVideo.mp4"];
             //开始录制视频
-            [self.avCaptureTool startRecordVideoToOutputFileAtPath:outputVideoFielPath recordType:SLAvCaptureTypeAv];
+            [self.avWriterInput startWritingToOutputFileAtPath:outputVideoFielPath fileType:SLAvWriterFileTypeVideo deviceOrientation:self.avCaptureSession.shootingOrientation];
+            self.isRecording = YES;
         }
             NSLog(@"开始摄像");
             break;
@@ -351,8 +435,9 @@
             self.progressLayer.strokeEnd = 0;
             [self.progressLayer removeFromSuperlayer];
             //    结束录制视频
-            [self.avCaptureTool stopRunning];
-            [self.avCaptureTool stopRecordVideo];
+            [self.avCaptureSession stopRunning];
+            [self.avWriterInput finishWriting];
+            self.isRecording = NO;
         }
             break;
         default:
@@ -384,28 +469,42 @@
     }
 }
 
-#pragma mark - SLAvCaptureToolDelegate  图片、音视频输出代理
-//图片输出完成
-- (void)captureTool:(SLAvCaptureTool *)captureTool didOutputPhoto:(UIImage *)image error:(NSError *)error {
-    self.image = image;
-    [self.avCaptureTool stopRunning];
-    NSLog(@"拍照结束");
-    
-    SLEditImageController * editViewController = [[SLEditImageController alloc] init];
-    editViewController.image = self.image;
-    editViewController.modalPresentationStyle = UIModalPresentationFullScreen;
-    [self presentViewController:editViewController animated:NO completion:nil];
+#pragma mark - SLAvCaptureSessionDelegate 音视频实时输出代理
+//实时输出视频样本
+- (void)captureSession:(SLAvCaptureSession * _Nullable)captureSession didOutputVideoSampleBuffer:(CMSampleBufferRef _Nullable)sampleBuffer fromConnection:(AVCaptureConnection * _Nullable)connection {
+    @autoreleasepool {
+        CVImageBufferRef imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
+        CIImage* image = [CIImage imageWithCVImageBuffer:imageBuffer];
+        //滤镜处理
+        [self.filter setValue:image forKey:kCIInputImageKey];
+        CIImage *filterImage = self.filter.outputImage;
+        CGImageRef filterImageRef = [self.context createCGImage:filterImage fromRect:filterImage.extent];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.captureView.image = [UIImage imageWithCGImage:filterImageRef];
+            CGImageRelease(filterImageRef);
+        });
+        if (self.isRecording) {
+            [self.avWriterInput writingVideoSampleBuffer:sampleBuffer fromConnection:connection filterImage:filterImage];
+        }
+    }
 }
-//音视频输出完成
-- (void)captureTool:(SLAvCaptureTool *)captureTool didFinishRecordingToOutputFileAtURL:(NSURL *)outputFileURL error:(NSError *)error {
+//实时输出音频样本
+- (void)captureSession:(SLAvCaptureSession * _Nullable)captureSession didOutputAudioSampleBuffer:(CMSampleBufferRef _Nullable)sampleBuffer fromConnection:(AVCaptureConnection * _Nullable)connection {
+    if (self.isRecording) {
+        [self.avWriterInput writingAudioSampleBuffer:sampleBuffer fromConnection:connection];
+    }
+}
+
+#pragma mark - SLAvWriterInputDelegate 音视频写入完成
+//音视频写入完成
+- (void)writerInput:(SLAvWriterInput *)writerInput didFinishRecordingToOutputFileAtURL:(NSURL *)outputFileURL error:(NSError *)error {
     self.videoPath = outputFileURL;
-    [self.avCaptureTool stopRunning];
+    [self.avCaptureSession stopRunning];
     NSLog(@"结束录制");
     SLEditVideoController * editViewController = [[SLEditVideoController alloc] init];
     editViewController.videoPath = self.videoPath;
     editViewController.modalPresentationStyle = UIModalPresentationFullScreen;
     [self presentViewController:editViewController animated:NO completion:nil];
 }
-
 
 @end

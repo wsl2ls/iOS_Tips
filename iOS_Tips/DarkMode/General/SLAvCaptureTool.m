@@ -239,7 +239,6 @@
         [self.previewLayer removeFromSuperlayer];
     }else {
         self.previewLayer.frame = preview.bounds;
-        //        [preview.layer insertSublayer:self.previewLayer atIndex:0];
         [preview.layer addSublayer:self.previewLayer];
     }
     _preview = preview;
@@ -591,14 +590,14 @@
                 [self.assetWriter startSessionAtSourceTime:CMSampleBufferGetPresentationTimeStamp(sampleBuffer)];
                 self.canWrite = YES;
             }
-            if (self.assetWriterAudioInput.readyForMoreMediaData) {
+            if (self.assetWriterAudioInput.readyForMoreMediaData && self.canWrite) {
                 //写入音频数据
                 BOOL success = [self.assetWriterAudioInput appendSampleBuffer:sampleBuffer];
                 if (!success) {
                     @synchronized (self) {
                         if (self.avCaptureType == SLAvCaptureTypeAudio) {
                             [self stopRecordAudio];
-                        }else if (self.avCaptureType == SLAvCaptureTypeAv) {
+                        }else if (self.avCaptureType == SLAvCaptureTypeAv || self.avCaptureType == SLAvCaptureTypeVideo) {
                             [self stopRecordVideo];
                         }
                     }

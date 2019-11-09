@@ -23,6 +23,7 @@ typedef NS_ENUM(NSUInteger, SLAvCaptureType) {
 @class SLAvCaptureTool;
 /// 捕获工具输出代理
 @protocol SLAvCaptureToolDelegate <NSObject>
+@optional
 ///  完成拍照 ，返回image
 /// @param image 输出的图片
 /// @param error 错误信息

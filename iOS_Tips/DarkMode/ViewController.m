@@ -10,6 +10,7 @@
 #import "SLDarkModeViewController.h"
 #import "SLShotViewController.h"
 #import "SLFaceDetectController.h"
+#import "SLFilterViewController.h"
 
 @interface ViewController ()<UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, strong) NSMutableArray *dataSource;
@@ -39,7 +40,7 @@
 #pragma mark - Data
 - (void)getData {
     //tableView、UIAlertView等系统控件，在不自定义颜色的情况下，默认颜色都是动态的，支持暗黑模式
-    [self.dataSource addObjectsFromArray:@[@"暗黑/光亮模式", @"AppleId登录应用(查看本仓库下的AddingTheSignInWithAppleFlowToYourApp)", @"高仿微信相机拍摄和编辑功能", @"人脸检测"]];
+    [self.dataSource addObjectsFromArray:@[@"暗黑/光亮模式", @"AppleId登录应用(查看本仓库下的AddingTheSignInWithAppleFlowToYourApp)", @"高仿微信相机拍摄和编辑功能", @"人脸检测", @"实时滤镜拍摄和导出"]];
     [self.tableView reloadData];
 }
 
@@ -89,7 +90,12 @@
             [self presentViewController:faceDetectController animated:YES completion:nil];
         }
             break;
-            
+        case 4: {
+            SLFilterViewController * filterViewController = [[SLFilterViewController alloc] init];
+            filterViewController.modalPresentationStyle = UIModalPresentationFullScreen;
+            [self presentViewController:filterViewController animated:YES completion:nil];
+        }
+            break;
         default:
             break;
     }
