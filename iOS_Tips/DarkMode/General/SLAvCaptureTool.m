@@ -47,10 +47,11 @@
     return avCaptureTool;
 }
 
-#pragma mark - OverWrite
+#pragma mark - Override
 - (instancetype)init {
     self = [super init];
     if (self) {
+        self.videoSize = CGSizeMake([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
     }
     return self;
 }
@@ -176,7 +177,7 @@
 - (AVAssetWriterInput *)assetWriterVideoInput {
     if (!_assetWriterVideoInput) {
         //写入视频大小
-        NSInteger numPixels = SL_kScreenWidth * SL_kScreenHeight;
+        NSInteger numPixels = self.videoSize.width * [UIScreen mainScreen].scale * self.videoSize.height * [UIScreen mainScreen].scale;
         //每像素比特
         CGFloat bitsPerPixel = 12.0;
         NSInteger bitsPerSecond = numPixels * bitsPerPixel;
@@ -185,8 +186,8 @@
                                                  AVVideoExpectedSourceFrameRateKey : @(30),
                                                  AVVideoMaxKeyFrameIntervalKey : @(30),
                                                  AVVideoProfileLevelKey : AVVideoProfileLevelH264BaselineAutoLevel };
-        CGFloat width = SL_kScreenWidth * [UIScreen mainScreen].scale;
-        CGFloat height = SL_kScreenHeight * [UIScreen mainScreen].scale;
+        CGFloat width = self.videoSize.width * [UIScreen mainScreen].scale;
+        CGFloat height = self.videoSize.height * [UIScreen mainScreen].scale;
         //视频属性
         self.videoCompressionSettings = @{ AVVideoCodecKey : AVVideoCodecH264,
                                            AVVideoWidthKey : @(width ),
