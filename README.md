@@ -2,7 +2,7 @@
 iOS的一些示例，不定时更新~  简书地址：https://www.jianshu.com/p/a2a04cabb98d
 
 ### 目录 
-> 1、暗黑模式  2、AppleID登录应用  3、微信相机拍摄照片、小视频以及编辑功能 4、人脸识别  5、滤镜（doing）
+> 1、暗黑模式  2、AppleID登录应用  3、微信相机拍摄照片、小视频以及编辑功能 4、人脸检测  5、实时滤镜
 
 ## 1、 暗黑模式适配
 
@@ -30,11 +30,11 @@ iOS的一些示例，不定时更新~  简书地址：https://www.jianshu.com/p/
 |![图片编辑](PrviewPicture/3、小视频7.gif)|![图片裁剪](PrviewPicture/3、小视频8.gif)|
 
 
-## 4、人脸识别 
+## 4、人脸检测 
 
 ![人脸识别](PrviewPicture/4、人脸识别.gif)
 
-## 5、滤镜 （doing）
+## 5、实时滤镜拍摄和导出
 
 
 
