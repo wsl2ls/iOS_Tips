@@ -36,6 +36,8 @@ iOS的一些示例，不定时更新~  简书地址：https://www.jianshu.com/p/
 
 ## 5、实时滤镜拍摄和导出
 
+![人脸识别](PrviewPicture/5、实时滤镜拍摄.gif)
+
 
 
 
