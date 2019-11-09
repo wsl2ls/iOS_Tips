@@ -18,15 +18,11 @@ iOS的一些示例，不定时更新~
 > * 3、视频编辑：涂鸦、gif贴图、文字水印、视频裁剪 、添加背景音乐 
 > * 4 、图片编辑：涂鸦、贴图、文字水印、马赛克、图片裁剪
 
-|![拍摄视频.gif](PrviewPicture/3、小视频1.gif)|![拍摄照片](PrviewPicture/3、小视频2.gif)
+|![拍摄视频.gif](PrviewPicture/3、小视频1.gif)|![拍摄照片](PrviewPicture/3、小视频2.gif)|![横屏视频](PrviewPicture/3、小视频3.gif)|
 
 *****
 
-|![横屏视频](PrviewPicture/3、小视频3.gif)|![视频编辑](PrviewPicture/3、小视频4.gif)|
-
-****
-
-|![视频编辑](PrviewPicture/3、小视频5.gif)|![图片编辑](PrviewPicture/3、小视频6.gif)|
+|![视频编辑](PrviewPicture/3、小视频4.gif)|![视频编辑](PrviewPicture/3、小视频5.gif)|![图片编辑](PrviewPicture/3、小视频6.gif)|
 
 ****
 
