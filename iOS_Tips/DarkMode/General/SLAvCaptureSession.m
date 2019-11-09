@@ -8,7 +8,6 @@
 
 #import "SLAvCaptureSession.h"
 #import <CoreMotion/CoreMotion.h>
-#import "UIImage+SLCommon.h"
 
 @interface SLAvCaptureSession () <AVCapturePhotoCaptureDelegate, AVCaptureVideoDataOutputSampleBufferDelegate, AVCaptureAudioDataOutputSampleBufferDelegate>
 
@@ -17,7 +16,6 @@
 
 @property (nonatomic, strong) AVCaptureDeviceInput *audioInput; //音频输入流
 @property (nonatomic, strong) AVCaptureDeviceInput *videoInput; //视频输入流
-@property (nonatomic, strong) AVCapturePhotoOutput *capturePhotoOutput; //照片输出流
 @property (nonatomic, strong) AVCaptureVideoDataOutput *videoDataOutput; //视频数据帧输出流
 @property (nonatomic, strong) AVCaptureAudioDataOutput *audioDataOutput; //音频数据帧输出流
 
@@ -95,7 +93,6 @@
         [_session setSessionPreset:AVCaptureSessionPresetHigh];
         if([_session canAddInput:self.videoInput]) [_session addInput:self.videoInput]; //添加视频输入流
         if([_session canAddInput:self.audioInput])  [_session addInput:self.audioInput];  //添加音频输入流
-        if([_session canAddOutput:self.capturePhotoOutput]) [_session addOutput:self.capturePhotoOutput]; //添加照片输出流
         if([_session canAddOutput:self.videoDataOutput]) [_session addOutput:self.videoDataOutput];  //视频数据输出流 纯画面
         if([_session canAddOutput:self.audioDataOutput]) [_session addOutput:self.audioDataOutput];  //音频数据输出流
         
@@ -105,7 +102,6 @@
             captureVideoConnection.videoMirrored = YES;
         }
         captureVideoConnection.videoOrientation = AVCaptureVideoOrientationPortrait;
-        
     }
     return _session;
 }
@@ -134,14 +130,6 @@
     }
     return _audioInput;
 }
-- (AVCapturePhotoOutput *)capturePhotoOutput {
-    if (_capturePhotoOutput == nil) {
-        _capturePhotoOutput = [[AVCapturePhotoOutput alloc] init];
-        //        _capturePhotoOutput.livePhotoCaptureEnabled = NO; //是否拍摄 live Photo
-    }
-    return _capturePhotoOutput;
-}
-
 - (AVCaptureVideoDataOutput *)videoDataOutput {
     if (_videoDataOutput == nil) {
         _videoDataOutput = [[AVCaptureVideoDataOutput alloc] init];

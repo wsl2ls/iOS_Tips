@@ -44,7 +44,7 @@ typedef NS_ENUM(NSUInteger, SLAvCaptureType) {
 NS_ASSUME_NONNULL_BEGIN
 API_AVAILABLE(ios(10.0))
 
-///音视频捕获工具    配置都是默认的
+///音视频采集录制工具    配置都是默认的
 @interface SLAvCaptureTool : NSObject
 
 /// 摄像头采集内容预览视图  
