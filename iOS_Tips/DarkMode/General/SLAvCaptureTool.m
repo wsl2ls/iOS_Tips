@@ -47,10 +47,11 @@
     return avCaptureTool;
 }
 
-#pragma mark - OverWrite
+#pragma mark - Override
 - (instancetype)init {
     self = [super init];
     if (self) {
+        self.videoSize = CGSizeMake([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
     }
     return self;
 }
@@ -109,6 +110,13 @@
         if([_session canAddOutput:self.capturePhotoOutput]) [_session addOutput:self.capturePhotoOutput]; //添加照片输出流
         if([_session canAddOutput:self.videoDataOutput]) [_session addOutput:self.videoDataOutput];  //视频数据输出流 纯画面
         if([_session canAddOutput:self.audioDataOutput]) [_session addOutput:self.audioDataOutput];  //音频数据输出流
+        
+        AVCaptureConnection * captureVideoConnection = [self.videoDataOutput connectionWithMediaType:AVMediaTypeVideo];
+        // 设置是否为镜像，前置摄像头采集到的数据本来就是翻转的，这里设置为镜像把画面转回来
+        if (self.devicePosition == AVCaptureDevicePositionFront && captureVideoConnection.supportsVideoMirroring) {
+            captureVideoConnection.videoMirrored = YES;
+        }
+        captureVideoConnection.videoOrientation = AVCaptureVideoOrientationPortrait;
     }
     return _session;
 }
@@ -169,7 +177,7 @@
 - (AVAssetWriterInput *)assetWriterVideoInput {
     if (!_assetWriterVideoInput) {
         //写入视频大小
-        NSInteger numPixels = SL_kScreenWidth * SL_kScreenHeight;
+        NSInteger numPixels = self.videoSize.width * [UIScreen mainScreen].scale * self.videoSize.height * [UIScreen mainScreen].scale;
         //每像素比特
         CGFloat bitsPerPixel = 12.0;
         NSInteger bitsPerSecond = numPixels * bitsPerPixel;
@@ -178,12 +186,12 @@
                                                  AVVideoExpectedSourceFrameRateKey : @(30),
                                                  AVVideoMaxKeyFrameIntervalKey : @(30),
                                                  AVVideoProfileLevelKey : AVVideoProfileLevelH264BaselineAutoLevel };
-        CGFloat width = SL_kScreenHeight;
-        CGFloat height = SL_kScreenWidth;
+        CGFloat width = self.videoSize.width * [UIScreen mainScreen].scale;
+        CGFloat height = self.videoSize.height * [UIScreen mainScreen].scale;
         //视频属性
         self.videoCompressionSettings = @{ AVVideoCodecKey : AVVideoCodecH264,
-                                           AVVideoWidthKey : @(width * [UIScreen mainScreen].scale),
-                                           AVVideoHeightKey : @(height * [UIScreen mainScreen].scale),
+                                           AVVideoWidthKey : @(width ),
+                                           AVVideoHeightKey : @(height),
                                            AVVideoScalingModeKey : AVVideoScalingModeResizeAspectFill,
                                            AVVideoCompressionPropertiesKey : compressionProperties };
         
@@ -328,18 +336,7 @@
     if (self.devicePosition == AVCaptureDevicePositionFront && captureConnection.supportsVideoMirroring) {
         captureConnection.videoMirrored = YES;
     }
-    //设置前置摄像头时，更改视频方向
-    if (self.devicePosition == AVCaptureDevicePositionFront) {
-        if (self.shootingOrientation == UIDeviceOrientationLandscapeRight) {
-            captureConnection.videoOrientation = AVCaptureVideoOrientationLandscapeRight;
-        } else if (self.shootingOrientation == UIDeviceOrientationLandscapeLeft) {
-            captureConnection.videoOrientation = AVCaptureVideoOrientationLandscapeRight;
-        } else if (self.shootingOrientation == UIDeviceOrientationPortraitUpsideDown) {
-            captureConnection.videoOrientation = AVCaptureVideoOrientationLandscapeRight;
-        } else {
-            captureConnection.videoOrientation = AVCaptureVideoOrientationLandscapeRight;
-        }
-    }
+    captureConnection.videoOrientation = AVCaptureVideoOrientationPortrait;
     //提交新的输入对象
     [self.session commitConfiguration];
 }
@@ -386,12 +383,13 @@
     // captureConnection.videoOrientation = AVCaptureVideoOrientationPortrait;
     //由于上述原因，故采用在写入输出视频时调整方向
     if (self.shootingOrientation == UIDeviceOrientationLandscapeRight) {
-        self.assetWriterVideoInput.transform = CGAffineTransformMakeRotation(M_PI);
+        self.assetWriterVideoInput.transform = CGAffineTransformMakeRotation(M_PI/2);
     } else if (self.shootingOrientation == UIDeviceOrientationLandscapeLeft) {
+        self.assetWriterVideoInput.transform = CGAffineTransformMakeRotation(-M_PI/2);
     } else if (self.shootingOrientation == UIDeviceOrientationPortraitUpsideDown) {
-        self.assetWriterVideoInput.transform = CGAffineTransformMakeRotation(M_PI + (M_PI / 2.0));
+        self.assetWriterVideoInput.transform = CGAffineTransformMakeRotation(M_PI);
     } else {
-        self.assetWriterVideoInput.transform = CGAffineTransformMakeRotation(M_PI / 2.0);
+        self.assetWriterVideoInput.transform = CGAffineTransformMakeRotation(0);
     }
     if ([self.assetWriter canAddInput:self.assetWriterVideoInput]) {
         [self.assetWriter addInput:self.assetWriterVideoInput];

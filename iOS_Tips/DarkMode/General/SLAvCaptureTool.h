@@ -42,13 +42,15 @@ typedef NS_ENUM(NSUInteger, SLAvCaptureType) {
 @end
 
 NS_ASSUME_NONNULL_BEGIN
-API_AVAILABLE(ios(10.0))
 
-///音视频捕获工具    配置都是默认的
+// SLAvCaptureTool ----- 拆分为了 SLAvCaptureSession（采集） + SLAvWriterInput（录制） 两个工具类，方便扩展，实现的方式也略有不同
+///音视频 采集 录制工具    配置都是默认的
 @interface SLAvCaptureTool : NSObject
 
 /// 摄像头采集内容预览视图  
 @property (nonatomic, strong, nullable) UIView *preview;
+/// 导出的视频宽高  默认设备宽高  已home键朝下为准
+@property (nonatomic, assign) CGSize videoSize;
 /// 摄像头是否正在运行
 @property (nonatomic, assign, readonly) BOOL isRunning;
 /// 摄像头方向 默认后置摄像头

@@ -315,6 +315,9 @@ static CGFloat THDegreesToRadians(CGFloat degrees) {
     }
     //提交新的输入对象
     [self.session commitConfiguration];
+    for (CALayer *faceLayer in self.faceLayers.allValues) {
+        [faceLayer removeFromSuperlayer];
+    }
 }
 #pragma mark - AVCaptureMetadataOutputObjectsDelegate
 //捕捉到数据
