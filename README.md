@@ -19,6 +19,8 @@ iOS的一些示例，不定时更新~  简书地址：https://www.jianshu.com/p/
 > * 3、视频编辑：涂鸦、gif贴图、文字水印、视频裁剪 、添加背景音乐 
 > * 4 、图片编辑：涂鸦、贴图、文字水印、马赛克、图片裁剪
 
+> 主要类：SLAvCaptureTool(音视频采集录制工具)、SLAvEditExport(导出编辑的音视频)、
+
 |![拍摄视频.gif](PrviewPicture/3、小视频1.gif)|![拍摄照片](PrviewPicture/3、小视频2.gif)|![横屏视频](PrviewPicture/3、小视频3.gif)|
 
 *****
@@ -35,6 +37,8 @@ iOS的一些示例，不定时更新~  简书地址：https://www.jianshu.com/p/
 ![人脸识别](PrviewPicture/4、人脸识别.gif)
 
 ## 5、实时滤镜拍摄和导出
+
+>  主要类: 是由SLAvCaptureTool拆分的 SLAvCaptureSession（采集） + SLAvWriterInput（录制） 两个工具类，方便扩展，实现的方式也略有不同
 
 ![人脸识别](PrviewPicture/5、实时滤镜拍摄.gif)
 
