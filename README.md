@@ -22,15 +22,15 @@ iOS的一些示例，不定时更新~
 
 *****
 
-|![横屏视频](https://upload-images.jianshu.io/upload_images/1708447-33596f9fbc0397cd.gif?imageMogr2/auto-orient/strip)|![视频编辑](https://upload-images.jianshu.io/upload_images/1708447-1bbac1cb783b3c58.gif?imageMogr2/auto-orient/strip)|
+|![横屏视频](PrviewPicture/3、小视频3.gif)|![视频编辑](PrviewPicture/3、小视频4.gif)|
 
 ****
 
-|![视频编辑](https://upload-images.jianshu.io/upload_images/1708447-c33db62c9deae6c4.gif?imageMogr2/auto-orient/strip)|![图片编辑](https://upload-images.jianshu.io/upload_images/1708447-7bc002a4c514695a.gif?imageMogr2/auto-orient/strip)|
+|![视频编辑](PrviewPicture/3、小视频5.gif)|![图片编辑](PrviewPicture/3、小视频6.gif)|
 
 ****
 
-|![图片编辑](https://upload-images.jianshu.io/upload_images/1708447-5f53acb267b67dcc.gif?imageMogr2/auto-orient/strip)|![图片裁剪](https://upload-images.jianshu.io/upload_images/1708447-fa99b90ec357da91.gif?imageMogr2/auto-orient/strip)|
+|![图片编辑](PrviewPicture/3、小视频7.gif)|![图片裁剪](PrviewPicture/3、小视频8.gif)|
 
 
 ## 4、人脸识别 
