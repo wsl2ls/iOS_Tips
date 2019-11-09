@@ -18,7 +18,7 @@ iOS的一些示例，不定时更新~
 > * 3、视频编辑：涂鸦、gif贴图、文字水印、视频裁剪 、添加背景音乐 
 > * 4 、图片编辑：涂鸦、贴图、文字水印、马赛克、图片裁剪
 
-|![拍摄视频.gif](PrviewPicture/暗黑模式.gif)|![拍摄照片](https://upload-images.jianshu.io/upload_images/1708447-866d269f0082e9dd.gif?imageMogr2/auto-orient/strip)
+|![拍摄视频.gif](PrviewPicture/3、小视频1.gif)|![拍摄照片](3、小视频2.gif)
 
 *****
 
