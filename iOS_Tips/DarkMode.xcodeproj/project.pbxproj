@@ -49,6 +49,7 @@
 		78F54916233383D800910215 /* SLBlurView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78F54915233383D800910215 /* SLBlurView.m */; };
 		78FA0F9D235407E6003E456B /* SLDrawView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78FA0F9C235407E6003E456B /* SLDrawView.m */; };
 		78FA0FA02354141E003E456B /* SLAvEditExport.m in Sources */ = {isa = PBXBuildFile; fileRef = 78FA0F9F2354141E003E456B /* SLAvEditExport.m */; };
+		E355F901834CD33D6E9169A8 /* libPods-DarkMode.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FC41CA32573EE16859D535A1 /* libPods-DarkMode.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -151,6 +152,9 @@
 		78FA0F9C235407E6003E456B /* SLDrawView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLDrawView.m; sourceTree = "<group>"; };
 		78FA0F9E2354141E003E456B /* SLAvEditExport.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLAvEditExport.h; sourceTree = "<group>"; };
 		78FA0F9F2354141E003E456B /* SLAvEditExport.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLAvEditExport.m; sourceTree = "<group>"; };
+		B4CC2A37AE5DCF4056284BE9 /* Pods-DarkMode.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DarkMode.debug.xcconfig"; path = "Target Support Files/Pods-DarkMode/Pods-DarkMode.debug.xcconfig"; sourceTree = "<group>"; };
+		D002B8CEA71006D5DD02169F /* Pods-DarkMode.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DarkMode.release.xcconfig"; path = "Target Support Files/Pods-DarkMode/Pods-DarkMode.release.xcconfig"; sourceTree = "<group>"; };
+		FC41CA32573EE16859D535A1 /* libPods-DarkMode.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DarkMode.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -159,6 +163,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				78E1791B23517FC50007E4BB /* WebP.framework in Frameworks */,
+				E355F901834CD33D6E9169A8 /* libPods-DarkMode.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -179,6 +184,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		22F14068B7B884754D3106E5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				FC41CA32573EE16859D535A1 /* libPods-DarkMode.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		782E3EB52373F892001E0DF9 /* Filter */ = {
 			isa = PBXGroup;
 			children = (
@@ -238,6 +251,8 @@
 				78B1049B232F57C50051579F /* DarkModeTests */,
 				78B104A6232F57C50051579F /* DarkModeUITests */,
 				78B1047E232F57C30051579F /* Products */,
+				9FF832F9E5CCF19AAE828CB7 /* Pods */,
+				22F14068B7B884754D3106E5 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -379,6 +394,16 @@
 			path = General;
 			sourceTree = "<group>";
 		};
+		9FF832F9E5CCF19AAE828CB7 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				B4CC2A37AE5DCF4056284BE9 /* Pods-DarkMode.debug.xcconfig */,
+				D002B8CEA71006D5DD02169F /* Pods-DarkMode.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -386,9 +411,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 78B104AC232F57C50051579F /* Build configuration list for PBXNativeTarget "DarkMode" */;
 			buildPhases = (
+				560A73C7B0F4FA51E8699648 /* [CP] Check Pods Manifest.lock */,
 				78B10479232F57C30051579F /* Sources */,
 				78B1047A232F57C30051579F /* Frameworks */,
 				78B1047B232F57C30051579F /* Resources */,
+				3DCC5FF8CFBF2C97FA7D560E /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -505,6 +532,61 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		3DCC5FF8CFBF2C97FA7D560E /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-DarkMode/Pods-DarkMode-resources.sh",
+				"${PODS_ROOT}/GPUImage/framework/Resources/lookup.png",
+				"${PODS_ROOT}/GPUImage/framework/Resources/lookup_amatorka.png",
+				"${PODS_ROOT}/GPUImage/framework/Resources/lookup_miss_etikate.png",
+				"${PODS_ROOT}/GPUImage/framework/Resources/lookup_soft_elegance_1.png",
+				"${PODS_ROOT}/GPUImage/framework/Resources/lookup_soft_elegance_2.png",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/lookup.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/lookup_amatorka.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/lookup_miss_etikate.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/lookup_soft_elegance_1.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/lookup_soft_elegance_2.png",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-DarkMode/Pods-DarkMode-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		560A73C7B0F4FA51E8699648 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-DarkMode-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		78B10479232F57C30051579F /* Sources */ = {
@@ -711,6 +793,7 @@
 		};
 		78B104AD232F57C50051579F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B4CC2A37AE5DCF4056284BE9 /* Pods-DarkMode.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer: qu xg (E3B8HDH8KA)";
@@ -738,6 +821,7 @@
 		};
 		78B104AE232F57C50051579F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D002B8CEA71006D5DD02169F /* Pods-DarkMode.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer: qu xg (E3B8HDH8KA)";
