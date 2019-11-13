@@ -33,9 +33,6 @@
 @property (nonatomic, strong) CAShapeLayer *progressLayer; //环形进度条
 @property (nonatomic, strong)  UILabel *tipsLabel; //拍摄提示语  轻触拍照 长按拍摄
 
-@property (nonatomic, strong) UIImage *image; //当前拍摄的照片
-@property (nonatomic, strong) NSURL *videoPath; //当前拍摄的视频路径
-
 @property (nonatomic, assign) CGFloat currentZoomFactor; //当前焦距比例系数
 @property (nonatomic, strong) SLShotFocusView *focusView;   //当前聚焦视图
 
@@ -50,8 +47,6 @@
 }
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    self.image = nil;
-    self.videoPath = nil;
     [self.avCaptureTool startRunning];
     [self focusAtPoint:CGPointMake(SL_kScreenWidth/2.0, SL_kScreenHeight/2.0)];
     //监听设备方向，旋转切换摄像头按钮
@@ -388,22 +383,20 @@
 #pragma mark - SLAvCaptureToolDelegate  图片、音视频输出代理
 //图片输出完成
 - (void)captureTool:(SLAvCaptureTool *)captureTool didOutputPhoto:(UIImage *)image error:(NSError *)error {
-    self.image = image;
     [self.avCaptureTool stopRunning];
     NSLog(@"拍照结束");
-    
     SLEditImageController * editViewController = [[SLEditImageController alloc] init];
-    editViewController.image = self.image;
+    editViewController.image = image;
     editViewController.modalPresentationStyle = UIModalPresentationFullScreen;
     [self presentViewController:editViewController animated:NO completion:nil];
 }
 //音视频输出完成
 - (void)captureTool:(SLAvCaptureTool *)captureTool didFinishRecordingToOutputFileAtURL:(NSURL *)outputFileURL error:(NSError *)error {
-    self.videoPath = outputFileURL;
+//    self.videoPath = outputFileURL;
     [self.avCaptureTool stopRunning];
     NSLog(@"结束录制");
     SLEditVideoController * editViewController = [[SLEditVideoController alloc] init];
-    editViewController.videoPath = self.videoPath;
+    editViewController.videoPath = outputFileURL;
     editViewController.modalPresentationStyle = UIModalPresentationFullScreen;
     [self presentViewController:editViewController animated:NO completion:nil];
 }

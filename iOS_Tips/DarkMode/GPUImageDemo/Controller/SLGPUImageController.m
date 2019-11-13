@@ -16,11 +16,11 @@
 #import "SLAvCaptureSession.h"
 #import "SLAvWriterInput.h"
 #import <GPUImage.h>
+#import <AVKit/AVKit.h>
 
 #define KMaxDurationOfVideo  15.0 //录制最大时长 s
-#define KRecordVideoFilePath  [NSTemporaryDirectory() stringByAppendingString:@"myVideo.mp4"]
-
-#define COMPRESSEDVIDEOPATH [NSHomeDirectory() stringByAppendingFormat:@"/Documents/CompressionVideoField"]
+#define KRecordVideoFilePath  [NSTemporaryDirectory() stringByAppendingString:@"myVideo.mp4"]  //视频录制输出地址
+//#define KCompressVideoFilePath [NSTemporaryDirectory() stringByAppendingString:@"myCompressVideo.mp4"] //视频压缩输出地址
 
 @interface SLGPUImageController ()<GPUImageVideoCameraDelegate>
 {
@@ -43,7 +43,6 @@
 @property (nonatomic, strong)  UILabel *tipsLabel; //拍摄提示语  轻触拍照 长按拍摄
 
 @property (nonatomic, strong) UIImage *image; //当前拍摄的照片
-@property (nonatomic, strong) NSURL *videoPath; //当前拍摄的视频路径
 
 @property (nonatomic, assign) CGFloat currentZoomFactor; //当前焦距比例系数
 @property (nonatomic, strong) SLShotFocusView *focusView;   //当前聚焦视图
@@ -70,7 +69,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.image = nil;
-    self.videoPath = nil;
+    [self.filter addTarget:self.movieWriter];
     [self.videoCamera startCameraCapture];
     [self.view insertSubview:self.captureView atIndex:0];
     [self focusAtPoint:CGPointMake(SL_kScreenWidth/2.0, SL_kScreenHeight/2.0)];
@@ -103,6 +102,10 @@
 - (void)dealloc {
     _videoCamera.delegate = nil;
     _videoCamera = nil;
+    //移除重复文件
+    if ([[NSFileManager defaultManager] fileExistsAtPath:KRecordVideoFilePath]) {
+        [[NSFileManager defaultManager] removeItemAtPath:KRecordVideoFilePath error:nil];
+    }
     NSLog(@"GPUImage视图释放");
 }
 #pragma mark - UI
@@ -157,9 +160,8 @@
 }
 - (GPUImageMovieWriter *)movieWriter {
     if (!_movieWriter) {
-        self.videoPath = [NSURL fileURLWithPath:KRecordVideoFilePath];
         //一般编/解码器都有16位对齐的处理（有未经证实的说法，也存在32位、64位对齐的），否则会产生绿边问题。
-        _movieWriter = [[GPUImageMovieWriter alloc] initWithMovieURL:self.videoPath size:CGSizeMake((SL_kScreenWidth - (int)SL_kScreenWidth%16)*[UIScreen mainScreen].scale, (SL_kScreenHeight - (int)SL_kScreenHeight%16)*[UIScreen mainScreen].scale)];
+        _movieWriter = [[GPUImageMovieWriter alloc] initWithMovieURL:[NSURL fileURLWithPath:KRecordVideoFilePath] size:CGSizeMake((SL_kScreenWidth - (int)SL_kScreenWidth%16)*[UIScreen mainScreen].scale, (SL_kScreenHeight - (int)SL_kScreenHeight%16)*[UIScreen mainScreen].scale)];
         _movieWriter.encodingLiveVideo = YES;
         _movieWriter.shouldPassthroughAudio = YES;
     }
@@ -364,7 +366,6 @@
     if ([[NSFileManager defaultManager] fileExistsAtPath:KRecordVideoFilePath]) {
         [[NSFileManager defaultManager] removeItemAtPath:KRecordVideoFilePath error:nil];
     }
-    [self.filter addTarget:self.movieWriter];
     self.videoCamera.audioEncodingTarget = self.movieWriter;
     [self.movieWriter startRecording];
     
@@ -376,87 +377,13 @@
     [self.filter removeTarget:self.movieWriter];
     self.videoCamera.audioEncodingTarget = nil;
     _movieWriter = nil;
-    
-    // 压缩
-    //    [self compressVideoWithUrl:self.videoPath compressionType:AVAssetExportPresetMediumQuality filePath:^(NSString *resultPath, float memorySize, NSString *videoImagePath, int seconds) {
-    //        NSData *data = [NSData dataWithContentsOfFile:resultPath];
-    //        CGFloat totalTime = (CGFloat)data.length / 1024 / 1024;
-    //    }];
-    
     if ([[NSFileManager defaultManager] fileExistsAtPath:KRecordVideoFilePath]) {
         SLEditVideoController * editViewController = [[SLEditVideoController alloc] init];
-        editViewController.videoPath = self.videoPath;
+        editViewController.videoPath = [NSURL fileURLWithPath:KRecordVideoFilePath];
         editViewController.modalPresentationStyle = UIModalPresentationFullScreen;
         [self presentViewController:editViewController animated:NO completion:nil];
     }
-    
 }
-
-// 压缩视频
--(void)compressVideoWithUrl:(NSURL *)url compressionType:(NSString *)type filePath:(void(^)(NSString *resultPath,float memorySize,NSString * videoImagePath,int seconds))resultBlock {
-    
-    NSString *resultPath;
-    
-    // 视频压缩前大小
-    NSData *data = [NSData dataWithContentsOfURL:url];
-    CGFloat totalSize = (float)data.length / 1024 / 1024;
-    NSLog(@"压缩前大小：%.2fM",totalSize);
-    AVURLAsset *avAsset = [AVURLAsset URLAssetWithURL:url options:nil];
-    
-    CMTime time = [avAsset duration];
-    
-    // 视频时长
-    int seconds = ceil(time.value / time.timescale);
-    
-    NSArray *compatiblePresets = [AVAssetExportSession exportPresetsCompatibleWithAsset:avAsset];
-    if ([compatiblePresets containsObject:type]) {
-        
-        // 中等质量
-        AVAssetExportSession *session = [[AVAssetExportSession alloc] initWithAsset:avAsset presetName:AVAssetExportPresetMediumQuality];
-        
-        // 用时间给文件命名 防止存储被覆盖
-        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-        [formatter setDateFormat:@"yyyy-MM-dd-HH:mm:ss"];
-        
-        // 若压缩路径不存在重新创建
-        NSFileManager *manager = [NSFileManager defaultManager];
-        BOOL isExist = [manager fileExistsAtPath:COMPRESSEDVIDEOPATH];
-        if (!isExist) {
-            [manager createDirectoryAtPath:COMPRESSEDVIDEOPATH withIntermediateDirectories:YES attributes:nil error:nil];
-        }
-        resultPath = [COMPRESSEDVIDEOPATH stringByAppendingPathComponent:[NSString stringWithFormat:@"user%outputVideo-%@.mp4",arc4random_uniform(10000),[formatter stringFromDate:[NSDate date]]]];
-        
-        session.outputURL = [NSURL fileURLWithPath:resultPath];
-        session.outputFileType = AVFileTypeMPEG4;
-        session.shouldOptimizeForNetworkUse = YES;
-        [session exportAsynchronouslyWithCompletionHandler:^{
-            
-            switch (session.status) {
-                case AVAssetExportSessionStatusUnknown:
-                    break;
-                case AVAssetExportSessionStatusWaiting:
-                    break;
-                case AVAssetExportSessionStatusExporting:
-                    break;
-                case AVAssetExportSessionStatusCancelled:
-                    break;
-                case AVAssetExportSessionStatusFailed:
-                    break;
-                case AVAssetExportSessionStatusCompleted:{
-                    
-                    NSData *data = [NSData dataWithContentsOfFile:resultPath];
-                    // 压缩过后的大小
-                    float compressedSize = (float)data.length / 1024 / 1024;
-                    resultBlock(resultPath,compressedSize,@"",seconds);
-                    NSLog(@"压缩后大小：%.2f",compressedSize);
-                }
-                default:
-                    break;
-            }
-        }];
-    }
-}
-
 
 #pragma mark - EventsHandle
 //返回
@@ -531,6 +458,7 @@
     [self.videoCamera addTarget:filter];
     [filter addTarget:self.captureView];
     self.filter = filter;
+    [self.filter addTarget:self.movieWriter];
 }
 //轻触拍照
 - (void)takePicture:(UITapGestureRecognizer *)tap {
