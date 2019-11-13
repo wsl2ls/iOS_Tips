@@ -46,6 +46,7 @@
 		78E179312351A4020007E4BB /* SLShotViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E1792F2351A4020007E4BB /* SLShotViewController.m */; };
 		78E179362351A40D0007E4BB /* SLEditMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E179332351A40D0007E4BB /* SLEditMenuView.m */; };
 		78E179372351A40D0007E4BB /* SLShotFocusView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E179342351A40D0007E4BB /* SLShotFocusView.m */; };
+		78F42023237915730093497C /* SLGPUImageController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78F42022237915730093497C /* SLGPUImageController.m */; };
 		78F54916233383D800910215 /* SLBlurView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78F54915233383D800910215 /* SLBlurView.m */; };
 		78FA0F9D235407E6003E456B /* SLDrawView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78FA0F9C235407E6003E456B /* SLDrawView.m */; };
 		78FA0FA02354141E003E456B /* SLAvEditExport.m in Sources */ = {isa = PBXBuildFile; fileRef = 78FA0F9F2354141E003E456B /* SLAvEditExport.m */; };
@@ -146,6 +147,8 @@
 		78E179332351A40D0007E4BB /* SLEditMenuView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLEditMenuView.m; sourceTree = "<group>"; };
 		78E179342351A40D0007E4BB /* SLShotFocusView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLShotFocusView.m; sourceTree = "<group>"; };
 		78E179352351A40D0007E4BB /* SLEditMenuView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLEditMenuView.h; sourceTree = "<group>"; };
+		78F42021237915730093497C /* SLGPUImageController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLGPUImageController.h; sourceTree = "<group>"; };
+		78F42022237915730093497C /* SLGPUImageController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLGPUImageController.m; sourceTree = "<group>"; };
 		78F54914233383D800910215 /* SLBlurView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLBlurView.h; sourceTree = "<group>"; };
 		78F54915233383D800910215 /* SLBlurView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLBlurView.m; sourceTree = "<group>"; };
 		78FA0F9B235407E6003E456B /* SLDrawView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLDrawView.h; sourceTree = "<group>"; };
@@ -282,6 +285,7 @@
 				7851CB392331CD0D002295B5 /* SmallVideo */,
 				78AA10F32371A1EF0044A6F8 /* FaceDetect */,
 				782E3EB52373F892001E0DF9 /* Filter */,
+				78F4201E237913C80093497C /* GPUImageDemo */,
 				78B10489232F57C30051579F /* Main.storyboard */,
 				78B1048C232F57C50051579F /* Assets.xcassets */,
 				78B1048E232F57C50051579F /* LaunchScreen.storyboard */,
@@ -371,6 +375,31 @@
 			path = Recource;
 			sourceTree = "<group>";
 		};
+		78F4201E237913C80093497C /* GPUImageDemo */ = {
+			isa = PBXGroup;
+			children = (
+				78F4201F2379141E0093497C /* Controller */,
+				78F42020237914280093497C /* View */,
+			);
+			path = GPUImageDemo;
+			sourceTree = "<group>";
+		};
+		78F4201F2379141E0093497C /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				78F42021237915730093497C /* SLGPUImageController.h */,
+				78F42022237915730093497C /* SLGPUImageController.m */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		78F42020237914280093497C /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		78F54913233383AC00910215 /* General */ = {
 			isa = PBXGroup;
 			children = (
@@ -400,7 +429,6 @@
 				B4CC2A37AE5DCF4056284BE9 /* Pods-DarkMode.debug.xcconfig */,
 				D002B8CEA71006D5DD02169F /* Pods-DarkMode.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -596,6 +624,7 @@
 				7857977823725C21004CD664 /* SLFaceDetectController.m in Sources */,
 				78B10488232F57C30051579F /* ViewController.m in Sources */,
 				78FA0FA02354141E003E456B /* SLAvEditExport.m in Sources */,
+				78F42023237915730093497C /* SLGPUImageController.m in Sources */,
 				784B72062334685E006AEE47 /* SLAvPlayer.m in Sources */,
 				78DAA113235FF61E00A60F64 /* SLEditVideoClipping.m in Sources */,
 				782E3EB42373D8C7001E0DF9 /* SLAvWriterInput.m in Sources */,

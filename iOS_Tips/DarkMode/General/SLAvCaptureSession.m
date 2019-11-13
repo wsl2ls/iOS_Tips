@@ -223,17 +223,17 @@
     //注意改变设备属性前一定要首先调用lockForConfiguration:调用完之后使用unlockForConfiguration方法解锁
     if ([captureDevice lockForConfiguration:&error]) {
         if ([captureDevice isFocusModeSupported:AVCaptureFocusModeContinuousAutoFocus]) {
+            if ([captureDevice isFocusPointOfInterestSupported]) {
+                [captureDevice setFocusPointOfInterest:cameraPoint];
+            }
             [captureDevice setFocusMode:AVCaptureFocusModeContinuousAutoFocus];
-        }
-        if ([captureDevice isFocusPointOfInterestSupported]) {
-            [captureDevice setFocusPointOfInterest:cameraPoint];
         }
         //曝光模式
         if ([captureDevice isExposureModeSupported:AVCaptureExposureModeContinuousAutoExposure]) {
+            if ([captureDevice isExposurePointOfInterestSupported]) {
+                [captureDevice setExposurePointOfInterest:cameraPoint];
+            }
             [captureDevice setExposureMode:AVCaptureExposureModeContinuousAutoExposure];
-        }
-        if ([captureDevice isExposurePointOfInterestSupported]) {
-            [captureDevice setExposurePointOfInterest:cameraPoint];
         }
         [captureDevice unlockForConfiguration];
     } else {

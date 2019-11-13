@@ -1,16 +1,24 @@
 PODS:
+  - FBRetainCycleDetector (0.1.4)
   - GPUImage (0.1.7)
+  - MLeaksFinder (1.0.0):
+    - FBRetainCycleDetector
 
 DEPENDENCIES:
   - GPUImage
+  - MLeaksFinder
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
+    - FBRetainCycleDetector
     - GPUImage
+    - MLeaksFinder
 
 SPEC CHECKSUMS:
+  FBRetainCycleDetector: 46f8179bbb1c587deee3ea838a1a3ee02acf5015
   GPUImage: 733a5f0fab92df9de1c37ba9df520a833ccb406d
+  MLeaksFinder: 8c435bd2f6d070af18cff082b503b21adc130fc0
 
-PODFILE CHECKSUM: 235047cb9c0cd3dc098758e4b1d1cbcfcf0b1161
+PODFILE CHECKSUM: b9760aa1ecd4bf12339cb7f0d7ce791b91ae50b7
 
 COCOAPODS: 1.6.1

@@ -253,6 +253,7 @@
             [self.progressLayer removeFromSuperlayer];
             //停止录制
             [self.avCaptureTool stopRecordVideo];
+            [self.avCaptureTool stopRunning];
         }
     });
     // 启动任务，GCD计时器创建后需要手动启动

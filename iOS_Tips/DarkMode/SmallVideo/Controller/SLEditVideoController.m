@@ -72,7 +72,9 @@
     
     self.avPlayer.url = self.videoPath;
     self.avPlayer.delegate = self;
-    self.preview.sl_h = self.preview.sl_w *  self.avPlayer.naturalSize.height/ self.avPlayer.naturalSize.width;
+    if (self.avPlayer.naturalSize.width != CGSizeZero.width) {
+         self.preview.sl_h = self.preview.sl_w *  self.avPlayer.naturalSize.height/ self.avPlayer.naturalSize.width;
+    }
     self.avPlayer.monitor = self.preview;
     self.preview.center = CGPointMake(self.view.sl_w/2.0, self.view.sl_h/2.0);
     [self.avPlayer play];
