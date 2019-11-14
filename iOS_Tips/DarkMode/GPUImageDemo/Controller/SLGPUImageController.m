@@ -13,10 +13,9 @@
 #import "SLEditVideoController.h"
 #import "NSObject+SLDelayPerform.h"
 #import "SLEditImageController.h"
-#import "SLAvCaptureSession.h"
-#import "SLAvWriterInput.h"
+#import "UIView+SLImage.h"
 #import <GPUImage.h>
-#import <AVKit/AVKit.h>
+#import <CoreMotion/CoreMotion.h>
 
 #define KMaxDurationOfVideo  15.0 //录制最大时长 s
 #define KRecordVideoFilePath  [NSTemporaryDirectory() stringByAppendingString:@"myVideo.mp4"]  //视频录制输出地址
@@ -27,11 +26,12 @@
     dispatch_source_t _gcdTimer; //计时器
     NSTimeInterval _durationOfVideo;  //录制视频的时长
 }
-
-@property (nonatomic, strong) GPUImageVideoCamera* videoCamera; //相机
+//GPUImageStillCamera 继承自 GPUImageVideoCamera
+@property (nonatomic, strong) GPUImageStillCamera* videoCamera; //相机
 @property (nonatomic, strong) GPUImageView *captureView; //预览视图
 @property (nonatomic, strong) GPUImageFilter *filter; //饱和度滤镜
 @property (nonatomic,strong) GPUImageMovieWriter *movieWriter; //视频写入
+@property (nonatomic, strong) NSArray *filterArray;  //滤镜集合
 
 @property (nonatomic, strong) UIButton *switchCameraBtn; // 切换前后摄像头
 @property (nonatomic, strong) UIButton *backBtn;
@@ -42,15 +42,13 @@
 @property (nonatomic, strong) CAShapeLayer *progressLayer; //环形进度条
 @property (nonatomic, strong)  UILabel *tipsLabel; //拍摄提示语  轻触拍照 长按拍摄
 
-@property (nonatomic, strong) UIImage *image; //当前拍摄的照片
-
 @property (nonatomic, assign) CGFloat currentZoomFactor; //当前焦距比例系数
 @property (nonatomic, strong) SLShotFocusView *focusView;   //当前聚焦视图
 
 @property (nonatomic, assign) BOOL isRecording; //是否正在录制
 
-@property (nonatomic, strong) NSArray *filterArray;
-
+@property (nonatomic, strong) CMMotionManager *motionManager;  //运动传感器  监测设备方向
+@property (nonatomic, assign) UIDeviceOrientation shootingOrientation;// 手机方向 只在 isRunning == YES时 才更新
 @end
 
 @implementation SLGPUImageController
@@ -68,13 +66,12 @@
 }
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    self.image = nil;
     [self.filter addTarget:self.movieWriter];
     [self.videoCamera startCameraCapture];
     [self.view insertSubview:self.captureView atIndex:0];
     [self focusAtPoint:CGPointMake(SL_kScreenWidth/2.0, SL_kScreenHeight/2.0)];
     //监听设备方向，旋转切换摄像头按钮
-    //    [self.avCaptureSession addObserver:self forKeyPath:@"shootingOrientation" options:NSKeyValueObservingOptionNew context:nil];
+    [self startUpdateDeviceDirection];
 }
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
@@ -86,7 +83,7 @@
         _gcdTimer = nil;
     }
     [_videoCamera stopCameraCapture];
-    //    [_avCaptureSession removeObserver:self forKeyPath:@"shootingOrientation"];
+    [self stopUpdateDeviceDirection];
     [NSObject sl_cancelDelayPerform];
 }
 - (void)viewSafeAreaInsetsDidChange {
@@ -125,9 +122,9 @@
 }
 
 #pragma mark - Getter
-- (GPUImageVideoCamera *)videoCamera {
+- (GPUImageStillCamera *)videoCamera {
     if (!_videoCamera) {
-        _videoCamera = [[GPUImageVideoCamera alloc] initWithSessionPreset:AVCaptureSessionPresetHigh cameraPosition:AVCaptureDevicePositionBack];
+        _videoCamera = [[GPUImageStillCamera alloc] initWithSessionPreset:AVCaptureSessionPresetHigh cameraPosition:AVCaptureDevicePositionBack];
         //设置输出图像方向，可用于横屏推流。
         _videoCamera.outputImageOrientation = UIInterfaceOrientationPortrait;
         //镜像策略，这里这样设置是最自然的。跟系统相机默认一样。
@@ -286,7 +283,34 @@
     }
     return _filterArray;
 }
-
+- (CMMotionManager *)motionManager {
+    if (!_motionManager) {
+        _motionManager = [[CMMotionManager alloc] init];
+    }
+    return _motionManager;
+}
+#pragma mark - Setter
+- (void)setShootingOrientation:(UIDeviceOrientation)shootingOrientation {
+    _shootingOrientation = shootingOrientation;
+    [UIView animateWithDuration:0.3 animations:^{
+        switch (shootingOrientation) {
+            case UIDeviceOrientationPortrait:
+                self.switchCameraBtn.transform = CGAffineTransformMakeRotation(0);
+                break;
+            case UIDeviceOrientationLandscapeLeft:
+                self.switchCameraBtn.transform = CGAffineTransformMakeRotation(M_PI/2.0);
+                break;
+            case UIDeviceOrientationLandscapeRight:
+                self.switchCameraBtn.transform = CGAffineTransformMakeRotation(-M_PI/2.0);
+                break;
+            case UIDeviceOrientationPortraitUpsideDown:
+                self.switchCameraBtn.transform = CGAffineTransformMakeRotation(-M_PI);
+                break;
+            default:
+                break;
+        }
+    }];
+}
 #pragma mark - HelpMethods
 //最小缩放值 焦距
 - (CGFloat)minZoomFactor {
@@ -367,13 +391,24 @@
         [[NSFileManager defaultManager] removeItemAtPath:KRecordVideoFilePath error:nil];
     }
     self.videoCamera.audioEncodingTarget = self.movieWriter;
-    [self.movieWriter startRecording];
-    
+    //调整写入时的方向
+    CGAffineTransform transform;
+    if (self.shootingOrientation == UIDeviceOrientationLandscapeRight) {
+        transform = CGAffineTransformMakeRotation(M_PI/2);
+    } else if (self.shootingOrientation == UIDeviceOrientationLandscapeLeft) {
+        transform = CGAffineTransformMakeRotation(-M_PI/2);
+    } else if (self.shootingOrientation == UIDeviceOrientationPortraitUpsideDown) {
+        transform = CGAffineTransformMakeRotation(M_PI);
+    } else {
+        transform = CGAffineTransformMakeRotation(0);
+    }
+    [self.movieWriter startRecordingInOrientation:transform];
 }
 //结束录制
 - (void)endRecord {
     [self.movieWriter finishRecording];
     [self.videoCamera stopCameraCapture];
+    [self stopUpdateDeviceDirection];
     [self.filter removeTarget:self.movieWriter];
     self.videoCamera.audioEncodingTarget = nil;
     _movieWriter = nil;
@@ -462,31 +497,32 @@
 }
 //轻触拍照
 - (void)takePicture:(UITapGestureRecognizer *)tap {
-    [self.videoCamera stopCameraCapture];
     UIImageOrientation imageOrientation = UIImageOrientationUp;
-    //    switch (self.avCaptureSession.shootingOrientation) {
-    //        case UIDeviceOrientationLandscapeLeft:
-    //            imageOrientation = UIImageOrientationLeft;
-    //            break;
-    //        case UIDeviceOrientationLandscapeRight:
-    //            imageOrientation = UIImageOrientationRight;
-    //            break;
-    //        case UIDeviceOrientationPortraitUpsideDown:
-    //            imageOrientation = UIImageOrientationDown;
-    //            break;
-    //        default:
-    //            break;
-    //    }
-    //    UIImage *image = [UIImage imageWithCGImage:self.captureView.image.CGImage scale:[UIScreen mainScreen].scale orientation:imageOrientation];
-    //    self.captureView.image = image;
-    //    self.image = image;
-    
-    NSLog(@"拍照结束");
-    SLEditImageController * editViewController = [[SLEditImageController alloc] init];
-    editViewController.image = self.image;
-    editViewController.modalPresentationStyle = UIModalPresentationFullScreen;
-    [self presentViewController:editViewController animated:NO completion:nil];
-    NSLog(@"拍照");
+        switch (self.shootingOrientation) {
+            case UIDeviceOrientationLandscapeLeft:
+                imageOrientation = UIImageOrientationLeft;
+                break;
+            case UIDeviceOrientationLandscapeRight:
+                imageOrientation = UIImageOrientationRight;
+                break;
+            case UIDeviceOrientationPortraitUpsideDown:
+                imageOrientation = UIImageOrientationDown;
+                break;
+            default:
+                break;
+        }
+    SL_WeakSelf;
+    [self.videoCamera capturePhotoAsJPEGProcessedUpToFilter:weakSelf.filter withOrientation:imageOrientation withCompletionHandler:^(NSData *processedJPEG, NSError *error) {
+        if(error){
+            return;
+        }
+        NSLog(@"拍照结束");
+        SLEditImageController * editViewController = [[SLEditImageController alloc] init];
+        editViewController.image = [UIImage imageWithData:processedJPEG];
+        editViewController.modalPresentationStyle = UIModalPresentationFullScreen;
+        [weakSelf presentViewController:editViewController animated:NO completion:nil];
+    }];
+    [self.videoCamera stopCameraCapture];
 }
 //长按摄像 小视频
 - (void)recordVideo:(UILongPressGestureRecognizer *)longPress {
@@ -536,28 +572,60 @@
             break;
     }
 }
-// KVO
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
-    if ([keyPath isEqualToString:@"shootingOrientation"]) {
-        UIDeviceOrientation deviceOrientation = [change[@"new"] intValue];
-        [UIView animateWithDuration:0.3 animations:^{
-            switch (deviceOrientation) {
-                case UIDeviceOrientationPortrait:
-                    self.switchCameraBtn.transform = CGAffineTransformMakeRotation(0);
-                    break;
-                case UIDeviceOrientationLandscapeLeft:
-                    self.switchCameraBtn.transform = CGAffineTransformMakeRotation(M_PI/2.0);
-                    break;
-                case UIDeviceOrientationLandscapeRight:
-                    self.switchCameraBtn.transform = CGAffineTransformMakeRotation(-M_PI/2.0);
-                    break;
-                case UIDeviceOrientationPortraitUpsideDown:
-                    self.switchCameraBtn.transform = CGAffineTransformMakeRotation(-M_PI);
-                    break;
-                default:
-                    break;
+
+#pragma mark - 重力感应监测设备方向
+///开始监听设备方向
+- (void)startUpdateDeviceDirection {
+    if ([self.motionManager isAccelerometerAvailable] == YES) {
+        //回调会一直调用,建议获取到就调用下面的停止方法，需要再重新开始，当然如果需求是实时不间断的话可以等离开页面之后再stop
+        [self.motionManager setAccelerometerUpdateInterval:1.0];
+        __weak typeof(self) weakSelf = self;
+        [self.motionManager startAccelerometerUpdatesToQueue:[NSOperationQueue currentQueue] withHandler:^(CMAccelerometerData *accelerometerData, NSError *error) {
+            double x = accelerometerData.acceleration.x;
+            double y = accelerometerData.acceleration.y;
+            if ((fabs(y) + 0.1f) >= fabs(x)) {
+                if (y >= 0.1f) {
+                    //                    NSLog(@"Down");
+                    if (weakSelf.shootingOrientation == UIDeviceOrientationPortraitUpsideDown) {
+                        return ;
+                    }
+                    weakSelf.shootingOrientation = UIDeviceOrientationPortraitUpsideDown;
+                } else {
+                    //                    NSLog(@"Portrait");
+                    if (weakSelf.shootingOrientation == UIDeviceOrientationPortrait) {
+                        return ;
+                    }
+                    weakSelf.shootingOrientation = UIDeviceOrientationPortrait;
+                }
+            } else {
+                if (x >= 0.1f) {
+                    //                    NSLog(@"Right");
+                    if (weakSelf.shootingOrientation == UIDeviceOrientationLandscapeRight) {
+                        return ;
+                    }
+                    weakSelf.shootingOrientation = UIDeviceOrientationLandscapeRight;
+                } else if (x <= 0.1f) {
+                    //                    NSLog(@"Left");
+                    if (weakSelf.shootingOrientation == UIDeviceOrientationLandscapeLeft) {
+                        return ;
+                    }
+                    weakSelf.shootingOrientation = UIDeviceOrientationLandscapeLeft;
+                } else  {
+                    //                    NSLog(@"Portrait");
+                    if (weakSelf.shootingOrientation == UIDeviceOrientationPortrait) {
+                        return ;
+                    }
+                    weakSelf.shootingOrientation = UIDeviceOrientationPortrait;
+                }
             }
         }];
+    }
+}
+/// 停止监测方向
+- (void)stopUpdateDeviceDirection {
+    if ([self.motionManager isAccelerometerActive] == YES) {
+        [self.motionManager stopAccelerometerUpdates];
+        _motionManager = nil;
     }
 }
 
