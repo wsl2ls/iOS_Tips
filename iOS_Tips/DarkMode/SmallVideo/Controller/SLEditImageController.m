@@ -68,7 +68,9 @@
     [self.view addSubview:self.zoomView];
     self.zoomView.pinchGestureRecognizer.enabled = NO;
     self.zoomView.image = self.image;
-    self.zoomView.imageView.frame = CGRectMake(0, 0, self.zoomView.sl_w, self.zoomView.sl_w * self.image.size.height/self.image.size.width);
+    if (self.image.size.width > 0) {
+       self.zoomView.imageView.frame = CGRectMake(0, 0, self.zoomView.sl_w, self.zoomView.sl_w * self.image.size.height/self.image.size.width);
+    }
     if (self.zoomView.imageView.sl_h <= self.zoomView.sl_h) {
         self.zoomView.imageView.center = CGPointMake(self.zoomView.sl_w/2.0, self.zoomView.sl_h/2.0);
     }
