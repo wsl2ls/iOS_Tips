@@ -10,16 +10,15 @@
 #import <GPUImage.h>
 #import "SLBlurView.h"
 #import "SLShotFocusView.h"
-#import "SLEditVideoController.h"
+#import "SLWaterMarkController.h"
 #import "NSObject+SLDelayPerform.h"
 #import "SLEditImageController.h"
 #import "UIView+SLImage.h"
-#import <GPUImage.h>
+#import "GPUImage.h"
 #import <CoreMotion/CoreMotion.h>
 
 #define KMaxDurationOfVideo  15.0 //录制最大时长 s
 #define KRecordVideoFilePath  [NSTemporaryDirectory() stringByAppendingString:@"myVideo.mp4"]  //视频录制输出地址
-//#define KCompressVideoFilePath [NSTemporaryDirectory() stringByAppendingString:@"myCompressVideo.mp4"] //视频压缩输出地址
 
 @interface SLGPUImageController ()<GPUImageVideoCameraDelegate>
 {
@@ -97,13 +96,16 @@
     return NO;
 }
 - (void)dealloc {
+    [_videoCamera removeAllTargets];
+    [_filter removeAllTargets];
+    _filter = nil;
     _videoCamera.delegate = nil;
     _videoCamera = nil;
     //移除重复文件
     if ([[NSFileManager defaultManager] fileExistsAtPath:KRecordVideoFilePath]) {
         [[NSFileManager defaultManager] removeItemAtPath:KRecordVideoFilePath error:nil];
     }
-    NSLog(@"GPUImage视图释放");
+    NSLog(@"GPUImage相机视图释放");
 }
 #pragma mark - UI
 - (void)setupUI {
@@ -413,13 +415,66 @@
     self.videoCamera.audioEncodingTarget = nil;
     _movieWriter = nil;
     if ([[NSFileManager defaultManager] fileExistsAtPath:KRecordVideoFilePath]) {
-        SLEditVideoController * editViewController = [[SLEditVideoController alloc] init];
-        editViewController.videoPath = [NSURL fileURLWithPath:KRecordVideoFilePath];
-        editViewController.modalPresentationStyle = UIModalPresentationFullScreen;
-        [self presentViewController:editViewController animated:NO completion:nil];
+        SLWaterMarkController * waterMarkController = [[SLWaterMarkController alloc] init];
+        waterMarkController.videoPath = [NSURL fileURLWithPath:KRecordVideoFilePath];
+        waterMarkController.modalPresentationStyle = UIModalPresentationFullScreen;
+        [self presentViewController:waterMarkController animated:NO completion:nil];
     }
 }
-
+//// 添加水印
+//- (void)addWatermark:(NSURL *)videoUrl {
+//    
+//    //一般编/解码器都有16位对齐的处理（有未经证实的说法，也存在32位、64位对齐的），否则会产生绿边问题。
+//    _movieWriter = [[GPUImageMovieWriter alloc] initWithMovieURL:[NSURL fileURLWithPath:KWatermarkVideoFilePath] size:CGSizeMake((SL_kScreenWidth - (int)SL_kScreenWidth%16)*[UIScreen mainScreen].scale, (SL_kScreenHeight - (int)SL_kScreenHeight%16)*[UIScreen mainScreen].scale)];
+//    _movieWriter.encodingLiveVideo = YES;
+//    _movieWriter.shouldPassthroughAudio = YES;
+//    
+//    AVAsset *asset = [AVAsset assetWithURL:videoUrl];
+//    //视频文件
+//    GPUImageMovie * movieFile = [[GPUImageMovie alloc] initWithAsset:asset];
+//    movieFile.runBenchmark = YES;
+//    movieFile.playAtActualSpeed = YES;
+//    
+//    // 溶解混合滤镜
+//     GPUImageDissolveBlendFilter  *filter = [[GPUImageDissolveBlendFilter alloc] init];
+//     filter.mix = 0.5;
+//    
+//    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 100, 10)];
+//    view.backgroundColor = [UIColor greenColor];
+//    
+//    //创建水印图形
+//    GPUImageUIElement *uiElement = [[GPUImageUIElement alloc] initWithView:view];
+//    
+//    GPUImageFilter* progressFilter = [[GPUImageFilter alloc] init];
+//    [movieFile addTarget:progressFilter];
+//    [progressFilter addTarget:filter];
+//    [uiElement addTarget:filter];
+//    
+//    // 显示到界面
+////    [filter addTarget:self.captureView];
+//    [filter addTarget:self.movieWriter];
+//    
+//    [self.movieWriter startRecording];
+//    
+//    [movieFile startProcessing];
+//    [progressFilter setFrameProcessingCompletionBlock:^(GPUImageOutput *output, CMTime time) {
+//           [uiElement updateWithTimestamp:time];
+//       }];
+//    
+//    SL_WeakSelf;
+//    [self.movieWriter setCompletionBlock:^{
+//        __strong typeof(self) strongSelf = weakSelf;
+//        [filter removeTarget:strongSelf->_movieWriter];
+//        [strongSelf->_movieWriter finishRecording];
+//        
+//            SLEditVideoController * editViewController = [[SLEditVideoController alloc] init];
+//                  editViewController.videoPath = [NSURL fileURLWithPath:KWatermarkVideoFilePath];
+//                  editViewController.modalPresentationStyle = UIModalPresentationFullScreen;
+//                  [self presentViewController:editViewController animated:NO completion:nil];
+//        
+//    }];
+//    
+//}
 #pragma mark - EventsHandle
 //返回
 - (void)backBtn:(UIButton *)btn {
@@ -498,22 +553,23 @@
 //轻触拍照
 - (void)takePicture:(UITapGestureRecognizer *)tap {
     UIImageOrientation imageOrientation = UIImageOrientationUp;
-        switch (self.shootingOrientation) {
-            case UIDeviceOrientationLandscapeLeft:
-                imageOrientation = UIImageOrientationLeft;
-                break;
-            case UIDeviceOrientationLandscapeRight:
-                imageOrientation = UIImageOrientationRight;
-                break;
-            case UIDeviceOrientationPortraitUpsideDown:
-                imageOrientation = UIImageOrientationDown;
-                break;
-            default:
-                break;
-        }
+    switch (self.shootingOrientation) {
+        case UIDeviceOrientationLandscapeLeft:
+            imageOrientation = UIImageOrientationLeft;
+            break;
+        case UIDeviceOrientationLandscapeRight:
+            imageOrientation = UIImageOrientationRight;
+            break;
+        case UIDeviceOrientationPortraitUpsideDown:
+            imageOrientation = UIImageOrientationDown;
+            break;
+        default:
+            break;
+    }
     SL_WeakSelf;
     [self.videoCamera capturePhotoAsJPEGProcessedUpToFilter:weakSelf.filter withOrientation:imageOrientation withCompletionHandler:^(NSData *processedJPEG, NSError *error) {
         if(error){
+            NSLog(@"拍照失败");
             return;
         }
         NSLog(@"拍照结束");
@@ -521,8 +577,9 @@
         editViewController.image = [UIImage imageWithData:processedJPEG];
         editViewController.modalPresentationStyle = UIModalPresentationFullScreen;
         [weakSelf presentViewController:editViewController animated:NO completion:nil];
+        [self.videoCamera stopCameraCapture];
     }];
-    [self.videoCamera stopCameraCapture];
+    
 }
 //长按摄像 小视频
 - (void)recordVideo:(UILongPressGestureRecognizer *)longPress {
@@ -629,7 +686,7 @@
     }
 }
 
-#pragma mark - SLAvCaptureSessionDelegate 音视频实时输出代理
+#pragma mark - GPUImageVideoCameraDelegate 音视频实时输出代理
 - (void)willOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer {
     
 }
