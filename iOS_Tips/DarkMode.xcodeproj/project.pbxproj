@@ -26,6 +26,7 @@
 		786147F42362D79000C5424C /* SLMosaicView.m in Sources */ = {isa = PBXBuildFile; fileRef = 786147F32362D79000C5424C /* SLMosaicView.m */; };
 		786147FA23630C4D00C5424C /* UIImage+SLCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 786147F923630C4D00C5424C /* UIImage+SLCommon.m */; };
 		787F01A3236AD8A5002AC1A9 /* SLEditImageController.m in Sources */ = {isa = PBXBuildFile; fileRef = 787F01A2236AD8A5002AC1A9 /* SLEditImageController.m */; };
+		78804A7E237D5E3E0087E152 /* SLWaterMarkController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78804A7D237D5E3E0087E152 /* SLWaterMarkController.m */; };
 		78A4BD45236C5DF20021AE32 /* SLEditVideoController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78A4BD44236C5DF20021AE32 /* SLEditVideoController.m */; };
 		78A4BD48236C5DFE0021AE32 /* SLImageZoomView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78A4BD47236C5DFD0021AE32 /* SLImageZoomView.m */; };
 		78B10482232F57C30051579F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 78B10481232F57C30051579F /* AppDelegate.m */; };
@@ -107,6 +108,8 @@
 		786147F923630C4D00C5424C /* UIImage+SLCommon.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImage+SLCommon.m"; sourceTree = "<group>"; };
 		787F01A1236AD8A5002AC1A9 /* SLEditImageController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLEditImageController.h; sourceTree = "<group>"; };
 		787F01A2236AD8A5002AC1A9 /* SLEditImageController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLEditImageController.m; sourceTree = "<group>"; };
+		78804A7C237D5E3E0087E152 /* SLWaterMarkController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLWaterMarkController.h; sourceTree = "<group>"; };
+		78804A7D237D5E3E0087E152 /* SLWaterMarkController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLWaterMarkController.m; sourceTree = "<group>"; };
 		78A4BD43236C5DF20021AE32 /* SLEditVideoController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLEditVideoController.h; sourceTree = "<group>"; };
 		78A4BD44236C5DF20021AE32 /* SLEditVideoController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLEditVideoController.m; sourceTree = "<group>"; };
 		78A4BD46236C5DFD0021AE32 /* SLImageZoomView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLImageZoomView.h; sourceTree = "<group>"; };
@@ -389,6 +392,8 @@
 			children = (
 				78F42021237915730093497C /* SLGPUImageController.h */,
 				78F42022237915730093497C /* SLGPUImageController.m */,
+				78804A7C237D5E3E0087E152 /* SLWaterMarkController.h */,
+				78804A7D237D5E3E0087E152 /* SLWaterMarkController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -628,6 +633,7 @@
 				784B72062334685E006AEE47 /* SLAvPlayer.m in Sources */,
 				78DAA113235FF61E00A60F64 /* SLEditVideoClipping.m in Sources */,
 				782E3EB42373D8C7001E0DF9 /* SLAvWriterInput.m in Sources */,
+				78804A7E237D5E3E0087E152 /* SLWaterMarkController.m in Sources */,
 				784B720923348241006AEE47 /* SLAvCaptureTool.m in Sources */,
 				786147F42362D79000C5424C /* SLMosaicView.m in Sources */,
 				78A4BD48236C5DFE0021AE32 /* SLImageZoomView.m in Sources */,
