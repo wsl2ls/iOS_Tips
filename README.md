@@ -44,6 +44,8 @@ iOS的一些示例，不定时更新~  简书地址：https://www.jianshu.com/p/
 
 ## 6、GPUImage框架的使用
 
+> 效果描述：实时拍摄添加水印和滤镜、本地视频添加水印、GIF图水印
+
 ![GPUImage框架的使用](PrviewPicture/6、GPUImage.gif)
 
 
