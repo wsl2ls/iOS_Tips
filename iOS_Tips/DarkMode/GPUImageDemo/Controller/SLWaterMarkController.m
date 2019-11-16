@@ -22,11 +22,12 @@
 @property (nonatomic, strong) GPUImageAlphaBlendFilter *blendFilter; // 混合滤镜  混合视频帧和水印
 @property (nonatomic, strong) GPUImageMovieWriter *movieWriter; //写入导出视频
 
-@property (nonatomic, strong) SLBlurView *addWatermark; //添加水印
+@property (nonatomic, strong) SLBlurView *addWatermark; //添加水印  文本和GIF
 @property (nonatomic, strong) SLBlurView *againShotBtn;  // 再拍一次
 @property (nonatomic, strong) UIButton *saveAlbumBtn;  //保存到相册
 
 @property (nonatomic, strong) SLAvPlayer *avPlayer;  //视频播放预览
+@property (nonatomic, strong) UIActivityIndicatorView *activityIndicatorView; //
 
 @end
 
@@ -108,6 +109,7 @@
 }
 - (GPUImageMovieWriter *)movieWriter {
     if (!_movieWriter) {
+        //一般编/解码器都有16位对齐的处理（有未经证实的说法，也存在32位、64位对齐的），否则会产生绿边问题。
         //视频写入
         _movieWriter = [[GPUImageMovieWriter alloc] initWithMovieURL:[NSURL fileURLWithPath:KWatermarkVideoFilePath] size:CGSizeMake((SL_kScreenWidth - (int)SL_kScreenWidth%16)*[UIScreen mainScreen].scale, (SL_kScreenHeight - (int)SL_kScreenHeight%16)*[UIScreen mainScreen].scale)];
         _movieWriter.shouldPassthroughAudio = YES;//是否使用源音源
@@ -157,12 +159,23 @@
     }
     return _avPlayer;
 }
+- (UIActivityIndicatorView *)activityIndicatorView {
+    if (!_activityIndicatorView) {
+        _activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        _activityIndicatorView.frame = CGRectMake(0, 0, 50, 50);
+        _activityIndicatorView.color = [UIColor colorWithRed:45/255.0 green:175/255.0 blue:45/255.0 alpha:1];
+        _activityIndicatorView.center = CGPointMake(SL_kScreenWidth/2.0, SL_kScreenHeight/2.0);
+    }
+    return _activityIndicatorView;
+}
 #pragma mark - EventsHandle
 //添加水印
 - (void)addWatermarkClicked:(id)sender {
     self.addWatermark.hidden = YES;
+    [self.activityIndicatorView startAnimating];
+    [self.view addSubview:self.activityIndicatorView];
     // 水印层
-    UIView *watermarkView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.sl_w, self.view.sl_h)];
+    UIView *watermarkView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SL_kScreenWidth, SL_kScreenHeight)];
     watermarkView.backgroundColor = [UIColor clearColor];
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 200, self.view.sl_w, 80)];
     label.text = @"简书：且行且珍惜_iOS \n GitHub：wsl2ls";
@@ -181,7 +194,6 @@
     [watermarkView addSubview:label];
     //GPUImageUIElement继承GPUImageOutput类，作为响应链的源头。通过CoreGraphics把UIView渲染到图像，并通过glTexImage2D绑定到outputFramebuffer指定的纹理，最后通知targets纹理就绪。
     GPUImageUIElement *uielement = [[GPUImageUIElement alloc] initWithView:watermarkView];
-    
     //目的是每帧回调
     GPUImageFilter* progressFilter = [[GPUImageFilter alloc] init];
     //每一帧渲染完毕后的回调
@@ -211,8 +223,19 @@
     //使用MovieWriter同步编码写入
     [self.movieFile enableSynchronizedEncodingUsingMovieWriter:self.movieWriter];
     
+    //调整方向
+    CGAffineTransform transform;
+    if (self.videoOrientation == UIDeviceOrientationLandscapeRight) {
+        transform = CGAffineTransformMakeRotation(M_PI/2);
+    } else if (self.videoOrientation == UIDeviceOrientationLandscapeLeft) {
+        transform = CGAffineTransformMakeRotation(-M_PI/2);
+    } else if (self.videoOrientation == UIDeviceOrientationPortraitUpsideDown) {
+        transform = CGAffineTransformMakeRotation(M_PI);
+    } else {
+        transform = CGAffineTransformMakeRotation(0);
+    }
     //开始写入
-    [self.movieWriter startRecording];
+    [self.movieWriter startRecordingInOrientation:transform];
     //开始处理
     [self.movieFile startProcessing];
 }
@@ -249,10 +272,14 @@
     self.videoPath = [NSURL fileURLWithPath:KWatermarkVideoFilePath];
     self.avPlayer.url = self.videoPath;
     NSLog(@"add水印成功");
+    [self.activityIndicatorView stopAnimating];
+    [self.activityIndicatorView removeFromSuperview];
 }
 //视频写入失败
 - (void)movieRecordingFailedWithError:(NSError *)error {
     NSLog(@"add水印失败");
+    [self.activityIndicatorView stopAnimating];
+    [self.activityIndicatorView removeFromSuperview];
 }
 #pragma mark - SLAvPlayerDelegate
 //播放完成

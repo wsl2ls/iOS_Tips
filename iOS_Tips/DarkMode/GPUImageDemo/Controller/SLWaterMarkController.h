@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// 添加水印 文字和GIF图
 @interface SLWaterMarkController : UIViewController
 @property (nonatomic, strong) NSURL *videoPath; //当前拍摄的视频路径
+@property (nonatomic, assign) UIDeviceOrientation videoOrientation;// 视频方向
 @end
 
 NS_ASSUME_NONNULL_END
