@@ -269,17 +269,21 @@
     [self.blendFilter removeAllTargets];
     [self.movieFile removeAllTargets];
     self.movieWriter = nil;
-    self.videoPath = [NSURL fileURLWithPath:KWatermarkVideoFilePath];
-    self.avPlayer.url = self.videoPath;
     NSLog(@"add水印成功");
-    [self.activityIndicatorView stopAnimating];
-    [self.activityIndicatorView removeFromSuperview];
+    SL_DISPATCH_ON_MAIN_THREAD(^{
+        self.videoPath = [NSURL fileURLWithPath:KWatermarkVideoFilePath];
+        self.avPlayer.url = self.videoPath;
+        [self.activityIndicatorView stopAnimating];
+        [self.activityIndicatorView removeFromSuperview];
+    });
 }
 //视频写入失败
 - (void)movieRecordingFailedWithError:(NSError *)error {
     NSLog(@"add水印失败");
-    [self.activityIndicatorView stopAnimating];
-    [self.activityIndicatorView removeFromSuperview];
+    SL_DISPATCH_ON_MAIN_THREAD(^{
+        [self.activityIndicatorView stopAnimating];
+        [self.activityIndicatorView removeFromSuperview];
+    });
 }
 #pragma mark - SLAvPlayerDelegate
 //播放完成
