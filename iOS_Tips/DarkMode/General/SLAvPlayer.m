@@ -40,21 +40,6 @@
 #pragma mark - HelpMethods
 - (void)configure {
 }
-//视频的方向
-- (UIImageOrientation)orientationFromAVAssetTrack:(AVAssetTrack *)videoTrack {
-    UIImageOrientation orientation = UIImageOrientationUp;
-    CGAffineTransform t = videoTrack.preferredTransform;
-    if(t.a == 0 && t.b == 1.0 && t.c == -1.0 && t.d == 0){
-        orientation = UIImageOrientationRight;
-    }else if(t.a == 0 && t.b == -1.0 && t.c == 1.0 && t.d == 0){
-        orientation = UIImageOrientationLeft;
-    }else if(t.a == 1.0 && t.b == 0 && t.c == 0 && t.d == 1.0){
-        orientation = UIImageOrientationUp;
-    }else if(t.a == -1.0 && t.b == 0 && t.c == 0 && t.d == -1.0){
-        orientation = UIImageOrientationDown;
-    }
-    return orientation;
-}
 
 #pragma mark - Setter
 - (void)setUrl:(nonnull NSURL *)url {
@@ -119,12 +104,6 @@
     }else {
         return CGSizeZero;
     }
-    //    UIImageOrientation orientation = [self orientationFromAVAssetTrack:assetVideoTrack];
-    //    //视频素材原大小 像素大小px 不是pt
-    //    CGSize renderSize = assetVideoTrack.naturalSize;
-    //    if (orientation == UIImageOrientationLeft || orientation == UIImageOrientationRight ) {
-    //        renderSize = CGSizeMake(assetVideoTrack.naturalSize.height,assetVideoTrack.naturalSize.width);
-    //    }
     CGSize renderSize = assetVideoTrack.naturalSize;
     renderSize = CGSizeApplyAffineTransform(assetVideoTrack.naturalSize, assetVideoTrack.preferredTransform);
     return CGSizeMake(fabs(renderSize.width), fabs(renderSize.height));

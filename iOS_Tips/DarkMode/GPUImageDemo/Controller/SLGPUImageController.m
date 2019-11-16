@@ -28,8 +28,9 @@
 //GPUImageStillCamera 继承自 GPUImageVideoCamera
 @property (nonatomic, strong) GPUImageStillCamera* videoCamera; //相机
 @property (nonatomic, strong) GPUImageView *captureView; //预览视图
-@property (nonatomic, strong) GPUImageFilter *filter; //饱和度滤镜
-@property (nonatomic,strong) GPUImageMovieWriter *movieWriter; //视频写入
+@property (nonatomic, strong) GPUImageFilter *filter; //原图像
+@property (nonatomic, strong) GPUImageMovieWriter *movieWriter; //视频写入
+@property (nonatomic, strong) GPUImageAlphaBlendFilter *blendFilter; // 混合滤镜  混合视频帧和水印
 @property (nonatomic, strong) NSArray *filterArray;  //滤镜集合
 
 @property (nonatomic, strong) UIButton *switchCameraBtn; // 切换前后摄像头
@@ -44,10 +45,8 @@
 @property (nonatomic, assign) CGFloat currentZoomFactor; //当前焦距比例系数
 @property (nonatomic, strong) SLShotFocusView *focusView;   //当前聚焦视图
 
-@property (nonatomic, assign) BOOL isRecording; //是否正在录制
-
 @property (nonatomic, strong) CMMotionManager *motionManager;  //运动传感器  监测设备方向
-@property (nonatomic, assign) UIDeviceOrientation shootingOrientation;// 手机方向 只在 isRunning == YES时 才更新
+@property (nonatomic, assign) UIDeviceOrientation shootingOrientation;// 拍摄时的设备方向 开始录制时停止更新
 @end
 
 @implementation SLGPUImageController
@@ -65,7 +64,8 @@
 }
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [self.filter addTarget:self.movieWriter];
+    [self.filter addTarget:self.captureView];
+    [self.videoCamera addTarget:self.filter];
     [self.videoCamera startCameraCapture];
     [self.view insertSubview:self.captureView atIndex:0];
     [self focusAtPoint:CGPointMake(SL_kScreenWidth/2.0, SL_kScreenHeight/2.0)];
@@ -132,9 +132,9 @@
         //镜像策略，这里这样设置是最自然的。跟系统相机默认一样。
         _videoCamera.horizontallyMirrorRearFacingCamera = NO;
         _videoCamera.horizontallyMirrorFrontFacingCamera = YES;
-        [_videoCamera addTarget:self.filter];
         // 可防止允许声音通过的情况下,避免第一帧黑屏
         [_videoCamera addAudioInputsAndOutputs];
+        _videoCamera.delegate = self;
     }
     return _videoCamera;
 }
@@ -152,8 +152,7 @@
 }
 - (GPUImageFilter *)filter {
     if (!_filter) {
-        _filter = [[GPUImageSaturationFilter alloc] init];
-        [_filter addTarget:self.captureView];
+        _filter = [[GPUImageFilter alloc] init];
     }
     return _filter;
 }
@@ -165,6 +164,13 @@
         _movieWriter.shouldPassthroughAudio = YES;
     }
     return _movieWriter;
+}
+- (GPUImageAlphaBlendFilter *)blendFilter {
+    if (!_blendFilter) {
+        // 混合滤镜，它会把水印层图像和视频帧图像混合：GPUImageNormalBlendFilter 就是把水印层图像添加到视频帧上，不做其他处理；GPUImageAlphaBlendFilter 水印层上的内容处于半透明的状态； GPUImageAddBlendFilter 水印层图像会受到视频帧本身滤镜的影响；GPUImageDissolveBlendFilter会造成视频帧变暗
+        _blendFilter  = [[GPUImageAlphaBlendFilter alloc] init];
+    }
+    return _blendFilter;
 }
 - (UIButton *)backBtn {
     if (_backBtn == nil) {
@@ -266,10 +272,9 @@
         GPUImageStretchDistortionFilter *stretchDistortionFilter = [[GPUImageStretchDistortionFilter alloc] init];
         //亮度
         GPUImageBrightnessFilter *BrightnessFilter = [[GPUImageBrightnessFilter alloc] init];
-        //伽马线滤镜
-        GPUImageGammaFilter *gammaFilter = [[GPUImageGammaFilter alloc] init];
-        //边缘检测
-        GPUImageXYDerivativeFilter *XYDerivativeFilter = [[GPUImageXYDerivativeFilter alloc] init];
+        //高斯模糊滤镜
+        GPUImageGaussianBlurFilter *blurFilter = [[GPUImageGaussianBlurFilter alloc] init];
+        blurFilter.blurRadiusInPixels = 10;
         //怀旧
         GPUImageSepiaFilter *sepiaFilter = [[GPUImageSepiaFilter alloc] init];
         //反色
@@ -281,7 +286,7 @@
         //黑白
         GPUImageMonochromeFilter *thresholdFilter = [[GPUImageMonochromeFilter alloc] init];
         // 滤镜数组
-        _filterArray = @[stretchDistortionFilter,BrightnessFilter,gammaFilter,XYDerivativeFilter,sepiaFilter,invertFilter,saturationFilter,sketchFilter,thresholdFilter];
+        _filterArray = @[stretchDistortionFilter,BrightnessFilter,blurFilter,sepiaFilter,invertFilter,saturationFilter,sketchFilter,thresholdFilter];
     }
     return _filterArray;
 }
@@ -380,7 +385,6 @@
             [self.progressLayer removeFromSuperlayer];
             //停止录制
             [self endRecord];
-            self.isRecording = NO;
         }
     });
     // 启动任务，GCD计时器创建后需要手动启动
@@ -392,6 +396,7 @@
     if ([[NSFileManager defaultManager] fileExistsAtPath:KRecordVideoFilePath]) {
         [[NSFileManager defaultManager] removeItemAtPath:KRecordVideoFilePath error:nil];
     }
+    //把采集的音频交给self.movieWriter 写入
     self.videoCamera.audioEncodingTarget = self.movieWriter;
     //调整写入时的方向
     CGAffineTransform transform;
@@ -404,6 +409,9 @@
     } else {
         transform = CGAffineTransformMakeRotation(0);
     }
+    [self stopUpdateDeviceDirection];
+    //边添加水印边录制
+    [self addWatermark];
     [self.movieWriter startRecordingInOrientation:transform];
 }
 //结束录制
@@ -418,63 +426,52 @@
         SLWaterMarkController * waterMarkController = [[SLWaterMarkController alloc] init];
         waterMarkController.videoPath = [NSURL fileURLWithPath:KRecordVideoFilePath];
         waterMarkController.modalPresentationStyle = UIModalPresentationFullScreen;
+        waterMarkController.videoOrientation = self.shootingOrientation;
         [self presentViewController:waterMarkController animated:NO completion:nil];
     }
 }
-//// 添加水印
-//- (void)addWatermark:(NSURL *)videoUrl {
-//    
-//    //一般编/解码器都有16位对齐的处理（有未经证实的说法，也存在32位、64位对齐的），否则会产生绿边问题。
-//    _movieWriter = [[GPUImageMovieWriter alloc] initWithMovieURL:[NSURL fileURLWithPath:KWatermarkVideoFilePath] size:CGSizeMake((SL_kScreenWidth - (int)SL_kScreenWidth%16)*[UIScreen mainScreen].scale, (SL_kScreenHeight - (int)SL_kScreenHeight%16)*[UIScreen mainScreen].scale)];
-//    _movieWriter.encodingLiveVideo = YES;
-//    _movieWriter.shouldPassthroughAudio = YES;
-//    
-//    AVAsset *asset = [AVAsset assetWithURL:videoUrl];
-//    //视频文件
-//    GPUImageMovie * movieFile = [[GPUImageMovie alloc] initWithAsset:asset];
-//    movieFile.runBenchmark = YES;
-//    movieFile.playAtActualSpeed = YES;
-//    
-//    // 溶解混合滤镜
-//     GPUImageDissolveBlendFilter  *filter = [[GPUImageDissolveBlendFilter alloc] init];
-//     filter.mix = 0.5;
-//    
-//    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 100, 10)];
-//    view.backgroundColor = [UIColor greenColor];
-//    
-//    //创建水印图形
-//    GPUImageUIElement *uiElement = [[GPUImageUIElement alloc] initWithView:view];
-//    
-//    GPUImageFilter* progressFilter = [[GPUImageFilter alloc] init];
-//    [movieFile addTarget:progressFilter];
-//    [progressFilter addTarget:filter];
-//    [uiElement addTarget:filter];
-//    
-//    // 显示到界面
-////    [filter addTarget:self.captureView];
-//    [filter addTarget:self.movieWriter];
-//    
-//    [self.movieWriter startRecording];
-//    
-//    [movieFile startProcessing];
-//    [progressFilter setFrameProcessingCompletionBlock:^(GPUImageOutput *output, CMTime time) {
-//           [uiElement updateWithTimestamp:time];
-//       }];
-//    
-//    SL_WeakSelf;
-//    [self.movieWriter setCompletionBlock:^{
-//        __strong typeof(self) strongSelf = weakSelf;
-//        [filter removeTarget:strongSelf->_movieWriter];
-//        [strongSelf->_movieWriter finishRecording];
-//        
-//            SLEditVideoController * editViewController = [[SLEditVideoController alloc] init];
-//                  editViewController.videoPath = [NSURL fileURLWithPath:KWatermarkVideoFilePath];
-//                  editViewController.modalPresentationStyle = UIModalPresentationFullScreen;
-//                  [self presentViewController:editViewController animated:NO completion:nil];
-//        
-//    }];
-//    
-//}
+// 添加水印
+- (void)addWatermark {
+    //调整水印方向
+    CGAffineTransform transform;
+    if (self.shootingOrientation == UIDeviceOrientationLandscapeRight) {
+        transform = CGAffineTransformMakeRotation(M_PI*3/2);
+    } else if (self.shootingOrientation == UIDeviceOrientationLandscapeLeft) {
+        transform = CGAffineTransformMakeRotation(-M_PI*3/2);
+    } else if (self.shootingOrientation == UIDeviceOrientationPortraitUpsideDown) {
+        transform = CGAffineTransformMakeRotation(M_PI);
+    } else {
+        transform = CGAffineTransformMakeRotation(0);
+    }
+    // 水印层
+    UIView *watermarkView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.sl_w, self.view.sl_h)];
+    watermarkView.backgroundColor = [UIColor clearColor];
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 60, 80)];
+    label.text = @"iOS2679114653";
+    label.font = [UIFont systemFontOfSize:30];
+    [label sizeToFit];
+    label.center = CGPointMake(SL_kScreenWidth/2.0, 88);
+    label.textAlignment = NSTextAlignmentCenter;
+    label.textColor = [UIColor purpleColor];
+    [watermarkView addSubview:label];
+    label.transform = transform;
+    //GPUImageUIElement继承GPUImageOutput类，作为响应链的源头。通过CoreGraphics把UIView渲染到图像，并通过glTexImage2D绑定到outputFramebuffer指定的纹理，最后通知targets纹理就绪。
+    GPUImageUIElement *uielement = [[GPUImageUIElement alloc] initWithView:watermarkView];
+    //每一帧渲染完毕后的回调
+    [self.filter setFrameProcessingCompletionBlock:^(GPUImageOutput *output, CMTime time) {
+        SL_DISPATCH_ON_MAIN_THREAD(^{
+            label.sl_y = label.sl_y < SL_kScreenHeight ? label.sl_y + 5 : label.sl_y - 5;
+        })
+        //需要调用update操作：因为update只会输出一次纹理信息，只适用于一帧，所以需要实时更新水印层图像
+        [uielement updateWithTimestamp:time];
+    }];
+    // 把原视频帧图像和水印层图像 输出给 混合滤镜进行渲染写入处理
+    [self.filter addTarget:self.blendFilter];
+    [uielement addTarget:self.blendFilter];
+    // 混合滤镜输出 给movieWriter写入
+    [self.blendFilter addTarget:self.movieWriter];
+    
+}
 #pragma mark - EventsHandle
 //返回
 - (void)backBtn:(UIButton *)btn {
@@ -544,11 +541,11 @@
 //随机切换滤镜
 - (void)switchFilterClicked:(id)sender {
     GPUImageFilter *filter = self.filterArray[arc4random()%self.filterArray.count];
-    [self.videoCamera removeAllTargets];
+    [self.videoCamera removeTarget:self.filter];
     [self.videoCamera addTarget:filter];
     [filter addTarget:self.captureView];
     self.filter = filter;
-    [self.filter addTarget:self.movieWriter];
+    [self addWatermark];
 }
 //轻触拍照
 - (void)takePicture:(UITapGestureRecognizer *)tap {
@@ -599,7 +596,6 @@
             
             //开始录制视频
             [self startRecord];
-            self.isRecording = YES;
         }
             NSLog(@"开始摄像");
             break;
@@ -621,7 +617,6 @@
             [self.progressLayer removeFromSuperlayer];
             //    结束录制视频
             [self endRecord];
-            self.isRecording = NO;
             NSLog(@"结束录制");
         }
             break;
