@@ -10,7 +10,7 @@ iOS的一些示例，不定时更新~  简书地址：https://www.jianshu.com/p/
   
 ## 2、AppleID登录应用
 
-* 文件夹 AddingTheSignInWithAppleFlowToYourApp
+* 查看本仓库下的AddingTheSignInWithAppleFlowToYourApp
 
 ## 3、微信相机拍摄照片、小视频以及编辑功能  
 > 效果描述：  
