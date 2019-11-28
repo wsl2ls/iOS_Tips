@@ -50,16 +50,10 @@
 #else
 #   define SL_Log(...)
 #endif
-/// debug模式  弹窗输出
-#ifdef DEBUG
-#   define SL_ULog(fmt, ...)  { UIAlertView *alert = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"%s\n [Line %d] ", __PRETTY_FUNCTION__, __LINE__] message:[NSString stringWithFormat:fmt, ##__VA_ARGS__]  delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil]; [alert show]; }
-#else
-#   define SL_ULog(...)
-#endif
-
 
 
 #import "UIView+SLFrame.h"
+#import "SLDelayPerform.h"
 
 #endif
 
