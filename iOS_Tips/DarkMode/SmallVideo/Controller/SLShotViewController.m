@@ -11,7 +11,6 @@
 #import "SLAvCaptureTool.h"
 #import "SLShotFocusView.h"
 #import "SLEditVideoController.h"
-#import "NSObject+SLDelayPerform.h"
 #import "SLEditImageController.h"
 
 #define KMaxDurationOfVideo  15.0 //录制最大时长 s
@@ -60,7 +59,7 @@
     }
     [_avCaptureTool stopRunning];
     [_avCaptureTool removeObserver:self forKeyPath:@"shootingOrientation"];
-    [NSObject sl_cancelDelayPerform];
+    [SLDelayPerform sl_cancelDelayPerform];
 }
 - (void)viewSafeAreaInsetsDidChange {
     [super viewSafeAreaInsetsDidChange];
@@ -283,7 +282,7 @@
     }];
     [self.avCaptureTool focusAtPoint:point];
     SL_WeakSelf;
-    [NSObject sl_startDelayPerform:^{
+    [SLDelayPerform sl_startDelayPerform:^{
         [weakSelf.focusView removeFromSuperview];
     } afterDelay:1.0];
 }

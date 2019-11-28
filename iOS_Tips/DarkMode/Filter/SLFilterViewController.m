@@ -10,7 +10,6 @@
 #import "SLBlurView.h"
 #import "SLShotFocusView.h"
 #import "SLEditVideoController.h"
-#import "NSObject+SLDelayPerform.h"
 #import "SLEditImageController.h"
 #import "SLAvCaptureSession.h"
 #import "SLAvWriterInput.h"
@@ -72,7 +71,7 @@
     }
     [_avCaptureSession stopRunning];
     [_avCaptureSession removeObserver:self forKeyPath:@"shootingOrientation"];
-    [NSObject sl_cancelDelayPerform];
+    [SLDelayPerform sl_cancelDelayPerform];
 }
 - (void)viewSafeAreaInsetsDidChange {
     [super viewSafeAreaInsetsDidChange];
@@ -339,7 +338,7 @@
     }];
     [self.avCaptureSession focusAtPoint:point];
     SL_WeakSelf;
-    [NSObject sl_startDelayPerform:^{
+    [SLDelayPerform sl_startDelayPerform:^{
         [weakSelf.focusView removeFromSuperview];
     } afterDelay:1.0];
 }

@@ -1,17 +1,17 @@
 //
-//  NSObject+SLDelayPerform.m
+//  SLDelayPerform.m
 //  DarkMode
 //
-//  Created by wsl on 2019/10/19.
-//  Copyright © 2019 wsl. All rights reserved.
+//  Created by wsl on 2019/11/28.
+//  Copyright © 2019 https://github.com/wsl2ls   ----- . All rights reserved.
 //
 
-#import "NSObject+SLDelayPerform.h"
+#import "SLDelayPerform.h"
 
 //延迟执行的回调 静态全局变量
 static dispatch_block_t sl_delayBlock;
 
-@implementation NSObject (SLDelayPerform)
+@implementation SLDelayPerform
 /// 开始延迟执行  每次调用就重新开始计时   用完记得 执行sl_cancelDelayPerform
 /// @param perform  执行内容
 /// @param delay 延迟时间

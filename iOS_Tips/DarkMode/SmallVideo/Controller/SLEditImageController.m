@@ -12,7 +12,6 @@
 #import "SLBlurView.h"
 #import "SLEditMenuView.h"
 #import "SLEditSelectedBox.h"
-#import "NSObject+SLDelayPerform.h"
 #import "SLImage.h"
 #import "SLImageView.h"
 #import "SLDrawView.h"
@@ -121,7 +120,7 @@
     [self.zoomView.imageView bringSubviewToFront:topView];
     [self.watermarkArray removeObject:topView];
     [self.watermarkArray addObject:topView];
-    [NSObject sl_cancelDelayPerform]; //取消延迟执行
+    [SLDelayPerform sl_cancelDelayPerform]; //取消延迟执行
     self.selectedBox.frame = topView.bounds;
     [topView addSubview:self.selectedBox];
 }
@@ -286,7 +285,7 @@
                     [weakSelf.zoomView.imageView addSubview:imageView];
                     [weakSelf addRotateAndPinchGestureRecognizer:imageView];
                     [weakSelf topSelectedView:imageView];
-                    [NSObject sl_startDelayPerform:^{
+                    [SLDelayPerform sl_startDelayPerform:^{
                         [weakSelf.selectedBox removeFromSuperview];
                     } afterDelay:1.0];
                 }
@@ -315,7 +314,7 @@
                     [weakSelf.watermarkArray addObject:label];
                     [weakSelf addRotateAndPinchGestureRecognizer:label];
                     [weakSelf topSelectedView:label];
-                    [NSObject sl_startDelayPerform:^{
+                    [SLDelayPerform sl_startDelayPerform:^{
                         [weakSelf.selectedBox removeFromSuperview];
                     } afterDelay:1.0];
                 };
@@ -468,7 +467,7 @@
 - (void)singleTapAction:(UITapGestureRecognizer *)singleTap {
     [self topSelectedView:singleTap.view];
     if (singleTap.state == UIGestureRecognizerStateFailed || singleTap.state == UIGestureRecognizerStateEnded) {
-        [NSObject sl_startDelayPerform:^{
+        [SLDelayPerform sl_startDelayPerform:^{
             [self.selectedBox removeFromSuperview];
         } afterDelay:1.0];
     }
@@ -493,7 +492,7 @@
         [self.zoomView.imageView addSubview:label];
         [self addRotateAndPinchGestureRecognizer:label];
         [self topSelectedView:label];
-        [NSObject sl_startDelayPerform:^{
+        [SLDelayPerform sl_startDelayPerform:^{
             [self.selectedBox removeFromSuperview];
         } afterDelay:1.0];
     };
@@ -545,7 +544,7 @@
             pan.view.center = center;
         }
         [self.trashTips removeFromSuperview];
-        [NSObject sl_startDelayPerform:^{
+        [SLDelayPerform sl_startDelayPerform:^{
             [self.selectedBox removeFromSuperview];
         } afterDelay:1.0];
     }
@@ -557,7 +556,7 @@
         self.zoomView.pinchGestureRecognizer.enabled = NO;
         self.zoomView.imageView.clipsToBounds = NO;
     }else if (pinch.state == UIGestureRecognizerStateFailed || pinch.state == UIGestureRecognizerStateEnded){
-        [NSObject sl_startDelayPerform:^{
+        [SLDelayPerform sl_startDelayPerform:^{
             [self.selectedBox removeFromSuperview];
         } afterDelay:1.0];
         self.zoomView.pinchGestureRecognizer.enabled = YES;
@@ -571,7 +570,7 @@
     if (rotation.state == UIGestureRecognizerStateBegan) {
         [self topSelectedView:rotation.view];
     }else if (rotation.state == UIGestureRecognizerStateFailed || rotation.state == UIGestureRecognizerStateEnded){
-        [NSObject sl_startDelayPerform:^{
+        [SLDelayPerform sl_startDelayPerform:^{
             [self.selectedBox removeFromSuperview];
         } afterDelay:1.0];
     }

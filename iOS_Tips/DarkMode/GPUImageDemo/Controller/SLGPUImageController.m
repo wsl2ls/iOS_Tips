@@ -11,7 +11,6 @@
 #import "SLBlurView.h"
 #import "SLShotFocusView.h"
 #import "SLWaterMarkController.h"
-#import "NSObject+SLDelayPerform.h"
 #import "SLEditImageController.h"
 #import "UIView+SLImage.h"
 #import "GPUImage.h"
@@ -83,7 +82,7 @@
     }
     [_videoCamera stopCameraCapture];
     [self stopUpdateDeviceDirection];
-    [NSObject sl_cancelDelayPerform];
+    [SLDelayPerform sl_cancelDelayPerform];
 }
 - (void)viewSafeAreaInsetsDidChange {
     [super viewSafeAreaInsetsDidChange];
@@ -514,7 +513,7 @@
         [self.videoCamera.inputCamera unlockForConfiguration];
     }
     SL_WeakSelf;
-    [NSObject sl_startDelayPerform:^{
+    [SLDelayPerform sl_startDelayPerform:^{
         [weakSelf.focusView removeFromSuperview];
     } afterDelay:1.0];
 }
