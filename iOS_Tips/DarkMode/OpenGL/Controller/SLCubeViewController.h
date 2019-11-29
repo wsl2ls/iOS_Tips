@@ -1,8 +1,8 @@
 //
-//  SLOpenGLController.h
+//  SLCubeViewController.h
 //  DarkMode
 //
-//  Created by wsl on 2019/11/28.
+//  Created by wsl on 2019/11/29.
 //  Copyright © 2019 https://github.com/wsl2ls   ----- . All rights reserved.
 //
 
@@ -10,8 +10,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// OpenGL - ES 学习
-@interface SLOpenGLController : UIViewController
+/// GLKit 绘制一个 正方体 立体视图
+@interface SLCubeViewController : UIViewController
 
 @end
 
