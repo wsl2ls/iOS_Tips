@@ -7,6 +7,8 @@
 //
 
 #import "SLOpenGLController.h"
+#import "SLLoadImageVC.h"
+#import "SLCubeViewController.h"
 
 @interface SLOpenGLController ()<UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, strong) UITableView *tableView;
@@ -37,7 +39,7 @@
 #pragma mark - Data
 - (void)getData {
     //tableView、UIAlertView等系统控件，在不自定义颜色的情况下，默认颜色都是动态的，支持暗黑模式
-    [self.dataSource addObjectsFromArray:@[@"opengl", @"AppleId三方登录应用", @"AVFoundation 高仿微信相机拍摄和编辑功能", @"AVFoundation 人脸检测"]];
+    [self.dataSource addObjectsFromArray:@[@"GLKit 加载一张图片", @" GLKit 绘制一个正方体"]];
     [self.tableView reloadData];
 }
 #pragma mark - Getter
@@ -74,6 +76,15 @@
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     switch (indexPath.row) {
         case 0: {
+            SLLoadImageVC *loadImageVC = [[SLLoadImageVC alloc] init];
+            loadImageVC.title = self.dataSource[indexPath.row];
+            [self.navigationController pushViewController:loadImageVC animated:YES];
+        }
+            break;
+        case 1: {
+            SLCubeViewController *cubeViewController = [[SLCubeViewController alloc] init];
+            cubeViewController.title = self.dataSource[indexPath.row];
+            [self.navigationController pushViewController:cubeViewController animated:YES];
         }
             break;
         default:
