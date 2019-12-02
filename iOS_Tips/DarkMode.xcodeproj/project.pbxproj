@@ -15,6 +15,9 @@
 		782E3EB82373F911001E0DF9 /* SLFilterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 782E3EB72373F911001E0DF9 /* SLFilterViewController.m */; };
 		7830A59E2358520200BC79BA /* SLEditTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7830A59D2358520200BC79BA /* SLEditTextView.m */; };
 		7830A5A42358904600BC79BA /* UIView+SLImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 7830A5A32358904600BC79BA /* UIView+SLImage.m */; };
+		783FB45C2394A4E10039AEFD /* SLShaderLanguageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 783FB45B2394A4E10039AEFD /* SLShaderLanguageViewController.m */; };
+		783FB4602394A76B0039AEFD /* shaderv.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 783FB45E2394A76B0039AEFD /* shaderv.vsh */; };
+		783FB4612394A76B0039AEFD /* shaderf.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 783FB45F2394A76B0039AEFD /* shaderf.fsh */; };
 		784B72062334685E006AEE47 /* SLAvPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 784B72052334685E006AEE47 /* SLAvPlayer.m */; };
 		784B720923348241006AEE47 /* SLAvCaptureTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 784B720823348241006AEE47 /* SLAvCaptureTool.m */; };
 		7851CB362331CC87002295B5 /* SLDarkModeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7851CB332331CC87002295B5 /* SLDarkModeViewController.m */; };
@@ -91,6 +94,10 @@
 		7830A59D2358520200BC79BA /* SLEditTextView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLEditTextView.m; sourceTree = "<group>"; };
 		7830A5A22358904600BC79BA /* UIView+SLImage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+SLImage.h"; sourceTree = "<group>"; };
 		7830A5A32358904600BC79BA /* UIView+SLImage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+SLImage.m"; sourceTree = "<group>"; };
+		783FB45A2394A4E10039AEFD /* SLShaderLanguageViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLShaderLanguageViewController.h; sourceTree = "<group>"; };
+		783FB45B2394A4E10039AEFD /* SLShaderLanguageViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLShaderLanguageViewController.m; sourceTree = "<group>"; };
+		783FB45E2394A76B0039AEFD /* shaderv.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = shaderv.vsh; sourceTree = "<group>"; };
+		783FB45F2394A76B0039AEFD /* shaderf.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = shaderf.fsh; sourceTree = "<group>"; };
 		784B72042334685E006AEE47 /* SLAvPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLAvPlayer.h; sourceTree = "<group>"; };
 		784B72052334685E006AEE47 /* SLAvPlayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLAvPlayer.m; sourceTree = "<group>"; };
 		784B720723348241006AEE47 /* SLAvCaptureTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLAvCaptureTool.h; sourceTree = "<group>"; };
@@ -216,6 +223,15 @@
 			path = Filter;
 			sourceTree = "<group>";
 		};
+		783FB45D2394A7580039AEFD /* ShaderLanguage */ = {
+			isa = PBXGroup;
+			children = (
+				783FB45F2394A76B0039AEFD /* shaderf.fsh */,
+				783FB45E2394A76B0039AEFD /* shaderv.vsh */,
+			);
+			path = ShaderLanguage;
+			sourceTree = "<group>";
+		};
 		7851CB322331CC87002295B5 /* Dark */ = {
 			isa = PBXGroup;
 			children = (
@@ -251,6 +267,7 @@
 		78777CDB238FEA15006FA671 /* OpenGL */ = {
 			isa = PBXGroup;
 			children = (
+				783FB45D2394A7580039AEFD /* ShaderLanguage */,
 				78777CDC238FEA15006FA671 /* Controller */,
 				78777CDD238FEA15006FA671 /* View */,
 			);
@@ -266,6 +283,8 @@
 				788ACD612390BFD400737EC2 /* SLLoadImageVC.m */,
 				788ACD632390EA3A00737EC2 /* SLCubeViewController.h */,
 				788ACD642390EA3A00737EC2 /* SLCubeViewController.m */,
+				783FB45A2394A4E10039AEFD /* SLShaderLanguageViewController.h */,
+				783FB45B2394A4E10039AEFD /* SLShaderLanguageViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -608,8 +627,10 @@
 				786147F12362A39500C5424C /* Resources.bundle in Resources */,
 				78B10490232F57C50051579F /* LaunchScreen.storyboard in Resources */,
 				78B1048D232F57C50051579F /* Assets.xcassets in Resources */,
+				783FB4602394A76B0039AEFD /* shaderv.vsh in Resources */,
 				7851CB372331CC87002295B5 /* SLDarkModeViewController.xib in Resources */,
 				78B1048B232F57C30051579F /* Main.storyboard in Resources */,
+				783FB4612394A76B0039AEFD /* shaderf.fsh in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -721,6 +742,7 @@
 				78E179372351A40D0007E4BB /* SLShotFocusView.m in Sources */,
 				78A4BD45236C5DF20021AE32 /* SLEditVideoController.m in Sources */,
 				78B10485232F57C30051579F /* SceneDelegate.m in Sources */,
+				783FB45C2394A4E10039AEFD /* SLShaderLanguageViewController.m in Sources */,
 				78E1791923517F700007E4BB /* SLImageDecoder.m in Sources */,
 				7822CCF8235B054200E70C29 /* SLPaddingLabel.m in Sources */,
 				788ACD622390BFD400737EC2 /* SLLoadImageVC.m in Sources */,

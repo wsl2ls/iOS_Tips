@@ -9,6 +9,7 @@
 #import "SLOpenGLController.h"
 #import "SLLoadImageVC.h"
 #import "SLCubeViewController.h"
+#import "SLShaderLanguageViewController.h"
 
 @interface SLOpenGLController ()<UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, strong) UITableView *tableView;
@@ -39,7 +40,7 @@
 #pragma mark - Data
 - (void)getData {
     //tableView、UIAlertView等系统控件，在不自定义颜色的情况下，默认颜色都是动态的，支持暗黑模式
-    [self.dataSource addObjectsFromArray:@[@"GLKit 加载一张图片", @" GLKit 绘制一个正方体"]];
+    [self.dataSource addObjectsFromArray:@[@"GLKit 加载一张图片", @" GLKit 绘制一个正方体", @"OpenGLES-Shader Language 加载一张图片"]];
     [self.tableView reloadData];
 }
 #pragma mark - Getter
@@ -87,6 +88,13 @@
             [self.navigationController pushViewController:cubeViewController animated:YES];
         }
             break;
+        case 2: {
+            SLShaderLanguageViewController *shaderLanguage = [[SLShaderLanguageViewController alloc] init];
+            shaderLanguage.title = self.dataSource[indexPath.row];
+            [self.navigationController pushViewController:shaderLanguage animated:YES];
+        }
+            break;
+            
         default:
             break;
     }
