@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// OpenGL - ES 学习
+/// OpenGL - ES 学习 目录列表
 @interface SLOpenGLController : UIViewController
 
 @end

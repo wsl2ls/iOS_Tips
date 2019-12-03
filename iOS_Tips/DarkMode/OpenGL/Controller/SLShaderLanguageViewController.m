@@ -277,7 +277,7 @@
     //10.加载纹理
     [self setupTexture];
     
-    //11. 设置纹理采样器 sampler2D
+    //11. 设置纹理采样器 sampler2D  纹理单元GL_TEXTURE0 - GL_TEXTURE15 总共有16个纹理单元
     glUniform1i(glGetUniformLocation(self.myPrograme, "colorMap"), 0);
     
     //12.绘图
@@ -288,7 +288,7 @@
     
 }
 
-//从图片中加载纹理
+//从图片中加载纹理  图片翻转问题可以看这里 https://www.jianshu.com/p/848d982db9f2 有多种解决方案
 - (GLuint)setupTexture{
     
     NSString *myBundlePath = [[NSBundle mainBundle] pathForResource:@"Resources" ofType:@"bundle"];
@@ -334,6 +334,13 @@
     //6.使用默认方式绘制
     CGContextDrawImage(spriteContext, rect, spriteImage);
     
+    //将图片源文件翻转
+    CGContextTranslateCTM(spriteContext, rect.origin.x, rect.origin.y);
+    CGContextTranslateCTM(spriteContext, 0, rect.size.height);
+    CGContextScaleCTM(spriteContext, 1.0, -1.0);
+    CGContextTranslateCTM(spriteContext, -rect.origin.x, -rect.origin.y);
+    CGContextDrawImage(spriteContext, rect, spriteImage);
+    
     //7、画图完毕就释放上下文
     CGContextRelease(spriteContext);
     
@@ -341,7 +348,7 @@
     glBindTexture(GL_TEXTURE_2D, 0);
     
     //9.设置纹理属性
-    /*
+    /*  https://www.jianshu.com/p/1b327789220d
      参数1：纹理维度
      参数2：线性过滤、为s,t坐标设置模式
      参数3：wrapMode,环绕模式
