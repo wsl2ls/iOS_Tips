@@ -44,6 +44,8 @@
 		78B10493232F57C50051579F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 78B10492232F57C50051579F /* main.m */; };
 		78B1049D232F57C50051579F /* DarkModeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 78B1049C232F57C50051579F /* DarkModeTests.m */; };
 		78B104A8232F57C50051579F /* DarkModeUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 78B104A7232F57C50051579F /* DarkModeUITests.m */; };
+		78D30964239688EF00DC373A /* GLESUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 78D3095E239688EF00DC373A /* GLESUtils.m */; };
+		78D30965239688EF00DC373A /* GLESMath.c in Sources */ = {isa = PBXBuildFile; fileRef = 78D30960239688EF00DC373A /* GLESMath.c */; };
 		78DAA113235FF61E00A60F64 /* SLEditVideoClipping.m in Sources */ = {isa = PBXBuildFile; fileRef = 78DAA112235FF61E00A60F64 /* SLEditVideoClipping.m */; };
 		78DAA1162360256200A60F64 /* SLEditSelectedBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 78DAA1152360256200A60F64 /* SLEditSelectedBox.m */; };
 		78E1791723517F700007E4BB /* SLImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E1791223517F700007E4BB /* SLImageView.m */; };
@@ -149,6 +151,12 @@
 		78B104A3232F57C50051579F /* DarkModeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DarkModeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		78B104A7232F57C50051579F /* DarkModeUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DarkModeUITests.m; sourceTree = "<group>"; };
 		78B104A9232F57C50051579F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		78D3095E239688EF00DC373A /* GLESUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLESUtils.m; sourceTree = "<group>"; };
+		78D3095F239688EF00DC373A /* Quaternion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Quaternion.h; sourceTree = "<group>"; };
+		78D30960239688EF00DC373A /* GLESMath.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = GLESMath.c; sourceTree = "<group>"; };
+		78D30961239688EF00DC373A /* GLESUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLESUtils.h; sourceTree = "<group>"; };
+		78D30962239688EF00DC373A /* Vector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vector.h; sourceTree = "<group>"; };
+		78D30963239688EF00DC373A /* GLESMath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLESMath.h; sourceTree = "<group>"; };
 		78DAA111235FF61E00A60F64 /* SLEditVideoClipping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLEditVideoClipping.h; sourceTree = "<group>"; };
 		78DAA112235FF61E00A60F64 /* SLEditVideoClipping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLEditVideoClipping.m; sourceTree = "<group>"; };
 		78DAA1142360256200A60F64 /* SLEditSelectedBox.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLEditSelectedBox.h; sourceTree = "<group>"; };
@@ -299,6 +307,7 @@
 		78777CE1238FF551006FA671 /* Tool */ = {
 			isa = PBXGroup;
 			children = (
+				78D3095D239688EF00DC373A /* OpenGLUtils */,
 				78777CE4238FF65C006FA671 /* SLDelayPerform.h */,
 				78777CE5238FF65C006FA671 /* SLDelayPerform.m */,
 			);
@@ -393,6 +402,19 @@
 				78B104A9232F57C50051579F /* Info.plist */,
 			);
 			path = DarkModeUITests;
+			sourceTree = "<group>";
+		};
+		78D3095D239688EF00DC373A /* OpenGLUtils */ = {
+			isa = PBXGroup;
+			children = (
+				78D3095E239688EF00DC373A /* GLESUtils.m */,
+				78D3095F239688EF00DC373A /* Quaternion.h */,
+				78D30960239688EF00DC373A /* GLESMath.c */,
+				78D30961239688EF00DC373A /* GLESUtils.h */,
+				78D30962239688EF00DC373A /* Vector.h */,
+				78D30963239688EF00DC373A /* GLESMath.h */,
+			);
+			path = OpenGLUtils;
 			sourceTree = "<group>";
 		};
 		78E1791023517F700007E4BB /* SLAnimateImageView */ = {
@@ -718,6 +740,7 @@
 				78DAA113235FF61E00A60F64 /* SLEditVideoClipping.m in Sources */,
 				782E3EB42373D8C7001E0DF9 /* SLAvWriterInput.m in Sources */,
 				78804A7E237D5E3E0087E152 /* SLWaterMarkController.m in Sources */,
+				78D30964239688EF00DC373A /* GLESUtils.m in Sources */,
 				784B720923348241006AEE47 /* SLAvCaptureTool.m in Sources */,
 				786147F42362D79000C5424C /* SLMosaicView.m in Sources */,
 				78A4BD48236C5DFE0021AE32 /* SLImageZoomView.m in Sources */,
@@ -725,6 +748,7 @@
 				78B10482232F57C30051579F /* AppDelegate.m in Sources */,
 				78777CE0238FEA48006FA671 /* SLOpenGLController.m in Sources */,
 				7851CB362331CC87002295B5 /* SLDarkModeViewController.m in Sources */,
+				78D30965239688EF00DC373A /* GLESMath.c in Sources */,
 				788ACD652390EA3A00737EC2 /* SLCubeViewController.m in Sources */,
 				786147FA23630C4D00C5424C /* UIImage+SLCommon.m in Sources */,
 				78FA0F9D235407E6003E456B /* SLDrawView.m in Sources */,
