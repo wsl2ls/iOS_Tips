@@ -36,16 +36,15 @@ static NSInteger const kCoordCount = 36;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    //1.View背景色
     self.view.backgroundColor = [UIColor orangeColor];
     
-    //2. OpenGL ES 相关初始化
+    //1. OpenGL ES 相关初始化
     [self commonInit];
     
-    //3.顶点/纹理坐标数据
+    //2.顶点/纹理坐标数据
     [self vertexDataSetup];
     
-    //4. 添加CADisplayLink
+    //3. 添加CADisplayLink
     [self addCADisplayLink];
     
 }
@@ -69,15 +68,8 @@ static NSInteger const kCoordCount = 36;
     NSLog(@"%@ 释放了", NSStringFromClass(self.class));
 }
 
-#pragma mark - Help Methods
-
--(void)addCADisplayLink {
-    //CADisplayLink 类似定时器,提供一个周期性调用.属于QuartzCore.framework中.
-    //具体可以参考该博客 https://www.cnblogs.com/panyangjun/p/4421904.html
-    self.angle = 0;
-    self.displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(rotation)];
-    [self.displayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSRunLoopCommonModes];
-}
+#pragma mark - 1.OpenGL ES 相关初始化
+//OpenGL ES 相关初始化
 - (void)commonInit {
     
     //1.创建context
@@ -116,9 +108,10 @@ static NSInteger const kCoordCount = 36;
     self.baseEffect.texture2d0.target = textureInfo.target;
     
 }
+
+#pragma mark - 2. 初始化顶点和纹理坐标
 // 初始化顶点和纹理坐标
--(void)vertexDataSetup
-{
+-(void)vertexDataSetup {
     /*
      解释一下:
      这里我们不复用顶点，使用每 3 个点画一个三角形的方式，需要 12 个三角形，则需要 36 个顶点
@@ -193,6 +186,15 @@ static NSInteger const kCoordCount = 36;
     
 }
 
+#pragma mark - 3.add CADisplayLink
+-(void)addCADisplayLink {
+    //CADisplayLink 类似定时器,提供一个周期性调用.属于QuartzCore.framework中.
+    //具体可以参考该博客 https://www.cnblogs.com/panyangjun/p/4421904.html
+    self.angle = 0;
+    self.displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(rotation)];
+    [self.displayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSRunLoopCommonModes];
+}
+
 #pragma mark - GLKViewDelegate
 //开始绘画
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect {
@@ -214,7 +216,7 @@ static NSInteger const kCoordCount = 36;
     //2.修改baseEffect.transform.modelviewMatrix
     //    self.baseEffect.transform.modelviewMatrix = GLKMatrix4MakeRotation(GLKMathDegreesToRadians(self.angle), 0.3, 1, -0.7);
     
-//  等价于 ==  self.baseEffect.transform.modelviewMatrix = GLKMatrix4Rotate(GLKMatrix4MakeRotation(GLKMathDegreesToRadians(315), 1, 0, -1), GLKMathDegreesToRadians(self.angle), 1, 1, 1);
+    //  等价于 ==  self.baseEffect.transform.modelviewMatrix = GLKMatrix4Rotate(GLKMatrix4MakeRotation(GLKMathDegreesToRadians(315), 1, 0, -1), GLKMathDegreesToRadians(self.angle), 1, 1, 1);
     self.baseEffect.transform.modelviewMatrix =  GLKMatrix4Rotate(GLKMatrix4MakeRotation(GLKMathDegreesToRadians(45), 1, 0, -1), GLKMathDegreesToRadians(self.angle), -1, 1, -1);
     //3.重新渲染
     [self.glkView display];

@@ -263,7 +263,7 @@
     
     //7.-----处理顶点数据--------
     //(1)顶点缓存区
-    //(2)申请一个缓存区标识符
+    //(2)申请一个缓存区标识符 https://blog.csdn.net/qq_36383623/article/details/85123077
     glGenBuffers(1, &_vertexBuffer);
     //(3)将_vertexBuffer绑定到GL_ARRAY_BUFFER标识符上
     glBindBuffer(GL_ARRAY_BUFFER, _vertexBuffer);

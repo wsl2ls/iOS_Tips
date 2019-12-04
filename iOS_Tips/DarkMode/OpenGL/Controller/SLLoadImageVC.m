@@ -17,6 +17,7 @@
 
 @implementation SLLoadImageVC
 
+#pragma mark - Override
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -34,7 +35,7 @@
     NSLog(@"%@ 释放了", NSStringFromClass(self.class));
 }
 
-#pragma mark -- OpenGL ES setUp
+#pragma mark - 1.OpenGL ES 相关初始化
 //1.OpenGL ES 相关初始化
 -(void)setUpConfig {
     //1.初始化上下文&设置当前上下文
@@ -85,6 +86,8 @@
     //4.设置背景颜色
     glClearColor(1, 0, 0, 1.0);
 }
+
+#pragma mark - 2.加载顶点/纹理坐标数据
 //2.加载顶点/纹理坐标数据
 -(void)setUpVertexData {
     //1.设置顶点数组(顶点坐标,纹理坐标)
@@ -93,11 +96,11 @@
      OpenGLES的世界坐标系是[-1, 1]，原点(0, 0)是在屏幕的正中间。
      */
     GLfloat vertexData[] = {
-
+        
         0.5, -0.5, 0.0f,    1.0f, 0.0f, //右下
         0.5, 0.5, -0.0f,    1.0f, 1.0f, //右上
         -0.5, 0.5, 0.0f,    0.0f, 1.0f, //左上
-
+        
         0.5, -0.5, 0.0f,    1.0f, 0.0f, //右下
         -0.5, 0.5, 0.0f,    0.0f, 1.0f, //左上
         -0.5, -0.5, 0.0f,   0.0f, 0.0f, //左下
@@ -110,7 +113,7 @@
      */
     
     //2.开辟顶点缓存区
-    //(1).创建顶点缓存区标识符ID
+    //(1).创建顶点缓存区标识符ID   https://blog.csdn.net/qq_36383623/article/details/85123077
     GLuint bufferID;
     glGenBuffers(1, &bufferID);
     //(2).绑定顶点缓存区.(明确作用)
@@ -148,6 +151,7 @@
     
 }
 
+#pragma mark - 3.加载纹理数据(使用GLBaseEffect)
 //3.加载纹理数据(使用GLBaseEffect)
 -(void)setUpTexture {
     //1.获取纹理图片路径
@@ -165,7 +169,7 @@
     cEffect.texture2d0.enabled = GL_TRUE;
     cEffect.texture2d0.name = textureInfo.name;
 }
-#pragma mark -- GLKViewDelegate
+#pragma mark - GLKViewDelegate
 //绘制视图的内容
 /*
  GLKView对象使其OpenGL ES上下文成为当前上下文，并将其framebuffer绑定为OpenGL ES呈现命令的目标。然后，委托方法应该绘制视图的内容。
@@ -179,7 +183,6 @@
     
     //3.开始绘制
     glDrawArrays(GL_TRIANGLES, 0, 6);
-    
 }
 
 - (void)didReceiveMemoryWarning {
