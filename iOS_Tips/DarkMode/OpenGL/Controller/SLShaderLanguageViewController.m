@@ -84,7 +84,6 @@
         glDeleteProgram(_myPrograme);
         _myPrograme = 0;
     }
-    
 }
 
 #pragma mark - 1.设置图层
@@ -194,6 +193,14 @@
 
 #pragma mark - 6.开始绘制
 -(void)renderLayer {
+    //清空缓存区
+    [self deleteRenderAndFrameBuffer];
+    //清除顶点缓冲区
+    if (_vertexBuffer) {
+        glDeleteBuffers(1, &_vertexBuffer);
+        _vertexBuffer = 0;
+    }
+    
     //设置清屏颜色
     glClearColor(0.3f, 0.45f, 0.5f, 1.0f);
     //清除屏幕
@@ -211,6 +218,11 @@
     //    NSLog(@"fragFile:%@",fragFile);
     
     //3.加载shader
+    if (self.myPrograme) {
+        //如果之前存在就删除
+        glDeleteProgram(self.myPrograme);
+        self.myPrograme = 0;
+    }
     self.myPrograme = [self loadShaders:vertFile Withfrag:fragFile];
     
     //4.链接

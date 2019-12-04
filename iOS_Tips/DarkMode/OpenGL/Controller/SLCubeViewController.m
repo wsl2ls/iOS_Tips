@@ -24,7 +24,7 @@ static NSInteger const kCoordCount = 36;
 @property (nonatomic, strong) GLKBaseEffect *baseEffect;
 @property (nonatomic, assign) SLVertex *vertices;
 
-@property (nonatomic, strong) CADisplayLink *displayLink;
+@property (nonatomic, strong) CADisplayLink *displayLink;  //定时器更新 角度
 @property (nonatomic, assign) NSInteger angle;  //旋转角度
 @property (nonatomic, assign) GLuint vertexBuffer;  //顶点缓冲区 用完记得释放
 
