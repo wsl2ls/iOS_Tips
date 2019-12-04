@@ -25,8 +25,8 @@ static NSInteger const kCoordCount = 36;
 @property (nonatomic, assign) SLVertex *vertices;
 
 @property (nonatomic, strong) CADisplayLink *displayLink;
-@property (nonatomic, assign) NSInteger angle;
-@property (nonatomic, assign) GLuint vertexBuffer;
+@property (nonatomic, assign) NSInteger angle;  //旋转角度
+@property (nonatomic, assign) GLuint vertexBuffer;  //顶点缓冲区 用完记得释放
 
 @end
 
@@ -51,7 +51,6 @@ static NSInteger const kCoordCount = 36;
 }
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    
     if ([EAGLContext currentContext] == self.glkView.context) {
         [EAGLContext setCurrentContext:nil];
     }
@@ -126,7 +125,7 @@ static NSInteger const kCoordCount = 36;
      以下的数据用来绘制以（0，0，0）为中心，边长为 1 的立方体
      */
     
-    //8. 开辟顶点数据空间(数据结构SenceVertex 大小 * 顶点个数kCoordCount)
+    //8. 开辟顶点数据空间(数据结构SenceVertex 大小 * 顶点个数kCoordCount) 用完记得释放这个内存
     self.vertices = malloc(sizeof(SLVertex) * kCoordCount);
     
     // 前面

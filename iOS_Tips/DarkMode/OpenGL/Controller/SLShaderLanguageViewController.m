@@ -36,6 +36,7 @@
 
 @property(nonatomic, assign) GLuint myColorRenderBuffer;  //渲染缓存区
 @property(nonatomic, assign) GLuint myColorFrameBuffer;  // 帧缓冲区
+@property (nonatomic, assign) GLuint vertexBuffer;  //顶点缓冲区 用完记得释放
 
 @property(nonatomic, assign)GLuint myPrograme;  //着色器程序
 
@@ -66,6 +67,24 @@
 //重写layerClass，将SLView返回的图层从CALayer替换成CAEAGLLayer
 +(Class)layerClass {
     return [CAEAGLLayer class];
+}
+//清理内存
+- (void)dealloc {
+    if ([EAGLContext currentContext] == self.myContext) {
+        [EAGLContext setCurrentContext:nil];
+    }
+    //清空缓存区
+    [self deleteRenderAndFrameBuffer];
+    //清除顶点缓冲区
+    if (_vertexBuffer) {
+        glDeleteBuffers(1, &_vertexBuffer);
+        _vertexBuffer = 0;
+    }
+    if (_myPrograme) {
+        glDeleteProgram(_myPrograme);
+        _myPrograme = 0;
+    }
+    
 }
 
 #pragma mark - 1.设置图层
@@ -168,7 +187,6 @@
     /*生成帧缓存区之后，则需要将renderbuffer跟framebuffer进行绑定，
      调用glFramebufferRenderbuffer函数进行绑定到对应的附着点上，后面的绘制才能起作用
      */
-    
     //5.将渲染缓存区myColorRenderBuffer 通过glFramebufferRenderbuffer函数绑定到 GL_COLOR_ATTACHMENT0上。
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, self.myColorRenderBuffer);
     
@@ -216,23 +234,39 @@
     //前3个是顶点坐标，后2个是纹理坐标
     GLfloat attrArr[] =
     {
-        0.5f, -0.5f, -1.0f,     1.0f, 0.0f,
-        -0.5f, 0.5f, -1.0f,     0.0f, 1.0f,
-        -0.5f, -0.5f, -1.0f,    0.0f, 0.0f,
+        0.5f, -0.5f, -1.0f,     1.0f, 0.0f,  //右下  0
+        -0.5f, 0.5f, -1.0f,     0.0f, 1.0f,  //左上  1
+        -0.5f, -0.5f, -1.0f,    0.0f, 0.0f,  //左下  2
         
-        0.5f, 0.5f, -1.0f,      1.0f, 1.0f,
-        -0.5f, 0.5f, -1.0f,     0.0f, 1.0f,
-        0.5f, -0.5f, -1.0f,     1.0f, 0.0f,
+        0.5f, 0.5f, -1.0f,      1.0f, 1.0f,  //右上  3
+        -0.5f, 0.5f, -1.0f,     0.0f, 1.0f,  //左上  4
+        0.5f, -0.5f, -1.0f,     1.0f, 0.0f,  //右下  5
     };
+    //渲染 左边半个纹理
+    //    GLfloat attrArr[] =
+    //      {
+    //          0.5f, -0.5f, -1.0f,     0.5f, 0.0f,
+    //          -0.5f, 0.5f, -1.0f,     0.0f, 1.0f,
+    //          -0.5f, -0.5f, -1.0f,    0.0f, 0.0f,
+    //
+    //          0.5f, 0.5f, -1.0f,      0.5f, 1.0f,
+    //          -0.5f, 0.5f, -1.0f,     0.0f, 1.0f,
+    //          0.5f, -0.5f, -1.0f,     0.5f, 0.0f,
+    //      };
     
+    //顶点坐标 索引数组 提高效率
+    GLuint indices[] =
+    {
+        0, 1, 2,
+        3, 4, 5,
+    };
     
     //7.-----处理顶点数据--------
     //(1)顶点缓存区
-    GLuint attrBuffer;
     //(2)申请一个缓存区标识符
-    glGenBuffers(1, &attrBuffer);
-    //(3)将attrBuffer绑定到GL_ARRAY_BUFFER标识符上
-    glBindBuffer(GL_ARRAY_BUFFER, attrBuffer);
+    glGenBuffers(1, &_vertexBuffer);
+    //(3)将_vertexBuffer绑定到GL_ARRAY_BUFFER标识符上
+    glBindBuffer(GL_ARRAY_BUFFER, _vertexBuffer);
     //(4)把顶点数据从CPU内存复制到GPU上
     glBufferData(GL_ARRAY_BUFFER, sizeof(attrArr), attrArr, GL_DYNAMIC_DRAW);
     
@@ -280,8 +314,33 @@
     //11. 设置纹理采样器 sampler2D  纹理单元GL_TEXTURE0 - GL_TEXTURE15 总共有16个纹理单元
     glUniform1i(glGetUniformLocation(self.myPrograme, "colorMap"), 0);
     
-    //12.绘图
+    //12.不使用索引数组 绘图  从第0个顶点开始，共六个顶点
     glDrawArrays(GL_TRIANGLES, 0, 6);
+    
+    //12.使用索引绘图
+    /*
+     void glDrawElements(GLenum mode,GLsizei count,GLenum type,const GLvoid * indices);
+     参数列表：
+     mode:要呈现的画图的模型
+     GL_POINTS
+     GL_LINES
+     GL_LINE_LOOP
+     GL_LINE_STRIP
+     GL_TRIANGLES
+     GL_TRIANGLE_STRIP
+     GL_TRIANGLE_FAN
+     count:绘图个数
+     type:类型
+     GL_BYTE
+     GL_UNSIGNED_BYTE
+     GL_SHORT
+     GL_UNSIGNED_SHORT
+     GL_INT
+     GL_UNSIGNED_INT
+     indices：绘制索引数组
+     
+     */
+    //    glDrawElements(GL_TRIANGLES, sizeof(indices) / sizeof(indices[0]), GL_UNSIGNED_INT, indices);
     
     //13.从渲染缓存区显示到屏幕上
     [self.myContext presentRenderbuffer:GL_RENDERBUFFER];
@@ -335,10 +394,17 @@
     CGContextDrawImage(spriteContext, rect, spriteImage);
     
     //将图片源文件翻转
-    CGContextTranslateCTM(spriteContext, rect.origin.x, rect.origin.y);
-    CGContextTranslateCTM(spriteContext, 0, rect.size.height);
+    /*
+     CTM（current transformation matrix当前转换矩阵）
+     CGContextScaleCTM：坐标系X,Y缩放
+     CGContextTranslateCTM：坐标系平移
+     CGContextRotateCTM：坐标系旋转
+     CGContextConcatCTM：
+     CGContextGetCTM：获得一份CTM
+     https://blog.csdn.net/sqc3375177/article/details/25708447
+     */
+    CGContextTranslateCTM(spriteContext,0, rect.size.height);
     CGContextScaleCTM(spriteContext, 1.0, -1.0);
-    CGContextTranslateCTM(spriteContext, -rect.origin.x, -rect.origin.y);
     CGContextDrawImage(spriteContext, rect, spriteImage);
     
     //7、画图完毕就释放上下文
@@ -436,6 +502,9 @@
     [super viewDidLoad];
     SLView *view= [[SLView alloc] initWithFrame:self.view.bounds];
     [self.view addSubview:view];
+}
+- (void)dealloc {
+    NSLog(@"%@ 释放了", NSStringFromClass(self.class));
 }
 
 @end
