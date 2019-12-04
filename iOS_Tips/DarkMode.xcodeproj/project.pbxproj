@@ -33,6 +33,7 @@
 		78804A7E237D5E3E0087E152 /* SLWaterMarkController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78804A7D237D5E3E0087E152 /* SLWaterMarkController.m */; };
 		788ACD622390BFD400737EC2 /* SLLoadImageVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 788ACD612390BFD400737EC2 /* SLLoadImageVC.m */; };
 		788ACD652390EA3A00737EC2 /* SLCubeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 788ACD642390EA3A00737EC2 /* SLCubeViewController.m */; };
+		78A35B1C23978A5D004BCCB7 /* SLShaderCubeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78A35B1B23978A5D004BCCB7 /* SLShaderCubeViewController.m */; };
 		78A4BD45236C5DF20021AE32 /* SLEditVideoController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78A4BD44236C5DF20021AE32 /* SLEditVideoController.m */; };
 		78A4BD48236C5DFE0021AE32 /* SLImageZoomView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78A4BD47236C5DFD0021AE32 /* SLImageZoomView.m */; };
 		78B10482232F57C30051579F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 78B10481232F57C30051579F /* AppDelegate.m */; };
@@ -128,6 +129,8 @@
 		788ACD612390BFD400737EC2 /* SLLoadImageVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLLoadImageVC.m; sourceTree = "<group>"; };
 		788ACD632390EA3A00737EC2 /* SLCubeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLCubeViewController.h; sourceTree = "<group>"; };
 		788ACD642390EA3A00737EC2 /* SLCubeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLCubeViewController.m; sourceTree = "<group>"; };
+		78A35B1A23978A5D004BCCB7 /* SLShaderCubeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLShaderCubeViewController.h; sourceTree = "<group>"; };
+		78A35B1B23978A5D004BCCB7 /* SLShaderCubeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLShaderCubeViewController.m; sourceTree = "<group>"; };
 		78A4BD43236C5DF20021AE32 /* SLEditVideoController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLEditVideoController.h; sourceTree = "<group>"; };
 		78A4BD44236C5DF20021AE32 /* SLEditVideoController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLEditVideoController.m; sourceTree = "<group>"; };
 		78A4BD46236C5DFD0021AE32 /* SLImageZoomView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLImageZoomView.h; sourceTree = "<group>"; };
@@ -293,6 +296,8 @@
 				788ACD642390EA3A00737EC2 /* SLCubeViewController.m */,
 				783FB45A2394A4E10039AEFD /* SLShaderLanguageViewController.h */,
 				783FB45B2394A4E10039AEFD /* SLShaderLanguageViewController.m */,
+				78A35B1A23978A5D004BCCB7 /* SLShaderCubeViewController.h */,
+				78A35B1B23978A5D004BCCB7 /* SLShaderCubeViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -755,6 +760,7 @@
 				780F5303236D8462000D0EA8 /* SLGridView.m in Sources */,
 				7851CB43233222E2002295B5 /* UIView+SLFrame.m in Sources */,
 				7830A5A42358904600BC79BA /* UIView+SLImage.m in Sources */,
+				78A35B1C23978A5D004BCCB7 /* SLShaderCubeViewController.m in Sources */,
 				78E1791723517F700007E4BB /* SLImageView.m in Sources */,
 				78E1791823517F700007E4BB /* SLImage.m in Sources */,
 				782E3EB12373D889001E0DF9 /* SLAvCaptureSession.m in Sources */,

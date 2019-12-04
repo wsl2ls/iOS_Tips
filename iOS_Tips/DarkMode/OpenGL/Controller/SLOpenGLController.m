@@ -10,10 +10,12 @@
 #import "SLLoadImageVC.h"
 #import "SLCubeViewController.h"
 #import "SLShaderLanguageViewController.h"
+#import "SLShaderCubeViewController.h"
 
 @interface SLOpenGLController ()<UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *dataSource;
+@property (nonatomic, strong) NSMutableArray *classArray;
 @end
 
 @implementation SLOpenGLController
@@ -40,7 +42,8 @@
 #pragma mark - Data
 - (void)getData {
     //tableView、UIAlertView等系统控件，在不自定义颜色的情况下，默认颜色都是动态的，支持暗黑模式
-    [self.dataSource addObjectsFromArray:@[@"GLKit 加载一张图片", @" GLKit 绘制一个正方体", @"OpenGLES-Shader Language 加载一张图片"]];
+    [self.dataSource addObjectsFromArray:@[@"GLKit 加载一张图片", @" GLKit 绘制一个正方体", @"OpenGLES-ShaderLanguage（GLSL） 加载一张图片", @"GLSL 绘制一个立方体"]];
+    [self.classArray addObjectsFromArray:@[[SLLoadImageVC class], [SLCubeViewController class], [SLShaderLanguageViewController class], [SLShaderCubeViewController class]]];
     [self.tableView reloadData];
 }
 #pragma mark - Getter
@@ -62,6 +65,12 @@
     }
     return _dataSource;
 }
+- (NSMutableArray *)classArray {
+    if (!_classArray) {
+        _classArray = [NSMutableArray array];
+    }
+    return _classArray;
+}
 
 #pragma mark - UITableViewDelegate, UITableViewDataSource
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -75,29 +84,9 @@
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
-    switch (indexPath.row) {
-        case 0: {
-            SLLoadImageVC *loadImageVC = [[SLLoadImageVC alloc] init];
-            loadImageVC.title = self.dataSource[indexPath.row];
-            [self.navigationController pushViewController:loadImageVC animated:YES];
-        }
-            break;
-        case 1: {
-            SLCubeViewController *cubeViewController = [[SLCubeViewController alloc] init];
-            cubeViewController.title = self.dataSource[indexPath.row];
-            [self.navigationController pushViewController:cubeViewController animated:YES];
-        }
-            break;
-        case 2: {
-            SLShaderLanguageViewController *shaderLanguage = [[SLShaderLanguageViewController alloc] init];
-            shaderLanguage.title = self.dataSource[indexPath.row];
-            [self.navigationController pushViewController:shaderLanguage animated:YES];
-        }
-            break;
-            
-        default:
-            break;
-    }
+    UIViewController *nextVc = [[self.classArray[indexPath.row] alloc] init];
+    nextVc.title = self.dataSource[indexPath.row];
+    [self.navigationController pushViewController:nextVc animated:YES];
 }
 
 @end

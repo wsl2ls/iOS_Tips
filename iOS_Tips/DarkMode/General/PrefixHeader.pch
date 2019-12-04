@@ -41,7 +41,7 @@
 /// 16进制 颜色
 #define SL_UIColorFromHex(rgbValue, a) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:(a)]
 
-//----------------------About log 打印日志 ----------------------------
+//----------------------About Log 打印日志 ----------------------------
 
 /// 打印
 #define SL_NSLog(...) printf("%f %s %ld :%s\n",[[NSDate date]timeIntervalSince1970],strrchr(__FILE__,'/'),[[NSNumber numberWithInt:__LINE__] integerValue],[[NSString stringWithFormat:__VA_ARGS__]UTF8String]);
@@ -50,6 +50,12 @@
 #else
 #   define SL_Log(...)
 #endif
+
+//----------------------About Shader 着色器 ----------------------------
+//#x 将参数x字符串化
+#define STRINGIZE(x)    #x
+#define STRINGIZE2(x)    STRINGIZE(x)
+#define Shader_String(text) @ STRINGIZE2(text)
 
 
 #import "UIView+SLFrame.h"
