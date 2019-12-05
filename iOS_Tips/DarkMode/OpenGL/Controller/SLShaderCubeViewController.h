@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// 自定义着色器 ShaderLanguage 渲染一个三角锥立方体
+///GLSL 渲染三角锥立方体/ 金字塔
 @interface SLShaderCubeViewController : UIViewController
 
 @end

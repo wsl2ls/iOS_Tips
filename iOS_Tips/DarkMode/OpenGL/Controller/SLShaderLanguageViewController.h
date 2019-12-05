@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// 自定义着色器 ShaderLanguage 加载纹理图片
+///GLSL  自定义着色器 ShaderLanguage 加载纹理图片
 @interface SLShaderLanguageViewController : UIViewController
 
 @end

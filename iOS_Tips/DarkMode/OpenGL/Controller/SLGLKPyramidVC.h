@@ -1,18 +1,17 @@
 //
-//  SLLoadImageVC.h
+//  SLGLKPyramidVC.h
 //  DarkMode
 //
-//  Created by wsl on 2019/11/29.
+//  Created by wsl on 2019/12/5.
 //  Copyright © 2019 https://github.com/wsl2ls   ----- . All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
-#import <GLKit/GLKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// GLKit 加载图片
-@interface SLLoadImageVC : GLKViewController
+/// GLKit 绘制 颜色和纹理混合金字塔
+@interface SLGLKPyramidVC : UIViewController
 
 @end
 
