@@ -512,8 +512,7 @@
     return 0;
 }
 
-
-#pragma mark - 加载 shader 着色器
+#pragma mark - 加载/编译 shader 着色器
 //加载shader
 -(GLuint)loadShaders:(NSString *)vert Withfrag:(NSString *)frag {
     //1.定义2个零时着色器对象
@@ -538,7 +537,6 @@
     
     return program;
 }
-
 //编译shader
 - (void)compileShader:(GLuint *)shader type:(GLenum)type shaderString:(NSString *)shaderString{
     //1.读取文件路径字符串

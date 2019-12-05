@@ -25,6 +25,7 @@
 		7851CB43233222E2002295B5 /* UIView+SLFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 7851CB41233222E2002295B5 /* UIView+SLFrame.m */; };
 		7857977823725C21004CD664 /* SLFaceDetectController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7857977723725C21004CD664 /* SLFaceDetectController.m */; };
 		7860D78E2398D34E008C53EC /* SLMixColorTextureVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7860D78D2398D34E008C53EC /* SLMixColorTextureVC.m */; };
+		7860D791239922B4008C53EC /* SLGLKPyramidVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7860D790239922B4008C53EC /* SLGLKPyramidVC.m */; };
 		786147F12362A39500C5424C /* Resources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 786147F02362A39500C5424C /* Resources.bundle */; };
 		786147F42362D79000C5424C /* SLMosaicView.m in Sources */ = {isa = PBXBuildFile; fileRef = 786147F32362D79000C5424C /* SLMosaicView.m */; };
 		786147FA23630C4D00C5424C /* UIImage+SLCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 786147F923630C4D00C5424C /* UIImage+SLCommon.m */; };
@@ -115,6 +116,8 @@
 		7857977723725C21004CD664 /* SLFaceDetectController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLFaceDetectController.m; sourceTree = "<group>"; };
 		7860D78C2398D34E008C53EC /* SLMixColorTextureVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLMixColorTextureVC.h; sourceTree = "<group>"; };
 		7860D78D2398D34E008C53EC /* SLMixColorTextureVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLMixColorTextureVC.m; sourceTree = "<group>"; };
+		7860D78F239922B4008C53EC /* SLGLKPyramidVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLGLKPyramidVC.h; sourceTree = "<group>"; };
+		7860D790239922B4008C53EC /* SLGLKPyramidVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLGLKPyramidVC.m; sourceTree = "<group>"; };
 		786147F02362A39500C5424C /* Resources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Resources.bundle; sourceTree = "<group>"; };
 		786147F22362D78F00C5424C /* SLMosaicView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLMosaicView.h; sourceTree = "<group>"; };
 		786147F32362D79000C5424C /* SLMosaicView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLMosaicView.m; sourceTree = "<group>"; };
@@ -297,6 +300,8 @@
 				788ACD612390BFD400737EC2 /* SLLoadImageVC.m */,
 				788ACD632390EA3A00737EC2 /* SLCubeViewController.h */,
 				788ACD642390EA3A00737EC2 /* SLCubeViewController.m */,
+				7860D78F239922B4008C53EC /* SLGLKPyramidVC.h */,
+				7860D790239922B4008C53EC /* SLGLKPyramidVC.m */,
 				783FB45A2394A4E10039AEFD /* SLShaderLanguageViewController.h */,
 				783FB45B2394A4E10039AEFD /* SLShaderLanguageViewController.m */,
 				78A35B1A23978A5D004BCCB7 /* SLShaderCubeViewController.h */,
@@ -746,6 +751,7 @@
 				78B10488232F57C30051579F /* ViewController.m in Sources */,
 				78FA0FA02354141E003E456B /* SLAvEditExport.m in Sources */,
 				78F42023237915730093497C /* SLGPUImageController.m in Sources */,
+				7860D791239922B4008C53EC /* SLGLKPyramidVC.m in Sources */,
 				784B72062334685E006AEE47 /* SLAvPlayer.m in Sources */,
 				78DAA113235FF61E00A60F64 /* SLEditVideoClipping.m in Sources */,
 				782E3EB42373D8C7001E0DF9 /* SLAvWriterInput.m in Sources */,

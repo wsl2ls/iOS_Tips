@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// GLSL 颜色和纹理混合  三角锥体
+/// GLSL 颜色和纹理混合  金字塔
 @interface SLMixColorTextureVC : UIViewController
 
 @end

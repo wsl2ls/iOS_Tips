@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// GLKit 绘制一个 正方体 立体视图
+/// GLKit  绘制正方体 
 @interface SLCubeViewController : UIViewController
 
 @end
