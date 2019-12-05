@@ -90,7 +90,7 @@
     if (_session == nil){
         _session = [[AVCaptureSession alloc] init];
         //高质量采集率
-        [_session setSessionPreset:AVCaptureSessionPresetHigh];
+        [_session setSessionPreset:AVCaptureSessionPreset1280x720];
         if([_session canAddInput:self.videoInput]) [_session addInput:self.videoInput]; //添加视频输入流
         if([_session canAddInput:self.audioInput])  [_session addInput:self.audioInput];  //添加音频输入流
         if([_session canAddOutput:self.videoDataOutput]) [_session addOutput:self.videoDataOutput];  //视频数据输出流 纯画面

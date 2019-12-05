@@ -31,7 +31,7 @@
 @property (nonatomic, assign) BOOL isRecording; //是否正在录制
 @property (nonatomic, assign) SLAvCaptureType  avCaptureType; //音视频捕获类型 默认 SLAvCaptureTypeAv
 
-@property (nonatomic, assign) UIDeviceOrientation shootingOrientation;   //拍摄时的手机方向
+@property (nonatomic, assign) UIDeviceOrientation shootingOrientation;   //拍摄录制时的手机方向
 @property (nonatomic, strong) CMMotionManager *motionManager;       //运动传感器  监测设备方向
 
 @end
@@ -104,7 +104,7 @@
     if (_session == nil){
         _session = [[AVCaptureSession alloc] init];
         //高质量采集率
-        [_session setSessionPreset:AVCaptureSessionPresetHigh];
+        [_session setSessionPreset:AVCaptureSessionPreset1280x720];
         if([_session canAddInput:self.videoInput]) [_session addInput:self.videoInput]; //添加视频输入流
         if([_session canAddInput:self.audioInput])  [_session addInput:self.audioInput];  //添加音频输入流
         if([_session canAddOutput:self.capturePhotoOutput]) [_session addOutput:self.capturePhotoOutput]; //添加照片输出流
@@ -185,7 +185,7 @@
         NSDictionary *compressionProperties = @{ AVVideoAverageBitRateKey : @(bitsPerSecond),
                                                  AVVideoExpectedSourceFrameRateKey : @(30),
                                                  AVVideoMaxKeyFrameIntervalKey : @(30),
-                                                 AVVideoProfileLevelKey : AVVideoProfileLevelH264BaselineAutoLevel };
+                                                 AVVideoProfileLevelKey : AVVideoProfileLevelH264High40 };
         CGFloat width = self.videoSize.width * [UIScreen mainScreen].scale;
         CGFloat height = self.videoSize.height * [UIScreen mainScreen].scale;
         //视频属性

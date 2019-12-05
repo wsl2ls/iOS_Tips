@@ -217,6 +217,7 @@ static NSInteger const kCoordCount = 36;
     //    self.baseEffect.transform.modelviewMatrix = GLKMatrix4MakeRotation(GLKMathDegreesToRadians(self.angle), 0.3, 1, -0.7);
     
     //  等价于 ==  self.baseEffect.transform.modelviewMatrix = GLKMatrix4Rotate(GLKMatrix4MakeRotation(GLKMathDegreesToRadians(315), 1, 0, -1), GLKMathDegreesToRadians(self.angle), 1, 1, 1);
+    //模型视图矩阵
     self.baseEffect.transform.modelviewMatrix =  GLKMatrix4Rotate(GLKMatrix4MakeRotation(GLKMathDegreesToRadians(45), 1, 0, -1), GLKMathDegreesToRadians(self.angle), -1, 1, -1);
     //3.重新渲染
     [self.glkView display];
