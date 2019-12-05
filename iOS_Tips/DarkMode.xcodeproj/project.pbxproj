@@ -24,6 +24,7 @@
 		7851CB372331CC87002295B5 /* SLDarkModeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7851CB352331CC87002295B5 /* SLDarkModeViewController.xib */; };
 		7851CB43233222E2002295B5 /* UIView+SLFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 7851CB41233222E2002295B5 /* UIView+SLFrame.m */; };
 		7857977823725C21004CD664 /* SLFaceDetectController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7857977723725C21004CD664 /* SLFaceDetectController.m */; };
+		7860D78E2398D34E008C53EC /* SLMixColorTextureVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7860D78D2398D34E008C53EC /* SLMixColorTextureVC.m */; };
 		786147F12362A39500C5424C /* Resources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 786147F02362A39500C5424C /* Resources.bundle */; };
 		786147F42362D79000C5424C /* SLMosaicView.m in Sources */ = {isa = PBXBuildFile; fileRef = 786147F32362D79000C5424C /* SLMosaicView.m */; };
 		786147FA23630C4D00C5424C /* UIImage+SLCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 786147F923630C4D00C5424C /* UIImage+SLCommon.m */; };
@@ -112,6 +113,8 @@
 		7851CB42233222E2002295B5 /* UIView+SLFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+SLFrame.h"; sourceTree = "<group>"; };
 		7857977623725C21004CD664 /* SLFaceDetectController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLFaceDetectController.h; sourceTree = "<group>"; };
 		7857977723725C21004CD664 /* SLFaceDetectController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLFaceDetectController.m; sourceTree = "<group>"; };
+		7860D78C2398D34E008C53EC /* SLMixColorTextureVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLMixColorTextureVC.h; sourceTree = "<group>"; };
+		7860D78D2398D34E008C53EC /* SLMixColorTextureVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLMixColorTextureVC.m; sourceTree = "<group>"; };
 		786147F02362A39500C5424C /* Resources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Resources.bundle; sourceTree = "<group>"; };
 		786147F22362D78F00C5424C /* SLMosaicView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLMosaicView.h; sourceTree = "<group>"; };
 		786147F32362D79000C5424C /* SLMosaicView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLMosaicView.m; sourceTree = "<group>"; };
@@ -298,6 +301,8 @@
 				783FB45B2394A4E10039AEFD /* SLShaderLanguageViewController.m */,
 				78A35B1A23978A5D004BCCB7 /* SLShaderCubeViewController.h */,
 				78A35B1B23978A5D004BCCB7 /* SLShaderCubeViewController.m */,
+				7860D78C2398D34E008C53EC /* SLMixColorTextureVC.h */,
+				7860D78D2398D34E008C53EC /* SLMixColorTextureVC.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -779,6 +784,7 @@
 				78777CE6238FF65C006FA671 /* SLDelayPerform.m in Sources */,
 				78DAA1162360256200A60F64 /* SLEditSelectedBox.m in Sources */,
 				7830A59E2358520200BC79BA /* SLEditTextView.m in Sources */,
+				7860D78E2398D34E008C53EC /* SLMixColorTextureVC.m in Sources */,
 				78E179312351A4020007E4BB /* SLShotViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

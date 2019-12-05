@@ -18,11 +18,13 @@
  5.设置FrameBuffer
  6.开始绘制
  
- OpenGL ES 3种变量修饰符（varying, attribute, uniform）
+ OpenGL ES 3种变量修饰符（varying, attribute, uniform）   https://blog.csdn.net/hgl868/article/details/7846269
  
- uniform: 由外部客户端传入，由函数glUniform** 提供赋值功能，类似于const, 被uniform 修饰变量在顶点/片元着色器中 只能用，不能修改
+ uniform: 由外部客户端传入，由函数glUniform** 提供赋值功能，类似于const, 被uniform 修饰变量在顶点/片元着色器中 只能用，不能修改 一般用来修饰矩阵
  attribute：只能在顶点着色器出现
  varying：中间传递，顶点和片元着色器之间传递数据
+ 
+lowp, mediump和highp：精度修饰符声明了底层实现存储这些变量必须要使用的最小范围和精度。实现可能会使用比要求更大的范围和精度，但绝对不会比要求少。
  
  */
 #import <OpenGLES/ES2/gl.h>
@@ -243,7 +245,7 @@
     glUseProgram(self.myPrograme);
     
     //6.设置顶点、纹理坐标
-    //前3个是顶点坐标，后2个是纹理坐标
+    //前3个是顶点坐标,由于是平面图,故z无效,后2个是纹理坐标
     GLfloat attrArr[] =
     {
         0.5f, -0.5f, -1.0f,     1.0f, 0.0f,  //右下  0

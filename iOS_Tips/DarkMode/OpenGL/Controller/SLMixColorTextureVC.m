@@ -1,19 +1,19 @@
 //
-//  SLShaderCubeViewController.m
+//  SLMixColorTextureVC.m
 //  DarkMode
 //
-//  Created by wsl on 2019/12/4.
+//  Created by wsl on 2019/12/5.
 //  Copyright © 2019 https://github.com/wsl2ls   ----- . All rights reserved.
 //
 
-#import "SLShaderCubeViewController.h"
+#import "SLMixColorTextureVC.h"
 #import "GLESMath.h"
 #import "GLESUtils.h"
 
 #import <OpenGLES/ES2/gl.h>
 
 /// 三角体
-@interface SLTriangleView : UIView
+@interface SLMixView : UIView
 
 //在iOS和tvOS上绘制OpenGL ES内容的图层，继承与CALayer
 @property(nonatomic, strong)CAEAGLLayer *myEagLayer;
@@ -28,7 +28,7 @@
 
 @end
 
-@implementation SLTriangleView
+@implementation SLMixView
 
 #pragma mark - Override
 -(void)layoutSubviews {
@@ -51,7 +51,7 @@
     [self renderLayer];
     
 }
-//重写layerClass，将SLTriangleView返回的图层从CALayer替换成CAEAGLLayer
+//重写layerClass，将SLMixView返回的图层从CALayer替换成CAEAGLLayer
 +(Class)layerClass {
     return [CAEAGLLayer class];
 }
@@ -77,7 +77,7 @@
 -(void)setupLayer {
     //1.创建特殊图层
     /*
-     重写layerClass，将SLTriangleView返回的图层从CALayer替换成CAEAGLLayer
+     重写layerClass，将SLMixView返回的图层从CALayer替换成CAEAGLLayer
      */
     self.myEagLayer = (CAEAGLLayer *)self.layer;
     
@@ -171,16 +171,19 @@
 // 顶点着色器
 - (NSString *)vertexShaderString {
     return Shader_String (
-                                                          attribute vec4 position;  //顶点坐标
-                                                          attribute vec4 positionColor;  //顶点颜色
-                                                          
-                                                          uniform mat4 projectionMatrix;  //投影矩阵 把三维空间视图透视投影到二维平面上
-                                                          uniform mat4 modelViewMatrix;   //模型视图矩阵  旋转、平移、缩放
-                                                          
-                                                          varying lowp vec4 varyColor;  //颜色 传递给片元着色器
-                                                          
-                                                          void main() {
+                          attribute vec4 position;  //顶点坐标  由客户端传入
+                          attribute vec4 positionColor;  //顶点颜色 由客户端传入
+                          attribute vec2 textCoor;   //纹理坐标 由客户端传入
+                          
+                          uniform mat4 projectionMatrix;  //投影矩阵 把三维空间视图透视投影到二维平面上
+                          uniform mat4 modelViewMatrix;   //模型视图矩阵  旋转、平移、缩放
+                          
+                          varying lowp vec2 vTextCoor;  // 纹理坐标  传递给片元着色器
+                          varying lowp vec4 varyColor;  //颜色 传递给片元着色器
+                          
+                          void main() {
         varyColor = positionColor;
+        vTextCoor = textCoor;
         
         vec4 vPos;
         vPos = projectionMatrix * modelViewMatrix * position;   // 投影矩阵 * 模型视图矩阵 * 世界坐标系  等等后面一系列矩阵坐标转换，映射到屏幕坐标
@@ -189,13 +192,22 @@
 }
 // 片元着色器
 - (NSString *)fragmentShaderString {
-     return Shader_String (
-                                                            varying lowp vec4 varyColor;
-                                                            
-                                                            void main() {
-        gl_FragColor = varyColor;  //片元颜色
-     });
+    return Shader_String (
+                          precision highp float;   //float数据类型 默认精度为highp
+                          varying lowp vec2 vTextCoor; //纹理坐标 由顶点着色器传入
+                          varying lowp vec4 varyColor;  //顶点颜色 由顶点着色器传入
+                          uniform sampler2D colorMap;  //纹理采样器
+                          
+                          void main() {
+        vec4 weakMask = texture2D(colorMap, vTextCoor);  //纹素 本质上也是颜色
+        vec4 mask = varyColor;  //颜色
+        float alpha = 0.3;
+        
+        vec4 mixColor = mask * (1.0 - alpha) + weakMask * alpha;   // 混合后的颜色
+        gl_FragColor = mixColor;
+    });
 }
+
 // 渲染图层
 -(void)renderLayer {
     @autoreleasepool {
@@ -241,17 +253,17 @@
         glUseProgram(self.myPrograme);
         
         //6.创建顶点数组 & 索引数组
-        //(1)顶点数组 前3顶点值（x,y,z），后3位颜色值(RGB)
+        //(1)顶点数组 前3顶点值（x,y,z），中3位颜色值(RGB)  后两位纹理坐标xy
+        //注意：默认三角锥底面是垂直于屏幕朝外的，即是三角锥往屏幕里倒了90°
         GLfloat attrArr[] =
         {
-            -0.5f, 0.5f, 0.0f,      0.0f, 0.0f, 1.0f, //左上0  蓝
-            0.5f, 0.5f, 0.0f,       1.0f, 0.0f, 1.0f, //右上1
-            -0.5f, -0.5f, 0.0f,     1.0f, 1.0f, 1.0f, //左下2  白
+            -0.5f, 0.5f, 0.0f,      0.0f, 0.0f, 1.0f,    0.0f, 1.0f,  //左上0  蓝
+            0.5f, 0.5f, 0.0f,       1.0f, 0.0f, 1.0f,    1.0f, 1.0f,  //右上1
+            -0.5f, -0.5f, 0.0f,     1.0f, 1.0f, 1.0f,    0.0f, 0.0f,  //左下2  白
+            0.5f, -0.5f, 0.0f,      1.0f, 0.0f, 0.0f,    1.0f, 0.0f,  //右下3  红
             
-            0.5f, -0.5f, 0.0f,      1.0f, 0.0f, 0.0f, //右下3  红
-            0.0f, 0.0f, 1.0f,       0.0f, 1.0f, 0.0f, //顶点4  绿
+            0.0f, 0.0f, 1.0f,       0.0f, 1.0f, 0.0f,    0.5f, 0.5f,   //顶点4  绿
         };
-        
         //(2).索引数组
         GLuint indices[] =
         {
@@ -263,11 +275,13 @@
             1, 4, 3,
         };
         
-        
         //7.-----处理顶点数据--------
         //(1)顶点缓存区
         //(2)申请一个缓存区标识符 https://blog.csdn.net/qq_36383623/article/details/85123077
-        glGenBuffers(1, &_vertexBuffer);
+        if (self.vertexBuffer == 0) {
+            // 判断顶点缓存区是否为空，如果为空则申请一个缓存区标识符
+            glGenBuffers(1, &_vertexBuffer);
+        }
         //(3)将_vertexBuffer绑定到GL_ARRAY_BUFFER标识符上
         glBindBuffer(GL_ARRAY_BUFFER, _vertexBuffer);
         //(4)把顶点数据从CPU内存复制到GPU上
@@ -278,9 +292,9 @@
         //2.告诉OpenGL ES,通过glEnableVertexAttribArray，
         //3.最后数据是通过glVertexAttribPointer传递过去的。
         
-        //(1)注意：第二参数字符串必须和shaderv.vsh中的输入变量：position保持一致
+        //(1)注意：第二参数字符串必须和vertexShaderString中的输入变量：position保持一致
         GLuint position = glGetAttribLocation(self.myPrograme, "position");
-        //(2).打开position
+        //(2).打开position 属性通道
         glEnableVertexAttribArray(position);
         //(3).设置读取方式
         //参数1：index,顶点数据的索引
@@ -289,13 +303,23 @@
         //参数4：normalized,固定点数据值是否应该归一化，或者直接转换为固定值。（GL_FALSE）
         //参数5：stride,连续顶点属性之间的偏移量，默认为0；
         //参数6：指定一个指针，指向数组中的第一个顶点属性的第一个组件。默认为0
-        glVertexAttribPointer(position, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 6, NULL);
+        glVertexAttribPointer(position, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 8, NULL);
         
         //9.--------处理顶点颜色值-------
-        //(1).glGetAttribLocation,用来获取vertex attribute的入口的.
         GLuint positionColor = glGetAttribLocation(self.myPrograme, "positionColor");
         glEnableVertexAttribArray(positionColor);
-        glVertexAttribPointer(positionColor, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 6, (float *)NULL + 3);
+        glVertexAttribPointer(positionColor, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 8, (float *)NULL + 3);
+        
+        // ------- 处理纹理坐标------
+        //纹理坐标
+        GLuint textCoor = glGetAttribLocation(self.myPrograme, "textCoor");
+        glEnableVertexAttribArray(textCoor);
+        glVertexAttribPointer(textCoor, 2, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 8, (float *)NULL + 6);
+        //加载纹理
+        [self setupTexture];
+        //设置纹理采样器 sampler2D
+        glUniform1i(glGetUniformLocation(self.myPrograme, "colorMap"), 0);
+        
         
         //10.找到myProgram中的projectionMatrix、modelViewMatrix 2个矩阵的地址。如果找到则返回地址，否则返回-1，表示没有找到2个对象。
         GLuint projectionMatrixSlot = glGetUniformLocation(self.myPrograme, "projectionMatrix");
@@ -345,8 +369,8 @@
         //(5)旋转
         self.angle = (self.angle + 5) % 360;
         ksRotate(&_rotationMatrix, 110 , 1.0, 0.0, 0.0); //绕X轴
-        //        ksRotate(&_rotationMatrix, 45, 0.0, 1.0, 0.0); //绕Y轴
-        ksRotate(&_rotationMatrix, self.angle, 0.0, 0.0, 1.0); //绕Z轴
+        //                ksRotate(&_rotationMatrix, 45, 0.0, 1.0, 0.0); //绕Y轴
+        ksRotate(&_rotationMatrix, self.angle, 0.0, 0.0, 1.0); //绕Z轴 立方体的Z
         //(6)把变换矩阵相乘.将_modelViewMatrix矩阵与_rotationMatrix矩阵相乘，结合到模型视图
         ksMatrixMultiply(&_modelViewMatrix, &_rotationMatrix, &_modelViewMatrix);
         //(7)将模型视图矩阵传递到顶点着色器
@@ -392,6 +416,102 @@
         [self.myContext presentRenderbuffer:GL_RENDERBUFFER];
     }
 }
+//从图片中加载纹理  图片翻转问题可以看这里 https://www.jianshu.com/p/848d982db9f2 有多种解决方案
+- (GLuint)setupTexture{
+    NSString *myBundlePath = [[NSBundle mainBundle] pathForResource:@"Resources" ofType:@"bundle"];
+    NSString *imagePath = [[NSBundle bundleWithPath:myBundlePath] pathForResource:@"lufei" ofType:@"png" inDirectory:@"Images"];
+    //1、将 UIImage 转换为 CGImageRef
+    CGImageRef spriteImage = [UIImage imageWithContentsOfFile:imagePath].CGImage;
+    
+    //判断图片是否获取成功
+    if (!spriteImage) {
+        NSLog(@"Failed to load image");
+        exit(1);
+    }
+    
+    //2、读取图片的大小，宽和高
+    size_t width = CGImageGetWidth(spriteImage);
+    size_t height = CGImageGetHeight(spriteImage);
+    
+    //3.获取图片字节数 宽*高*4（RGBA）
+    GLubyte * spriteData = (GLubyte *) calloc(width * height * 4, sizeof(GLubyte));
+    
+    //4.创建上下文
+    /*
+     参数1：data,指向要渲染的绘制图像的内存地址
+     参数2：width,bitmap的宽度，单位为像素
+     参数3：height,bitmap的高度，单位为像素
+     参数4：bitPerComponent,内存中像素的每个组件的位数，比如32位RGBA，就设置为8
+     参数5：bytesPerRow,bitmap的没一行的内存所占的比特数
+     参数6：colorSpace,bitmap上使用的颜色空间  kCGImageAlphaPremultipliedLast：RGBA
+     */
+    CGContextRef spriteContext = CGBitmapContextCreate(spriteData, width, height, 8, width*4,CGImageGetColorSpace(spriteImage), kCGImageAlphaPremultipliedLast);
+    
+    //5、在CGContextRef上--> 将图片绘制出来
+    /*
+     CGContextDrawImage 使用的是Core Graphics框架，坐标系与UIKit 不一样。UIKit框架的原点在屏幕的左上角，Core Graphics框架的原点在屏幕的左下角。
+     CGContextDrawImage
+     参数1：绘图上下文
+     参数2：rect坐标
+     参数3：绘制的图片
+     */
+    CGRect rect = CGRectMake(0, 0, width, height);
+    
+    //6.使用默认方式绘制
+    CGContextDrawImage(spriteContext, rect, spriteImage);
+    
+    //将图片源文件翻转
+    /*
+     CTM（current transformation matrix当前转换矩阵）
+     CGContextScaleCTM：坐标系X,Y缩放
+     CGContextTranslateCTM：坐标系平移
+     CGContextRotateCTM：坐标系旋转
+     CGContextConcatCTM：
+     CGContextGetCTM：获得一份CTM
+     https://blog.csdn.net/sqc3375177/article/details/25708447
+     */
+    CGContextTranslateCTM(spriteContext,0, rect.size.height);
+    CGContextScaleCTM(spriteContext, 1.0, -1.0);
+    CGContextDrawImage(spriteContext, rect, spriteImage);
+    
+    //7、画图完毕就释放上下文
+    CGContextRelease(spriteContext);
+    
+    //8、绑定纹理到默认的纹理ID（
+    glBindTexture(GL_TEXTURE_2D, 0);
+    
+    //9.设置纹理属性
+    /*  https://www.jianshu.com/p/1b327789220d
+     参数1：纹理维度
+     参数2：线性过滤、为s,t坐标设置模式
+     参数3：wrapMode,环绕模式
+     */
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    
+    float fw = width, fh = height;
+    
+    //10.载入纹理2D数据
+    /*
+     参数1：纹理模式，GL_TEXTURE_1D、GL_TEXTURE_2D、GL_TEXTURE_3D
+     参数2：加载的层次，一般设置为0
+     参数3：纹理的颜色值GL_RGBA
+     参数4：宽
+     参数5：高
+     参数6：border，边界宽度
+     参数7：format
+     参数8：type
+     参数9：纹理数据
+     */
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, fw, fh, 0, GL_RGBA, GL_UNSIGNED_BYTE, spriteData);
+    
+    //11.释放spriteData
+    free(spriteData);
+    return 0;
+}
+
 
 #pragma mark - 加载 shader 着色器
 //加载shader
@@ -439,14 +559,14 @@
 }
 @end
 
-@interface SLShaderCubeViewController ()
+@interface SLMixColorTextureVC ()
 @property (nonatomic, strong) CADisplayLink *displayLink;  //定时器更新 角度
 @end
-@implementation SLShaderCubeViewController
+@implementation SLMixColorTextureVC
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    SLTriangleView *triangleView = [[SLTriangleView alloc] initWithFrame:self.view.bounds];
+    SLMixView *triangleView = [[SLMixView alloc] initWithFrame:self.view.bounds];
     triangleView.tag = 10;
     [self.view addSubview:triangleView];
     [self addCADisplayLink];
@@ -463,14 +583,16 @@
     self.displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(rotation)];
     [self.displayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSRunLoopCommonModes];
 }
+
 #pragma mark - Events Handle
 //更新旋转角度
 - (void)rotation {
     @autoreleasepool {
-        SLTriangleView *triangleView = [self.view viewWithTag:10];
+        SLMixView *triangleView = [self.view viewWithTag:10];
         //重新渲染图层
         [triangleView renderLayer];
     }
 }
 
 @end
+
