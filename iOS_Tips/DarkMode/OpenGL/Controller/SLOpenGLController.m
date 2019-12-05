@@ -11,6 +11,7 @@
 #import "SLCubeViewController.h"
 #import "SLShaderLanguageViewController.h"
 #import "SLShaderCubeViewController.h"
+#import "SLMixColorTextureVC.h"
 
 @interface SLOpenGLController ()<UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, strong) UITableView *tableView;
@@ -42,8 +43,8 @@
 #pragma mark - Data
 - (void)getData {
     //tableView、UIAlertView等系统控件，在不自定义颜色的情况下，默认颜色都是动态的，支持暗黑模式
-    [self.dataSource addObjectsFromArray:@[@"GLKit 加载一张图片", @" GLKit 绘制一个正方体", @"OpenGLES-ShaderLanguage（GLSL） 加载一张图片", @"GLSL 绘制一个立方体"]];
-    [self.classArray addObjectsFromArray:@[[SLLoadImageVC class], [SLCubeViewController class], [SLShaderLanguageViewController class], [SLShaderCubeViewController class]]];
+    [self.dataSource addObjectsFromArray:@[@"GLKit 加载一张图片", @" GLKit 绘制一个正方体", @"OpenGLES-ShaderLanguage（GLSL） 加载一张图片", @"GLSL 绘制一个三角锥金字塔", @"GLSL 颜色和纹理混合"]];
+    [self.classArray addObjectsFromArray:@[[SLLoadImageVC class], [SLCubeViewController class], [SLShaderLanguageViewController class], [SLShaderCubeViewController class], [SLMixColorTextureVC class]]];
     [self.tableView reloadData];
 }
 #pragma mark - Getter

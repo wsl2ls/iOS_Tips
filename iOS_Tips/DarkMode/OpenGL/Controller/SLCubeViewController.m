@@ -106,7 +106,6 @@ static NSInteger const kCoordCount = 36;
     self.baseEffect = [[GLKBaseEffect alloc] init];
     self.baseEffect.texture2d0.name = textureInfo.name;
     self.baseEffect.texture2d0.target = textureInfo.target;
-    
 }
 
 #pragma mark - 2. 初始化顶点和纹理坐标
