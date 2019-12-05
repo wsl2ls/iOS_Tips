@@ -17,6 +17,9 @@
 @property (nonatomic, strong) AVMutableComposition *composition;  //可变工程文件 合并音视频素材
 @property (nonatomic, strong) AVMutableVideoComposition *videoComposition;  //视频成分
 @property (nonatomic, strong) AVMutableAudioMix *audioMix;   // 音频混合
+/// 视频大小 注意：单位是px 不是pt  frame*[UIScreen mainScreen].scale
+//@property (nonatomic, assign, readonly) CGSize videoSize;
+
 @end
 @implementation SLAvEditExport
 
@@ -177,7 +180,7 @@
             default:
                 break;
         }
-        _videoSize = renderSize;
+//        _videoSize = renderSize;
         
         /** iOS9之前的处理方法，之后使用CIFilter ，待学习*/
         //方向

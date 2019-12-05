@@ -215,7 +215,7 @@ static CGFloat THDegreesToRadians(CGFloat degrees) {
     if (_session == nil){
         _session = [[AVCaptureSession alloc] init];
         //高质量采集率
-        [_session setSessionPreset:AVCaptureSessionPresetHigh];
+        [_session setSessionPreset:AVCaptureSessionPreset1280x720];
         if([_session canAddInput:self.videoInput]) [_session addInput:self.videoInput]; //添加视频输入流
         //创建主队列： 因为人脸检测用到了硬件加速，而且许多重要的任务都在主线程中执行，所以需要为这次参数指定主队列。
         dispatch_queue_t mainQueue = dispatch_get_main_queue();
