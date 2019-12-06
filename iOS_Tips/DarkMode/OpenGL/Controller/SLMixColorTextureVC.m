@@ -317,7 +317,7 @@
         glVertexAttribPointer(textCoor, 2, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 8, (float *)NULL + 6);
         //加载纹理
         [self setupTexture];
-        //设置纹理采样器 sampler2D
+        //设置纹理采样器 sampler2D, 将采样器绑定到对应的纹理单元 0
         glUniform1i(glGetUniformLocation(self.myPrograme, "colorMap"), 0);
         
         
@@ -477,7 +477,7 @@
     //7、画图完毕就释放上下文
     CGContextRelease(spriteContext);
     
-    //8、绑定纹理到默认的纹理ID（
+    //8、绑定纹理到默认的纹理ID 0
     glBindTexture(GL_TEXTURE_2D, 0);
     
     //9.设置纹理属性
