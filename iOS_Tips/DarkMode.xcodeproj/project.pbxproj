@@ -10,6 +10,18 @@
 		780F5303236D8462000D0EA8 /* SLGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = 780F5302236D8462000D0EA8 /* SLGridView.m */; };
 		780F5306236D8570000D0EA8 /* SLImageClipController.m in Sources */ = {isa = PBXBuildFile; fileRef = 780F5305236D8570000D0EA8 /* SLImageClipController.m */; };
 		7822CCF8235B054200E70C29 /* SLPaddingLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7822CCF7235B054200E70C29 /* SLPaddingLabel.m */; };
+		782CFB1D239DDE95001B5528 /* SLSplitScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 782CFB1C239DDE95001B5528 /* SLSplitScreenViewController.m */; };
+		782CFB20239DEA05001B5528 /* SLSplitScreenCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 782CFB1F239DEA05001B5528 /* SLSplitScreenCell.m */; };
+		782CFB23239DFD0F001B5528 /* SplitScreen_2.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 782CFB21239DFD0F001B5528 /* SplitScreen_2.fsh */; };
+		782CFB24239DFD0F001B5528 /* SplitScreen_2.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 782CFB22239DFD0F001B5528 /* SplitScreen_2.vsh */; };
+		782CFB27239DFD89001B5528 /* SplitScreen_1.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 782CFB25239DFD88001B5528 /* SplitScreen_1.fsh */; };
+		782CFB28239DFD89001B5528 /* SplitScreen_1.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 782CFB26239DFD89001B5528 /* SplitScreen_1.vsh */; };
+		782CFB2B239E0479001B5528 /* SplitScreen_3.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 782CFB29239E0478001B5528 /* SplitScreen_3.vsh */; };
+		782CFB2C239E0479001B5528 /* SplitScreen_3.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 782CFB2A239E0479001B5528 /* SplitScreen_3.fsh */; };
+		782CFB2F239E04A2001B5528 /* SplitScreen_4.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 782CFB2D239E04A1001B5528 /* SplitScreen_4.vsh */; };
+		782CFB30239E04A2001B5528 /* SplitScreen_4.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 782CFB2E239E04A2001B5528 /* SplitScreen_4.fsh */; };
+		782CFB33239E04AD001B5528 /* SplitScreen_6.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 782CFB31239E04AD001B5528 /* SplitScreen_6.fsh */; };
+		782CFB34239E04AD001B5528 /* SplitScreen_6.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 782CFB32239E04AD001B5528 /* SplitScreen_6.vsh */; };
 		782E3EB12373D889001E0DF9 /* SLAvCaptureSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 782E3EB02373D889001E0DF9 /* SLAvCaptureSession.m */; };
 		782E3EB42373D8C7001E0DF9 /* SLAvWriterInput.m in Sources */ = {isa = PBXBuildFile; fileRef = 782E3EB32373D8C7001E0DF9 /* SLAvWriterInput.m */; };
 		782E3EB82373F911001E0DF9 /* SLFilterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 782E3EB72373F911001E0DF9 /* SLFilterViewController.m */; };
@@ -89,6 +101,20 @@
 		780F5305236D8570000D0EA8 /* SLImageClipController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLImageClipController.m; sourceTree = "<group>"; };
 		7822CCF6235B054200E70C29 /* SLPaddingLabel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLPaddingLabel.h; sourceTree = "<group>"; };
 		7822CCF7235B054200E70C29 /* SLPaddingLabel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLPaddingLabel.m; sourceTree = "<group>"; };
+		782CFB1B239DDE95001B5528 /* SLSplitScreenViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLSplitScreenViewController.h; sourceTree = "<group>"; };
+		782CFB1C239DDE95001B5528 /* SLSplitScreenViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLSplitScreenViewController.m; sourceTree = "<group>"; };
+		782CFB1E239DEA05001B5528 /* SLSplitScreenCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SLSplitScreenCell.h; path = DarkMode/OpenGL/Controller/SLSplitScreenCell.h; sourceTree = SOURCE_ROOT; };
+		782CFB1F239DEA05001B5528 /* SLSplitScreenCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = SLSplitScreenCell.m; path = DarkMode/OpenGL/Controller/SLSplitScreenCell.m; sourceTree = SOURCE_ROOT; };
+		782CFB21239DFD0F001B5528 /* SplitScreen_2.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = SplitScreen_2.fsh; sourceTree = "<group>"; };
+		782CFB22239DFD0F001B5528 /* SplitScreen_2.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = SplitScreen_2.vsh; sourceTree = "<group>"; };
+		782CFB25239DFD88001B5528 /* SplitScreen_1.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = SplitScreen_1.fsh; sourceTree = "<group>"; };
+		782CFB26239DFD89001B5528 /* SplitScreen_1.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = SplitScreen_1.vsh; sourceTree = "<group>"; };
+		782CFB29239E0478001B5528 /* SplitScreen_3.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = SplitScreen_3.vsh; sourceTree = "<group>"; };
+		782CFB2A239E0479001B5528 /* SplitScreen_3.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = SplitScreen_3.fsh; sourceTree = "<group>"; };
+		782CFB2D239E04A1001B5528 /* SplitScreen_4.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = SplitScreen_4.vsh; sourceTree = "<group>"; };
+		782CFB2E239E04A2001B5528 /* SplitScreen_4.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = SplitScreen_4.fsh; sourceTree = "<group>"; };
+		782CFB31239E04AD001B5528 /* SplitScreen_6.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = SplitScreen_6.fsh; sourceTree = "<group>"; };
+		782CFB32239E04AD001B5528 /* SplitScreen_6.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = SplitScreen_6.vsh; sourceTree = "<group>"; };
 		782E3EAF2373D889001E0DF9 /* SLAvCaptureSession.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLAvCaptureSession.h; sourceTree = "<group>"; };
 		782E3EB02373D889001E0DF9 /* SLAvCaptureSession.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLAvCaptureSession.m; sourceTree = "<group>"; };
 		782E3EB22373D8C7001E0DF9 /* SLAvWriterInput.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLAvWriterInput.h; sourceTree = "<group>"; };
@@ -245,6 +271,16 @@
 			children = (
 				783FB45F2394A76B0039AEFD /* shaderf.fsh */,
 				783FB45E2394A76B0039AEFD /* shaderv.vsh */,
+				782CFB25239DFD88001B5528 /* SplitScreen_1.fsh */,
+				782CFB26239DFD89001B5528 /* SplitScreen_1.vsh */,
+				782CFB21239DFD0F001B5528 /* SplitScreen_2.fsh */,
+				782CFB22239DFD0F001B5528 /* SplitScreen_2.vsh */,
+				782CFB2A239E0479001B5528 /* SplitScreen_3.fsh */,
+				782CFB29239E0478001B5528 /* SplitScreen_3.vsh */,
+				782CFB2E239E04A2001B5528 /* SplitScreen_4.fsh */,
+				782CFB2D239E04A1001B5528 /* SplitScreen_4.vsh */,
+				782CFB31239E04AD001B5528 /* SplitScreen_6.fsh */,
+				782CFB32239E04AD001B5528 /* SplitScreen_6.vsh */,
 			);
 			path = ShaderLanguage;
 			sourceTree = "<group>";
@@ -308,6 +344,8 @@
 				78A35B1B23978A5D004BCCB7 /* SLShaderCubeViewController.m */,
 				7860D78C2398D34E008C53EC /* SLMixColorTextureVC.h */,
 				7860D78D2398D34E008C53EC /* SLMixColorTextureVC.m */,
+				782CFB1B239DDE95001B5528 /* SLSplitScreenViewController.h */,
+				782CFB1C239DDE95001B5528 /* SLSplitScreenViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -315,6 +353,8 @@
 		78777CDD238FEA15006FA671 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				782CFB1E239DEA05001B5528 /* SLSplitScreenCell.h */,
+				782CFB1F239DEA05001B5528 /* SLSplitScreenCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -662,12 +702,22 @@
 			buildActionMask = 2147483647;
 			files = (
 				786147F12362A39500C5424C /* Resources.bundle in Resources */,
+				782CFB33239E04AD001B5528 /* SplitScreen_6.fsh in Resources */,
+				782CFB24239DFD0F001B5528 /* SplitScreen_2.vsh in Resources */,
+				782CFB2C239E0479001B5528 /* SplitScreen_3.fsh in Resources */,
 				78B10490232F57C50051579F /* LaunchScreen.storyboard in Resources */,
 				78B1048D232F57C50051579F /* Assets.xcassets in Resources */,
 				783FB4602394A76B0039AEFD /* shaderv.vsh in Resources */,
 				7851CB372331CC87002295B5 /* SLDarkModeViewController.xib in Resources */,
+				782CFB30239E04A2001B5528 /* SplitScreen_4.fsh in Resources */,
+				782CFB23239DFD0F001B5528 /* SplitScreen_2.fsh in Resources */,
+				782CFB34239E04AD001B5528 /* SplitScreen_6.vsh in Resources */,
 				78B1048B232F57C30051579F /* Main.storyboard in Resources */,
+				782CFB27239DFD89001B5528 /* SplitScreen_1.fsh in Resources */,
 				783FB4612394A76B0039AEFD /* shaderf.fsh in Resources */,
+				782CFB2F239E04A2001B5528 /* SplitScreen_4.vsh in Resources */,
+				782CFB2B239E0479001B5528 /* SplitScreen_3.vsh in Resources */,
+				782CFB28239DFD89001B5528 /* SplitScreen_1.vsh in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -747,6 +797,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				782CFB1D239DDE95001B5528 /* SLSplitScreenViewController.m in Sources */,
 				7857977823725C21004CD664 /* SLFaceDetectController.m in Sources */,
 				78B10488232F57C30051579F /* ViewController.m in Sources */,
 				78FA0FA02354141E003E456B /* SLAvEditExport.m in Sources */,
@@ -789,6 +840,7 @@
 				788ACD622390BFD400737EC2 /* SLLoadImageVC.m in Sources */,
 				78777CE6238FF65C006FA671 /* SLDelayPerform.m in Sources */,
 				78DAA1162360256200A60F64 /* SLEditSelectedBox.m in Sources */,
+				782CFB20239DEA05001B5528 /* SLSplitScreenCell.m in Sources */,
 				7830A59E2358520200BC79BA /* SLEditTextView.m in Sources */,
 				7860D78E2398D34E008C53EC /* SLMixColorTextureVC.m in Sources */,
 				78E179312351A4020007E4BB /* SLShotViewController.m in Sources */,

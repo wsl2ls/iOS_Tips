@@ -1,6 +1,6 @@
-attribute vec4 position;
-attribute vec2 textCoordinate;
-varying lowp vec2 varyTextCoord;
+attribute vec4 position;       //顶点坐标
+attribute vec2 textCoordinate;   //纹理坐标
+varying lowp vec2 varyTextCoord; //纹理坐标  传递给片元着色器
 
 void main()
 {

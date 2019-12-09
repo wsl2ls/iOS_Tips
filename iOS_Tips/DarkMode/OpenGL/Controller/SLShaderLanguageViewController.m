@@ -40,7 +40,7 @@ lowp, mediump和highp：精度修饰符声明了底层实现存储这些变量�
 @property(nonatomic, assign) GLuint myColorFrameBuffer;  // 帧缓冲区
 @property (nonatomic, assign) GLuint vertexBuffer;  //顶点缓冲区 用完记得释放
 
-@property(nonatomic, assign)GLuint myPrograme;  //着色器程序
+@property(nonatomic, assign) GLuint myPrograme;  //着色器程序
 
 @end
 

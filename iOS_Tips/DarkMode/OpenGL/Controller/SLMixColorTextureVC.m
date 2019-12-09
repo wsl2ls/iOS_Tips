@@ -22,7 +22,7 @@
 @property(nonatomic, assign) GLuint myColorRenderBuffer;  //渲染缓存区
 @property(nonatomic, assign) GLuint myColorFrameBuffer;  // 帧缓冲区
 @property (nonatomic, assign) GLuint vertexBuffer;  //顶点缓冲区 用完记得释放
-@property(nonatomic, assign)GLuint myPrograme;  //着色器程序
+@property(nonatomic, assign) GLuint myPrograme;  //着色器程序
 
 @property (nonatomic, assign) NSInteger angle; //旋转弧度
 
@@ -226,7 +226,7 @@
         
         //设置清屏颜色
         glClearColor(0.3f, 0.45f, 0.5f, 1.0f);
-        //清除屏幕
+        //清除颜色缓冲区和深度缓冲区
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
         //1.设置视口大小
