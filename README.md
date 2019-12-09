@@ -65,7 +65,7 @@ iOS的一些示例，不定时更新~ 由于内容较多，文件会有点大，
 > * 3、GLSL 滤镜集合：灰度、旋涡、正方形马赛克、六边形马赛克
 > * 4 、GLSL 抖音部分特效：分屏、缩放、抖动、灵魂出窍、毛刺
 
-|![OpenGLES学习.gif](PrviewPicture/8、OpenGLES学习1)|![OpenGLES学习](PrviewPicture/8、OpenGLES学习2)|![OpenGLES学习](PrviewPicture/8、OpenGLES学习3)|
+|![OpenGLES学习.gif](PrviewPicture/8、OpenGLES学习1.gif)|![OpenGLES学习](PrviewPicture/8、OpenGLES学习2.gif)|![OpenGLES学习](PrviewPicture/8、OpenGLES学习3.gif)|
 
 ## Welcome To Follow Me
 
