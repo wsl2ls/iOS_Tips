@@ -3,7 +3,7 @@ iOS的一些示例，不定时更新~ 由于内容较多，文件会有点大，
 简书地址：https://www.jianshu.com/p/a2a04cabb98d 
 
 ### 目录 
-> 1、暗黑模式  2、AppleID登录应用  3、AVFoundation 高仿微信相机拍摄和编辑 4、AVFoundation 人脸检测  5、AVFoundation 实时滤镜 6、GPUImage框架的使用  7、VideoToolBox和AudioToolBox音视频编解码 8、OpenGL ES 学习
+> 1、暗黑模式  2、AppleID登录应用  3、AVFoundation 高仿微信相机拍摄和编辑 4、AVFoundation 人脸检测  5、AVFoundation 实时滤镜 6、GPUImage框架的使用  7、VideoToolBox和AudioToolBox音视频编解码 8、OpenGL ES学习
 
 ## 1、 暗黑模式适配
 
@@ -56,6 +56,14 @@ iOS的一些示例，不定时更新~ 由于内容较多，文件会有点大，
 > 请查看本仓库下的 VideoEncoder&Decoder 文件
 
 ![音视频编码](PrviewPicture/7、音视频编码.gif)
+
+## 8、OpenGL ES学习
+
+> 示例描述：
+> * 1、GLKit 绘制图片和正方体
+> * 2、GLSL 绘制金字塔、颜色纹理混合
+> * 3、GLSL 滤镜集合：灰度、旋涡、正方形马赛克、六边形马赛克
+> * 4 、GLSL 抖音部分特效：分屏、缩放、抖动、灵魂出窍、毛刺
 
 
 ## Welcome To Follow Me
