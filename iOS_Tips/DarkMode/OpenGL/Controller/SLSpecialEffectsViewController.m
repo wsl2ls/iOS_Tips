@@ -1,18 +1,22 @@
 //
-//  SLSplitScreenViewController.m
+//  SLSpecialEffectsViewController.m
 //  DarkMode
 //
 //  Created by wsl on 2019/12/9.
 //  Copyright © 2019 https://github.com/wsl2ls   ----- . All rights reserved.
 //
 
-#import "SLSplitScreenViewController.h"
+#import "SLSpecialEffectsViewController.h"
 #import "SLSplitScreenCell.h"
 
-@interface SLSplitScreenViewController ()<UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
+@interface SLSpecialEffectsViewController ()
+<UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) NSMutableArray *dataSource;
 @property (nonatomic, assign) NSInteger currentIndex;
+
+@property (nonatomic, strong) CADisplayLink *displayLink; // 用于刷新屏幕
+@property (nonatomic, assign) NSTimeInterval startTimeInterval; // 开始的时间戳
 
 @property (nonatomic, assign) SLSenceVertex *vertices;  // 顶点和纹理坐标缓存
 @property (nonatomic, strong) EAGLContext *context;  //上下文
@@ -22,7 +26,7 @@
 
 @end
 
-@implementation SLSplitScreenViewController
+@implementation SLSpecialEffectsViewController
 
 #pragma mark - Override
 - (void)viewDidLoad {
@@ -50,6 +54,8 @@
         glDeleteProgram(_program);
         _program = 0;
     }
+    [self.displayLink invalidate];
+    self.displayLink = nil;
 }
 - (void)dealloc {
     NSLog(@"%@ 释放了", NSStringFromClass(self.class));
@@ -92,7 +98,7 @@
     
     //6.获取处理的图片路径
     NSString *myBundlePath = [[NSBundle mainBundle] pathForResource:@"Resources" ofType:@"bundle"];
-    NSString *imagePath = [[NSBundle bundleWithPath:myBundlePath] pathForResource:@"素材1" ofType:@"png" inDirectory:@"Images"];
+    NSString *imagePath = [[NSBundle bundleWithPath:myBundlePath] pathForResource:@"lf" ofType:@"jpeg" inDirectory:@"Images"];
     //读取图片
     UIImage *image = [UIImage imageWithContentsOfFile:imagePath];
     //将图片转换成纹理图片
@@ -121,10 +127,20 @@
 }
 // 渲染到屏幕
 - (void)presentRenderbuffer {
+    //DisplayLink 的当前时间撮
+    if (self.startTimeInterval == 0) {
+        self.startTimeInterval = self.displayLink.timestamp;
+    }
+    
     //使用program
     glUseProgram(self.program);
     //绑定buffer
     glBindBuffer(GL_ARRAY_BUFFER, self.vertexBuffer);
+    
+    // 传入时间
+    CGFloat currentTime = self.displayLink.timestamp - self.startTimeInterval;
+    GLuint time = glGetUniformLocation(self.program, "Time");
+    glUniform1f(time, currentTime);
     
     // 清除画布
     glClear(GL_COLOR_BUFFER_BIT);
@@ -247,11 +263,13 @@
 #pragma mark - Shader
 // 初始化着色器程序
 - (void)setupShaderProgramWithName:(NSString *)name {
-    //1. 获取着色器program
+    
+    //如果之前存在此文件就删除，释放内存，防止内存暴涨
     if (_program) {
         glDeleteProgram(_program);
         _program = 0;
     }
+    //1. 获取着色器program
     GLuint program = [self programWithShaderName:name];
     
     //2. use Program
@@ -280,9 +298,7 @@
     //8.保存program,界面销毁则释放
     self.program = program;
 }
-
-#pragma mark - Shader Compile and Link
-//link Program
+//链接 Program
 - (GLuint)programWithShaderName:(NSString *)shaderName {
     //1. 编译顶点着色器/片元着色器
     GLuint vertexShader = [self compileShaderWithName:shaderName type:GL_VERTEX_SHADER];
@@ -309,7 +325,6 @@
     //5.返回program
     return program;
 }
-
 //编译shader代码
 - (GLuint)compileShaderWithName:(NSString *)name type:(GLenum)shaderType {
     
@@ -347,6 +362,24 @@
     return shader;
 }
 
+#pragma mark - 滤镜动画
+// 开始一个滤镜动画
+- (void)startFilerAnimation {
+    //1.判断displayLink 是否为空
+    //CADisplayLink 定时器
+    if (self.displayLink) {
+        [self.displayLink invalidate];
+        self.displayLink = nil;
+    }
+    //2. 设置displayLink 的方法
+    self.startTimeInterval = 0;
+    self.displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(presentRenderbuffer)];
+    
+    //3.将displayLink 添加到runloop 运行循环
+    [self.displayLink addToRunLoop:[NSRunLoop mainRunLoop]
+                           forMode:NSRunLoopCommonModes];
+}
+
 #pragma mark - Getter
 - (UICollectionView *)collectionView {
     if (_collectionView == nil) {
@@ -364,12 +397,11 @@
 - (NSMutableArray *)dataSource {
     if (_dataSource == nil) {
         _dataSource = [NSMutableArray array];
-        for (int i = 1; i < 5; i++) {
-            [_dataSource addObject:@(i)];
-        }
-        [_dataSource addObject:@(6)];
-        [_dataSource addObject:@(9)];
-        [_dataSource addObject:@(16)];
+        [_dataSource addObject:@{@"ShaderName":@"SplitScreen_1", @"FilterName":@"正常"}];
+        [_dataSource addObject:@{@"ShaderName":@"Scale", @"FilterName":@"缩放"}];
+        [_dataSource addObject:@{@"ShaderName":@"Shake", @"FilterName":@"抖动"}];
+        [_dataSource addObject:@{@"ShaderName":@"SoulOut", @"FilterName":@"灵魂出窍"}];
+        [_dataSource addObject:@{@"ShaderName":@"Glitch", @"FilterName":@"毛刺"}];
     }
     return _dataSource;
 }
@@ -383,7 +415,7 @@
 }
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     SLSplitScreenCell * item = [collectionView dequeueReusableCellWithReuseIdentifier:@"ItemId" forIndexPath:indexPath];
-    item.title = [NSString stringWithFormat:@"%d屏",[self.dataSource[indexPath.row] intValue]];
+    item.title = [NSString stringWithFormat:@"%@",self.dataSource[indexPath.row][@"FilterName"]];
     item.isSelect = (self.currentIndex == indexPath.row ? YES : NO);
     return item;
 }
@@ -392,9 +424,9 @@
     self.currentIndex = indexPath.row;
     [collectionView reloadData];
     
-    // 重新 初始化着色器和渲染
-    [self setupShaderProgramWithName:[NSString stringWithFormat:@"SplitScreen_%d",[self.dataSource[indexPath.row] intValue]]];
-    [self presentRenderbuffer];
+    // 重新 更新初始化着色器
+    [self setupShaderProgramWithName:[NSString stringWithFormat:@"%@",self.dataSource[indexPath.row][@"ShaderName"]]];
+    [self startFilerAnimation];
 }
 
 #pragma mark -  UICollectionViewDelegateFlowLayout
@@ -412,4 +444,5 @@
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
     return UIEdgeInsetsMake(0, 10, 0, 10);
 }
+
 @end

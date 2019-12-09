@@ -7,8 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <GLKit/GLKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
+
+typedef struct {
+    GLKVector3 positionCoord; //  顶点坐标
+    GLKVector2 textureCoord; //  纹理坐标
+} SLSenceVertex;
 
 /// 分屏个数选择
 @interface SLSplitScreenCell : UICollectionViewCell

@@ -26,6 +26,24 @@
 		782CFB38239E22AC001B5528 /* SplitScreen_9.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 782CFB36239E22AC001B5528 /* SplitScreen_9.vsh */; };
 		782CFB53239E4587001B5528 /* SplitScreen_16.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 782CFB51239E4587001B5528 /* SplitScreen_16.vsh */; };
 		782CFB54239E4587001B5528 /* SplitScreen_16.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 782CFB52239E4587001B5528 /* SplitScreen_16.fsh */; };
+		782CFB57239E5FE6001B5528 /* SLShaderFilterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 782CFB56239E5FE6001B5528 /* SLShaderFilterViewController.m */; };
+		782CFB5A239E6227001B5528 /* Gray.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 782CFB58239E6226001B5528 /* Gray.fsh */; };
+		782CFB5B239E6227001B5528 /* Gray.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 782CFB59239E6226001B5528 /* Gray.vsh */; };
+		782CFB5E239E622E001B5528 /* Mosaic.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 782CFB5C239E622E001B5528 /* Mosaic.vsh */; };
+		782CFB5F239E622E001B5528 /* Mosaic.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 782CFB5D239E622E001B5528 /* Mosaic.fsh */; };
+		782CFB62239E623D001B5528 /* Cirlce.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 782CFB60239E623D001B5528 /* Cirlce.vsh */; };
+		782CFB63239E623D001B5528 /* Cirlce.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 782CFB61239E623D001B5528 /* Cirlce.fsh */; };
+		782CFB66239E6651001B5528 /* HexagonMosaic.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 782CFB64239E6650001B5528 /* HexagonMosaic.fsh */; };
+		782CFB67239E6651001B5528 /* HexagonMosaic.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 782CFB65239E6651001B5528 /* HexagonMosaic.vsh */; };
+		782CFB6A239E68D5001B5528 /* SLSpecialEffectsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 782CFB69239E68D5001B5528 /* SLSpecialEffectsViewController.m */; };
+		782CFB6D239E69F3001B5528 /* Scale.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 782CFB6B239E69F3001B5528 /* Scale.fsh */; };
+		782CFB6E239E69F3001B5528 /* Scale.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 782CFB6C239E69F3001B5528 /* Scale.vsh */; };
+		782CFB71239E69FA001B5528 /* Shake.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 782CFB6F239E69FA001B5528 /* Shake.vsh */; };
+		782CFB72239E69FA001B5528 /* Shake.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 782CFB70239E69FA001B5528 /* Shake.fsh */; };
+		782CFB75239E6A02001B5528 /* SoulOut.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 782CFB73239E6A02001B5528 /* SoulOut.fsh */; };
+		782CFB76239E6A02001B5528 /* SoulOut.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 782CFB74239E6A02001B5528 /* SoulOut.vsh */; };
+		782CFB79239E6A11001B5528 /* Glitch.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 782CFB77239E6A11001B5528 /* Glitch.fsh */; };
+		782CFB7A239E6A11001B5528 /* Glitch.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 782CFB78239E6A11001B5528 /* Glitch.vsh */; };
 		782E3EB12373D889001E0DF9 /* SLAvCaptureSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 782E3EB02373D889001E0DF9 /* SLAvCaptureSession.m */; };
 		782E3EB42373D8C7001E0DF9 /* SLAvWriterInput.m in Sources */ = {isa = PBXBuildFile; fileRef = 782E3EB32373D8C7001E0DF9 /* SLAvWriterInput.m */; };
 		782E3EB82373F911001E0DF9 /* SLFilterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 782E3EB72373F911001E0DF9 /* SLFilterViewController.m */; };
@@ -123,6 +141,26 @@
 		782CFB36239E22AC001B5528 /* SplitScreen_9.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = SplitScreen_9.vsh; sourceTree = "<group>"; };
 		782CFB51239E4587001B5528 /* SplitScreen_16.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = SplitScreen_16.vsh; sourceTree = "<group>"; };
 		782CFB52239E4587001B5528 /* SplitScreen_16.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = SplitScreen_16.fsh; sourceTree = "<group>"; };
+		782CFB55239E5FE6001B5528 /* SLShaderFilterViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLShaderFilterViewController.h; sourceTree = "<group>"; };
+		782CFB56239E5FE6001B5528 /* SLShaderFilterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLShaderFilterViewController.m; sourceTree = "<group>"; };
+		782CFB58239E6226001B5528 /* Gray.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = Gray.fsh; sourceTree = "<group>"; };
+		782CFB59239E6226001B5528 /* Gray.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = Gray.vsh; sourceTree = "<group>"; };
+		782CFB5C239E622E001B5528 /* Mosaic.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = Mosaic.vsh; sourceTree = "<group>"; };
+		782CFB5D239E622E001B5528 /* Mosaic.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = Mosaic.fsh; sourceTree = "<group>"; };
+		782CFB60239E623D001B5528 /* Cirlce.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = Cirlce.vsh; sourceTree = "<group>"; };
+		782CFB61239E623D001B5528 /* Cirlce.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = Cirlce.fsh; sourceTree = "<group>"; };
+		782CFB64239E6650001B5528 /* HexagonMosaic.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = HexagonMosaic.fsh; sourceTree = "<group>"; };
+		782CFB65239E6651001B5528 /* HexagonMosaic.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = HexagonMosaic.vsh; sourceTree = "<group>"; };
+		782CFB68239E68D5001B5528 /* SLSpecialEffectsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLSpecialEffectsViewController.h; sourceTree = "<group>"; };
+		782CFB69239E68D5001B5528 /* SLSpecialEffectsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLSpecialEffectsViewController.m; sourceTree = "<group>"; };
+		782CFB6B239E69F3001B5528 /* Scale.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = Scale.fsh; sourceTree = "<group>"; };
+		782CFB6C239E69F3001B5528 /* Scale.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = Scale.vsh; sourceTree = "<group>"; };
+		782CFB6F239E69FA001B5528 /* Shake.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = Shake.vsh; sourceTree = "<group>"; };
+		782CFB70239E69FA001B5528 /* Shake.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = Shake.fsh; sourceTree = "<group>"; };
+		782CFB73239E6A02001B5528 /* SoulOut.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = SoulOut.fsh; sourceTree = "<group>"; };
+		782CFB74239E6A02001B5528 /* SoulOut.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = SoulOut.vsh; sourceTree = "<group>"; };
+		782CFB77239E6A11001B5528 /* Glitch.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = Glitch.fsh; sourceTree = "<group>"; };
+		782CFB78239E6A11001B5528 /* Glitch.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = Glitch.vsh; sourceTree = "<group>"; };
 		782E3EAF2373D889001E0DF9 /* SLAvCaptureSession.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLAvCaptureSession.h; sourceTree = "<group>"; };
 		782E3EB02373D889001E0DF9 /* SLAvCaptureSession.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLAvCaptureSession.m; sourceTree = "<group>"; };
 		782E3EB22373D8C7001E0DF9 /* SLAvWriterInput.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLAvWriterInput.h; sourceTree = "<group>"; };
@@ -293,6 +331,22 @@
 				782CFB36239E22AC001B5528 /* SplitScreen_9.vsh */,
 				782CFB52239E4587001B5528 /* SplitScreen_16.fsh */,
 				782CFB51239E4587001B5528 /* SplitScreen_16.vsh */,
+				782CFB58239E6226001B5528 /* Gray.fsh */,
+				782CFB59239E6226001B5528 /* Gray.vsh */,
+				782CFB5D239E622E001B5528 /* Mosaic.fsh */,
+				782CFB5C239E622E001B5528 /* Mosaic.vsh */,
+				782CFB61239E623D001B5528 /* Cirlce.fsh */,
+				782CFB60239E623D001B5528 /* Cirlce.vsh */,
+				782CFB64239E6650001B5528 /* HexagonMosaic.fsh */,
+				782CFB65239E6651001B5528 /* HexagonMosaic.vsh */,
+				782CFB6B239E69F3001B5528 /* Scale.fsh */,
+				782CFB6C239E69F3001B5528 /* Scale.vsh */,
+				782CFB70239E69FA001B5528 /* Shake.fsh */,
+				782CFB6F239E69FA001B5528 /* Shake.vsh */,
+				782CFB73239E6A02001B5528 /* SoulOut.fsh */,
+				782CFB74239E6A02001B5528 /* SoulOut.vsh */,
+				782CFB77239E6A11001B5528 /* Glitch.fsh */,
+				782CFB78239E6A11001B5528 /* Glitch.vsh */,
 			);
 			path = ShaderLanguage;
 			sourceTree = "<group>";
@@ -358,6 +412,10 @@
 				7860D78D2398D34E008C53EC /* SLMixColorTextureVC.m */,
 				782CFB1B239DDE95001B5528 /* SLSplitScreenViewController.h */,
 				782CFB1C239DDE95001B5528 /* SLSplitScreenViewController.m */,
+				782CFB55239E5FE6001B5528 /* SLShaderFilterViewController.h */,
+				782CFB56239E5FE6001B5528 /* SLShaderFilterViewController.m */,
+				782CFB68239E68D5001B5528 /* SLSpecialEffectsViewController.h */,
+				782CFB69239E68D5001B5528 /* SLSpecialEffectsViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -722,18 +780,34 @@
 				783FB4602394A76B0039AEFD /* shaderv.vsh in Resources */,
 				7851CB372331CC87002295B5 /* SLDarkModeViewController.xib in Resources */,
 				782CFB30239E04A2001B5528 /* SplitScreen_4.fsh in Resources */,
+				782CFB63239E623D001B5528 /* Cirlce.fsh in Resources */,
 				782CFB23239DFD0F001B5528 /* SplitScreen_2.fsh in Resources */,
 				782CFB38239E22AC001B5528 /* SplitScreen_9.vsh in Resources */,
 				782CFB53239E4587001B5528 /* SplitScreen_16.vsh in Resources */,
+				782CFB6E239E69F3001B5528 /* Scale.vsh in Resources */,
 				782CFB37239E22AC001B5528 /* SplitScreen_9.fsh in Resources */,
+				782CFB76239E6A02001B5528 /* SoulOut.vsh in Resources */,
 				782CFB54239E4587001B5528 /* SplitScreen_16.fsh in Resources */,
 				782CFB34239E04AD001B5528 /* SplitScreen_6.vsh in Resources */,
+				782CFB62239E623D001B5528 /* Cirlce.vsh in Resources */,
+				782CFB5F239E622E001B5528 /* Mosaic.fsh in Resources */,
+				782CFB6D239E69F3001B5528 /* Scale.fsh in Resources */,
+				782CFB71239E69FA001B5528 /* Shake.vsh in Resources */,
 				78B1048B232F57C30051579F /* Main.storyboard in Resources */,
 				782CFB27239DFD89001B5528 /* SplitScreen_1.fsh in Resources */,
 				783FB4612394A76B0039AEFD /* shaderf.fsh in Resources */,
 				782CFB2F239E04A2001B5528 /* SplitScreen_4.vsh in Resources */,
+				782CFB67239E6651001B5528 /* HexagonMosaic.vsh in Resources */,
 				782CFB2B239E0479001B5528 /* SplitScreen_3.vsh in Resources */,
+				782CFB5B239E6227001B5528 /* Gray.vsh in Resources */,
+				782CFB5E239E622E001B5528 /* Mosaic.vsh in Resources */,
+				782CFB7A239E6A11001B5528 /* Glitch.vsh in Resources */,
+				782CFB5A239E6227001B5528 /* Gray.fsh in Resources */,
+				782CFB66239E6651001B5528 /* HexagonMosaic.fsh in Resources */,
+				782CFB79239E6A11001B5528 /* Glitch.fsh in Resources */,
 				782CFB28239DFD89001B5528 /* SplitScreen_1.vsh in Resources */,
+				782CFB72239E69FA001B5528 /* Shake.fsh in Resources */,
+				782CFB75239E6A02001B5528 /* SoulOut.fsh in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -846,12 +920,14 @@
 				78F54916233383D800910215 /* SLBlurView.m in Sources */,
 				787F01A3236AD8A5002AC1A9 /* SLEditImageController.m in Sources */,
 				780F5306236D8570000D0EA8 /* SLImageClipController.m in Sources */,
+				782CFB6A239E68D5001B5528 /* SLSpecialEffectsViewController.m in Sources */,
 				78B10493232F57C50051579F /* main.m in Sources */,
 				78E179372351A40D0007E4BB /* SLShotFocusView.m in Sources */,
 				78A4BD45236C5DF20021AE32 /* SLEditVideoController.m in Sources */,
 				78B10485232F57C30051579F /* SceneDelegate.m in Sources */,
 				783FB45C2394A4E10039AEFD /* SLShaderLanguageViewController.m in Sources */,
 				78E1791923517F700007E4BB /* SLImageDecoder.m in Sources */,
+				782CFB57239E5FE6001B5528 /* SLShaderFilterViewController.m in Sources */,
 				7822CCF8235B054200E70C29 /* SLPaddingLabel.m in Sources */,
 				788ACD622390BFD400737EC2 /* SLLoadImageVC.m in Sources */,
 				78777CE6238FF65C006FA671 /* SLDelayPerform.m in Sources */,

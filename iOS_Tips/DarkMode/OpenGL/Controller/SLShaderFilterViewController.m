@@ -1,15 +1,16 @@
 //
-//  SLSplitScreenViewController.m
+//  SLFilterViewController.m
 //  DarkMode
 //
 //  Created by wsl on 2019/12/9.
 //  Copyright © 2019 https://github.com/wsl2ls   ----- . All rights reserved.
 //
 
-#import "SLSplitScreenViewController.h"
+#import "SLShaderFilterViewController.h"
 #import "SLSplitScreenCell.h"
 
-@interface SLSplitScreenViewController ()<UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
+@interface SLShaderFilterViewController ()
+<UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) NSMutableArray *dataSource;
 @property (nonatomic, assign) NSInteger currentIndex;
@@ -22,7 +23,7 @@
 
 @end
 
-@implementation SLSplitScreenViewController
+@implementation SLShaderFilterViewController
 
 #pragma mark - Override
 - (void)viewDidLoad {
@@ -92,7 +93,7 @@
     
     //6.获取处理的图片路径
     NSString *myBundlePath = [[NSBundle mainBundle] pathForResource:@"Resources" ofType:@"bundle"];
-    NSString *imagePath = [[NSBundle bundleWithPath:myBundlePath] pathForResource:@"素材1" ofType:@"png" inDirectory:@"Images"];
+    NSString *imagePath = [[NSBundle bundleWithPath:myBundlePath] pathForResource:@"lufei" ofType:@"png" inDirectory:@"Images"];
     //读取图片
     UIImage *image = [UIImage imageWithContentsOfFile:imagePath];
     //将图片转换成纹理图片
@@ -364,12 +365,11 @@
 - (NSMutableArray *)dataSource {
     if (_dataSource == nil) {
         _dataSource = [NSMutableArray array];
-        for (int i = 1; i < 5; i++) {
-            [_dataSource addObject:@(i)];
-        }
-        [_dataSource addObject:@(6)];
-        [_dataSource addObject:@(9)];
-        [_dataSource addObject:@(16)];
+        [_dataSource addObject:@{@"ShaderName":@"SplitScreen_1", @"FilterName":@"正常"}];
+        [_dataSource addObject:@{@"ShaderName":@"Gray", @"FilterName":@"灰度"}];
+        [_dataSource addObject:@{@"ShaderName":@"Mosaic", @"FilterName":@"马赛克"}];
+        [_dataSource addObject:@{@"ShaderName":@"HexagonMosaic", @"FilterName":@"六边形马赛克"}];
+        [_dataSource addObject:@{@"ShaderName":@"Cirlce", @"FilterName":@"旋涡"}];
     }
     return _dataSource;
 }
@@ -383,7 +383,7 @@
 }
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     SLSplitScreenCell * item = [collectionView dequeueReusableCellWithReuseIdentifier:@"ItemId" forIndexPath:indexPath];
-    item.title = [NSString stringWithFormat:@"%d屏",[self.dataSource[indexPath.row] intValue]];
+    item.title = [NSString stringWithFormat:@"%@",self.dataSource[indexPath.row][@"FilterName"]];
     item.isSelect = (self.currentIndex == indexPath.row ? YES : NO);
     return item;
 }
@@ -393,7 +393,7 @@
     [collectionView reloadData];
     
     // 重新 初始化着色器和渲染
-    [self setupShaderProgramWithName:[NSString stringWithFormat:@"SplitScreen_%d",[self.dataSource[indexPath.row] intValue]]];
+    [self setupShaderProgramWithName:[NSString stringWithFormat:@"%@",self.dataSource[indexPath.row][@"ShaderName"]]];
     [self presentRenderbuffer];
 }
 
@@ -412,4 +412,5 @@
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
     return UIEdgeInsetsMake(0, 10, 0, 10);
 }
+
 @end
