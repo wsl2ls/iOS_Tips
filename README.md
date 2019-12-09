@@ -13,7 +13,7 @@ iOS的一些示例，不定时更新~ 由于内容较多，文件会有点大，
 
 * 查看本仓库下的AddingTheSignInWithAppleFlowToYourApp
 
-## 3、微信相机拍摄照片、小视频以及编辑功能  
+## 3、[微信相机拍摄照片、小视频以及编辑功能](https://www.jianshu.com/p/a2a04cabb98d)  
 > 效果描述：  
 > * 1、自定义相机 拍摄视频和照片
 > * 2、切换前后摄像头、调整焦距/设置聚焦点、横屏拍摄
@@ -33,17 +33,17 @@ iOS的一些示例，不定时更新~ 由于内容较多，文件会有点大，
 |![图片编辑](PrviewPicture/3、小视频7.gif)|![图片裁剪](PrviewPicture/3、小视频8.gif)|
 
 
-## 4、人脸检测 
+## 4、[人脸检测](https://www.jianshu.com/p/f236dc161a90) 
 
 ![人脸识别](PrviewPicture/4、人脸识别.gif)
 
-## 5、实时滤镜拍摄和导出
+## 5、[实时滤镜拍摄和导出](https://www.jianshu.com/p/f236dc161a90)
 
 >  主要类: 是由SLAvCaptureTool拆分的 SLAvCaptureSession（采集） + SLAvWriterInput（录制） 两个工具类，方便扩展，实现的方式也略有不同
 
 ![人脸识别](PrviewPicture/5、实时滤镜拍摄.gif)
 
-## 6、GPUImage框架的使用
+## 6、[GPUImage框架的使用](https://www.jianshu.com/p/97740cd381f7)
 
 > 效果描述：实时拍摄添加水印和滤镜、本地视频添加水印、GIF图水印
 
@@ -57,7 +57,7 @@ iOS的一些示例，不定时更新~ 由于内容较多，文件会有点大，
 
 ![音视频编码](PrviewPicture/7、音视频编码.gif)
 
-## 8、OpenGL ES学习
+## 8、[OpenGL ES学习](https://www.jianshu.com/p/9259689cac06)
 
 > 示例描述：
 > * 1、GLKit 绘制图片和正方体
