@@ -1,8 +1,9 @@
 # iOS_Tips
-iOS的一些示例，不定时更新~  简书地址：https://www.jianshu.com/p/a2a04cabb98d
+iOS的一些示例，不定时更新~ 由于内容较多，文件会有点大，建议终端用git clone命令下载，这样以后只需git pull更新就行😀
+简书地址：https://www.jianshu.com/p/a2a04cabb98d 
 
 ### 目录 
-> 1、暗黑模式  2、AppleID登录应用  3、AVFoundation 高仿微信相机拍摄和编辑 4、AVFoundation 人脸检测  5、AVFoundation 实时滤镜 6、GPUImage框架的使用  7、VideoToolBox和AudioToolBox音视频编解码
+> 1、暗黑模式  2、AppleID登录应用  3、AVFoundation 高仿微信相机拍摄和编辑 4、AVFoundation 人脸检测  5、AVFoundation 实时滤镜 6、GPUImage框架的使用  7、VideoToolBox和AudioToolBox音视频编解码 8、OpenGL ES 学习
 
 ## 1、 暗黑模式适配
 
