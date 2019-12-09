@@ -5,11 +5,11 @@ iOS的一些示例，不定时更新~ 由于内容较多，文件会有点大，
 ### 目录 
 > 1、暗黑模式  
 > 2、AppleID登录应用  
-> 3、AVFoundation 高仿微信相机拍摄和编辑 
+> 3、AVFoundation 高仿微信相机拍摄和编辑   
 > 4、AVFoundation 人脸检测  
-> 5、AVFoundation 实时滤镜 
-> 6、GPUImage框架的使用 
-> 7、VideoToolBox和AudioToolBox音视频编解码
+> 5、AVFoundation 实时滤镜  
+> 6、GPUImage框架的使用  
+>7、VideoToolBox和AudioToolBox音视频编解码  
 > 8、OpenGL ES学习
 
 ## 1、 暗黑模式适配
