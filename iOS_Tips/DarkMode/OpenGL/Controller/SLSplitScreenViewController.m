@@ -11,8 +11,8 @@
 #import <GLKit/GLKit.h>
 
 typedef struct {
-    GLKVector3 positionCoord; // (X, Y, Z)  顶点坐标
-    GLKVector2 textureCoord; // (U, V)  纹理坐标
+    GLKVector3 positionCoord; //  顶点坐标
+    GLKVector2 textureCoord; //  纹理坐标
 } SLSenceVertex;
 
 @interface SLSplitScreenViewController ()<UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
@@ -374,6 +374,8 @@ typedef struct {
             [_dataSource addObject:@(i)];
         }
         [_dataSource addObject:@(6)];
+        [_dataSource addObject:@(9)];
+        [_dataSource addObject:@(16)];
     }
     return _dataSource;
 }

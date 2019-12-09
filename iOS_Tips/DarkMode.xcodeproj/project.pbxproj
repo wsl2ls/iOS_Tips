@@ -22,6 +22,10 @@
 		782CFB30239E04A2001B5528 /* SplitScreen_4.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 782CFB2E239E04A2001B5528 /* SplitScreen_4.fsh */; };
 		782CFB33239E04AD001B5528 /* SplitScreen_6.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 782CFB31239E04AD001B5528 /* SplitScreen_6.fsh */; };
 		782CFB34239E04AD001B5528 /* SplitScreen_6.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 782CFB32239E04AD001B5528 /* SplitScreen_6.vsh */; };
+		782CFB37239E22AC001B5528 /* SplitScreen_9.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 782CFB35239E22AC001B5528 /* SplitScreen_9.fsh */; };
+		782CFB38239E22AC001B5528 /* SplitScreen_9.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 782CFB36239E22AC001B5528 /* SplitScreen_9.vsh */; };
+		782CFB53239E4587001B5528 /* SplitScreen_16.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 782CFB51239E4587001B5528 /* SplitScreen_16.vsh */; };
+		782CFB54239E4587001B5528 /* SplitScreen_16.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 782CFB52239E4587001B5528 /* SplitScreen_16.fsh */; };
 		782E3EB12373D889001E0DF9 /* SLAvCaptureSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 782E3EB02373D889001E0DF9 /* SLAvCaptureSession.m */; };
 		782E3EB42373D8C7001E0DF9 /* SLAvWriterInput.m in Sources */ = {isa = PBXBuildFile; fileRef = 782E3EB32373D8C7001E0DF9 /* SLAvWriterInput.m */; };
 		782E3EB82373F911001E0DF9 /* SLFilterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 782E3EB72373F911001E0DF9 /* SLFilterViewController.m */; };
@@ -115,6 +119,10 @@
 		782CFB2E239E04A2001B5528 /* SplitScreen_4.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = SplitScreen_4.fsh; sourceTree = "<group>"; };
 		782CFB31239E04AD001B5528 /* SplitScreen_6.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = SplitScreen_6.fsh; sourceTree = "<group>"; };
 		782CFB32239E04AD001B5528 /* SplitScreen_6.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = SplitScreen_6.vsh; sourceTree = "<group>"; };
+		782CFB35239E22AC001B5528 /* SplitScreen_9.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = SplitScreen_9.fsh; sourceTree = "<group>"; };
+		782CFB36239E22AC001B5528 /* SplitScreen_9.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = SplitScreen_9.vsh; sourceTree = "<group>"; };
+		782CFB51239E4587001B5528 /* SplitScreen_16.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = SplitScreen_16.vsh; sourceTree = "<group>"; };
+		782CFB52239E4587001B5528 /* SplitScreen_16.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = SplitScreen_16.fsh; sourceTree = "<group>"; };
 		782E3EAF2373D889001E0DF9 /* SLAvCaptureSession.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLAvCaptureSession.h; sourceTree = "<group>"; };
 		782E3EB02373D889001E0DF9 /* SLAvCaptureSession.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLAvCaptureSession.m; sourceTree = "<group>"; };
 		782E3EB22373D8C7001E0DF9 /* SLAvWriterInput.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLAvWriterInput.h; sourceTree = "<group>"; };
@@ -281,6 +289,10 @@
 				782CFB2D239E04A1001B5528 /* SplitScreen_4.vsh */,
 				782CFB31239E04AD001B5528 /* SplitScreen_6.fsh */,
 				782CFB32239E04AD001B5528 /* SplitScreen_6.vsh */,
+				782CFB35239E22AC001B5528 /* SplitScreen_9.fsh */,
+				782CFB36239E22AC001B5528 /* SplitScreen_9.vsh */,
+				782CFB52239E4587001B5528 /* SplitScreen_16.fsh */,
+				782CFB51239E4587001B5528 /* SplitScreen_16.vsh */,
 			);
 			path = ShaderLanguage;
 			sourceTree = "<group>";
@@ -711,6 +723,10 @@
 				7851CB372331CC87002295B5 /* SLDarkModeViewController.xib in Resources */,
 				782CFB30239E04A2001B5528 /* SplitScreen_4.fsh in Resources */,
 				782CFB23239DFD0F001B5528 /* SplitScreen_2.fsh in Resources */,
+				782CFB38239E22AC001B5528 /* SplitScreen_9.vsh in Resources */,
+				782CFB53239E4587001B5528 /* SplitScreen_16.vsh in Resources */,
+				782CFB37239E22AC001B5528 /* SplitScreen_9.fsh in Resources */,
+				782CFB54239E4587001B5528 /* SplitScreen_16.fsh in Resources */,
 				782CFB34239E04AD001B5528 /* SplitScreen_6.vsh in Resources */,
 				78B1048B232F57C30051579F /* Main.storyboard in Resources */,
 				782CFB27239DFD89001B5528 /* SplitScreen_1.fsh in Resources */,
