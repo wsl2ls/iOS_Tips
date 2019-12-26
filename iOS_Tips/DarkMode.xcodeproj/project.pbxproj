@@ -432,6 +432,7 @@
 		78777CE1238FF551006FA671 /* Tool */ = {
 			isa = PBXGroup;
 			children = (
+				78AA10F42371A7B50044A6F8 /* PrefixHeader.pch */,
 				78D3095D239688EF00DC373A /* OpenGLUtils */,
 				78777CE4238FF65C006FA671 /* SLDelayPerform.h */,
 				78777CE5238FF65C006FA671 /* SLDelayPerform.m */,
@@ -442,6 +443,16 @@
 		78777CE2238FF5CC006FA671 /* AV */ = {
 			isa = PBXGroup;
 			children = (
+				784B72042334685E006AEE47 /* SLAvPlayer.h */,
+				784B72052334685E006AEE47 /* SLAvPlayer.m */,
+				784B720723348241006AEE47 /* SLAvCaptureTool.h */,
+				784B720823348241006AEE47 /* SLAvCaptureTool.m */,
+				782E3EAF2373D889001E0DF9 /* SLAvCaptureSession.h */,
+				782E3EB02373D889001E0DF9 /* SLAvCaptureSession.m */,
+				782E3EB22373D8C7001E0DF9 /* SLAvWriterInput.h */,
+				782E3EB32373D8C7001E0DF9 /* SLAvWriterInput.m */,
+				78FA0F9E2354141E003E456B /* SLAvEditExport.h */,
+				78FA0F9F2354141E003E456B /* SLAvEditExport.m */,
 			);
 			path = AV;
 			sourceTree = "<group>";
@@ -449,6 +460,10 @@
 		78777CE3238FF5F2006FA671 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				78F54914233383D800910215 /* SLBlurView.h */,
+				78F54915233383D800910215 /* SLBlurView.m */,
+				7822CCF6235B054200E70C29 /* SLPaddingLabel.h */,
+				7822CCF7235B054200E70C29 /* SLPaddingLabel.m */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -638,21 +653,6 @@
 				78777CE1238FF551006FA671 /* Tool */,
 				78777CE2238FF5CC006FA671 /* AV */,
 				78777CE3238FF5F2006FA671 /* UI */,
-				78AA10F42371A7B50044A6F8 /* PrefixHeader.pch */,
-				78F54914233383D800910215 /* SLBlurView.h */,
-				78F54915233383D800910215 /* SLBlurView.m */,
-				7822CCF6235B054200E70C29 /* SLPaddingLabel.h */,
-				7822CCF7235B054200E70C29 /* SLPaddingLabel.m */,
-				784B72042334685E006AEE47 /* SLAvPlayer.h */,
-				784B72052334685E006AEE47 /* SLAvPlayer.m */,
-				784B720723348241006AEE47 /* SLAvCaptureTool.h */,
-				784B720823348241006AEE47 /* SLAvCaptureTool.m */,
-				782E3EAF2373D889001E0DF9 /* SLAvCaptureSession.h */,
-				782E3EB02373D889001E0DF9 /* SLAvCaptureSession.m */,
-				782E3EB22373D8C7001E0DF9 /* SLAvWriterInput.h */,
-				782E3EB32373D8C7001E0DF9 /* SLAvWriterInput.m */,
-				78FA0F9E2354141E003E456B /* SLAvEditExport.h */,
-				78FA0F9F2354141E003E456B /* SLAvEditExport.m */,
 			);
 			path = General;
 			sourceTree = "<group>";
@@ -1105,15 +1105,15 @@
 			baseConfigurationReference = B4CC2A37AE5DCF4056284BE9 /* Pods-DarkMode.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer: qu xg (E3B8HDH8KA)";
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = W47EBNCE5G;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/DarkMode/General/SLAnimateImageView",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SRCROOT)/DarkMode/General/PrefixHeader.pch";
+				GCC_PREFIX_HEADER = "$(SRCROOT)/DarkMode/General/Tool/PrefixHeader.pch";
 				INFOPLIST_FILE = DarkMode/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1121,9 +1121,9 @@
 					"@executable_path/Frameworks",
 				);
 				NEW_SETTING = "";
-				PRODUCT_BUNDLE_IDENTIFIER = com.chinadaily.ChinaDaily;
+				PRODUCT_BUNDLE_IDENTIFIER = com.wsl.demo;
 				PRODUCT_NAME = "iOS - Tips";
-				PROVISIONING_PROFILE_SPECIFIER = "News for iPhone";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -1133,15 +1133,15 @@
 			baseConfigurationReference = D002B8CEA71006D5DD02169F /* Pods-DarkMode.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer: qu xg (E3B8HDH8KA)";
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = W47EBNCE5G;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/DarkMode/General/SLAnimateImageView",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SRCROOT)/DarkMode/General/PrefixHeader.pch";
+				GCC_PREFIX_HEADER = "$(SRCROOT)/DarkMode/General/Tool/PrefixHeader.pch";
 				INFOPLIST_FILE = DarkMode/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1149,9 +1149,9 @@
 					"@executable_path/Frameworks",
 				);
 				NEW_SETTING = "";
-				PRODUCT_BUNDLE_IDENTIFIER = com.chinadaily.ChinaDaily;
+				PRODUCT_BUNDLE_IDENTIFIER = com.wsl.demo;
 				PRODUCT_NAME = "iOS - Tips";
-				PROVISIONING_PROFILE_SPECIFIER = "News for iPhone";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
