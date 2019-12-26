@@ -398,6 +398,9 @@
     editViewController.videoPath = outputFileURL;
     editViewController.modalPresentationStyle = UIModalPresentationFullScreen;
     [self presentViewController:editViewController animated:NO completion:nil];
+    
+    NSInteger fileSize = (NSInteger)[[NSFileManager defaultManager] attributesOfItemAtPath:outputFileURL.path error:nil].fileSize;
+    NSLog(@"视频文件大小 === %fM",fileSize/(1024.0*1024.0));
 }
 
 
