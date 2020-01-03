@@ -56,8 +56,8 @@
         NSInteger bitsPerSecond = numPixels * bitsPerPixel;
         // 码率和帧率设置
         NSDictionary *compressionProperties = @{ AVVideoAverageBitRateKey : @(bitsPerSecond),
-                                                 AVVideoExpectedSourceFrameRateKey : @(30),
-                                                 AVVideoMaxKeyFrameIntervalKey : @(30),
+                                                 AVVideoExpectedSourceFrameRateKey : @(15),
+                                                 AVVideoMaxKeyFrameIntervalKey : @(15),
                                                  AVVideoProfileLevelKey : AVVideoProfileLevelH264High40 };
         CGFloat width = self.videoSize.width * [UIScreen mainScreen].scale;
         CGFloat height = self.videoSize.height * [UIScreen mainScreen].scale;
