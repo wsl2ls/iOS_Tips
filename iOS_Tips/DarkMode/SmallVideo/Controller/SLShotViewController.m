@@ -61,10 +61,10 @@
     [_avCaptureTool removeObserver:self forKeyPath:@"shootingOrientation"];
     [SLDelayPerform sl_cancelDelayPerform];
 }
-- (void)viewSafeAreaInsetsDidChange {
-    [super viewSafeAreaInsetsDidChange];
-    UIEdgeInsets insets = self.view.safeAreaInsets;
-}
+//- (void)viewSafeAreaInsetsDidChange {
+//    [super viewSafeAreaInsetsDidChange];
+//    UIEdgeInsets insets = self.view.safeAreaInsets;
+//}
 - (BOOL)prefersStatusBarHidden {
     return YES;
 }

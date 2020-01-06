@@ -44,7 +44,7 @@
 #pragma mark - Data
 - (void)getData {
     //tableView、UIAlertView等系统控件，在不自定义颜色的情况下，默认颜色都是动态的，支持暗黑模式
-    [self.dataSource addObjectsFromArray:@[@"暗黑/光亮模式", @"AppleId三方登录应用", @"AVFoundation 高仿微信相机拍摄和编辑功能", @"AVFoundation 人脸检测", @"AVFoundation 实时滤镜拍摄和导出", @"GPUImage框架的使用", @"VideoToolBox和AudioToolBox音视频编解码", @"OpenGL-ES学习（doing）"]];
+    [self.dataSource addObjectsFromArray:@[@"暗黑/光亮模式", @"AppleId三方登录应用", @"AVFoundation 高仿微信相机拍摄和编辑功能", @"AVFoundation 人脸检测", @"AVFoundation 实时滤镜拍摄和导出", @"GPUImage框架的使用", @"VideoToolBox和AudioToolBox音视频编解码", @"OpenGL-ES学习"]];
     [self.tableView reloadData];
 }
 

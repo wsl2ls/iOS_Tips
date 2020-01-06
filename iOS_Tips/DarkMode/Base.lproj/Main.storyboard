@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="5LR-oU-7wE">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="5LR-oU-7wE">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
-        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15508"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -11,6 +11,10 @@
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="ViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="kvu-aW-Gpy"/>
+                        <viewControllerLayoutGuide type="bottom" id="vEK-pN-Rgo"/>
+                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="808"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -53,12 +57,11 @@
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="vUa-Pb-3eP" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="CUu-ht-Yj3"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="vUa-Pb-3eP" secondAttribute="bottom" id="XKS-jv-clt"/>
-                            <constraint firstItem="vUa-Pb-3eP" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="Xhs-sI-bum"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="vUa-Pb-3eP" secondAttribute="trailing" id="uzw-bn-Tu6"/>
+                            <constraint firstItem="vUa-Pb-3eP" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="CUu-ht-Yj3"/>
+                            <constraint firstItem="vEK-pN-Rgo" firstAttribute="top" secondItem="vUa-Pb-3eP" secondAttribute="bottom" id="XKS-jv-clt"/>
+                            <constraint firstItem="vUa-Pb-3eP" firstAttribute="top" secondItem="kvu-aW-Gpy" secondAttribute="bottom" id="Xhs-sI-bum"/>
+                            <constraint firstAttribute="trailing" secondItem="vUa-Pb-3eP" secondAttribute="trailing" id="uzw-bn-Tu6"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <navigationItem key="navigationItem" id="LUe-VI-DG8"/>
                     <connections>
