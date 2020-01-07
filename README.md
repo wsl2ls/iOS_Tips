@@ -74,6 +74,15 @@ iOS的一些示例，不定时更新~ 由于内容较多，文件会有点大，
 
 |![OpenGLES学习.gif](PrviewPicture/8、OpenGLES学习1.gif)|![OpenGLES学习](PrviewPicture/8、OpenGLES学习2.gif)|![OpenGLES学习](PrviewPicture/8、OpenGLES学习3.gif)|
 
+
+
+## 学习资料:
+
+> [视觉全训课程](https://ke.qq.com/mobilev2/courseDetail.html?_bid=167&_wv=3&course_id=341576&from=iosapp#from=iosapp)
+
+> [音视频底层特训班](https://ke.qq.com/mobilev2/courseDetail.html?_bid=167&_wv=3&course_id=394488&from=iosapp#from=iosapp)
+
+
 ## Welcome To Follow Me
 
 >  您的follow和start，是我前进的动力，Thanks♪(･ω･)ﾉ
