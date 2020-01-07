@@ -77,15 +77,7 @@ iOS的一些示例，不定时更新~ 由于内容较多，文件会有点大，
 
 ## 推荐学习资料:
 
-> [OpenGL、Metal视觉全训课程](https://ke.qq.com/mobilev2/courseDetail.html?_bid=167&_wv=3&course_id=341576&from=iosapp#from=iosapp)
-
-> [音视频底层特训班](https://ke.qq.com/mobilev2/courseDetail.html?_bid=167&_wv=3&course_id=394488&from=iosapp#from=iosapp)
-
-> [iOS底层原理班（下）OC对象关联对象多线程内存管理性能优化](https://ke.qq.com/mobilev2/courseDetail.html?_bid=167&_wv=3&course_id=314526&from=iosapp#from=iosapp)
-
-> [iOS底层原理班(上) APP逆向实战、加壳脱壳、数据安全、编译原理](https://ke.qq.com/mobilev2/courseDetail.html?_bid=167&_wv=3&course_id=314070&from=iosapp#from=iosapp)
-
-> [Swift从入门到精通](https://ke.qq.com/mobilev2/courseDetail.html?_bid=167&_wv=3&course_id=392094&saleToken=1693443&from=iosapp#from=iosapp)
+> [Swift从入门到精通](https://ke.qq.com/course/392094?saleToken=1693443&from=pclink)
 
 
 ## Welcome To Follow Me
