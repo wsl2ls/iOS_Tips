@@ -83,6 +83,8 @@ iOS的一些示例，不定时更新~ 由于内容较多，文件会有点大，
 
 > [恋上数据结构与算法（二）](https://ke.qq.com/course/421398?saleToken=1887679&from=pclink)
 
+> [每周一道算法题](https://ke.qq.com/course/436549?saleToken=1887824&from=pclink)
+
 ## Welcome To Follow Me
 
 >  您的follow和start，是我前进的动力，Thanks♪(･ω･)ﾉ
