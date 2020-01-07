@@ -77,7 +77,7 @@ iOS的一些示例，不定时更新~ 由于内容较多，文件会有点大，
 
 ## 推荐学习资料:
 
-> [视觉全训课程](https://ke.qq.com/mobilev2/courseDetail.html?_bid=167&_wv=3&course_id=341576&from=iosapp#from=iosapp)
+> [OpenGL、Metal视觉全训课程](https://ke.qq.com/mobilev2/courseDetail.html?_bid=167&_wv=3&course_id=341576&from=iosapp#from=iosapp)
 
 > [音视频底层特训班](https://ke.qq.com/mobilev2/courseDetail.html?_bid=167&_wv=3&course_id=394488&from=iosapp#from=iosapp)
 
