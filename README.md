@@ -9,8 +9,9 @@ iOS的一些示例，不定时更新~ 由于内容较多，文件会有点大，
 > 4、AVFoundation 人脸检测  
 > 5、AVFoundation 实时滤镜  
 > 6、GPUImage框架的使用  
->7、VideoToolBox和AudioToolBox音视频编解码  
-> 8、OpenGL ES学习
+> 7、VideoToolBox和AudioToolBox音视频编解码  
+> 8、OpenGL ES学习   
+> 9、LeetCode算法练习 
 
 ## 1、 暗黑模式适配
 
@@ -73,6 +74,10 @@ iOS的一些示例，不定时更新~ 由于内容较多，文件会有点大，
 > * 4 、GLSL 抖音部分特效：分屏、缩放、抖动、灵魂出窍、毛刺
 
 |![OpenGLES学习.gif](PrviewPicture/8、OpenGLES学习1.gif)|![OpenGLES学习](PrviewPicture/8、OpenGLES学习2.gif)|![OpenGLES学习](PrviewPicture/8、OpenGLES学习3.gif)|
+
+## 9、[LeetCode算法练习](https://github.com/wsl2ls/AlgorithmSet.git)
+
+> LeetCode算法练习集合(Swift版) ~ 每天一道算法题 
 
 
 ## 推荐学习资料:
