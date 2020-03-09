@@ -21,6 +21,7 @@
         return _overrideNextResponder;
     }
 }
+// UIMenuController 菜单可以执行操作
 - (BOOL)canPerformAction:(SEL)action withSender:(id)sender {
     if (_overrideNextResponder != nil) {
         return NO;
@@ -32,6 +33,7 @@
 @interface SLLable : UILabel
 @end
 @implementation SLLable
+// UIMenuController 菜单可以执行操作
 -(BOOL)canPerformAction:(SEL)action withSender:(id)sender {
     if (action == @selector(save:) ||
         action == @selector(note:) ||
@@ -40,6 +42,7 @@
     }
     return NO;
 }
+// 能否成为第一响应者
 - (BOOL)canBecomeFirstResponder {
     return YES;
 }
@@ -69,16 +72,13 @@
     [self.titleLabel addGestureRecognizer:longPressGestureRecognizer];
 }
 
-//点击显示菜单
-- (void)longPressShowMenuView:(UITapGestureRecognizer *)tap {
-    BOOL isFirstResponder = NO;
+//长按显示菜单 UIMenuController
+- (void)longPressShowMenuView:(UILongPressGestureRecognizer *)longPress {
     if(self.textView.isFirstResponder){
+        //如果textView是第一响应者，则对titleLabel进行响应透传
         self.textView.overrideNextResponder = self.titleLabel;
-        isFirstResponder = YES;
-    }
-    if(isFirstResponder){
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(menuViewDidHide:) name:UIMenuControllerDidHideMenuNotification object:nil];
-    } else {
+    }else {
         [self.titleLabel becomeFirstResponder];
     }
     
@@ -94,6 +94,7 @@
     }
 }
 
+// 隐藏菜单UIMenuController
 - (void)menuViewDidHide:(NSNotification*)notification {
     self.textView.overrideNextResponder = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIMenuControllerDidHideMenuNotification object:nil];
