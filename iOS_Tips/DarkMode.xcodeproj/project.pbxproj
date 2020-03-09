@@ -92,6 +92,8 @@
 		78E179312351A4020007E4BB /* SLShotViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E1792F2351A4020007E4BB /* SLShotViewController.m */; };
 		78E179362351A40D0007E4BB /* SLEditMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E179332351A40D0007E4BB /* SLEditMenuView.m */; };
 		78E179372351A40D0007E4BB /* SLShotFocusView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E179342351A40D0007E4BB /* SLShotFocusView.m */; };
+		78EF8B6024162B96008D0CD7 /* SLMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78EF8B5E24162B96008D0CD7 /* SLMenuViewController.m */; };
+		78EF8B6124162B96008D0CD7 /* SLMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 78EF8B5F24162B96008D0CD7 /* SLMenuViewController.xib */; };
 		78F42023237915730093497C /* SLGPUImageController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78F42022237915730093497C /* SLGPUImageController.m */; };
 		78F54916233383D800910215 /* SLBlurView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78F54915233383D800910215 /* SLBlurView.m */; };
 		78FA0F9D235407E6003E456B /* SLDrawView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78FA0F9C235407E6003E456B /* SLDrawView.m */; };
@@ -255,6 +257,9 @@
 		78E179332351A40D0007E4BB /* SLEditMenuView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLEditMenuView.m; sourceTree = "<group>"; };
 		78E179342351A40D0007E4BB /* SLShotFocusView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLShotFocusView.m; sourceTree = "<group>"; };
 		78E179352351A40D0007E4BB /* SLEditMenuView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLEditMenuView.h; sourceTree = "<group>"; };
+		78EF8B5D24162B96008D0CD7 /* SLMenuViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLMenuViewController.h; sourceTree = "<group>"; };
+		78EF8B5E24162B96008D0CD7 /* SLMenuViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLMenuViewController.m; sourceTree = "<group>"; };
+		78EF8B5F24162B96008D0CD7 /* SLMenuViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SLMenuViewController.xib; sourceTree = "<group>"; };
 		78F42021237915730093497C /* SLGPUImageController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLGPUImageController.h; sourceTree = "<group>"; };
 		78F42022237915730093497C /* SLGPUImageController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLGPUImageController.m; sourceTree = "<group>"; };
 		78F54914233383D800910215 /* SLBlurView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLBlurView.h; sourceTree = "<group>"; };
@@ -517,6 +522,7 @@
 				782E3EB52373F892001E0DF9 /* Filter */,
 				78F4201E237913C80093497C /* GPUImageDemo */,
 				78777CDB238FEA15006FA671 /* OpenGL */,
+				78EF8B5C24162B07008D0CD7 /* UIMenuController */,
 				78B10489232F57C30051579F /* Main.storyboard */,
 				78B1048C232F57C50051579F /* Assets.xcassets */,
 				78B1048E232F57C50051579F /* LaunchScreen.storyboard */,
@@ -617,6 +623,16 @@
 				786147F02362A39500C5424C /* Resources.bundle */,
 			);
 			path = Recource;
+			sourceTree = "<group>";
+		};
+		78EF8B5C24162B07008D0CD7 /* UIMenuController */ = {
+			isa = PBXGroup;
+			children = (
+				78EF8B5D24162B96008D0CD7 /* SLMenuViewController.h */,
+				78EF8B5E24162B96008D0CD7 /* SLMenuViewController.m */,
+				78EF8B5F24162B96008D0CD7 /* SLMenuViewController.xib */,
+			);
+			path = UIMenuController;
 			sourceTree = "<group>";
 		};
 		78F4201E237913C80093497C /* GPUImageDemo */ = {
@@ -779,6 +795,7 @@
 				78B1048D232F57C50051579F /* Assets.xcassets in Resources */,
 				783FB4602394A76B0039AEFD /* shaderv.vsh in Resources */,
 				7851CB372331CC87002295B5 /* SLDarkModeViewController.xib in Resources */,
+				78EF8B6124162B96008D0CD7 /* SLMenuViewController.xib in Resources */,
 				782CFB30239E04A2001B5528 /* SplitScreen_4.fsh in Resources */,
 				782CFB63239E623D001B5528 /* Cirlce.fsh in Resources */,
 				782CFB23239DFD0F001B5528 /* SplitScreen_2.fsh in Resources */,
@@ -897,6 +914,7 @@
 				78DAA113235FF61E00A60F64 /* SLEditVideoClipping.m in Sources */,
 				782E3EB42373D8C7001E0DF9 /* SLAvWriterInput.m in Sources */,
 				78804A7E237D5E3E0087E152 /* SLWaterMarkController.m in Sources */,
+				78EF8B6024162B96008D0CD7 /* SLMenuViewController.m in Sources */,
 				78D30964239688EF00DC373A /* GLESUtils.m in Sources */,
 				784B720923348241006AEE47 /* SLAvCaptureTool.m in Sources */,
 				786147F42362D79000C5424C /* SLMosaicView.m in Sources */,

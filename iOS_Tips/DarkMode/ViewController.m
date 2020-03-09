@@ -13,6 +13,7 @@
 #import "SLFilterViewController.h"
 #import "SLGPUImageController.h"
 #import "SLOpenGLController.h"
+#import "SLMenuViewController.h"
 
 @interface ViewController ()<UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, strong) NSMutableArray *dataSource;
@@ -44,7 +45,7 @@
 #pragma mark - Data
 - (void)getData {
     //tableView、UIAlertView等系统控件，在不自定义颜色的情况下，默认颜色都是动态的，支持暗黑模式
-    [self.dataSource addObjectsFromArray:@[@"暗黑/光亮模式", @"AppleId三方登录应用", @"AVFoundation 高仿微信相机拍摄和编辑功能", @"AVFoundation 人脸检测", @"AVFoundation 实时滤镜拍摄和导出", @"GPUImage框架的使用", @"VideoToolBox和AudioToolBox音视频编解码", @"OpenGL-ES学习", @"LeetCode算法练习集合"]];
+    [self.dataSource addObjectsFromArray:@[@"暗黑/光亮模式", @"AppleId三方登录应用", @"AVFoundation 高仿微信相机拍摄和编辑功能", @"AVFoundation 人脸检测", @"AVFoundation 实时滤镜拍摄和导出", @"GPUImage框架的使用", @"VideoToolBox和AudioToolBox音视频编解码", @"OpenGL-ES学习", @"LeetCode算法练习集合", @"键盘和UIMenuController的冲突问题"]];
     [self.tableView reloadData];
 }
 
@@ -117,6 +118,11 @@
         case 8: {
             NSLog(@"LeetCode算法练习集合地址：https://github.com/wsl2ls/AlgorithmSet.git");
         }
+            break;
+        case 9: {
+            SLMenuViewController *menuViewController = [[SLMenuViewController alloc] init];
+            [self.navigationController pushViewController:menuViewController animated:YES];
+            }
             break;
         default:
             break;

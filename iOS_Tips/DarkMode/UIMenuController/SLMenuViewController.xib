@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SLMenuViewController">
+            <connections>
+                <outlet property="textView" destination="xci-Nm-D6S" id="jJw-UA-KB1"/>
+                <outlet property="titleLabel" destination="zSf-na-Qmx" id="iQu-DX-a9S"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="微信公众号：iOS2679114653" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="xci-Nm-D6S" customClass="SLTextView">
+                    <rect key="frame" x="87" y="209" width="240" height="84"/>
+                    <color key="backgroundColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="84" id="0Mk-S7-C1P"/>
+                    </constraints>
+                    <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                    <dataDetectorType key="dataDetectorTypes" link="YES"/>
+                </textView>
+                <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="点击弹出UIMenuViewController" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zSf-na-Qmx" customClass="SLLable">
+                    <rect key="frame" x="0.0" y="130" width="414" height="46"/>
+                    <color key="backgroundColor" systemColor="systemTealColor" red="0.35294117650000001" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="46" id="ABg-2J-weV"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="zSf-na-Qmx" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="Mzr-Fj-clm"/>
+                <constraint firstItem="xci-Nm-D6S" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="87" id="SkD-zi-wC3"/>
+                <constraint firstItem="zSf-na-Qmx" firstAttribute="trailing" secondItem="Q5M-cg-NOt" secondAttribute="trailing" id="ihV-l0-T6d"/>
+                <constraint firstItem="xci-Nm-D6S" firstAttribute="top" secondItem="zSf-na-Qmx" secondAttribute="bottom" constant="33" id="p7t-6E-IgM"/>
+                <constraint firstItem="zSf-na-Qmx" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" constant="86" id="rVw-p4-5Z4"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="xci-Nm-D6S" secondAttribute="trailing" constant="87" id="yoD-4Q-wFe"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
+            <point key="canvasLocation" x="137.68115942028987" y="104.46428571428571"/>
+        </view>
+    </objects>
+</document>
