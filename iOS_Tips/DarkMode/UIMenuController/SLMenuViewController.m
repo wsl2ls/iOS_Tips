@@ -64,7 +64,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"键盘和UIMenuController的冲突问题";
+    self.title = @"键盘和UIMenuController并存解决";
     UILongPressGestureRecognizer *longPressGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressShowMenuView:)];
     [self.titleLabel addGestureRecognizer:longPressGestureRecognizer];
 }
