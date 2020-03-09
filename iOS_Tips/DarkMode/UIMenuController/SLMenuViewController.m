@@ -65,15 +65,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"键盘和UIMenuController的冲突问题";
-    UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapShowMenuView:)];
-    [self.titleLabel addGestureRecognizer:tapGestureRecognizer];
+    UILongPressGestureRecognizer *longPressGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressShowMenuView:)];
+    [self.titleLabel addGestureRecognizer:longPressGestureRecognizer];
 }
 
 //点击显示菜单
-- (void)tapShowMenuView:(UITapGestureRecognizer *)tap {
-    
-    UIMenuController *menuController = [UIMenuController sharedMenuController];
-    
+- (void)longPressShowMenuView:(UITapGestureRecognizer *)tap {
     BOOL isFirstResponder = NO;
     if(self.textView.isFirstResponder){
         self.textView.overrideNextResponder = self.titleLabel;
@@ -85,16 +82,15 @@
         [self.titleLabel becomeFirstResponder];
     }
     
-    if (!menuController.menuVisible) {
-        UIMenuItem *saveItems = [[UIMenuItem alloc] initWithTitle:@"保存" action:@selector(save:)];
-        UIMenuItem *noteItem = [[UIMenuItem alloc] initWithTitle:@"笔记" action:@selector(note:)];
-        menuController.menuItems = @[noteItem, saveItems];
-        if (@available(iOS 13.0, *)) {
-            [menuController showMenuFromView:self.view rect:self.titleLabel.frame];
-        } else {
-            [menuController setTargetRect:self.titleLabel.frame inView:self.view];
-            [menuController setMenuVisible:YES animated:YES];
-        }
+    UIMenuController *menuController = [UIMenuController sharedMenuController];
+    UIMenuItem *saveItems = [[UIMenuItem alloc] initWithTitle:@"保存" action:@selector(save:)];
+    UIMenuItem *noteItem = [[UIMenuItem alloc] initWithTitle:@"笔记" action:@selector(note:)];
+    menuController.menuItems = @[noteItem, saveItems];
+    if (@available(iOS 13.0, *)) {
+        [menuController showMenuFromView:self.view rect:self.titleLabel.frame];
+    } else {
+        [menuController setTargetRect:self.titleLabel.frame inView:self.view];
+        [menuController setMenuVisible:YES animated:YES];
     }
 }
 
