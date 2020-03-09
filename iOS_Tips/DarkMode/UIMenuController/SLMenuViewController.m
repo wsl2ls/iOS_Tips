@@ -29,9 +29,7 @@
 }
 @end
 
-
 @interface SLLable : UILabel
-
 @end
 @implementation SLLable
 -(BOOL)canPerformAction:(SEL)action withSender:(id)sender {
@@ -69,10 +67,12 @@
     self.title = @"键盘和UIMenuController的冲突问题";
     UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapShowMenuView:)];
     [self.titleLabel addGestureRecognizer:tapGestureRecognizer];
-    
 }
 
-- (void)tapShowMenuView:(UILongPressGestureRecognizer *)longPress {
+//点击显示菜单
+- (void)tapShowMenuView:(UITapGestureRecognizer *)tap {
+    
+    UIMenuController *menuController = [UIMenuController sharedMenuController];
     
     BOOL isFirstResponder = NO;
     if(self.textView.isFirstResponder){
@@ -80,12 +80,11 @@
         isFirstResponder = YES;
     }
     if(isFirstResponder){
-        //          [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(menuDidHide:) name:UIMenuControllerDidHideMenuNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(menuViewDidHide:) name:UIMenuControllerDidHideMenuNotification object:nil];
     } else {
         [self.titleLabel becomeFirstResponder];
     }
     
-    UIMenuController *menuController = [UIMenuController sharedMenuController];
     if (!menuController.menuVisible) {
         UIMenuItem *saveItems = [[UIMenuItem alloc] initWithTitle:@"保存" action:@selector(save:)];
         UIMenuItem *noteItem = [[UIMenuItem alloc] initWithTitle:@"笔记" action:@selector(note:)];
@@ -97,6 +96,11 @@
             [menuController setMenuVisible:YES animated:YES];
         }
     }
+}
+
+- (void)menuViewDidHide:(NSNotification*)notification {
+    self.textView.overrideNextResponder = nil;
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIMenuControllerDidHideMenuNotification object:nil];
 }
 
 @end
