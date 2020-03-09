@@ -11,8 +11,10 @@ iOS的一些示例，不定时更新~ 由于内容较多，文件会有点大，
 > 6、GPUImage框架的使用  
 > 7、VideoToolBox和AudioToolBox音视频编解码  
 > 8、OpenGL ES学习   
-> 9、LeetCode算法练习 
-
+> 9、LeetCode算法练习  
+> 10、键盘和UIMenuController的并存问题
+ 
+ 
 ## 1、 暗黑模式适配
 
 ![暗黑模式](PrviewPicture/暗黑模式.gif)
@@ -78,6 +80,10 @@ iOS的一些示例，不定时更新~ 由于内容较多，文件会有点大，
 ## 9、[LeetCode算法练习](https://github.com/wsl2ls/AlgorithmSet.git)
 
 > [LeetCode算法练习集合(Swift版) ~ 每天一道算法题](https://github.com/wsl2ls/AlgorithmSet.git)  
+
+## 10、[键盘和UIMenuController的并存问题]()
+
+| ![问题描述.gif](PrviewPicture/10、键盘和UIMenuController不能同时出现的问题描述.gif) | ![并存问题解决](PrviewPicture/10、键盘和UIMenuController并存问题解决.gif) |
 
 
 ## 推荐学习资料:
