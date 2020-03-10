@@ -94,7 +94,7 @@
     }
 }
 
-// 隐藏菜单UIMenuController
+// 隐藏菜单UIMenuController的通知
 - (void)menuViewDidHide:(NSNotification*)notification {
     self.textView.overrideNextResponder = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIMenuControllerDidHideMenuNotification object:nil];
