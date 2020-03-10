@@ -10,7 +10,7 @@
 
 
 @interface SLTextView : UITextView
-@property (nonatomic, weak) UIResponder *overrideNextResponder;
+@property (nonatomic, weak) UIResponder *overrideNextResponder; //覆盖下一个响应者
 @end
 @implementation SLTextView
 
@@ -74,11 +74,14 @@
 
 //长按显示菜单 UIMenuController
 - (void)longPressShowMenuView:(UILongPressGestureRecognizer *)longPress {
+    //编辑过程中，self.textView是第一响应者
     if(self.textView.isFirstResponder){
-        //如果textView是第一响应者，则对titleLabel进行响应透传
+        //如果textView是第一响应者，则对titleLabel进行响应链透传，覆盖self.textView的下一个响应者
         self.textView.overrideNextResponder = self.titleLabel;
+        //添加菜单隐藏的监听，当菜单隐藏时，要重置self.textView.overrideNextResponder = nil
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(menuViewDidHide:) name:UIMenuControllerDidHideMenuNotification object:nil];
     }else {
+        //如果当前无第一响应者，就成为第一响应者
         [self.titleLabel becomeFirstResponder];
     }
     
@@ -96,6 +99,7 @@
 
 // 隐藏菜单UIMenuController的通知
 - (void)menuViewDidHide:(NSNotification*)notification {
+    //重置，不影响原有的响应链
     self.textView.overrideNextResponder = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIMenuControllerDidHideMenuNotification object:nil];
 }
