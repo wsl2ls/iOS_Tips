@@ -80,6 +80,7 @@
         }
             break;
         case 1: {
+             [SLAlertView showAlertViewWithText:@"查看本仓库下的AddingTheSignInWithAppleFlowToYourApp" delayHid:2];
             NSLog(@"查看本仓库下的AddingTheSignInWithAppleFlowToYourApp");
         }
             break;
@@ -108,6 +109,7 @@
         }
             break;
         case 6:
+            [SLAlertView showAlertViewWithText:@"查看本仓库下的VideoEncoder&Decoder" delayHid:2];
             NSLog(@"查看本仓库下的VideoEncoder&Decoder");
             break;
         case 7: {
@@ -116,6 +118,7 @@
         }
             break;
         case 8: {
+            [SLAlertView showAlertViewWithText:@"LeetCode算法练习集合地址：https://github.com/wsl2ls/AlgorithmSet.git" delayHid:2];
             NSLog(@"LeetCode算法练习集合地址：https://github.com/wsl2ls/AlgorithmSet.git");
         }
             break;

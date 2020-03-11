@@ -16,11 +16,17 @@
 
 // 这个定义全工程都可以调用，不用重复引入
 
-///我的简书和Github地址
+///我的联系方式
 #define SL_JianShuUrl @"https://www.jianshu.com/u/e15d1f644bea"
 #define SL_GithubUrl @"https://github.com/wsl2ls/iOS_Tips.git"
+#define SL_WeChat @"iOS2679114653"
+#define SL_QQGroup @"835303405"
+#define SL_WeiBo @"https://weibo.com/5732733120/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1"
+#define SL_CSDN  @"https://blog.csdn.net/wsl2ls"
+#define SL_JueJin @"https://juejin.im/user/5c00d97b6fb9a049fb436288"
+#define SL_Blog @"https://wsl2ls.github.io"
 
-//----------------------About UI  ----------------------------
+//---------------------- About UI  ----------------------------
 
 /// 屏幕宽高
 #define SL_kScreenWidth [UIScreen mainScreen].bounds.size.width
@@ -32,7 +38,7 @@
 ///主线程操作
 #define SL_DISPATCH_ON_MAIN_THREAD(mainQueueBlock) dispatch_async(dispatch_get_main_queue(),mainQueueBlock);
 
-//----------------------About Color 颜色 ----------------------------
+//---------------------- About Color 颜色 ----------------------------
 
 /// 随机颜色
 #define SL_UIColorFromRandomColor [UIColor colorWithRed:arc4random()%255/255.0 green:arc4random()%255/255.0 blue:arc4random()%255/255.0 alpha:1.0]
@@ -41,7 +47,7 @@
 /// 16进制 颜色
 #define SL_UIColorFromHex(rgbValue, a) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:(a)]
 
-//----------------------About Log 打印日志 ----------------------------
+//---------------------- About Log 打印日志 ----------------------------
 
 /// 打印
 #define SL_NSLog(...) printf("%f %s %ld :%s\n",[[NSDate date]timeIntervalSince1970],strrchr(__FILE__,'/'),[[NSNumber numberWithInt:__LINE__] integerValue],[[NSString stringWithFormat:__VA_ARGS__]UTF8String]);
@@ -51,7 +57,7 @@
 #   define SL_Log(...)
 #endif
 
-//----------------------About Shader 着色器 ----------------------------
+//---------------------- About Shader 着色器 ----------------------------
 //#x 将参数x字符串化
 #define STRINGIZE(x)    #x
 #define STRINGIZE2(x)    STRINGIZE(x)
@@ -60,6 +66,7 @@
 
 #import "UIView+SLFrame.h"
 #import "SLDelayPerform.h"
+#import "SLAlertView.h"
 
 #endif
 

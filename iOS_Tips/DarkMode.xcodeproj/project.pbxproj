@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -94,6 +94,7 @@
 		78E179372351A40D0007E4BB /* SLShotFocusView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E179342351A40D0007E4BB /* SLShotFocusView.m */; };
 		78EF8B6024162B96008D0CD7 /* SLMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78EF8B5E24162B96008D0CD7 /* SLMenuViewController.m */; };
 		78EF8B6124162B96008D0CD7 /* SLMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 78EF8B5F24162B96008D0CD7 /* SLMenuViewController.xib */; };
+		78EF8B6424188767008D0CD7 /* SLAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78EF8B6324188767008D0CD7 /* SLAlertView.m */; };
 		78F42023237915730093497C /* SLGPUImageController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78F42022237915730093497C /* SLGPUImageController.m */; };
 		78F54916233383D800910215 /* SLBlurView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78F54915233383D800910215 /* SLBlurView.m */; };
 		78FA0F9D235407E6003E456B /* SLDrawView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78FA0F9C235407E6003E456B /* SLDrawView.m */; };
@@ -260,6 +261,8 @@
 		78EF8B5D24162B96008D0CD7 /* SLMenuViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLMenuViewController.h; sourceTree = "<group>"; };
 		78EF8B5E24162B96008D0CD7 /* SLMenuViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLMenuViewController.m; sourceTree = "<group>"; };
 		78EF8B5F24162B96008D0CD7 /* SLMenuViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SLMenuViewController.xib; sourceTree = "<group>"; };
+		78EF8B6224188767008D0CD7 /* SLAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLAlertView.h; sourceTree = "<group>"; };
+		78EF8B6324188767008D0CD7 /* SLAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLAlertView.m; sourceTree = "<group>"; };
 		78F42021237915730093497C /* SLGPUImageController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLGPUImageController.h; sourceTree = "<group>"; };
 		78F42022237915730093497C /* SLGPUImageController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLGPUImageController.m; sourceTree = "<group>"; };
 		78F54914233383D800910215 /* SLBlurView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLBlurView.h; sourceTree = "<group>"; };
@@ -469,6 +472,8 @@
 				78F54915233383D800910215 /* SLBlurView.m */,
 				7822CCF6235B054200E70C29 /* SLPaddingLabel.h */,
 				7822CCF7235B054200E70C29 /* SLPaddingLabel.m */,
+				78EF8B6224188767008D0CD7 /* SLAlertView.h */,
+				78EF8B6324188767008D0CD7 /* SLAlertView.m */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -851,24 +856,11 @@
 			files = (
 			);
 			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-DarkMode/Pods-DarkMode-resources.sh",
-				"${PODS_ROOT}/GPUImage/framework/Resources/lookup.png",
-				"${PODS_ROOT}/GPUImage/framework/Resources/lookup_amatorka.png",
-				"${PODS_ROOT}/GPUImage/framework/Resources/lookup_miss_etikate.png",
-				"${PODS_ROOT}/GPUImage/framework/Resources/lookup_soft_elegance_1.png",
-				"${PODS_ROOT}/GPUImage/framework/Resources/lookup_soft_elegance_2.png",
+				"${PODS_ROOT}/Target Support Files/Pods-DarkMode/Pods-DarkMode-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-			);
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/lookup.png",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/lookup_amatorka.png",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/lookup_miss_etikate.png",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/lookup_soft_elegance_1.png",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/lookup_soft_elegance_2.png",
+				"${PODS_ROOT}/Target Support Files/Pods-DarkMode/Pods-DarkMode-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -953,6 +945,7 @@
 				782CFB20239DEA05001B5528 /* SLSplitScreenCell.m in Sources */,
 				7830A59E2358520200BC79BA /* SLEditTextView.m in Sources */,
 				7860D78E2398D34E008C53EC /* SLMixColorTextureVC.m in Sources */,
+				78EF8B6424188767008D0CD7 /* SLAlertView.m in Sources */,
 				78E179312351A4020007E4BB /* SLShotViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
