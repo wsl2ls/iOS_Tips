@@ -237,7 +237,7 @@
 /// 完成写入
 - (void)finishWriting {
     __weak typeof(self) weakSelf = self;
-    if(_assetWriter && _assetWriter.status == AVAssetWriterStatusWriting) {
+    if(_assetWriter && self.isStartWriting) {
         [_assetWriter finishWritingWithCompletionHandler:^{
             weakSelf.isStartWriting = NO;
             weakSelf.inputPixelBufferAdptor = nil;

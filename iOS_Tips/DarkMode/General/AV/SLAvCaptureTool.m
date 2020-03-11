@@ -408,7 +408,7 @@
     if (_isRecording) {
         _isRecording = NO;
         __weak typeof(self) weakSelf = self;
-        if(_assetWriter && _assetWriter.status == AVAssetWriterStatusWriting) {
+        if(_assetWriter && self.canWrite) {
             [_assetWriter finishWritingWithCompletionHandler:^{
                 weakSelf.canWrite = NO;
                 weakSelf.assetWriter = nil;
@@ -448,7 +448,7 @@
     if (_isRecording) {
         _isRecording = NO;
         __weak typeof(self) weakSelf = self;
-        if(_assetWriter && _assetWriter.status == AVAssetWriterStatusWriting) {
+        if(_assetWriter && self.canWrite) {
             [_assetWriter finishWritingWithCompletionHandler:^{
                 weakSelf.canWrite = NO;
                 weakSelf.assetWriter = nil;
