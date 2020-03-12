@@ -426,7 +426,13 @@
         waterMarkController.videoPath = [NSURL fileURLWithPath:KRecordVideoFilePath];
         waterMarkController.modalPresentationStyle = UIModalPresentationFullScreen;
         waterMarkController.videoOrientation = self.shootingOrientation;
-        [self presentViewController:waterMarkController animated:NO completion:nil];
+        [self presentViewController:waterMarkController animated:NO completion:^{
+            NSString *result = @"录制成功";
+            NSLog(@"%@", result);
+            [SLAlertView showAlertViewWithText:result delayHid:1];
+        }];
+    }else {
+         [SLAlertView showAlertViewWithText:@"录制失败" delayHid:1];
     }
 }
 // 添加水印

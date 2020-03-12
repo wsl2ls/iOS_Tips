@@ -251,13 +251,11 @@
         [PHAssetChangeRequest creationRequestForAssetFromVideoAtFileURL:self.videoPath];
     } completionHandler:^(BOOL success, NSError * _Nullable error) {
         SL_DISPATCH_ON_MAIN_THREAD(^{
-            [self againShotBtnClicked:nil];
+            [self dismissViewControllerAnimated:NO completion:^{
+                NSString *result = success ? @"视频保存至相册 成功" : @"保存视频到相册 失败 ";
+                [SLAlertView showAlertViewWithText:result delayHid:1];
+            }];
         });
-        if (success) {
-            NSLog(@"视频保存至相册 成功");
-        } else {
-            NSLog(@"保存视频到相册 失败 ");
-        }
     }];
     
 }
@@ -271,6 +269,7 @@
     self.movieWriter = nil;
     NSLog(@"add水印成功");
     SL_DISPATCH_ON_MAIN_THREAD(^{
+        [SLAlertView showAlertViewWithText:@"add水印成功" delayHid:1];
         self.videoPath = [NSURL fileURLWithPath:KWatermarkVideoFilePath];
         self.avPlayer.url = self.videoPath;
         [self.activityIndicatorView stopAnimating];
@@ -281,6 +280,7 @@
 - (void)movieRecordingFailedWithError:(NSError *)error {
     NSLog(@"add水印失败");
     SL_DISPATCH_ON_MAIN_THREAD(^{
+        [SLAlertView showAlertViewWithText:@"add水印失败" delayHid:1];
         [self.activityIndicatorView stopAnimating];
         [self.activityIndicatorView removeFromSuperview];
     });

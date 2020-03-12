@@ -391,16 +391,19 @@
 }
 //音视频输出完成
 - (void)captureTool:(SLAvCaptureTool *)captureTool didFinishRecordingToOutputFileAtURL:(NSURL *)outputFileURL error:(NSError *)error {
-//    self.videoPath = outputFileURL;
+    
     [self.avCaptureTool stopRunning];
     NSLog(@"结束录制");
     SLEditVideoController * editViewController = [[SLEditVideoController alloc] init];
     editViewController.videoPath = outputFileURL;
     editViewController.modalPresentationStyle = UIModalPresentationFullScreen;
-    [self presentViewController:editViewController animated:NO completion:nil];
+    [self presentViewController:editViewController animated:NO completion:^{
+        NSString *result = error ? @"录制失败" : @"录制成功";
+        [SLAlertView showAlertViewWithText:result delayHid:1];
+    }];
     
     NSInteger fileSize = (NSInteger)[[NSFileManager defaultManager] attributesOfItemAtPath:outputFileURL.path error:nil].fileSize;
-    NSLog(@"视频文件大小 === %fM",fileSize/(1024.0*1024.0));
+    NSLog(@"视频文件大小 === %.2fM",fileSize/(1024.0*1024.0));
 }
 
 

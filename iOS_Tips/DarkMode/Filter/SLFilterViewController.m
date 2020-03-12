@@ -497,7 +497,11 @@
     SLEditVideoController * editViewController = [[SLEditVideoController alloc] init];
     editViewController.videoPath = outputFileURL;
     editViewController.modalPresentationStyle = UIModalPresentationFullScreen;
-    [self presentViewController:editViewController animated:NO completion:nil];
+    [self presentViewController:editViewController animated:NO completion:^{
+        NSString *result = error ? @"录制失败" : @"录制成功";
+        NSLog(@"%@", result);
+        [SLAlertView showAlertViewWithText:result delayHid:1];
+    }];
 }
 
 @end

@@ -461,24 +461,23 @@
         SL_DISPATCH_ON_MAIN_THREAD(^{
             [self againShotBtnClicked:nil];
         });
-        if (success) {
-            NSLog(@"视频保存至相册 成功");
-        } else {
-            NSLog(@"保存视频到相册 失败 ");
-        }
+        NSString *result = success ? @"视频保存至相册 成功" : @"保存视频到相册 失败 ";
+        NSLog(@"%@", result);
+        SL_DISPATCH_ON_MAIN_THREAD(^{
+            [SLAlertView showAlertViewWithText:result delayHid:1];
+        });
     }];
     
 }
 //保存图片完成后调用的方法
 - (void)savedPhotoImage:(UIImage*)image didFinishSavingWithError:(NSError *)error contextInfo: (void *)contextInfo {
     SL_DISPATCH_ON_MAIN_THREAD(^{
-        [self againShotBtnClicked:nil];
+        [self dismissViewControllerAnimated:NO completion:^{
+            NSString *result = error ? @"图片保存至相册 失败" : @"图片保存到相册 成功";
+            NSLog(@"%@", result);
+            [SLAlertView showAlertViewWithText:result delayHid:1];
+        }];
     });
-    if (error) {
-        NSLog(@"保存图片出错%@", error.localizedDescription);
-    } else {
-        NSLog(@"保存图片成功");
-    }
 }
 //取消编辑
 - (void)cancleEditBtnClicked:(id)sender {
@@ -529,6 +528,8 @@
         [self cancleEditBtnClicked:nil];
         [activityIndicatorView stopAnimating];
         [activityIndicatorView removeFromSuperview];
+        NSString *result = error ? @"导出失败" : @"导出成功";
+        [SLAlertView showAlertViewWithText:result delayHid:1];
     } progress:^(float progress) {
         //        NSLog(@"视频导出进度 %f",progress);
     }];

@@ -202,11 +202,11 @@
                 //写入视频数据
                 if (self.assetWriterVideoInput.readyForMoreMediaData && self.isStartWriting) {
                     BOOL success = [self.assetWriterVideoInput appendSampleBuffer:sampleBuffer];
-                    if (!success) {
-                        @synchronized (self) {
-                            [self finishWriting];
-                        }
-                    }
+//                    if (!success) {
+//                        @synchronized (self) {
+//                            [self finishWriting];
+//                        }
+//                    }
                 }
             }
         }
@@ -225,11 +225,11 @@
             if (self.assetWriterAudioInput.readyForMoreMediaData && self.isStartWriting == YES) {
                 //写入音频数据
                 BOOL success = [self.assetWriterAudioInput appendSampleBuffer:sampleBuffer];
-                if (!success) {
-                    @synchronized (self) {
-                        [self finishWriting];
-                    }
-                }
+//                if (!success) {
+//                    @synchronized (self) {
+//                        [self finishWriting];
+//                    }
+//                }
             }
         }
     }

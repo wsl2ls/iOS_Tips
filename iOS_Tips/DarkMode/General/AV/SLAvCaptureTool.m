@@ -570,11 +570,11 @@
             //写入视频数据
             if (self.assetWriterVideoInput.readyForMoreMediaData) {
                 BOOL success = [self.assetWriterVideoInput appendSampleBuffer:sampleBuffer];
-                if (!success) {
-                    @synchronized (self) {
-                        [self stopRecordVideo];
-                    }
-                }
+//                if (!success) {
+//                    @synchronized (self) {
+//                        [self stopRecordVideo];
+//                    }
+//                }
             }
         }
     }
@@ -591,15 +591,15 @@
             if (self.assetWriterAudioInput.readyForMoreMediaData && self.canWrite) {
                 //写入音频数据
                 BOOL success = [self.assetWriterAudioInput appendSampleBuffer:sampleBuffer];
-                if (!success) {
-                    @synchronized (self) {
-                        if (self.avCaptureType == SLAvCaptureTypeAudio) {
-                            [self stopRecordAudio];
-                        }else if (self.avCaptureType == SLAvCaptureTypeAv || self.avCaptureType == SLAvCaptureTypeVideo) {
-                            [self stopRecordVideo];
-                        }
-                    }
-                }
+//                if (!success) {
+//                    @synchronized (self) {
+//                        if (self.avCaptureType == SLAvCaptureTypeAudio) {
+//                            [self stopRecordAudio];
+//                        }else if (self.avCaptureType == SLAvCaptureTypeAv || self.avCaptureType == SLAvCaptureTypeVideo) {
+//                            [self stopRecordVideo];
+//                        }
+//                    }
+//                }
             }
         }
     }
