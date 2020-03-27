@@ -410,15 +410,15 @@
         __weak typeof(self) weakSelf = self;
         if(_assetWriter && self.canWrite) {
             [_assetWriter finishWritingWithCompletionHandler:^{
-                weakSelf.canWrite = NO;
-                weakSelf.assetWriter = nil;
-                weakSelf.assetWriterAudioInput = nil;
-                weakSelf.assetWriterVideoInput = nil;
                 if ([weakSelf.delegate respondsToSelector:@selector(captureTool:didFinishRecordingToOutputFileAtURL:error:)]) {
                     SL_DISPATCH_ON_MAIN_THREAD(^{
                         [weakSelf.delegate captureTool:weakSelf didFinishRecordingToOutputFileAtURL:weakSelf.outputFileURL error:weakSelf.assetWriter.error];
                     });
                 }
+                weakSelf.canWrite = NO;
+                weakSelf.assetWriter = nil;
+                weakSelf.assetWriterAudioInput = nil;
+                weakSelf.assetWriterVideoInput = nil;
             }];
         }
     }
@@ -450,15 +450,15 @@
         __weak typeof(self) weakSelf = self;
         if(_assetWriter && self.canWrite) {
             [_assetWriter finishWritingWithCompletionHandler:^{
-                weakSelf.canWrite = NO;
-                weakSelf.assetWriter = nil;
-                weakSelf.assetWriterAudioInput = nil;
-                weakSelf.assetWriterVideoInput = nil;
                 if ([weakSelf.delegate respondsToSelector:@selector(captureTool:didFinishRecordingToOutputFileAtURL:error:)]) {
                     SL_DISPATCH_ON_MAIN_THREAD(^{
                         [weakSelf.delegate captureTool:weakSelf didFinishRecordingToOutputFileAtURL:weakSelf.outputFileURL error:weakSelf.assetWriter.error];
                     });
                 }
+                weakSelf.canWrite = NO;
+                weakSelf.assetWriter = nil;
+                weakSelf.assetWriterAudioInput = nil;
+                weakSelf.assetWriterVideoInput = nil;
             }];
         }
     }
@@ -570,11 +570,15 @@
             //写入视频数据
             if (self.assetWriterVideoInput.readyForMoreMediaData) {
                 BOOL success = [self.assetWriterVideoInput appendSampleBuffer:sampleBuffer];
-//                if (!success) {
-//                    @synchronized (self) {
-//                        [self stopRecordVideo];
-//                    }
-//                }
+                if (!success) {
+                    NSLog(@"视频写入失败, 错误：%@" ,self.assetWriter.error.localizedDescription);
+                }
+                
+                //                if (!success) {
+                //                    @synchronized (self) {
+                //                        [self stopRecordVideo];
+                //                    }
+                //                }
             }
         }
     }
@@ -591,15 +595,18 @@
             if (self.assetWriterAudioInput.readyForMoreMediaData && self.canWrite) {
                 //写入音频数据
                 BOOL success = [self.assetWriterAudioInput appendSampleBuffer:sampleBuffer];
-//                if (!success) {
-//                    @synchronized (self) {
-//                        if (self.avCaptureType == SLAvCaptureTypeAudio) {
-//                            [self stopRecordAudio];
-//                        }else if (self.avCaptureType == SLAvCaptureTypeAv || self.avCaptureType == SLAvCaptureTypeVideo) {
-//                            [self stopRecordVideo];
-//                        }
-//                    }
-//                }
+                if (!success) {
+                    NSLog(@"音频写入失败, 错误：%@" ,self.assetWriter.error.localizedDescription);
+                }
+                //                if (!success) {
+                //                    @synchronized (self) {
+                //                        if (self.avCaptureType == SLAvCaptureTypeAudio) {
+                //                            [self stopRecordAudio];
+                //                        }else if (self.avCaptureType == SLAvCaptureTypeAv || self.avCaptureType == SLAvCaptureTypeVideo) {
+                //                            [self stopRecordVideo];
+                //                        }
+                //                    }
+                //                }
             }
         }
     }

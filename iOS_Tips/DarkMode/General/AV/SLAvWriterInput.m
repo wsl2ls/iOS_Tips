@@ -179,6 +179,7 @@
                         if (self.assetWriter.status == AVAssetWriterStatusWriting) {
                             BOOL success = [self.inputPixelBufferAdptor appendPixelBuffer:newPixelBuffer withPresentationTime:self.currentSampleTime];
                             if (!success) {
+                                NSLog(@"视频写入失败, 错误：%@" ,self.assetWriter.error.localizedDescription);
                                 [self finishWriting];
                             }
                         }
@@ -202,11 +203,12 @@
                 //写入视频数据
                 if (self.assetWriterVideoInput.readyForMoreMediaData && self.isStartWriting) {
                     BOOL success = [self.assetWriterVideoInput appendSampleBuffer:sampleBuffer];
-//                    if (!success) {
-//                        @synchronized (self) {
-//                            [self finishWriting];
-//                        }
-//                    }
+                    if (!success) {
+                        @synchronized (self) {
+                            NSLog(@"视频写入失败, 错误：%@" ,self.assetWriter.error.localizedDescription);
+                            [self finishWriting];
+                        }
+                    }
                 }
             }
         }
@@ -225,11 +227,12 @@
             if (self.assetWriterAudioInput.readyForMoreMediaData && self.isStartWriting == YES) {
                 //写入音频数据
                 BOOL success = [self.assetWriterAudioInput appendSampleBuffer:sampleBuffer];
-//                if (!success) {
-//                    @synchronized (self) {
-//                        [self finishWriting];
-//                    }
-//                }
+                if (!success) {
+                    @synchronized (self) {
+                        NSLog(@"音频写入失败, 错误：%@" ,self.assetWriter.error.localizedDescription);
+                        [self finishWriting];
+                    }
+                }
             }
         }
     }
@@ -239,17 +242,17 @@
     __weak typeof(self) weakSelf = self;
     if(_assetWriter && self.isStartWriting) {
         [_assetWriter finishWritingWithCompletionHandler:^{
+            if ([weakSelf.delegate respondsToSelector:@selector(writerInput:didFinishRecordingToOutputFileAtURL:error:)]) {
+                SL_DISPATCH_ON_MAIN_THREAD(^{
+                    [weakSelf.delegate writerInput:weakSelf didFinishRecordingToOutputFileAtURL:weakSelf.outputFileURL error:weakSelf.assetWriter.error];
+                });
+            }
             weakSelf.isStartWriting = NO;
             weakSelf.inputPixelBufferAdptor = nil;
             weakSelf.context = nil;
             weakSelf.assetWriter = nil;
             weakSelf.assetWriterAudioInput = nil;
             weakSelf.assetWriterVideoInput = nil;
-            if ([weakSelf.delegate respondsToSelector:@selector(writerInput:didFinishRecordingToOutputFileAtURL:error:)]) {
-                SL_DISPATCH_ON_MAIN_THREAD(^{
-                    [weakSelf.delegate writerInput:weakSelf didFinishRecordingToOutputFileAtURL:weakSelf.outputFileURL error:weakSelf.assetWriter.error];
-                });
-            }
         }];
     }
 }
