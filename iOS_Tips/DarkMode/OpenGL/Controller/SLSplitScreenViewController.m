@@ -59,6 +59,7 @@
 - (void)setupUI {
     self.view.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.collectionView];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"切换图片" style:UIBarButtonItemStyleDone target:self action:@selector(changeImage:)];
 }
 
 #pragma mark - FilterInit
@@ -90,14 +91,24 @@
     //5.绑定渲染缓存区
     [self bindRenderLayer:layer];
     
-    //6.获取处理的图片路径
+    //6.获取纹理 并载入图像纹理数据
+    GLuint textureID;
+    //获取纹理ID
+    glGenTextures(1, &textureID);
+    //绑定纹理
+    /*
+     参数1：纹理维度
+     参数2：纹理ID,因为只有一个纹理，给0就可以了。
+     */
+    glBindTexture(GL_TEXTURE_2D, textureID);
+    //获取处理的图片路径
     NSString *myBundlePath = [[NSBundle mainBundle] pathForResource:@"Resources" ofType:@"bundle"];
     NSString *imagePath = [[NSBundle bundleWithPath:myBundlePath] pathForResource:@"素材1" ofType:@"png" inDirectory:@"Images"];
     //读取图片
     UIImage *image = [UIImage imageWithContentsOfFile:imagePath];
-    //将图片转换成纹理图片
-    GLuint textureID = [self createTextureWithImage:image];
-    //设置纹理ID
+    //将图片转换成纹理数据 并载入纹理数据
+    [self createTextureWithImage:image];
+    //保存纹理ID
     self.textureID = textureID;  // 将纹理 ID 保存，方便后面切换滤镜的时候重用
     
     //7.设置视口
@@ -153,7 +164,7 @@
                               renderBuffer);
 }
 //从图片中加载纹理
-- (GLuint)createTextureWithImage:(UIImage *)image {
+- (void)createTextureWithImage:(UIImage *)image {
     
     //1、将 UIImage 转换为 CGImageRef
     CGImageRef cgImageRef = [image CGImage];
@@ -193,12 +204,7 @@
     CGContextDrawImage(context, rect, cgImageRef);
     
     //设置图片纹理属性
-    //5. 获取纹理ID
-    GLuint textureID;
-    glGenTextures(1, &textureID);
-    glBindTexture(GL_TEXTURE_2D, textureID);
-    
-    //6.载入纹理2D数据
+    //5.载入纹理2D数据
     /*
      参数1：纹理模式，GL_TEXTURE_1D、GL_TEXTURE_2D、GL_TEXTURE_3D
      参数2：加载的层次，一般设置为0
@@ -212,25 +218,16 @@
      */
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, imageData);
     
-    //7.设置纹理属性
+    //6.设置纹理属性
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     
-    //8.绑定纹理
-    /*
-     参数1：纹理维度
-     参数2：纹理ID,因为只有一个纹理，给0就可以了。
-     */
-    glBindTexture(GL_TEXTURE_2D, 0);
-    
-    //9.释放context,imageData
+    //7.释放context,imageData
     CGContextRelease(context);
     free(imageData);
-    
-    //10.返回纹理ID
-    return textureID;
+
 }
 //获取渲染缓存区的宽
 - (GLint)drawableWidth {
@@ -264,6 +261,11 @@
     
     //4.激活纹理,绑定纹理ID
     glActiveTexture(GL_TEXTURE0);
+    //绑定纹理
+    /*
+     参数1：纹理维度
+     参数2：纹理ID,因为只有一个纹理，给0就可以了。
+     */
     glBindTexture(GL_TEXTURE_2D, self.textureID);
     
     //5.纹理sample
@@ -372,6 +374,19 @@
         [_dataSource addObject:@(16)];
     }
     return _dataSource;
+}
+
+#pragma mark - Events Handle
+//切换图片
+- (void)changeImage:(id)sender {
+    //更换图片
+    NSString *myBundlePath = [[NSBundle mainBundle] pathForResource:@"Resources" ofType:@"bundle"];
+    NSString *imagePath = [[NSBundle bundleWithPath:myBundlePath] pathForResource:@"素材2" ofType:@"png" inDirectory:@"Images"];
+    UIImage *image = [UIImage imageWithContentsOfFile:imagePath];
+    //载入纹理数据
+    [self createTextureWithImage:image];
+    //重新渲染到屏幕
+    [self presentRenderbuffer];
 }
 
 #pragma mark - UICollectionViewDelegate, UICollectionViewDataSource
