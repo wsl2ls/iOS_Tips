@@ -85,16 +85,13 @@ iOS的一些示例，不定时更新~ 由于内容较多，文件会有点大，
 
 | ![问题描述.gif](PrviewPicture/10、键盘和UIMenuController不能同时出现的问题描述.gif) | ![并存问题解决](PrviewPicture/10、键盘和UIMenuController并存问题解决.gif) |
 
+## 部分问题说明：
 
-## 推荐学习资料:
+> * 1. 小视频拍摄录制失败，主要集中在plus和X系列手机上，可能是由于写入的视频宽高videoSize设置的问题，各位试试这样设置
+avCaptureTool.videoSize = CGSizeMake(self.view.width * 0.8, self.view.height * 0.8);
 
-> [Swift从入门到精通](https://ke.qq.com/course/392094?saleToken=1693443&from=pclink)
 
-> [恋上数据结构与算法（一）](https://ke.qq.com/course/385223?saleToken=1887678&from=pclink)
 
-> [恋上数据结构与算法（二）](https://ke.qq.com/course/421398?saleToken=1887679&from=pclink)
-
-> [每周一道算法题](https://ke.qq.com/course/436549?saleToken=1887824&from=pclink)
 
 ## Welcome To Follow Me
 
@@ -110,3 +107,12 @@ iOS的一些示例，不定时更新~ 由于内容较多，文件会有点大，
 
 ![iOS开发进阶之路.jpg](http://upload-images.jianshu.io/upload_images/1708447-c2471528cadd7c86.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
+## 推荐学习资料:
+
+> [Swift从入门到精通](https://ke.qq.com/course/392094?saleToken=1693443&from=pclink)
+
+> [恋上数据结构与算法（一）](https://ke.qq.com/course/385223?saleToken=1887678&from=pclink)
+
+> [恋上数据结构与算法（二）](https://ke.qq.com/course/421398?saleToken=1887679&from=pclink)
+
+> [每周一道算法题](https://ke.qq.com/course/436549?saleToken=1887824&from=pclink)
