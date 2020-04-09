@@ -73,7 +73,7 @@ iOS的一些示例，不定时更新~ 由于内容较多，文件会有点大，
 
 ## 部分问题说明：
 
-* 1. 小视频拍摄录制失败，主要集中在plus和X系列手机上：可能是由于写入的视频宽高videoSize设置的问题，各位可以先试试这样设置
+* 1、 小视频拍摄录制失败，主要集中在plus和X系列手机上：可能是由于写入的视频宽高videoSize设置的问题，各位可以先试试这样设置
 avCaptureTool.videoSize = CGSizeMake(self.view.width * 0.8, self.view.height * 0.8);
 
 
