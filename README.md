@@ -49,7 +49,7 @@ iOS的一些示例，不定时更新~ 由于内容较多，文件会有点大，
 
 ## 5、[实时滤镜拍摄和导出](https://www.jianshu.com/p/f236dc161a90)
 
->  主要类: 是由SLAvCaptureTool拆分的 SLAvCaptureSession（采集） + SLAvWriterInput（录制） 两个工具类，方便扩展，实现的方式也略有不同
+>  主要类: 是由SLAvCaptureTool拆分的 SLAvCaptureSession（采集） + SLAvWriterInput（录制） 两个工具类，方便扩展，录制写入实现的方式也略有不同
 
 ![人脸识别](PrviewPicture/5、实时滤镜拍摄.gif)
 
@@ -85,6 +85,25 @@ iOS的一些示例，不定时更新~ 由于内容较多，文件会有点大，
 
 | ![问题描述.gif](PrviewPicture/10、键盘和UIMenuController不能同时出现的问题描述.gif) | ![并存问题解决](PrviewPicture/10、键盘和UIMenuController并存问题解决.gif) |
 
+## 部分问题说明：
+
+> * 1、小视频拍摄录制失败，主要集中在plus和X系列手机上：可能是由于写入的视频宽高videoSize设置的问题，各位可以先试试这样设置
+avCaptureTool.videoSize = CGSizeMake(self.view.width * 0.8, self.view.height * 0.8);
+
+
+## Welcome To Follow Me
+
+>  您的follow和start，是我前进的动力，Thanks♪(･ω･)ﾉ
+> * [简书](https://www.jianshu.com/u/e15d1f644bea)
+> * [微博](https://weibo.com/5732733120/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1)
+> * [掘金](https://juejin.im/user/5c00d97b6fb9a049fb436288)
+> * [CSDN](https://blog.csdn.net/wsl2ls)
+> * QQ交流群：835303405
+> * 微信号：w2679114653
+
+> 欢迎扫描下方二维码关注——奔跑的程序猿iOSer——微信公众号：iOS2679114653 本公众号是一个iOS开发者们的分享，交流，学习平台，会不定时的发送技术干货，源码,也欢迎大家积极踊跃投稿，(择优上头条) ^_^分享自己开发攻城的过程，心得，相互学习，共同进步，成为攻城狮中的翘楚！
+
+![iOS开发进阶之路.jpg](http://upload-images.jianshu.io/upload_images/1708447-c2471528cadd7c86.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 ## 推荐学习资料:
 
@@ -95,17 +114,3 @@ iOS的一些示例，不定时更新~ 由于内容较多，文件会有点大，
 > [恋上数据结构与算法（二）](https://ke.qq.com/course/421398?saleToken=1887679&from=pclink)
 
 > [每周一道算法题](https://ke.qq.com/course/436549?saleToken=1887824&from=pclink)
-
-## Welcome To Follow Me
-
->  您的follow和start，是我前进的动力，Thanks♪(･ω･)ﾉ
-> * [简书](https://www.jianshu.com/u/e15d1f644bea)
-> * [微博](https://weibo.com/5732733120/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1)
-> * [掘金](https://juejin.im/user/5c00d97b6fb9a049fb436288)
-> * [CSDN](https://blog.csdn.net/wsl2ls)
-> * QQ交流群：835303405
-
-> 欢迎扫描下方二维码关注——奔跑的程序猿iOSer——微信公众号：iOS2679114653 本公众号是一个iOS开发者们的分享，交流，学习平台，会不定时的发送技术干货，源码,也欢迎大家积极踊跃投稿，(择优上头条) ^_^分享自己开发攻城的过程，心得，相互学习，共同进步，成为攻城狮中的翘楚！
-
-![iOS开发进阶之路.jpg](http://upload-images.jianshu.io/upload_images/1708447-c2471528cadd7c86.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-
