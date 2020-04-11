@@ -7,12 +7,14 @@
 //
 
 #import "SLCrashViewController.h"
+#import "NSArray+Crash.h"
 
 @interface SLCrashViewController ()
 
 @end
 
 @implementation SLCrashViewController
+
 
 #pragma mark - Override
 - (void)viewDidLoad {
@@ -23,13 +25,18 @@
 #pragma mark - UI
 - (void)setupUI {
     self.navigationItem.title = @"iOS Crash防护";
+    
+    [self testArray];
 }
 
-#pragma mark - Data
-
-#pragma mark - Getter
-
 #pragma mark - HelpMethods
+//数组防护
+- (void)testArray {
+    NSArray *array = @[@"哈哈", @"hh"];
+//    id elem1 = array.lastObject;
+//    id elem2 = array[2];
+    id elem3 = [array objectAtIndex:2];
+}
 
 #pragma mark - EventsHandle
 
