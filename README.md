@@ -16,6 +16,20 @@ iOS的一些示例，不定时更新~ 由于内容较多，文件会有点大，
  
  
 ## 1、 暗黑模式适配
+
+![暗黑模式](PrviewPicture/暗黑模式.gif)
+  
+## 2、AppleID登录应用
+
+* 查看本仓库下的AddingTheSignInWithAppleFlowToYourApp
+
+## 3、[微信相机拍摄照片、小视频以及编辑功能](https://www.jianshu.com/p/a2a04cabb98d)  
+> 效果描述：  
+> * 1、自定义相机 拍摄视频和照片
+> * 2、切换前后摄像头、调整焦距/设置聚焦点、横屏拍摄
+> * 3、视频编辑：涂鸦、gif贴图、文字水印、视频裁剪 、添加背景音乐 
+> * 4 、图片编辑：涂鸦、贴图、文字水印、马赛克、图片裁剪
+
 > 主要类：SLAvCaptureTool(音视频采集录制工具)、SLAvEditExport(导出编辑的音视频)。关于视频的压缩问题，可以通过降低采集时的分辨率sessionPreset、降低写入文件时的分辨率(AVVideoWidthKey宽AVVideoHeightKey高)和码率(AVVideoCodecKey)、指定高的FormatProfile(AVVideoProfileLevelKey)等方法来实现，同时也要保证一定的清晰度满足业务的需求， 可以看看这篇文章https://www.jianshu.com/p/4f69c22c6dce 
 
 |![拍摄视频.gif](PrviewPicture/3、小视频1.gif)|![拍摄照片](PrviewPicture/3、小视频2.gif)|![横屏视频](PrviewPicture/3、小视频3.gif)|
