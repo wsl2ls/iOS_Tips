@@ -14,10 +14,14 @@
 + (void)load {
     [super load];
     
-    //替换不可变数组方法
+    // 不可变数组
+    // 越界保护
     SL_ExchangeInstanceMethod(NSClassFromString(@"__NSArrayI"), @selector(objectAtIndex:), NSClassFromString(@"__NSArrayI"), @selector(sl_objectAtIndex:));
-//    SL_ExchangeInstanceMethod(NSClassFromString(@"__NSSingleObjectArrayI"), @selector(objectAtIndex:), NSClassFromString(@"__NSSingleObjectArrayI"), @selector(BMP__NSSingleObjectArrayIObjectAtIndex:));
-//    SL_ExchangeInstanceMethod(NSClassFromString(@"__NSArray0"), @selector(objectAtIndex:), NSClassFromString(@"__NSArray0"), @selector(BMP__NSArray0ObjectAtIndex:));
+    SL_ExchangeInstanceMethod(NSClassFromString(@"__NSArrayI"), @selector(objectAtIndexedSubscript:), NSClassFromString(@"__NSArrayI"), @selector(sl_objectAtIndexedSubscript:));
+    SL_ExchangeInstanceMethod(NSClassFromString(@"__NSSingleObjectArrayI"), @selector(objectAtIndex:), NSClassFromString(@"__NSSingleObjectArrayI"), @selector(sl_singleObjectAtIndex:));
+    // nil值保护
+    SL_ExchangeInstanceMethod(NSClassFromString(@"__NSPlaceholderArray"), @selector(initWithObjects:count:), NSClassFromString(@"__NSPlaceholderArray"), @selector(sl_initWithObjects:count:));
+    
     
     //
     //替换可变数组方法
@@ -26,6 +30,7 @@
     //    method_exchangeImplementations(oldMutableObjectAtIndex, newMutableObjectAtIndex);
 }
 
+#pragma mark - Help Methods
 /*交换实例方法*/
 void SL_ExchangeInstanceMethod(Class _originalClass ,SEL _originalSel, Class _targetClass, SEL _targetSel){
     Method methodOriginal = class_getInstanceMethod(_originalClass, _originalSel);
@@ -44,6 +49,9 @@ void SL_ExchangeClassMethod(Class _class ,SEL _originalSel,SEL _exchangeSel){
     method_exchangeImplementations(methodOriginal, methodNew);
 }
 
+
+#pragma mark - Exchange Methods
+//[array objectAtIndex:0] 越界
 - (id)sl_objectAtIndex:(NSInteger)index {
     if (index >= self.count || !self.count) {
         //可能抛出异常的代码
@@ -51,40 +59,58 @@ void SL_ExchangeClassMethod(Class _class ,SEL _originalSel,SEL _exchangeSel){
             return [self sl_objectAtIndex:index];
         }
         @catch (NSException *exception) {
-            NSLog(@"数组异常: %@", exception.reason);
+            NSLog(@"异常:数组越界 %@", exception.reason);
             return nil;
         }
     }else {
         return [self sl_objectAtIndex:index];
     }
 }
-
-- (id)BMP__NSSingleObjectArrayIObjectAtIndex:(NSInteger)index  {
-    
+// 越界
+- (id)sl_singleObjectAtIndex:(NSInteger)index {
     if (index >= self.count || !self.count) {
         //可能抛出异常的代码
         @try {
-            return [self BMP__NSSingleObjectArrayIObjectAtIndex:index];
+            return [self sl_singleObjectAtIndex:index];
         }
         @catch (NSException *exception) {
-            NSLog(@"数组异常: %@", exception.reason);
+            NSLog(@"异常:数组越界 %@", exception.reason);
+            return nil;
+        }
+    }else {
+        return [self sl_singleObjectAtIndex:index];
+    }
+}
+//array[0] 越界
+- (id)sl_objectAtIndexedSubscript:(NSInteger)index {
+    if (index >= self.count || !self.count) {
+        //记录错误
+        //NSString *errorInfo = [NSString stringWithFormat:@"*** -[__NSArrayI objectAtIndexedSubscript:]: index %ld beyond bounds [0 .. %ld]'",(unsigned long)index,(unsigned long)self.count];
+        @try {
+            return [self sl_objectAtIndexedSubscript:index];
+        }
+        @catch (NSException *exception) {
+            NSLog(@"异常:数组越界 %@", exception.reason);
             return nil;
         }
     }
-    
+    return [self sl_objectAtIndexedSubscript:index];
 }
-
-- (id)BMP__NSArray0ObjectAtIndex:(NSInteger)index {
-     if (index >= self.count || !self.count) {
-           //可能抛出异常的代码
-           @try {
-               return [self BMP__NSArray0ObjectAtIndex:index];
-           }
-           @catch (NSException *exception) {
-               NSLog(@"数组异常: %@", exception.reason);
-               return nil;
-           }
-       }
+// nil值
+- (id)sl_initWithObjects:(id  _Nonnull const [])objects count:(NSUInteger)cnt{
+    NSUInteger index = 0;
+    id _Nonnull objectsNew[cnt];
+    for (int i = 0; i<cnt; i++) {
+        if (objects[i]) {
+            objectsNew[index] = objects[i];
+            index++;
+        }else{
+            //记录错误
+            NSString *errorInfo = [NSString stringWithFormat:@"异常:数组有nil值 *** -[__NSPlaceholderArray initWithObjects:count:]: attempt to insert nil object from objects[%d]",i];
+            NSLog(@"%@",errorInfo);
+        }
+    }
+    return [self sl_initWithObjects:objectsNew count:index];
 }
 
 @end

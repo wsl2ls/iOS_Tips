@@ -30,12 +30,19 @@
 }
 
 #pragma mark - HelpMethods
-//数组防护
+//数组防护 越界和nil值
 - (void)testArray {
-    NSArray *array = @[@"哈哈", @"hh"];
-//    id elem1 = array.lastObject;
-//    id elem2 = array[2];
-    id elem3 = [array objectAtIndex:2];
+    NSArray *array = @[@"且行且珍惜"];
+    id elem1 = array[3];
+    id elem2 = [array objectAtIndex:2];
+    
+    NSString *nilStr = nil;
+    NSArray *array1 = @[nilStr];
+    NSString *strings[2];
+    strings[0] = @"wsl";
+    strings[1] = nilStr;
+    NSArray *array2 = [NSArray arrayWithObjects:strings count:2];
+    NSArray *array3 = [NSArray arrayWithObject:nil];
 }
 
 #pragma mark - EventsHandle
