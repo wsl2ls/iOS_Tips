@@ -6,7 +6,7 @@
 //  Copyright © 2020 https://github.com/wsl2ls   ----- . All rights reserved.
 //
 
-#import "NSMutableArray+Crash.h"
+#import "NSMutableArray+SLCrash.h"
 #import <objc/runtime.h>
 
 @implementation NSMutableArray (SLCrash)

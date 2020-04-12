@@ -7,7 +7,7 @@
 //
 
 #import "SLCrashViewController.h"
-#import "NSArray+Crash.h"
+#import "NSArray+SLCrash.h"
 
 @interface SLCrashViewController ()
 
