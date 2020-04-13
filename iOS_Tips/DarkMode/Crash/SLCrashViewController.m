@@ -29,6 +29,7 @@
 }
 
 #pragma mark - HelpMethods
+
 //不可变数组防护 越界和nil值
 - (void)testArray {
     //越界
@@ -84,6 +85,21 @@
     [mDict removeObjectForKey:nilKey];
     mDict[nilKey] = nilValue;
     NSMutableDictionary *mDict1 = [NSMutableDictionary dictionaryWithDictionary:@{nilKey:nilValue}];
+}
+
+//不可变字符串防护
+- (void)testString{
+   
+    NSString *string = @"wsl2ls";
+   
+    NSLog(@"characterAtIndex:%c",[string characterAtIndex:20]);
+//    //    2、substringFromIndex:
+//    NSLog(@"substringFromIndex:%@",[string substringFromIndex:20]);
+//    //    3、substringToIndex:
+//    NSLog(@"substringToIndex:%@",[string substringToIndex:20]);
+//    //    4、substringWithRange:
+//    NSLog(@"substringWithRange:%@",[string substringWithRange:NSMakeRange(2, 20)]);
+//    NSLog(@"substringWithRange:%@",[string substringWithRange:NSMakeRange(20, 10)]);
 }
 
 
