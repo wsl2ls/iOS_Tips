@@ -26,7 +26,7 @@
 - (void)setupUI {
     self.navigationItem.title = @"iOS Crash防护";
     
-    [self testMutableArray];
+    [self testDictionary];
 }
 
 #pragma mark - HelpMethods
@@ -45,7 +45,6 @@
     NSArray *array2 = [NSArray arrayWithObjects:strings count:2];
     NSArray *array3 = [NSArray arrayWithObject:nil];
 }
-
 //可变数组防护 越界和nil值
 - (void)testMutableArray {
     //越界
@@ -63,6 +62,17 @@
     NSMutableArray *mArray1 = [NSMutableArray arrayWithObject:nil];
     NSMutableArray *mArray2 = [NSMutableArray arrayWithObject:@[nilObj]];
     [mArray addObject:nilObj];
+}
+
+//不可变字典防护 nil值
+- (void)testDictionary {
+    NSString *value = nil;
+    NSString *key = nil;
+    NSDictionary *dic = @{@"key":value};
+    dic = @{key:@"value"};
+    [NSDictionary dictionaryWithObject:@"value" forKey:key];
+    [NSDictionary dictionaryWithObject:value forKey:@"key"];
+    [NSDictionary dictionaryWithObjects:@[@"w",@"s",@"l"] forKeys:@[@"1",@"2",key]];
 }
 
 #pragma mark - EventsHandle
