@@ -1,5 +1,5 @@
 # iOS_Tips
-iOS的一些示例，不定时更新~ 由于内容较多，文件会有点大，建议终端用git clone命令下载，这样以后只需git pull更新就行；有时是GitHub的原因，就从百度网盘：https://pan.baidu.com/s/1UOlN21zWKbQRtVe2I7pPvg 下载
+> iOS的一些示例，不定时更新~ 由于内容较多，文件会有点大，建议终端用git clone命令下载，这样以后只需git pull更新就行；有时是GitHub的原因，就从百度网盘：https://pan.baidu.com/s/1UOlN21zWKbQRtVe2I7pPvg (可能不是最新) 下载
 简书地址：https://www.jianshu.com/p/a2a04cabb98d 
 
 ### 目录 
@@ -12,7 +12,8 @@ iOS的一些示例，不定时更新~ 由于内容较多，文件会有点大，
 > 7、VideoToolBox和AudioToolBox音视频编解码  
 > 8、OpenGL ES学习   
 > 9、LeetCode算法练习  
-> 10、键盘和UIMenuController的并存问题
+> 10、键盘和UIMenuController的并存问题  
+> 11、iOS Crash防护
  
  
 ## 1、 暗黑模式适配
