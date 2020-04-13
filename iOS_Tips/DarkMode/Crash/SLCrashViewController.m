@@ -25,7 +25,7 @@
 - (void)setupUI {
     self.navigationItem.title = @"iOS Crash防护";
     
-    [self testMutableDictionary];
+    [self testArray];
 }
 
 #pragma mark - HelpMethods
