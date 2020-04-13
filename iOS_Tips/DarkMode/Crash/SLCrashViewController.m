@@ -51,11 +51,18 @@
     //越界
     NSMutableArray *mArray = [NSMutableArray array];
     [mArray objectAtIndex:2];
-    mArray[2];
+    id nilObj = mArray[2];
     [mArray insertObject:@"wsl" atIndex:1];
     [mArray removeObjectAtIndex:3];
+    [mArray insertObjects:@[@"w",@"s",@"l"] atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(5, 3)]];
+    [mArray replaceObjectAtIndex:5 withObject:@"wsl"];
+    [mArray replaceObjectAtIndex:5 withObject:nil];
+    [mArray replaceObjectsInRange:NSMakeRange(5, 3) withObjectsFromArray:@[@"w",@"s",@"l"]];
     //nil值
     [mArray insertObject:nil atIndex:3];
+    NSMutableArray *mArray1 = [NSMutableArray arrayWithObject:nil];
+    NSMutableArray *mArray2 = [NSMutableArray arrayWithObject:@[nilObj]];
+    [mArray addObject:nilObj];
 }
 
 #pragma mark - EventsHandle

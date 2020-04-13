@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// 数组防Crash
+/// 可变数组防Crash
 @interface NSMutableArray (SLCrash)
 
 @end

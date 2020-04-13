@@ -256,6 +256,7 @@
 		78DAA112235FF61E00A60F64 /* SLEditVideoClipping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLEditVideoClipping.m; sourceTree = "<group>"; };
 		78DAA1142360256200A60F64 /* SLEditSelectedBox.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLEditSelectedBox.h; sourceTree = "<group>"; };
 		78DAA1152360256200A60F64 /* SLEditSelectedBox.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLEditSelectedBox.m; sourceTree = "<group>"; };
+		78DDB3662443FBB90052F395 /* SLCrash.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLCrash.h; sourceTree = "<group>"; };
 		78E1791123517F700007E4BB /* SLImageDecoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLImageDecoder.h; sourceTree = "<group>"; };
 		78E1791223517F700007E4BB /* SLImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLImageView.m; sourceTree = "<group>"; };
 		78E1791323517F700007E4BB /* SLImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLImage.m; sourceTree = "<group>"; };
@@ -495,6 +496,7 @@
 				788ADB352441F48F00302CD9 /* SLCrashViewController.h */,
 				788ADB362441F48F00302CD9 /* SLCrashViewController.m */,
 				788ADB372441F48F00302CD9 /* SLCrashViewController.xib */,
+				78DDB3662443FBB90052F395 /* SLCrash.h */,
 				788ADB3A2442051600302CD9 /* NSArray+SLCrash.h */,
 				788ADB3B2442051600302CD9 /* NSArray+SLCrash.m */,
 				788ADB3D24436B5200302CD9 /* NSMutableArray+SLCrash.h */,

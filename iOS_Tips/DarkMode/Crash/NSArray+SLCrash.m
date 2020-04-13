@@ -7,11 +7,10 @@
 //
 
 #import "NSArray+SLCrash.h"
-#import <objc/runtime.h>
+#import "SLCrash.h"
 
 @implementation NSArray (SLCrash)
 
-/*
 + (void)load {
     [super load];
     
@@ -26,24 +25,6 @@
 }
 
 #pragma mark - Help Methods
-//交换实例方法
-void SL_ExchangeInstanceMethod(Class _originalClass ,SEL _originalSel, Class _targetClass, SEL _targetSel){
-    Method methodOriginal = class_getInstanceMethod(_originalClass, _originalSel);
-    Method methodNew = class_getInstanceMethod(_targetClass, _targetSel);
-    BOOL didAddMethod = class_addMethod(_originalClass, _originalSel, method_getImplementation(methodNew), method_getTypeEncoding(methodNew));
-    if (didAddMethod) {
-        class_replaceMethod(_originalClass, _targetSel, method_getImplementation(methodOriginal), method_getTypeEncoding(methodOriginal));
-    }else{
-        method_exchangeImplementations(methodOriginal, methodNew);
-    }
-}
-//交换类方法
-void SL_ExchangeClassMethod(Class _class ,SEL _originalSel,SEL _exchangeSel){
-    Method methodOriginal = class_getClassMethod(_class, _originalSel);
-    Method methodNew = class_getClassMethod(_class, _exchangeSel);
-    method_exchangeImplementations(methodOriginal, methodNew);
-}
-
 
 #pragma mark - Array Safe Methods
 //[array objectAtIndex:0] 越界
@@ -107,7 +88,5 @@ void SL_ExchangeClassMethod(Class _class ,SEL _originalSel,SEL _exchangeSel){
     }
     return [self sl_initWithObjects:objectsNew count:index];
 }
-
-*/
 
 @end
