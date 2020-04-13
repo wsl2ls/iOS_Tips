@@ -7,7 +7,6 @@
 //
 
 #import "SLCrashViewController.h"
-#import "NSArray+SLCrash.h"
 
 @interface SLCrashViewController ()
 
@@ -26,7 +25,7 @@
 - (void)setupUI {
     self.navigationItem.title = @"iOS Crash防护";
     
-    [self testDictionary];
+    [self testMutableDictionary];
 }
 
 #pragma mark - HelpMethods
@@ -66,16 +65,26 @@
 
 //不可变字典防护 nil值
 - (void)testDictionary {
-    NSString *value = nil;
-    NSString *key = nil;
-    NSDictionary *dic = @{@"key":value};
-    dic = @{key:@"value"};
-    [NSDictionary dictionaryWithObject:@"value" forKey:key];
-    [NSDictionary dictionaryWithObject:value forKey:@"key"];
-    [NSDictionary dictionaryWithObjects:@[@"w",@"s",@"l"] forKeys:@[@"1",@"2",key]];
+    NSString *nilValue = nil;
+    NSString *nilKey = nil;
+    NSDictionary *dic = @{@"key":nilValue};
+    dic = @{nilKey:@"value"};
+    [NSDictionary dictionaryWithObject:@"value" forKey:nilKey];
+    [NSDictionary dictionaryWithObject:nilValue forKey:@"key"];
+    [NSDictionary dictionaryWithObjects:@[@"w",@"s",@"l"] forKeys:@[@"1",@"2",nilKey]];
 }
-
-#pragma mark - EventsHandle
+//可变字典防护 nil值
+- (void)testMutableDictionary {
+    NSString *nilValue = nil;
+    NSString *nilKey = nil;
+    NSMutableDictionary *mDict = [NSMutableDictionary dictionary];
+    [mDict setValue:nilValue forKey:@"key"];
+    [mDict setValue:@"value" forKey:nilKey];
+    [mDict setValue:nilValue forKey:nilKey];
+    [mDict removeObjectForKey:nilKey];
+    mDict[nilKey] = nilValue;
+    NSMutableDictionary *mDict1 = [NSMutableDictionary dictionaryWithDictionary:@{nilKey:nilValue}];
+}
 
 
 

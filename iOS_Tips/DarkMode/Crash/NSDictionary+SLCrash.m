@@ -11,11 +11,12 @@
 
 @implementation NSDictionary (SLCrash)
 
-+(void)load {
++ (void)load {
     [super load];
     Class dictionaryClass = NSClassFromString(@"NSDictionary");
-    Class __NSPlaceholderDictionaryClass = NSClassFromString(@"__NSPlaceholderDictionary");
     SL_ExchangeInstanceMethod(dictionaryClass, @selector(initWithObjects:forKeys:), dictionaryClass, @selector(sl_initWithObjects:forKeys:));
+    
+    Class __NSPlaceholderDictionaryClass = NSClassFromString(@"__NSPlaceholderDictionary");
     SL_ExchangeInstanceMethod(__NSPlaceholderDictionaryClass, @selector(initWithObjects:forKeys:count:), __NSPlaceholderDictionaryClass, @selector(sl_initWithObjects:forKeys:count:));
 }
 
