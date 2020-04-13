@@ -16,9 +16,9 @@
     
     Class stringClass = NSClassFromString(@"__NSCFConstantString");
     SL_ExchangeInstanceMethod(stringClass, @selector(characterAtIndex:), stringClass, @selector(sl_characterAtIndex:));
-    SL_ExchangeInstanceMethod(stringClass, @selector(substringFromIndex:), stringClass, @selector(sl_substringFromIndex:));
-    SL_ExchangeInstanceMethod(stringClass, @selector(substringToIndex:), stringClass, @selector(sl_substringToIndex:));
-    SL_ExchangeInstanceMethod(stringClass, @selector(substringWithRange:), stringClass, @selector(sl_substringWithRange:));
+//    SL_ExchangeInstanceMethod(stringClass, @selector(substringFromIndex:), stringClass, @selector(sl_substringFromIndex:));
+//    SL_ExchangeInstanceMethod(stringClass, @selector(substringToIndex:), stringClass, @selector(sl_substringToIndex:));
+//    SL_ExchangeInstanceMethod(stringClass, @selector(substringWithRange:), stringClass, @selector(sl_substringWithRange:));
     
 }
 

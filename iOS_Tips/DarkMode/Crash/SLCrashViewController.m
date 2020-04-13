@@ -25,7 +25,7 @@
 - (void)setupUI {
     self.navigationItem.title = @"iOS Crash防护";
     
-    [self testMutableDictionary];
+    [self testString];
 }
 
 #pragma mark - HelpMethods
@@ -89,10 +89,10 @@
 
 //不可变字符串防护
 - (void)testString{
-   
     NSString *string = @"wsl2ls";
-   
-    NSLog(@"characterAtIndex:%c",[string characterAtIndex:20]);
+
+    [string characterAtIndex:10];
+    
 //    //    2、substringFromIndex:
 //    NSLog(@"substringFromIndex:%@",[string substringFromIndex:20]);
 //    //    3、substringToIndex:

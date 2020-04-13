@@ -616,10 +616,10 @@
 				78D6F3692444845200C0D61D /* NSDictionary+SLCrashProtector.m */,
 				78D6F36B2444845200C0D61D /* NSMutableDictionary+SLCrashProtector.h */,
 				78D6F36A2444845200C0D61D /* NSMutableDictionary+SLCrashProtector.m */,
-				78D6F3702444847200C0D61D /* NSMutableString+SLCrashProtector.h */,
-				78D6F3722444847200C0D61D /* NSMutableString+SLCrashProtector.m */,
 				78D6F3712444847200C0D61D /* NSString+SLCrashProtector.h */,
 				78D6F36F2444847200C0D61D /* NSString+SLCrashProtector.m */,
+				78D6F3702444847200C0D61D /* NSMutableString+SLCrashProtector.h */,
+				78D6F3722444847200C0D61D /* NSMutableString+SLCrashProtector.m */,
 			);
 			path = SLCrashProtector;
 			sourceTree = "<group>";
