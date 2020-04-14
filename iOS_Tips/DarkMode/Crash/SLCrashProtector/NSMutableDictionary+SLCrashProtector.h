@@ -10,6 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+//可变字典 越界、nil值 Crash防护
 @interface NSMutableDictionary (SLCrashProtector)
 
 @end

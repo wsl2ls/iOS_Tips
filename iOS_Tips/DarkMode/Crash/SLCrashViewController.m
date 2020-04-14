@@ -25,10 +25,10 @@
 - (void)setupUI {
     self.navigationItem.title = @"iOS Crash防护";
     
-    [self testMutableString];
+    [self testUnrecognizedSelector];
 }
 
-#pragma mark - HelpMethods
+#pragma mark - Container Crash
 
 //不可变数组防护 越界和nil值
 - (void)testArray {
@@ -107,6 +107,13 @@
     
     stringM = [NSMutableString stringWithFormat:@"ls"];
     [stringM deleteCharactersInRange:NSMakeRange(10, 10)];
+}
+
+#pragma mark - Unrecognized Selector
+
+- (void)testUnrecognizedSelector {
+    UIButton *testButton = [[UIButton alloc] init];
+    [testButton performSelector:@selector(someMethod:)];
 }
 
 

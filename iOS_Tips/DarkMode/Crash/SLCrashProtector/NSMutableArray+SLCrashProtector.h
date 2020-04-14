@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// 可变数组防Crash
+/// 可变数组 越界、nil值 Crash防护
 @interface NSMutableArray (SLCrashProtector)
 
 @end

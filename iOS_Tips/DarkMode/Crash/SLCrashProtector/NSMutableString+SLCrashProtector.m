@@ -11,7 +11,6 @@
 
 @implementation NSMutableString (SLCrashProtector)
 
-
 + (void)load {
     [super load];
     //越界防护

@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-///不可变字符串 crash 防护
+///不可变字符串 越界crash 防护
 @interface NSString (SLCrashProtector)
 
 @end

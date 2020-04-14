@@ -1,5 +1,5 @@
 //
-//  NSMutableString+SLCrashProtector.h
+//  NSObject+SLCrashProtector.h
 //  DarkMode
 //
 //  Created by wsl on 2020/4/14.
@@ -10,8 +10,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-///可变字符串 越界crash 防护 
-@interface NSMutableString (SLCrashProtector)
+/// 未识别方法 crash防护
+@interface NSObject (SLCrashProtector)
 
 @end
 
