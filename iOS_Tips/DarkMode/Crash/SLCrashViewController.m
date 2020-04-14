@@ -90,16 +90,11 @@
 //不可变字符串防护
 - (void)testString{
     NSString *string = @"wsl2ls";
-
     [string characterAtIndex:10];
-    
-//    //    2、substringFromIndex:
-//    NSLog(@"substringFromIndex:%@",[string substringFromIndex:20]);
-//    //    3、substringToIndex:
-//    NSLog(@"substringToIndex:%@",[string substringToIndex:20]);
-//    //    4、substringWithRange:
-//    NSLog(@"substringWithRange:%@",[string substringWithRange:NSMakeRange(2, 20)]);
-//    NSLog(@"substringWithRange:%@",[string substringWithRange:NSMakeRange(20, 10)]);
+    [string substringFromIndex:20];
+    [string substringToIndex:20];
+    [string substringWithRange:NSMakeRange(2, 20)];
+    [string substringWithRange:NSMakeRange(20, 10)];
 }
 
 
