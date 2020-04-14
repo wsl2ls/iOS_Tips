@@ -25,7 +25,7 @@
 - (void)setupUI {
     self.navigationItem.title = @"iOS Crash防护";
     
-    [self testString];
+    [self testMutableString];
 }
 
 #pragma mark - HelpMethods
@@ -88,13 +88,25 @@
 }
 
 //不可变字符串防护
-- (void)testString{
+- (void)testString {
     NSString *string = @"wsl2ls";
     [string characterAtIndex:10];
     [string substringFromIndex:20];
     [string substringToIndex:20];
-    [string substringWithRange:NSMakeRange(2, 20)];
-    [string substringWithRange:NSMakeRange(20, 10)];
+    [string substringWithRange:NSMakeRange(10, 10)];
+    [string substringWithRange:NSMakeRange(2, 10)];
+}
+//可变字符串防护
+- (void)testMutableString {
+    NSMutableString *stringM = [NSMutableString stringWithFormat:@"wsl2ls"];
+    stringM = [NSMutableString stringWithFormat:@"wsl"];
+    [stringM insertString:@"😍" atIndex:10];
+    
+    stringM = [NSMutableString stringWithFormat:@"2"];
+    [stringM deleteCharactersInRange:NSMakeRange(2, 20)];
+    
+    stringM = [NSMutableString stringWithFormat:@"ls"];
+    [stringM deleteCharactersInRange:NSMakeRange(10, 10)];
 }
 
 
