@@ -13,7 +13,8 @@
 > 8、OpenGL ES学习   
 > 9、LeetCode算法练习  
 > 10、键盘和UIMenuController的并存问题  
-> 11、iOS Crash防护
+> 11、iOS Crash防护  
+> 问题说明
  
  
 ## 1、 暗黑模式适配
@@ -86,10 +87,14 @@
 
 | ![问题描述.gif](PrviewPicture/10、键盘和UIMenuController不能同时出现的问题描述.gif) | ![并存问题解决](PrviewPicture/10、键盘和UIMenuController并存问题解决.gif) |
 
-## 部分问题说明：
+## 问题说明：
 
 > * 1、小视频拍摄录制失败，主要集中在plus和X系列手机上：可能是由于写入的视频宽高videoSize设置的问题，各位可以先试试这样设置
 avCaptureTool.videoSize = CGSizeMake(self.view.width * 0.8, self.view.height * 0.8);
+> * 2、iPhoneX/XR系列崩溃，错误代码是pods > pods > FBRetainCycleDetector > fishhook.c 第104行
+indirect_symbol_bindings[i] = cur->rebindings[j].replacement： FBRetainCycleDetector 这个是三方库里的，检测内存泄漏的，你可以把 MLeaksFinder 移除，这只是一个辅助调试工具。
+> * 3、
+
 
 
 ## Welcome To Follow Me
