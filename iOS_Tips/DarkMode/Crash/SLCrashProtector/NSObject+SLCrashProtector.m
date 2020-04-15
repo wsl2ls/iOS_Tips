@@ -8,90 +8,64 @@
 
 #import "NSObject+SLCrashProtector.h"
 #import "SLCrashProtector.h"
+#import "SLCrashHandler.h"
 
 @implementation NSObject (SLCrashProtector)
 
-
 + (void)load {
-   
+    
     /// Unrecognized Selector  未识别方法防护
+    //实例方法防护
     SL_ExchangeInstanceMethod([NSObject class], @selector(forwardingTargetForSelector:), [NSObject class], @selector(sl_forwardingTargetForSelector:));
-    
-    SL_ExchangeInstanceMethod([NSObject class], @selector(doesNotRecognizeSelector:), [NSObject class], @selector(sl_doesNotRecognizeSelector:));
-    
-//    SL_ExchangeClassMethod(<#__unsafe_unretained Class _class#>, <#SEL _originalSel#>, <#SEL _exchangeSel#>)
+    //类方法防护
+    SL_ExchangeClassMethod([[NSObject class] class], @selector(forwardingTargetForSelector:), @selector(sl_forwardingTargetForSelector:));
     
 }
 
 
 #pragma mark - Unrecognized Selector
 
-//
+/// 将未识别的实例方法重定向转发给SLCrashHandler执行
 - (id)sl_forwardingTargetForSelector:(SEL)aSelector {
-//    NSLog(@"异常:未识别方法 %@", NSStringFromSelector(aSelector));
-    return [self sl_forwardingTargetForSelector:aSelector];;
+    NSLog(@"异常:未识别方法 [%@ -%@]", NSStringFromClass([self class]) ,NSStringFromSelector(aSelector));
+    //判断当前类是否重写了消息转发的相关方法，如果重写了，就走正常的消息转发流程
+    if (![self isOverideForwardingMethods:[self class]]) {
+        //如果SLCrashHandler也没有实现aSelector，就动态添加上aSelector
+        if (!class_getInstanceMethod([SLCrashHandler class], aSelector)) {
+            class_addMethod([SLCrashHandler class], aSelector, (IMP)SL_DynamicAddMethodIMP, "v@:");
+        }
+        // 把aSelector转发给SLCrashHandler实例执行
+        return [[SLCrashHandler alloc] init];
+    }
+    return [self sl_forwardingTargetForSelector:aSelector];
 }
 
-// 如果没有实现消息转发 forwardInvocation  则调用此方法
-- (void)sl_doesNotRecognizeSelector:(SEL)aSelector {
-    NSLog(@"找不到方法：%@", NSStringFromSelector(aSelector));
+/// 将未识别的类方法重定向转发给SLCrashHandler执行
++ (id)sl_forwardingTargetForSelector:(SEL)aSelector {
+    NSLog(@"异常:未识别方法 [%@ +%@]", NSStringFromClass([[self class] class]),NSStringFromSelector(aSelector));
+    //判断当前类是否重写了消息转发的相关方法，如果重写了，就走正常的消息转发流程
+    if (![self isOverideForwardingMethods:[[self class] class]]) {
+        //如果SLCrashHandler也没有实现aSelector，就动态添加上aSelector
+        if (!class_getInstanceMethod([[SLCrashHandler class] class], aSelector)) {
+            class_addMethod([[SLCrashHandler class] class], aSelector, (IMP)SL_DynamicAddMethodIMP, "v@:");
+        }
+        // 把aSelector转发给SLCrashHandler实例执行
+        return [[SLCrashHandler alloc] init];
+    }
+    return [[self class] sl_forwardingTargetForSelector:aSelector];
 }
 
-
-/*
- 
- // 第一步 动态方法解析
- // 消息接收者没有找到对应的方法时候，会先调用此方法，可在此方法实现中动态添加新的方法，返回YES表示相应selector的实现已经被找到，或者添加新方法到了类中，结束查找；否则返回NO，继续执行第二步
- + (BOOL)resolveInstanceMethod:(SEL)sel {
-     if (sel == @selector(add)) {
-         // 动态添加方法
-         class_addMethod(self, sel, (IMP)add,"v@:");
-         return YES;
-     }
-     return [super resolveInstanceMethod:sel];
- }
-
- 
- 
-//  第二步 重定向
-//  如果第一步的返回NO或者直接返回了YES而没有添加方法，该方法被调用 ,在这个方法中，我们可以指定返回一个可以响应该方法的对象， 注意如果返回self就会死循环；如果返回nil，即表示不转发给其他对象，此时会进入第三步
-- (id)forwardingTargetForSelector:(SEL)aSelector {
-    //    if (aSelector == @selector(add)) {
-    //        //消息转发给ForwardingTarget对象
-    //        if ([[ForwardingTarget new] respondsToSelector:@selector(add)]) {
-    //           return [ForwardingTarget new];
-    //        }
-    //    }
-    return [super forwardingTargetForSelector:aSelector];
+/*动态添加方法的imp*/
+static inline int SL_DynamicAddMethodIMP(id self,SEL _cmd,...){
+    return 0;
+}
+//class类是否重写了消息转发的相关方法
+- (BOOL)isOverideForwardingMethods:(Class)class{
+    BOOL overide = NO;
+    overide = (class_getMethodImplementation([NSObject class], @selector(forwardInvocation:)) != class_getMethodImplementation(class, @selector(forwardInvocation:))) ||
+    (class_getMethodImplementation([NSObject class], @selector(forwardingTargetForSelector:)) != class_getMethodImplementation(class, @selector(forwardingTargetForSelector:)));
+    return overide;
 }
 
-//  第三步 消息转发
-//  如果forwardingTargetForSelector:返回了nil，则该方法会被调用，系统会询问我们要一个合法的『类型编码(Type Encoding)』, 若返回 nil，则不会进入下一步，而是无法处理消息
-- (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector {
-    //    if (aSelector == @selector(add)) {
-    //           方法签名
-    //        return [NSMethodSignature signatureWithObjCTypes:"v@:"];
-    //    }
-    return  [super methodSignatureForSelector:aSelector];
-}
-// 在这里进行消息转发
-- (void)forwardInvocation:(NSInvocation *)anInvocation {
-    //    SEL sel = [anInvocation selector];
-    //    ForwardingTarget* forward = [ForwardingTarget new];
-    //    if ([forward respondsToSelector:sel]) {
-    //         //指定消息的接收者
-    //         [anInvocation invokeWithTarget:forward];
-    //    }else{
-    [super forwardInvocation:anInvocation];
-    //    }
-    
-}
-
-// 如果没有实现消息转发 forwardInvocation  则调用此方法
-- (void)doesNotRecognizeSelector:(SEL)aSelector {
-    NSLog(@"找不到方法：%@", NSStringFromSelector(aSelector));
-}
-
-*/
 
 @end

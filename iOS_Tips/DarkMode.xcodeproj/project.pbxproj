@@ -92,6 +92,7 @@
 		78D6F37A24454D7D00C0D61D /* NSString+SLCrashProtector.m in Sources */ = {isa = PBXBuildFile; fileRef = 78D6F37924454D7D00C0D61D /* NSString+SLCrashProtector.m */; };
 		78D6F37D2445554300C0D61D /* NSMutableString+SLCrashProtector.m in Sources */ = {isa = PBXBuildFile; fileRef = 78D6F37C2445554300C0D61D /* NSMutableString+SLCrashProtector.m */; };
 		78D6F3802445A1DB00C0D61D /* NSObject+SLCrashProtector.m in Sources */ = {isa = PBXBuildFile; fileRef = 78D6F37F2445A1DB00C0D61D /* NSObject+SLCrashProtector.m */; };
+		78D6F3832447062300C0D61D /* SLCrashHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 78D6F3822447062300C0D61D /* SLCrashHandler.m */; };
 		78DAA113235FF61E00A60F64 /* SLEditVideoClipping.m in Sources */ = {isa = PBXBuildFile; fileRef = 78DAA112235FF61E00A60F64 /* SLEditVideoClipping.m */; };
 		78DAA1162360256200A60F64 /* SLEditSelectedBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 78DAA1152360256200A60F64 /* SLEditSelectedBox.m */; };
 		78E1791723517F700007E4BB /* SLImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E1791223517F700007E4BB /* SLImageView.m */; };
@@ -268,6 +269,8 @@
 		78D6F37C2445554300C0D61D /* NSMutableString+SLCrashProtector.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSMutableString+SLCrashProtector.m"; sourceTree = "<group>"; };
 		78D6F37E2445A1DB00C0D61D /* NSObject+SLCrashProtector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSObject+SLCrashProtector.h"; sourceTree = "<group>"; };
 		78D6F37F2445A1DB00C0D61D /* NSObject+SLCrashProtector.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSObject+SLCrashProtector.m"; sourceTree = "<group>"; };
+		78D6F3812447062300C0D61D /* SLCrashHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLCrashHandler.h; sourceTree = "<group>"; };
+		78D6F3822447062300C0D61D /* SLCrashHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLCrashHandler.m; sourceTree = "<group>"; };
 		78DAA111235FF61E00A60F64 /* SLEditVideoClipping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLEditVideoClipping.h; sourceTree = "<group>"; };
 		78DAA112235FF61E00A60F64 /* SLEditVideoClipping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLEditVideoClipping.m; sourceTree = "<group>"; };
 		78DAA1142360256200A60F64 /* SLEditSelectedBox.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLEditSelectedBox.h; sourceTree = "<group>"; };
@@ -611,6 +614,8 @@
 			isa = PBXGroup;
 			children = (
 				78D6F365244483DC00C0D61D /* SLCrashProtector.h */,
+				78D6F3812447062300C0D61D /* SLCrashHandler.h */,
+				78D6F3822447062300C0D61D /* SLCrashHandler.m */,
 				78D6F3622444836A00C0D61D /* NSArray+SLCrashProtector.h */,
 				78D6F3632444836A00C0D61D /* NSArray+SLCrashProtector.m */,
 				78D6F3672444841D00C0D61D /* NSMutableArray+SLCrashProtector.h */,
@@ -987,6 +992,7 @@
 				78D6F3642444836A00C0D61D /* NSArray+SLCrashProtector.m in Sources */,
 				780F5303236D8462000D0EA8 /* SLGridView.m in Sources */,
 				78D6F37D2445554300C0D61D /* NSMutableString+SLCrashProtector.m in Sources */,
+				78D6F3832447062300C0D61D /* SLCrashHandler.m in Sources */,
 				7851CB43233222E2002295B5 /* UIView+SLFrame.m in Sources */,
 				7830A5A42358904600BC79BA /* UIView+SLImage.m in Sources */,
 				78A35B1C23978A5D004BCCB7 /* SLShaderCubeViewController.m in Sources */,

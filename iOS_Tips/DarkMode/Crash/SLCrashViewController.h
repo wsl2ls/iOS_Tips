@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
+
 //iOS Crash防护  思路来源： https://xiaozhuanlan.com/topic/6280793154
 @interface SLCrashViewController : UIViewController
 

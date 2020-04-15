@@ -10,6 +10,11 @@
 
 @interface SLCrashViewController ()
 
+//未实现的实例方法
+- (id)undefineInstanceMethodTest:(id)sender;
+//未实现的类方法
++ (id)undefineClassMethodTest:(id)sender;
+
 @end
 
 @implementation SLCrashViewController
@@ -113,7 +118,12 @@
 
 - (void)testUnrecognizedSelector {
     UIButton *testButton = [[UIButton alloc] init];
-    [testButton performSelector:@selector(someMethod:)];
+    [testButton performSelector:@selector(undefineButtonMethodTest:)];
+    
+    //未定义、未实现的实例方法
+    [self performSelector:@selector(undefineInstanceMethodTest:)];
+    //未定义、未实现的类方法
+    [[self class] performSelector:@selector(undefineClassMethodTest:)];
 }
 
 
