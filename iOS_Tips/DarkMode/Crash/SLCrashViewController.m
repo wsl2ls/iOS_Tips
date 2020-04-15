@@ -30,7 +30,7 @@
 - (void)setupUI {
     self.navigationItem.title = @"iOS Crash防护";
     
-    [self testUnrecognizedSelector];
+    [self testKVO];
 }
 
 #pragma mark - Container Crash
@@ -115,7 +115,7 @@
 }
 
 #pragma mark - Unrecognized Selector
-
+// 测试未识别方法 crash防护
 - (void)testUnrecognizedSelector {
     UIButton *testButton = [[UIButton alloc] init];
     [testButton performSelector:@selector(undefineButtonMethodTest:)];
@@ -126,6 +126,36 @@
     [[self class] performSelector:@selector(undefineClassMethodTest:)];
 }
 
+#pragma mark - KVO
+// 测试KVO防护
+- (void)testKVO {
+    
+//    self addObserver:self forKeyPath:@"" options:<#(NSKeyValueObservingOptions)#> context:<#(nullable void *)#>
+    
+    [self removeObserver:self forKeyPath:@"title"];
+    
+}
 
+#pragma mark - KVC
+// 测试KVC防护
+- (void)testKVC {
+    
+    
+    
+    
+    
+    
+}
+
+#pragma mark - NSNotification
+// 测试NSNotification防护
+- (void)testNotification {
+    
+    
+    
+    
+    
+    
+}
 
 @end
