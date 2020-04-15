@@ -292,18 +292,17 @@
             NSLog(@"时长 %f", self->_durationOfVideo);
             SL_DISPATCH_ON_MAIN_THREAD(^{
                 self.progressLayer.strokeEnd = 1;
+                //暂停定时器
+                // dispatch_suspend(_gcdTimer);
+                //取消计时器
+                dispatch_source_cancel(self->_gcdTimer);
+                self->_durationOfVideo = 0;
+                [self.progressLayer removeFromSuperlayer];
+                //停止录制
+                [self.avWriterInput finishWriting];
+                [self.avCaptureSession stopRunning];
+                self.isRecording = NO;
             });
-            
-            //暂停定时器
-            // dispatch_suspend(_gcdTimer);
-            //取消计时器
-            dispatch_source_cancel(self->_gcdTimer);
-            self->_durationOfVideo = 0;
-            [self.progressLayer removeFromSuperlayer];
-            //停止录制
-            [self.avWriterInput finishWriting];
-            [self.avCaptureSession stopRunning];
-            self.isRecording = NO;
         }
     });
     // 启动任务，GCD计时器创建后需要手动启动
