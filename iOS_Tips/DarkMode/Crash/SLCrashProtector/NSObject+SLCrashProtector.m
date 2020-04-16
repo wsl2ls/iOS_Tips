@@ -9,6 +9,7 @@
 #import "NSObject+SLCrashProtector.h"
 #import "SLCrashProtector.h"
 #import "SLCrashHandler.h"
+#import "SLKVODelegate.h"
 
 @implementation NSObject (SLCrashProtector)
 
@@ -73,9 +74,21 @@ static inline int SL_DynamicAddMethodIMP(id self,SEL _cmd,...){
 }
 
 #pragma mark - KVO
+
+static void *YSCKVOProxyKey = &YSCKVOProxyKey;
+static NSString *const KVODefenderValue = @"SL_KVOCrashProtector";
+static void *KVODefenderKey = &KVODefenderKey;
+
 // 添加监听者
 - (void)sl_addObserver:(NSObject *)observer forKeyPath:(NSString *)keyPath options:(NSKeyValueObservingOptions)options context:(void *)context{
-    [self sl_addObserver:observer forKeyPath:keyPath options:options context:context];
+    
+    if (!IsSystemClass(self.class)) {
+        
+        
+    }else {
+        [self sl_addObserver:observer forKeyPath:keyPath options:options context:context];
+    }
+    
 }
 // 移除监听者
 - (void)sl_removeObserver:(NSObject *)observer forKeyPath:(NSString *)keyPath{
@@ -106,6 +119,108 @@ static inline BOOL IsSystemClass(Class cls){
     }
     return isSystem;
 }
+
+// YSCKVOProxy setter 方法
+- (void)setYscKVOProxy:(SLKVODelegate *)yscKVOProxy {
+    objc_setAssociatedObject(self, YSCKVOProxyKey, yscKVOProxy, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+// YSCKVOProxy getter 方法
+- (SLKVODelegate *)yscKVOProxy {
+    id yscKVOProxy = objc_getAssociatedObject(self, YSCKVOProxyKey);
+    if (yscKVOProxy == nil) {
+        yscKVOProxy = [[SLKVODelegate alloc] init];
+        self.yscKVOProxy = yscKVOProxy;
+    }
+    return yscKVOProxy;
+}
+
+// 自定义 addObserver:forKeyPath:options:context: 实现方法
+- (void)ysc_addObserver:(NSObject *)observer
+             forKeyPath:(NSString *)keyPath
+                options:(NSKeyValueObservingOptions)options
+                context:(void *)context {
+    
+    if (!IsSystemClass(self.class)) {
+        objc_setAssociatedObject(self, KVODefenderKey, KVODefenderValue, OBJC_ASSOCIATION_RETAIN);
+        if ([self.yscKVOProxy addInfoToMapWithObserver:observer forKeyPath:keyPath options:options context:context]) {
+            // 如果添加 KVO 信息操作成功，则调用系统添加方法
+            [self ysc_addObserver:self.yscKVOProxy forKeyPath:keyPath options:options context:context];
+        } else {
+            // 添加 KVO 信息操作失败：重复添加
+            NSString *className = (NSStringFromClass(self.class) == nil) ? @"" : NSStringFromClass(self.class);
+            NSString *reason = [NSString stringWithFormat:@"KVO Warning : Repeated additions to the observer:%@ for the key path:'%@' from %@",
+                                observer, keyPath, className];
+            NSLog(@"%@",reason);
+        }
+    } else {
+        [self ysc_addObserver:observer forKeyPath:keyPath options:options context:context];
+    }
+}
+
+// 自定义 removeObserver:forKeyPath:context: 实现方法
+- (void)ysc_removeObserver:(NSObject *)observer
+                forKeyPath:(NSString *)keyPath
+                   context:(void *)context {
+    
+    if (!IsSystemClass(self.class)) {
+        if ([self.yscKVOProxy removeInfoInMapWithObserver:observer forKeyPath:keyPath  context:context]) {
+            // 如果移除 KVO 信息操作成功，则调用系统移除方法
+            [self ysc_removeObserver:self.yscKVOProxy forKeyPath:keyPath context:context];
+        } else {
+            // 移除 KVO 信息操作失败：移除了未注册的观察者
+            NSString *className = NSStringFromClass(self.class) == nil ? @"" : NSStringFromClass(self.class);
+            NSString *reason = [NSString stringWithFormat:@"KVO Warning : Cannot remove an observer %@ for the key path '%@' from %@ , because it is not registered as an observer", observer, keyPath, className];
+            NSLog(@"%@",reason);
+        }
+    } else {
+        [self ysc_removeObserver:observer forKeyPath:keyPath context:context];
+    }
+}
+
+// 自定义 removeObserver:forKeyPath: 实现方法
+- (void)ysc_removeObserver:(NSObject *)observer
+                forKeyPath:(NSString *)keyPath {
+    
+    if (!IsSystemClass(self.class)) {
+        if ([self.yscKVOProxy removeInfoInMapWithObserver:observer forKeyPath:keyPath]) {
+            // 如果移除 KVO 信息操作成功，则调用系统移除方法
+            [self ysc_removeObserver:self.yscKVOProxy forKeyPath:keyPath];
+        } else {
+            // 移除 KVO 信息操作失败：移除了未注册的观察者
+            NSString *className = NSStringFromClass(self.class) == nil ? @"" : NSStringFromClass(self.class);
+            NSString *reason = [NSString stringWithFormat:@"KVO Warning : Cannot remove an observer %@ for the key path '%@' from %@ , because it is not registered as an observer", observer, keyPath, className];
+            NSLog(@"%@",reason);
+        }
+    } else {
+        [self ysc_removeObserver:observer forKeyPath:keyPath];
+    }
+    
+}
+
+// 自定义 dealloc 实现方法
+- (void)ysc_KVODealloc {
+    @autoreleasepool {
+        if (!IsSystemClass(self.class)) {
+            NSString *value = (NSString *)objc_getAssociatedObject(self, KVODefenderKey);
+            if ([value isEqualToString:KVODefenderValue]) {
+                NSArray *keyPaths =  [self.yscKVOProxy getAllKeyPaths];
+                // 被观察者在 dealloc 时仍然注册着 KVO
+                if (keyPaths.count > 0) {
+                    NSString *reason = [NSString stringWithFormat:@"KVO Warning : An instance %@ was deallocated while key value observers were still registered with it. The Keypaths is:'%@'", self, [keyPaths componentsJoinedByString:@","]];
+                    NSLog(@"%@",reason);
+                }
+                
+                // 移除多余的观察者
+                for (NSString *keyPath in keyPaths) {
+                    [self ysc_removeObserver:self.yscKVOProxy forKeyPath:keyPath];
+                }
+            }
+        }
+    }
+    [self ysc_KVODealloc];
+}
+
 
 
 @end

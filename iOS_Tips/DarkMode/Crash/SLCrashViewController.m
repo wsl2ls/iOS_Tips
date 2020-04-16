@@ -122,7 +122,6 @@
 - (void)testUnrecognizedSelector {
     UIButton *testButton = [[UIButton alloc] init];
     [testButton performSelector:@selector(undefineButtonMethodTest:)];
-    
     //未定义、未实现的实例方法
     [self performSelector:@selector(undefineInstanceMethodTest:)];
     //未定义、未实现的类方法
@@ -133,9 +132,9 @@
 // 测试KVO防护
 - (void)testKVO {
     
-    [self addObserver:self forKeyPath:@"title1" options:NSKeyValueObservingOptionNew context:nil];
+//    [self addObserver:self forKeyPath:@"title1" options:NSKeyValueObservingOptionNew context:nil];
     
-//    [self removeObserver:self forKeyPath:@"title"];
+    [self removeObserver:self forKeyPath:@"title"];
     
 }
 
