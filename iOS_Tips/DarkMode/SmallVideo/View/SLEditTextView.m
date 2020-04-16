@@ -66,15 +66,16 @@
     [self addSubview:self.doneEditBtn];
     //监听键盘frame改变
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    //添加键盘消失监听事件
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 }
 //颜色选择菜单视图
 - (void)colorSelectionView:(CGFloat)keyboardHeight {
     for (UIView *subView in self.subviews) {
         if (subView != self.doneEditBtn || subView != self.cancleEditBtn || subView != self.textView) {
             continue;
-        }else {
-            [subView removeFromSuperview];
         }
+        [subView removeFromSuperview];
     }
     int count = (int)_colors.count + 1;
     CGSize itemSize = CGSizeMake(20, 20);
@@ -208,6 +209,14 @@
     CGRect keyboardRect = [aValue CGRectValue];
     _keyboardHeight = keyboardRect.size.height;
     [self colorSelectionView:_keyboardHeight];
+}
+//键盘即将消失
+- (void)keyboardWillHide:(NSNotification *)notification{
+    [self.textView resignFirstResponder];
+    if (self.editTextCompleted) {
+        self.editTextCompleted(nil);
+    }
+    [self removeFromSuperview];
 }
 #pragma mark - UITextViewDelegate
 -(void)textViewDidChange:(UITextView *)textView{
