@@ -20,8 +20,13 @@
     //类方法防护
     SL_ExchangeClassMethod([[NSObject class] class], @selector(forwardingTargetForSelector:), @selector(sl_forwardingTargetForSelector:));
     
+    /// KVO  防护
+    SL_ExchangeInstanceMethod([NSObject class], @selector(addObserver:forKeyPath:options:context:), [NSObject class], @selector(sl_addObserver:forKeyPath:options:context:));
+    SL_ExchangeInstanceMethod([NSObject class], @selector(removeObserver:forKeyPath:), [NSObject class], @selector(sl_removeObserver:forKeyPath:));
+    SL_ExchangeInstanceMethod([NSObject class], @selector(removeObserver:forKeyPath:context:), [NSObject class], @selector(sl_removeObserver:forKeyPath:context:));
+    SL_ExchangeInstanceMethod([NSObject class], NSSelectorFromString(@"dealloc"), [NSObject class], @selector(sl_KVODealloc));
+    
 }
-
 
 #pragma mark - Unrecognized Selector
 
@@ -65,6 +70,41 @@ static inline int SL_DynamicAddMethodIMP(id self,SEL _cmd,...){
     overide = (class_getMethodImplementation([NSObject class], @selector(forwardInvocation:)) != class_getMethodImplementation(class, @selector(forwardInvocation:))) ||
     (class_getMethodImplementation([NSObject class], @selector(forwardingTargetForSelector:)) != class_getMethodImplementation(class, @selector(forwardingTargetForSelector:)));
     return overide;
+}
+
+#pragma mark - KVO
+// 添加监听者
+- (void)sl_addObserver:(NSObject *)observer forKeyPath:(NSString *)keyPath options:(NSKeyValueObservingOptions)options context:(void *)context{
+    [self sl_addObserver:observer forKeyPath:keyPath options:options context:context];
+}
+// 移除监听者
+- (void)sl_removeObserver:(NSObject *)observer forKeyPath:(NSString *)keyPath{
+    
+    [self sl_removeObserver:observer forKeyPath:keyPath];
+}
+// 移除监听者
+- (void)sl_removeObserver:(NSObject *)observer forKeyPath:(NSString *)keyPath context:(nullable void *)context{
+    [self sl_removeObserver:observer forKeyPath:keyPath context:context];
+}
+// 释放
+- (void)sl_KVODealloc{
+    [self sl_KVODealloc];
+}
+/*是否是系统类*/
+static inline BOOL IsSystemClass(Class cls){
+    __block BOOL isSystem = NO;
+    NSString *className = NSStringFromClass(cls);
+    if ([className hasPrefix:@"NS"]) {
+        isSystem = YES;
+        return isSystem;
+    }
+    NSBundle *mainBundle = [NSBundle bundleForClass:cls];
+    if (mainBundle == [NSBundle mainBundle]) {
+        isSystem = NO;
+    }else{
+        isSystem = YES;
+    }
+    return isSystem;
 }
 
 

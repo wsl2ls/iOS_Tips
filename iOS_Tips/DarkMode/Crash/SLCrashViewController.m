@@ -25,6 +25,9 @@
     [super viewDidLoad];
     [self setupUI];
 }
+- (void)dealloc {
+     NSLog(@"SLCrashViewController 释放");
+}
 
 #pragma mark - UI
 - (void)setupUI {
@@ -130,9 +133,9 @@
 // 测试KVO防护
 - (void)testKVO {
     
-//    self addObserver:self forKeyPath:@"" options:<#(NSKeyValueObservingOptions)#> context:<#(nullable void *)#>
+    [self addObserver:self forKeyPath:@"title1" options:NSKeyValueObservingOptionNew context:nil];
     
-    [self removeObserver:self forKeyPath:@"title"];
+//    [self removeObserver:self forKeyPath:@"title"];
     
 }
 
