@@ -134,7 +134,8 @@
     
 //    [self addObserver:self forKeyPath:@"title1" options:NSKeyValueObservingOptionNew context:nil];
     
-    [self removeObserver:self forKeyPath:@"title"];
+//    [self removeObserver:self forKeyPath:@"title"];
+     [self removeObserver:self forKeyPath:@"title" context:nil];
     
 }
 

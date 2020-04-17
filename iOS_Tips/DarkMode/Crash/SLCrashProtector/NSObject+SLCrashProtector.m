@@ -14,22 +14,20 @@
 @implementation NSObject (SLCrashProtector)
 
 + (void)load {
-    
     /// Unrecognized Selector  未识别方法防护
+    [NSObject unrecognizedSelectorCrashProtector];
+    /// KVO  防护
+    [NSObject KVOCrashProtector];
+}
+
+#pragma mark - Unrecognized Selector
+/// Unrecognized Selector  未识别方法防护
++ (void)unrecognizedSelectorCrashProtector {
     //实例方法防护
     SL_ExchangeInstanceMethod([NSObject class], @selector(forwardingTargetForSelector:), [NSObject class], @selector(sl_forwardingTargetForSelector:));
     //类方法防护
     SL_ExchangeClassMethod([[NSObject class] class], @selector(forwardingTargetForSelector:), @selector(sl_forwardingTargetForSelector:));
-    
-    /// KVO  防护
-    SL_ExchangeInstanceMethod([NSObject class], @selector(addObserver:forKeyPath:options:context:), [NSObject class], @selector(sl_addObserver:forKeyPath:options:context:));
-    SL_ExchangeInstanceMethod([NSObject class], @selector(removeObserver:forKeyPath:), [NSObject class], @selector(sl_removeObserver:forKeyPath:));
-    SL_ExchangeInstanceMethod([NSObject class], @selector(removeObserver:forKeyPath:context:), [NSObject class], @selector(sl_removeObserver:forKeyPath:context:));
-    SL_ExchangeInstanceMethod([NSObject class], NSSelectorFromString(@"dealloc"), [NSObject class], @selector(sl_KVODealloc));
-    
 }
-
-#pragma mark - Unrecognized Selector
 
 /// 将未识别的实例方法重定向转发给SLCrashHandler执行
 - (id)sl_forwardingTargetForSelector:(SEL)aSelector {
@@ -74,6 +72,13 @@ static inline int SL_DynamicAddMethodIMP(id self,SEL _cmd,...){
 }
 
 #pragma mark - KVO
+/// KVO  防护
++ (void)KVOCrashProtector {
+    SL_ExchangeInstanceMethod([NSObject class], @selector(addObserver:forKeyPath:options:context:), [NSObject class], @selector(sl_addObserver:forKeyPath:options:context:));
+    SL_ExchangeInstanceMethod([NSObject class], @selector(removeObserver:forKeyPath:), [NSObject class], @selector(sl_removeObserver:forKeyPath:));
+    SL_ExchangeInstanceMethod([NSObject class], @selector(removeObserver:forKeyPath:context:), [NSObject class], @selector(sl_removeObserver:forKeyPath:context:));
+    SL_ExchangeInstanceMethod([NSObject class], NSSelectorFromString(@"dealloc"), [NSObject class], @selector(sl_KVODealloc));
+}
 
 static void *YSCKVOProxyKey = &YSCKVOProxyKey;
 static NSString *const KVODefenderValue = @"SL_KVOCrashProtector";
@@ -92,12 +97,35 @@ static void *KVODefenderKey = &KVODefenderKey;
 }
 // 移除监听者
 - (void)sl_removeObserver:(NSObject *)observer forKeyPath:(NSString *)keyPath{
-    
-    [self sl_removeObserver:observer forKeyPath:keyPath];
+    if (!IsSystemClass(self.class)) {
+        if ([self.yscKVOProxy removeInfoInMapWithObserver:observer forKeyPath:keyPath]) {
+            // 如果移除 KVO 信息操作成功，则调用系统移除方法
+            [self sl_removeObserver:self.yscKVOProxy forKeyPath:keyPath];
+        } else {
+            // 移除 KVO 信息操作失败：移除了未注册的观察者
+            NSString *className = NSStringFromClass(self.class) == nil ? @"" : NSStringFromClass(self.class);
+            NSString *reason = [NSString stringWithFormat:@"异常 KVO: Cannot remove an observer %@ for the key path '%@' from %@ , because it is not registered as an observer", observer, keyPath, className];
+            NSLog(@"%@",reason);
+        }
+    } else {
+        [self sl_removeObserver:observer forKeyPath:keyPath];
+    }
 }
 // 移除监听者
 - (void)sl_removeObserver:(NSObject *)observer forKeyPath:(NSString *)keyPath context:(nullable void *)context{
-    [self sl_removeObserver:observer forKeyPath:keyPath context:context];
+    if (!IsSystemClass(self.class)) {
+        if ([self.yscKVOProxy removeInfoInMapWithObserver:observer forKeyPath:keyPath  context:context]) {
+            // 如果移除 KVO 信息操作成功，则调用系统移除方法
+            [self ysc_removeObserver:self.yscKVOProxy forKeyPath:keyPath context:context];
+        } else {
+            // 移除 KVO 信息操作失败：移除了未注册的观察者
+            NSString *className = NSStringFromClass(self.class) == nil ? @"" : NSStringFromClass(self.class);
+            NSString *reason = [NSString stringWithFormat:@"异常 KVO: Cannot remove an observer %@ for the key path '%@' from %@ , because it is not registered as an observer", observer, keyPath, className];
+            NSLog(@"%@",reason);
+        }
+    } else {
+        [self ysc_removeObserver:observer forKeyPath:keyPath context:context];
+    }
 }
 // 释放
 - (void)sl_KVODealloc{
@@ -158,43 +186,14 @@ static inline BOOL IsSystemClass(Class cls){
     }
 }
 
+// 移除监听者
+- (void)ysc_removeObserver:(NSObject *)observer forKeyPath:(NSString *)keyPath {
+    
+}
 // 自定义 removeObserver:forKeyPath:context: 实现方法
 - (void)ysc_removeObserver:(NSObject *)observer
                 forKeyPath:(NSString *)keyPath
                    context:(void *)context {
-    
-    if (!IsSystemClass(self.class)) {
-        if ([self.yscKVOProxy removeInfoInMapWithObserver:observer forKeyPath:keyPath  context:context]) {
-            // 如果移除 KVO 信息操作成功，则调用系统移除方法
-            [self ysc_removeObserver:self.yscKVOProxy forKeyPath:keyPath context:context];
-        } else {
-            // 移除 KVO 信息操作失败：移除了未注册的观察者
-            NSString *className = NSStringFromClass(self.class) == nil ? @"" : NSStringFromClass(self.class);
-            NSString *reason = [NSString stringWithFormat:@"KVO Warning : Cannot remove an observer %@ for the key path '%@' from %@ , because it is not registered as an observer", observer, keyPath, className];
-            NSLog(@"%@",reason);
-        }
-    } else {
-        [self ysc_removeObserver:observer forKeyPath:keyPath context:context];
-    }
-}
-
-// 自定义 removeObserver:forKeyPath: 实现方法
-- (void)ysc_removeObserver:(NSObject *)observer
-                forKeyPath:(NSString *)keyPath {
-    
-    if (!IsSystemClass(self.class)) {
-        if ([self.yscKVOProxy removeInfoInMapWithObserver:observer forKeyPath:keyPath]) {
-            // 如果移除 KVO 信息操作成功，则调用系统移除方法
-            [self ysc_removeObserver:self.yscKVOProxy forKeyPath:keyPath];
-        } else {
-            // 移除 KVO 信息操作失败：移除了未注册的观察者
-            NSString *className = NSStringFromClass(self.class) == nil ? @"" : NSStringFromClass(self.class);
-            NSString *reason = [NSString stringWithFormat:@"KVO Warning : Cannot remove an observer %@ for the key path '%@' from %@ , because it is not registered as an observer", observer, keyPath, className];
-            NSLog(@"%@",reason);
-        }
-    } else {
-        [self ysc_removeObserver:observer forKeyPath:keyPath];
-    }
     
 }
 
@@ -220,7 +219,6 @@ static inline BOOL IsSystemClass(Class cls){
     }
     [self ysc_KVODealloc];
 }
-
 
 
 @end
