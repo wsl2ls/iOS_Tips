@@ -132,10 +132,13 @@
 // 测试KVO防护
 - (void)testKVO {
     
-//    [self addObserver:self forKeyPath:@"title1" options:NSKeyValueObservingOptionNew context:nil];
+    [self addObserver:self forKeyPath:@"title" options:NSKeyValueObservingOptionNew context:nil];
     
-//    [self removeObserver:self forKeyPath:@"title"];
-     [self removeObserver:self forKeyPath:@"title" context:nil];
+    [self addObserver:self forKeyPath:@"view" options:NSKeyValueObservingOptionNew context:nil];
+    
+    //重复移除
+    [self removeObserver:self forKeyPath:@"title"];
+    [self removeObserver:self forKeyPath:@"title" context:nil];
     
 }
 

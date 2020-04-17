@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// KVO  Crash 防护代理
+/// KVO  Crash 防护代理  存储管理KVO的信息
 @interface SLKVODelegate : NSObject
 /**
  将添加kvo时的相关信息加入到关系maps中，对应原有的添加观察者

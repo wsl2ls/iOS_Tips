@@ -14,7 +14,6 @@
 @private
     NSMutableDictionary<NSString *, NSHashTable<NSObject *> *> *_kvoInfoMap;
 }
-
 @end
 
 @implementation SLKVODelegate
@@ -37,17 +36,18 @@
             ([keyPath isKindOfClass:[NSString class]] && keyPath.length <= 0)) {
             return NO;
         }
-        
         NSHashTable<NSObject *> *info = _kvoInfoMap[keyPath];
         if (info.count == 0) {
-            info = [[NSHashTable alloc] initWithOptions:(NSPointerFunctionsWeakMemory) capacity:0];
+            //NSHashTable 弱持有observer
+            info = [NSHashTable weakObjectsHashTable];
             [info addObject:observer];
             _kvoInfoMap[keyPath] = info;
             return YES;
         }
-        
+        //如果已记录的keyPath的观察者不包含observer，就记录
         if (![info containsObject:observer]) {
             [info addObject:observer];
+            return YES;
         }
         return NO;
     }
@@ -64,10 +64,11 @@
         
         NSHashTable<NSObject *> *info = _kvoInfoMap[keyPath];
         if (info.count == 0) {
+            //移除失败
             return NO;
         }
         [info removeObject:observer];
-        
+        //如果keyPath 的观察者个数为0，就移除这条记录
         if (info.count == 0) {
             [_kvoInfoMap removeObjectForKey:keyPath];
             return YES;
@@ -85,13 +86,11 @@
             ([keyPath isKindOfClass:[NSString class]] && keyPath.length <= 0)) {
             return NO;
         }
-        
         NSHashTable<NSObject *> *info = _kvoInfoMap[keyPath];
         if (info.count == 0) {
             return NO;
         }
         [info removeObject:observer];
-        
         if (info.count == 0) {
             [_kvoInfoMap removeObjectForKey:keyPath];
             return YES;
@@ -105,13 +104,12 @@
                       ofObject:(id)object
                         change:(NSDictionary<NSKeyValueChangeKey,id> *)change
                        context:(void *)context {
-    
     NSHashTable<NSObject *> *info = _kvoInfoMap[keyPath];
     for (NSObject *observer in info) {
         @try {
             [observer observeValueForKeyPath:keyPath ofObject:object change:change context:context];
         } @catch (NSException *exception) {
-            NSString *reason = [NSString stringWithFormat:@"KVO Warning : %@",[exception description]];
+            NSString *reason = [NSString stringWithFormat:@"异常 KVO: %@",[exception description]];
             NSLog(@"%@",reason);
         }
     }
