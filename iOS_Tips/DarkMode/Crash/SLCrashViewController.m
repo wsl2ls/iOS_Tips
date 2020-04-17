@@ -26,7 +26,7 @@
     [self setupUI];
 }
 - (void)dealloc {
-     NSLog(@"SLCrashViewController 释放");
+    NSLog(@"SLCrashViewController 释放");
 }
 
 #pragma mark - UI
@@ -132,14 +132,19 @@
 // 测试KVO防护
 - (void)testKVO {
     
-    [self addObserver:self forKeyPath:@"title" options:NSKeyValueObservingOptionNew context:nil];
-    
+    //被观察对象提前释放 导致Crash
+    UILabel *label = [[UILabel alloc] init];
+    [label addObserver:self forKeyPath:@"text" options:NSKeyValueObservingOptionNew context:nil];
+    //没有移除观察者
     [self addObserver:self forKeyPath:@"view" options:NSKeyValueObservingOptionNew context:nil];
     
-    //重复移除
+    [self addObserver:self forKeyPath:@"title" options:NSKeyValueObservingOptionNew context:nil];
+    
+    //重复移除 导致Crash
     [self removeObserver:self forKeyPath:@"title"];
     [self removeObserver:self forKeyPath:@"title" context:nil];
-    
+    //移除未注册的观察者
+    [self removeObserver:self forKeyPath:@"modalTransitionStyle"];
 }
 
 #pragma mark - KVC
