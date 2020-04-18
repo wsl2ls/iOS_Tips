@@ -147,12 +147,16 @@
 #pragma mark - KVC
 // 测试KVC防护
 - (void)testKVC {
-    
     NSString *nilKey = nil;
     NSString *nilValue = nil;
+    //    key 为nil
+    [self setValue:@"wsl" forKey:nilKey];
+    //    Value 为nil
+    [self setValue:nilValue forKey:@"name"];
+    //     key 不是对象的属性
+    [self setValue:@"wsl" forKey:@"noProperty"];
     
-    [self setValue:nilValue forKey:@"title"];
-    
+    [self setValue:@"wsl" forKeyPath:@"self.noProperty"];
 }
 
 #pragma mark - NSNotification

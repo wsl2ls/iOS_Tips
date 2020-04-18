@@ -189,33 +189,34 @@ static inline BOOL IsSystemClass(Class cls){
 #pragma mark - KVC
 /// KVC  防护
 + (void)KVCCrashProtector {
-//    SL_ExchangeInstanceMethod([NSObject class], @selector(setValue:forKey:), [NSObject class], @selector(sl_setValue:forKey:));
+    SL_ExchangeInstanceMethod([NSObject class], @selector(setValue:forKey:), [NSObject class], @selector(sl_setValue:forKey:));
 }
 
 - (void)sl_setValue:(id)value forKey:(NSString *)key {
     if (key == nil) {
-        NSString *crashMessages = [NSString stringWithFormat:@"crashMessages : [<%@ %p> setNilValueForKey]: could not set nil as the value for the key %@.",NSStringFromClass([self class]),self,key];
-        NSLog(@"%@", crashMessages);
+        @try {
+            [self sl_setValue:value forKey:key];
+        }
+        @catch (NSException *exception) {
+            NSLog(@"异常 KVC: %@", exception.reason);
+        }
         return;
     }
     [self sl_setValue:value forKey:key];
 }
-
 - (void)setNilValueForKey:(NSString *)key {
-    NSString *crashMessages = [NSString stringWithFormat:@"crashMessages : [<%@ %p> setNilValueForKey]: could not set nil as the value for the key %@.",NSStringFromClass([self class]),self,key];
+    NSString *crashMessages = [NSString stringWithFormat:@"异常 KVC: [<%@ %p> setNilValueForKey]: could not set nil as the value for the key %@.",NSStringFromClass([self class]),self,key];
     NSLog(@"%@", crashMessages);
 }
-
 - (void)setValue:(id)value forUndefinedKey:(NSString *)key {
-    NSString *crashMessages = [NSString stringWithFormat:@"crashMessages : [<%@ %p> setValue:forUndefinedKey:]: this class is not key value coding-compliant for the key: %@,value:%@'",NSStringFromClass([self class]),self,key,value];
+    NSString *crashMessages = [NSString stringWithFormat:@"异常 KVC: [<%@ %p> setValue:forUndefinedKey:]: this class is not key value coding-compliant for the key: %@,value:%@'",NSStringFromClass([self class]),self,key,value];
     NSLog(@"%@", crashMessages);
+    
 }
-
 - (nullable id)valueForUndefinedKey:(NSString *)key {
-    NSString *crashMessages = [NSString stringWithFormat:@"crashMessages :[<%@ %p> valueForUndefinedKey:]: this class is not key value coding-compliant for the key: %@",NSStringFromClass([self class]),self,key];
+    NSString *crashMessages = [NSString stringWithFormat:@"异常 KVC: [<%@ %p> valueForUndefinedKey:]: this class is not key value coding-compliant for the key: %@",NSStringFromClass([self class]),self,key];
     NSLog(@"%@", crashMessages);
     return self;
 }
-
 
 @end
