@@ -18,10 +18,12 @@
     [NSObject unrecognizedSelectorCrashProtector];
     /// KVO  防护
     [NSObject KVOCrashProtector];
+    /// KVC  防护
+    [NSObject KVCCrashProtector];
 }
 
 #pragma mark - Unrecognized Selector
-/// Unrecognized Selector  未识别方法防护
+/// Unrecognized Selector  未识别方法防护   不包括系统类
 + (void)unrecognizedSelectorCrashProtector {
     //实例方法防护
     SL_ExchangeInstanceMethod([NSObject class], @selector(forwardingTargetForSelector:), [NSObject class], @selector(sl_forwardingTargetForSelector:));
@@ -30,9 +32,9 @@
 }
 /// 将未识别的实例方法重定向转发给SLCrashHandler执行
 - (id)sl_forwardingTargetForSelector:(SEL)aSelector {
-    NSLog(@"异常:未识别方法 [%@ -%@]", NSStringFromClass([self class]) ,NSStringFromSelector(aSelector));
     //判断当前类是否重写了消息转发的相关方法，如果重写了，就走正常的消息转发流程
-    if (![self isOverideForwardingMethods:[self class]]) {
+    if (![self isOverideForwardingMethods:[self class]] && !IsSystemClass(self.class)) {
+        NSLog(@"异常:未识别方法 [%@ -%@]", NSStringFromClass([self class]) ,NSStringFromSelector(aSelector));
         //如果SLCrashHandler也没有实现aSelector，就动态添加上aSelector
         if (!class_getInstanceMethod([SLCrashHandler class], aSelector)) {
             class_addMethod([SLCrashHandler class], aSelector, (IMP)SL_DynamicAddMethodIMP, "v@:");
@@ -44,9 +46,9 @@
 }
 /// 将未识别的类方法重定向转发给SLCrashHandler执行
 + (id)sl_forwardingTargetForSelector:(SEL)aSelector {
-    NSLog(@"异常:未识别方法 [%@ +%@]", NSStringFromClass([[self class] class]),NSStringFromSelector(aSelector));
     //判断当前类是否重写了消息转发的相关方法，如果重写了，就走正常的消息转发流程
-    if (![self isOverideForwardingMethods:[[self class] class]]) {
+    if (![self isOverideForwardingMethods:[[self class] class]] && !IsSystemClass(self.class)) {
+        NSLog(@"异常:未识别方法 [%@ +%@]", NSStringFromClass([[self class] class]),NSStringFromSelector(aSelector));
         //如果SLCrashHandler也没有实现aSelector，就动态添加上aSelector
         if (!class_getInstanceMethod([[SLCrashHandler class] class], aSelector)) {
             class_addMethod([[SLCrashHandler class] class], aSelector, (IMP)SL_DynamicAddMethodIMP, "v@:");
@@ -183,5 +185,37 @@ static inline BOOL IsSystemClass(Class cls){
     }
     return isSystem;
 }
+
+#pragma mark - KVC
+/// KVC  防护
++ (void)KVCCrashProtector {
+//    SL_ExchangeInstanceMethod([NSObject class], @selector(setValue:forKey:), [NSObject class], @selector(sl_setValue:forKey:));
+}
+
+- (void)sl_setValue:(id)value forKey:(NSString *)key {
+    if (key == nil) {
+        NSString *crashMessages = [NSString stringWithFormat:@"crashMessages : [<%@ %p> setNilValueForKey]: could not set nil as the value for the key %@.",NSStringFromClass([self class]),self,key];
+        NSLog(@"%@", crashMessages);
+        return;
+    }
+    [self sl_setValue:value forKey:key];
+}
+
+- (void)setNilValueForKey:(NSString *)key {
+    NSString *crashMessages = [NSString stringWithFormat:@"crashMessages : [<%@ %p> setNilValueForKey]: could not set nil as the value for the key %@.",NSStringFromClass([self class]),self,key];
+    NSLog(@"%@", crashMessages);
+}
+
+- (void)setValue:(id)value forUndefinedKey:(NSString *)key {
+    NSString *crashMessages = [NSString stringWithFormat:@"crashMessages : [<%@ %p> setValue:forUndefinedKey:]: this class is not key value coding-compliant for the key: %@,value:%@'",NSStringFromClass([self class]),self,key,value];
+    NSLog(@"%@", crashMessages);
+}
+
+- (nullable id)valueForUndefinedKey:(NSString *)key {
+    NSString *crashMessages = [NSString stringWithFormat:@"crashMessages :[<%@ %p> valueForUndefinedKey:]: this class is not key value coding-compliant for the key: %@",NSStringFromClass([self class]),self,key];
+    NSLog(@"%@", crashMessages);
+    return self;
+}
+
 
 @end
