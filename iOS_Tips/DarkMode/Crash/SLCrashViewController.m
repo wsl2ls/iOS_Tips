@@ -155,19 +155,7 @@
     [self setValue:nilValue forKey:@"name"];
     //     key 不是对象的属性
     [self setValue:@"wsl" forKey:@"noProperty"];
-    
     [self setValue:@"wsl" forKeyPath:@"self.noProperty"];
-}
-
-#pragma mark - NSNotification
-// 测试NSNotification防护
-- (void)testNotification {
-    
-    
-    
-    
-    
-    
 }
 
 @end

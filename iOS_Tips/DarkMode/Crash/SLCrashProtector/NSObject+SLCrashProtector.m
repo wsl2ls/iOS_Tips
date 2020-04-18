@@ -191,7 +191,6 @@ static inline BOOL IsSystemClass(Class cls){
 + (void)KVCCrashProtector {
     SL_ExchangeInstanceMethod([NSObject class], @selector(setValue:forKey:), [NSObject class], @selector(sl_setValue:forKey:));
 }
-
 - (void)sl_setValue:(id)value forKey:(NSString *)key {
     if (key == nil) {
         @try {
