@@ -10,6 +10,8 @@
 
 @interface SLCrashViewController ()
 
+@property (nonatomic, strong) NSTimer *timer;
+
 //未实现的实例方法
 - (id)undefineInstanceMethodTest:(id)sender;
 //未实现的类方法
@@ -32,8 +34,7 @@
 #pragma mark - UI
 - (void)setupUI {
     self.navigationItem.title = @"iOS Crash防护";
-    
-    [self testKVC];
+    [self testTimer];
 }
 
 #pragma mark - Container Crash
@@ -156,6 +157,12 @@
     //     key 不是对象的属性
     [self setValue:@"wsl" forKey:@"noProperty"];
     [self setValue:@"wsl" forKeyPath:@"self.noProperty"];
+}
+
+#pragma mark - NSTimer
+
+- (void)testTimer {
+    _timer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(timerAction:) userInfo:nil repeats:YES];
 }
 
 @end
