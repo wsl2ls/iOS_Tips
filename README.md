@@ -87,6 +87,10 @@
 
 | ![问题描述.gif](PrviewPicture/10、键盘和UIMenuController不能同时出现的问题描述.gif) | ![并存问题解决](PrviewPicture/10、键盘和UIMenuController并存问题解决.gif) |
 
+## 11、iOS Crash防护 (doing)
+
+> NSArray/NSMutableArray、NSDictionary/NSMutableDictionary、NSString/NSMutableString、Unrecognized Selector、KVO、KVC 防护
+
 ## 问题说明：
 
 > * 1、小视频拍摄录制失败，主要集中在plus和X系列手机上：可能是由于写入的视频宽高videoSize设置的问题，各位可以先试试这样设置
