@@ -34,7 +34,7 @@
 #pragma mark - UI
 - (void)setupUI {
     self.navigationItem.title = @"iOS Crash防护";
-    [self testTimer];
+//    [self testTimer];
 }
 
 #pragma mark - Container Crash
@@ -159,10 +159,9 @@
     [self setValue:@"wsl" forKeyPath:@"self.noProperty"];
 }
 
-#pragma mark - NSTimer
+#pragma mark - 野指针
 
-- (void)testTimer {
-    _timer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(timerAction:) userInfo:nil repeats:YES];
-}
+
+
 
 @end
