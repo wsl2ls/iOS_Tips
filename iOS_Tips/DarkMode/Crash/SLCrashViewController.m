@@ -21,7 +21,6 @@
 
 @implementation SLCrashViewController
 
-
 #pragma mark - Override
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -34,7 +33,7 @@
 #pragma mark - UI
 - (void)setupUI {
     self.navigationItem.title = @"iOS Crash防护";
-//    [self testTimer];
+    [self testWildPointer];
 }
 
 #pragma mark - Container Crash
@@ -160,7 +159,10 @@
 }
 
 #pragma mark - 野指针
-
+///野指针
+- (void)testWildPointer {
+    NSString *sre = @"wsl";
+}
 
 
 
