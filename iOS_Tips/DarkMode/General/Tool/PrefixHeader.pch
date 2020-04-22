@@ -9,8 +9,11 @@
 #ifndef PrefixHeader_pch
 #define PrefixHeader_pch
 
-// Include any system framework and library headers here that should be included in all compilation units.
-// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+//如何安装:
+//1.创建新pch文件,默认名字即可: "PrefixHeader.pch".
+//2.点击下一步再去Build Settings 搜索Prefix Header.
+//3.找到Prefix Header并且双击,输入$(SRCROOT)/$(PROJECT_NAME)/PrefixHeader.pch
+//现在你可以在项目内任何文件调用宏定义了,祝一切顺利.
 
 #ifdef __OBJC__ // 只被object－c文件所引用
 
@@ -69,7 +72,6 @@
 #import "SLAlertView.h"
 
 #endif
-
 
 
 #endif /* PrefixHeader_pch */

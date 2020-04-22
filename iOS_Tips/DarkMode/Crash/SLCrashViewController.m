@@ -12,6 +12,8 @@
 
 @property (nonatomic, strong) NSTimer *timer;
 
+@property (nonatomic, unsafe_unretained) NSString *unsafeString;
+
 //未实现的实例方法
 - (id)undefineInstanceMethodTest:(id)sender;
 //未实现的类方法
@@ -161,9 +163,13 @@
 #pragma mark - 野指针
 ///野指针
 - (void)testWildPointer {
-    NSString *sre = @"wsl";
+    UIView *testObj = [[UIView alloc] init];
+//    [testObj release];
+//    _unsafeString = @"wsl";
 }
-
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+   
+}
 
 
 @end
