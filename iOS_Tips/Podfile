@@ -4,4 +4,5 @@ target "DarkMode" do
 pod 'GPUImage'
 #pod 'MLeaksFinder'
 pod 'MBProgressHUD'
+pod 'Masonry'
 end

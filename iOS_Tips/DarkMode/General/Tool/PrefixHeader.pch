@@ -70,6 +70,7 @@
 #import "UIView+SLFrame.h"
 #import "SLDelayPerform.h"
 #import "SLAlertView.h"
+#import "Masonry.h"
 
 #endif
 

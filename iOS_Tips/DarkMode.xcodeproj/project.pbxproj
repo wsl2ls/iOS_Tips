@@ -72,6 +72,7 @@
 		788ADB382441F48F00302CD9 /* SLCrashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 788ADB362441F48F00302CD9 /* SLCrashViewController.m */; };
 		788ADB392441F48F00302CD9 /* SLCrashViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 788ADB372441F48F00302CD9 /* SLCrashViewController.xib */; };
 		78A1998C2451BEE7005B2B4B /* UIButton+SLTitleImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 78A1998B2451BEE7005B2B4B /* UIButton+SLTitleImage.m */; };
+		78A1998F2451C049005B2B4B /* SLButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 78A1998E2451C049005B2B4B /* SLButton.m */; };
 		78A35B1C23978A5D004BCCB7 /* SLShaderCubeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78A35B1B23978A5D004BCCB7 /* SLShaderCubeViewController.m */; };
 		78A4BD45236C5DF20021AE32 /* SLEditVideoController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78A4BD44236C5DF20021AE32 /* SLEditVideoController.m */; };
 		78A4BD48236C5DFE0021AE32 /* SLImageZoomView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78A4BD47236C5DFD0021AE32 /* SLImageZoomView.m */; };
@@ -227,6 +228,8 @@
 		788ADB372441F48F00302CD9 /* SLCrashViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SLCrashViewController.xib; sourceTree = "<group>"; };
 		78A1998A2451BEE7005B2B4B /* UIButton+SLTitleImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+SLTitleImage.h"; sourceTree = "<group>"; };
 		78A1998B2451BEE7005B2B4B /* UIButton+SLTitleImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+SLTitleImage.m"; sourceTree = "<group>"; };
+		78A1998D2451C049005B2B4B /* SLButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLButton.h; sourceTree = "<group>"; };
+		78A1998E2451C049005B2B4B /* SLButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLButton.m; sourceTree = "<group>"; };
 		78A35B1A23978A5D004BCCB7 /* SLShaderCubeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLShaderCubeViewController.h; sourceTree = "<group>"; };
 		78A35B1B23978A5D004BCCB7 /* SLShaderCubeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLShaderCubeViewController.m; sourceTree = "<group>"; };
 		78A4BD43236C5DF20021AE32 /* SLEditVideoController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLEditVideoController.h; sourceTree = "<group>"; };
@@ -512,6 +515,8 @@
 				7822CCF7235B054200E70C29 /* SLPaddingLabel.m */,
 				78EF8B6224188767008D0CD7 /* SLAlertView.h */,
 				78EF8B6324188767008D0CD7 /* SLAlertView.m */,
+				78A1998D2451C049005B2B4B /* SLButton.h */,
+				78A1998E2451C049005B2B4B /* SLButton.m */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -976,6 +981,7 @@
 				78D6F37A24454D7D00C0D61D /* NSString+SLCrashProtector.m in Sources */,
 				782CFB1D239DDE95001B5528 /* SLSplitScreenViewController.m in Sources */,
 				7857977823725C21004CD664 /* SLFaceDetectController.m in Sources */,
+				78A1998F2451C049005B2B4B /* SLButton.m in Sources */,
 				78B10488232F57C30051579F /* ViewController.m in Sources */,
 				78FA0FA02354141E003E456B /* SLAvEditExport.m in Sources */,
 				78F42023237915730093497C /* SLGPUImageController.m in Sources */,
