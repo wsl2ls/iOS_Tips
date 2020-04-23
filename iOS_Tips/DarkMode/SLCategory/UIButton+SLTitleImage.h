@@ -21,7 +21,7 @@ typedef NS_ENUM(NSUInteger, SLTitleImageStyle) {
 @interface UIButton (SLTitleImage)
 ///设置文本图片布局方式
 - (void)sl_setTitleImageLayoutStyle:(SLTitleImageStyle)titleImageStyle space:(CGFloat)space;
-    
+
 @end
 
 NS_ASSUME_NONNULL_END
