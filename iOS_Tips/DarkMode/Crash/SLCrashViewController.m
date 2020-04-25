@@ -164,12 +164,12 @@
 ///野指针
 - (void)testWildPointer {
     UIView *testObj = [[UIView alloc] init];
-//    [testObj release];
-//    _unsafeString = @"wsl";
+    [testObj release];
+    testObj.backgroundColor;
 }
-- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-   
-}
+
+
+#pragma mark - 内存泄漏/循环引用
 
 
 @end

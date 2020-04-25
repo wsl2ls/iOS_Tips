@@ -70,7 +70,7 @@
 		78804A7E237D5E3E0087E152 /* SLWaterMarkController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78804A7D237D5E3E0087E152 /* SLWaterMarkController.m */; };
 		788ACD622390BFD400737EC2 /* SLLoadImageVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 788ACD612390BFD400737EC2 /* SLLoadImageVC.m */; };
 		788ACD652390EA3A00737EC2 /* SLCubeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 788ACD642390EA3A00737EC2 /* SLCubeViewController.m */; };
-		788ADB382441F48F00302CD9 /* SLCrashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 788ADB362441F48F00302CD9 /* SLCrashViewController.m */; };
+		788ADB382441F48F00302CD9 /* SLCrashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 788ADB362441F48F00302CD9 /* SLCrashViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		788ADB392441F48F00302CD9 /* SLCrashViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 788ADB372441F48F00302CD9 /* SLCrashViewController.xib */; };
 		78A1998C2451BEE7005B2B4B /* UIButton+SLTitleImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 78A1998B2451BEE7005B2B4B /* UIButton+SLTitleImage.m */; };
 		78A1998F2451C049005B2B4B /* SLButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 78A1998E2451C049005B2B4B /* SLButton.m */; };
