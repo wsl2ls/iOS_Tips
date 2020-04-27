@@ -161,11 +161,19 @@
 }
 
 #pragma mark - 野指针
-///野指针
+///野指针  随机性太强，不方便复现和定位问题
+//https://www.jianshu.com/p/9fd4dc046046?utm_source=oschina-app
 - (void)testWildPointer {
-    UIView *testObj = [[UIView alloc] init];
-    [testObj release];
-    testObj.backgroundColor;
+    UILabel *label = [[UILabel alloc] init];
+    [label release];  //testObj对象所在的内存空间已释放
+    
+    //这时新建一个示例对象，覆盖掉了野指针label所指向的内存空间，如果此时没有创建此同类/子类对象，就会崩溃
+    UILabel* newView = [[UILabel alloc] initWithFrame:CGRectMake(0,200,SL_kScreenWidth, 60)];
+    newView.backgroundColor = [UIColor greenColor];
+    [self.view addSubview:newView];
+    
+    //向野指针label指向的内存对象发送修改颜色的消息，结果是newView接收到了，因为newView和label是同类，可以处理此消息,所以没有崩溃
+    label.backgroundColor = [UIColor orangeColor];
 }
 
 
