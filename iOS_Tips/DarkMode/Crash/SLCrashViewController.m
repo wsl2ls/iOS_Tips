@@ -161,7 +161,7 @@
 }
 
 #pragma mark - 野指针
-///野指针  随机性太强，不方便复现和定位问题
+///野指针  随机性太强，不方便复现和定位问题，我们需要做的就是把随机变为必现，方便查找解决
 //https://www.jianshu.com/p/9fd4dc046046?utm_source=oschina-app
 - (void)testWildPointer {
     UILabel *label = [[UILabel alloc] init];
@@ -174,6 +174,11 @@
     
     //向野指针label指向的内存对象发送修改颜色的消息，结果是newView接收到了，因为newView和label是同类，可以处理此消息,所以没有崩溃
     label.backgroundColor = [UIColor orangeColor];
+    
+    
+    
+   
+    
 }
 
 

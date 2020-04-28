@@ -50,6 +50,8 @@
 		7830A59E2358520200BC79BA /* SLEditTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7830A59D2358520200BC79BA /* SLEditTextView.m */; };
 		7830A5A42358904600BC79BA /* UIView+SLImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 7830A5A32358904600BC79BA /* UIView+SLImage.m */; };
 		783504642452C20B0071283E /* SLMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = 783504632452C20B0071283E /* SLMethod.m */; };
+		7835048424586BAC0071283E /* fishhook.c in Sources */ = {isa = PBXBuildFile; fileRef = 7835048024586BAC0071283E /* fishhook.c */; };
+		7835048524586BAC0071283E /* queue.c in Sources */ = {isa = PBXBuildFile; fileRef = 7835048124586BAC0071283E /* queue.c */; };
 		783FB45C2394A4E10039AEFD /* SLShaderLanguageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 783FB45B2394A4E10039AEFD /* SLShaderLanguageViewController.m */; };
 		783FB4602394A76B0039AEFD /* shaderv.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 783FB45E2394A76B0039AEFD /* shaderv.vsh */; };
 		783FB4612394A76B0039AEFD /* shaderf.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 783FB45F2394A76B0039AEFD /* shaderf.fsh */; };
@@ -190,6 +192,10 @@
 		7830A5A32358904600BC79BA /* UIView+SLImage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+SLImage.m"; sourceTree = "<group>"; };
 		783504622452C20B0071283E /* SLMethod.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLMethod.h; sourceTree = "<group>"; };
 		783504632452C20B0071283E /* SLMethod.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLMethod.m; sourceTree = "<group>"; };
+		7835048024586BAC0071283E /* fishhook.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = fishhook.c; sourceTree = "<group>"; };
+		7835048124586BAC0071283E /* queue.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = queue.c; sourceTree = "<group>"; };
+		7835048224586BAC0071283E /* fishhook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fishhook.h; sourceTree = "<group>"; };
+		7835048324586BAC0071283E /* queue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = queue.h; sourceTree = "<group>"; };
 		783FB45A2394A4E10039AEFD /* SLShaderLanguageViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLShaderLanguageViewController.h; sourceTree = "<group>"; };
 		783FB45B2394A4E10039AEFD /* SLShaderLanguageViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLShaderLanguageViewController.m; sourceTree = "<group>"; };
 		783FB45E2394A76B0039AEFD /* shaderv.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = shaderv.vsh; sourceTree = "<group>"; };
@@ -360,6 +366,25 @@
 				782E3EB72373F911001E0DF9 /* SLFilterViewController.m */,
 			);
 			path = Filter;
+			sourceTree = "<group>";
+		};
+		7835047E24586BA30071283E /* ThirdLibary */ = {
+			isa = PBXGroup;
+			children = (
+				7835047F24586BAC0071283E /* Fishhook */,
+			);
+			path = ThirdLibary;
+			sourceTree = "<group>";
+		};
+		7835047F24586BAC0071283E /* Fishhook */ = {
+			isa = PBXGroup;
+			children = (
+				7835048024586BAC0071283E /* fishhook.c */,
+				7835048124586BAC0071283E /* queue.c */,
+				7835048224586BAC0071283E /* fishhook.h */,
+				7835048324586BAC0071283E /* queue.h */,
+			);
+			path = Fishhook;
 			sourceTree = "<group>";
 		};
 		783FB45D2394A7580039AEFD /* ShaderLanguage */ = {
@@ -577,6 +602,7 @@
 				78B10484232F57C30051579F /* SceneDelegate.m */,
 				78B10486232F57C30051579F /* ViewController.h */,
 				78B10487232F57C30051579F /* ViewController.m */,
+				7835047E24586BA30071283E /* ThirdLibary */,
 				78E1791E2351820F0007E4BB /* Recource */,
 				78F54913233383AC00910215 /* General */,
 				7851CB40233222E2002295B5 /* SLCategory */,
@@ -986,6 +1012,7 @@
 				78D6F37A24454D7D00C0D61D /* NSString+SLCrashProtector.m in Sources */,
 				782CFB1D239DDE95001B5528 /* SLSplitScreenViewController.m in Sources */,
 				7857977823725C21004CD664 /* SLFaceDetectController.m in Sources */,
+				7835048524586BAC0071283E /* queue.c in Sources */,
 				78A1998F2451C049005B2B4B /* SLButton.m in Sources */,
 				78B10488232F57C30051579F /* ViewController.m in Sources */,
 				78FA0FA02354141E003E456B /* SLAvEditExport.m in Sources */,
@@ -1034,6 +1061,7 @@
 				78A4BD45236C5DF20021AE32 /* SLEditVideoController.m in Sources */,
 				78B10485232F57C30051579F /* SceneDelegate.m in Sources */,
 				783FB45C2394A4E10039AEFD /* SLShaderLanguageViewController.m in Sources */,
+				7835048424586BAC0071283E /* fishhook.c in Sources */,
 				78E1791923517F700007E4BB /* SLImageDecoder.m in Sources */,
 				782CFB57239E5FE6001B5528 /* SLShaderFilterViewController.m in Sources */,
 				7822CCF8235B054200E70C29 /* SLPaddingLabel.m in Sources */,
