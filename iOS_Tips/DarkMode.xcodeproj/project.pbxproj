@@ -371,6 +371,7 @@
 		7835047E24586BA30071283E /* ThirdLibary */ = {
 			isa = PBXGroup;
 			children = (
+				78D3095D239688EF00DC373A /* OpenGLUtils */,
 				7835047F24586BAC0071283E /* Fishhook */,
 			);
 			path = ThirdLibary;
@@ -510,7 +511,6 @@
 			isa = PBXGroup;
 			children = (
 				78AA10F42371A7B50044A6F8 /* PrefixHeader.pch */,
-				78D3095D239688EF00DC373A /* OpenGLUtils */,
 				78777CE4238FF65C006FA671 /* SLDelayPerform.h */,
 				78777CE5238FF65C006FA671 /* SLDelayPerform.m */,
 				783504622452C20B0071283E /* SLMethod.h */,
