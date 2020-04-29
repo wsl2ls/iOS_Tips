@@ -162,12 +162,14 @@
 
 #pragma mark - 野指针
 ///野指针  随机性太强，不方便复现和定位问题，我们需要做的就是把随机变为必现，并且定位到对应的代码，方便查找解决
-//https://www.jianshu.com/p/9fd4dc046046?utm_source=oschina-app
+///思路来源： https://www.jianshu.com/p/9fd4dc046046?utm_source=oschina-app
 - (void)testWildPointer {
     UILabel *label = [[UILabel alloc] init];
-    [label release];  //testObj对象所在的内存空间已释放
+    //-fno-objc-arc 记得设置此类编译方式支持MRC
+    //testObj对象所在的内存空间已释放
+    [label release];
     
-    //这时新建一个示例对象，覆盖掉了野指针label所指向的内存空间，如果此时没有创建此同类/子类对象，就会崩溃
+    //这时新建一个示例对象，覆盖掉了野指针label所指向的内存空间，如果此时没有创建此同类，就会崩溃
     UILabel* newView = [[UILabel alloc] initWithFrame:CGRectMake(0,200,SL_kScreenWidth, 60)];
     newView.backgroundColor = [UIColor greenColor];
     [self.view addSubview:newView];
