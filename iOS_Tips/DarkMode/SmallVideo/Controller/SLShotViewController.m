@@ -98,6 +98,7 @@
         _avCaptureTool = [[SLAvCaptureTool alloc] init];
         _avCaptureTool.preview = self.captureView;
         _avCaptureTool.delegate = self;
+        _avCaptureTool.videoSize = CGSizeMake(SL_kScreenWidth*0.8, SL_kScreenWidth*0.8);
     }
     return _avCaptureTool;
 }

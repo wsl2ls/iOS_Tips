@@ -35,7 +35,7 @@
 #pragma mark - UI
 - (void)setupUI {
     self.navigationItem.title = @"iOS Crash防护";
-//    [self testWildPointer];
+    [self testKVO];
 }
 
 #pragma mark - Container Crash
