@@ -99,54 +99,54 @@ static void *KVODefenderKey = &KVODefenderKey;
 
 // 添加监听者
 - (void)sl_addObserver:(NSObject *)observer forKeyPath:(NSString *)keyPath options:(NSKeyValueObservingOptions)options context:(void *)context{
-    //    if (!IsSystemClass(self.class)) {
-    objc_setAssociatedObject(self, KVODefenderKey, KVODefenderValue, OBJC_ASSOCIATION_RETAIN);
-    if ([self.KVODelegate addInfoToMapWithObserver:observer forKeyPath:keyPath options:options context:context]) {
-        // 如果添加 KVO 信息操作成功，则调用系统添加方法
-        [self sl_addObserver:self.KVODelegate forKeyPath:keyPath options:options context:context];
+    if (!IsSystemClass(self.class)) {
+        objc_setAssociatedObject(self, KVODefenderKey, KVODefenderValue, OBJC_ASSOCIATION_RETAIN);
+        if ([self.KVODelegate addInfoToMapWithObserver:observer forKeyPath:keyPath options:options context:context]) {
+            // 如果添加 KVO 信息操作成功，则调用系统添加方法
+            [self sl_addObserver:self.KVODelegate forKeyPath:keyPath options:options context:context];
+        } else {
+            // 添加 KVO 信息操作失败：重复添加
+            NSString *className = (NSStringFromClass(self.class) == nil) ? @"" : NSStringFromClass(self.class);
+            NSString *reason = [NSString stringWithFormat:@"异常 KVO: Repeated additions to the observer:%@ for the key path:'%@' from %@",
+                                observer, keyPath, className];
+            NSLog(@"%@",reason);
+        }
     } else {
-        // 添加 KVO 信息操作失败：重复添加
-        NSString *className = (NSStringFromClass(self.class) == nil) ? @"" : NSStringFromClass(self.class);
-        NSString *reason = [NSString stringWithFormat:@"异常 KVO: Repeated additions to the observer:%@ for the key path:'%@' from %@",
-                            observer, keyPath, className];
-        NSLog(@"%@",reason);
+        [self sl_addObserver:observer forKeyPath:keyPath options:options context:context];
     }
-    //    } else {
-    //        [self sl_addObserver:observer forKeyPath:keyPath options:options context:context];
-    //    }
 }
 // 移除监听者
 - (void)sl_removeObserver:(NSObject *)observer forKeyPath:(NSString *)keyPath{
-    //    if (!IsSystemClass(self.class)) {
-    if ([self.KVODelegate removeInfoInMapWithObserver:observer forKeyPath:keyPath]) {
-        // 如果移除 KVO 信息操作成功，则调用系统移除方法
-        [self sl_removeObserver:self.KVODelegate forKeyPath:keyPath];
+    if (!IsSystemClass(self.class)) {
+        if ([self.KVODelegate removeInfoInMapWithObserver:observer forKeyPath:keyPath]) {
+            // 如果移除 KVO 信息操作成功，则调用系统移除方法
+            [self sl_removeObserver:self.KVODelegate forKeyPath:keyPath];
+        } else {
+            // 移除 KVO 信息操作失败：移除了未注册的观察者
+            NSString *className = NSStringFromClass(self.class) == nil ? @"" : NSStringFromClass(self.class);
+            NSString *reason = [NSString stringWithFormat:@"异常 KVO: Cannot remove an observer %@ for the key path '%@' from %@ , because it is not registered as an observer", observer, keyPath, className];
+            NSLog(@"%@",reason);
+        }
     } else {
-        // 移除 KVO 信息操作失败：移除了未注册的观察者
-        NSString *className = NSStringFromClass(self.class) == nil ? @"" : NSStringFromClass(self.class);
-        NSString *reason = [NSString stringWithFormat:@"异常 KVO: Cannot remove an observer %@ for the key path '%@' from %@ , because it is not registered as an observer", observer, keyPath, className];
-        NSLog(@"%@",reason);
+        [self sl_removeObserver:observer forKeyPath:keyPath];
     }
-    //    } else {
-    //        [self sl_removeObserver:observer forKeyPath:keyPath];
-    //    }
 }
 // 移除监听者
 - (void)sl_removeObserver:(NSObject *)observer forKeyPath:(NSString *)keyPath context:(nullable void *)context{
-    //    if (!IsSystemClass(self.class)) {
-    if ([self.KVODelegate removeInfoInMapWithObserver:observer forKeyPath:keyPath  context:context]) {
-        // 如果移除 KVO 信息操作成功，则调用系统移除方法
-        [self sl_removeObserver:self.KVODelegate forKeyPath:keyPath context:context];
-    } else {
-        // 移除 KVO 信息操作失败：移除了未注册的观察者
-        NSString *className = NSStringFromClass(self.class) == nil ? @"" : NSStringFromClass(self.class);
-        NSString *reason = [NSString stringWithFormat:@"异常 KVO: Cannot remove an observer %@ for the key path '%@' from %@ , because it is not registered as an observer", observer, keyPath, className];
-        NSLog(@"%@",reason);
+    if (!IsSystemClass(self.class)) {
+        if ([self.KVODelegate removeInfoInMapWithObserver:observer forKeyPath:keyPath  context:context]) {
+            // 如果移除 KVO 信息操作成功，则调用系统移除方法
+            [self sl_removeObserver:self.KVODelegate forKeyPath:keyPath context:context];
+        } else {
+            // 移除 KVO 信息操作失败：移除了未注册的观察者
+            NSString *className = NSStringFromClass(self.class) == nil ? @"" : NSStringFromClass(self.class);
+            NSString *reason = [NSString stringWithFormat:@"异常 KVO: Cannot remove an observer %@ for the key path '%@' from %@ , because it is not registered as an observer", observer, keyPath, className];
+            NSLog(@"%@",reason);
+        }
     }
-    //    }
-    //  else {
-    //        [self sl_removeObserver:observer forKeyPath:keyPath context:context];
-    //    }
+    else {
+        [self sl_removeObserver:observer forKeyPath:keyPath context:context];
+    }
 }
 // 释放
 - (void)sl_KVODealloc{
@@ -166,7 +166,7 @@ static void *KVODefenderKey = &KVODefenderKey;
             }
         }
     }
-    //    }
+    //        }
     [self sl_KVODealloc];
 }
 /*是否是系统类*/
