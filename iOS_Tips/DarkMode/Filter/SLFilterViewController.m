@@ -116,7 +116,7 @@
 - (SLAvWriterInput *)avWriterInput {
     if (!_avWriterInput) {
         _avWriterInput = [[SLAvWriterInput alloc] init];
-        _avWriterInput.videoSize = CGSizeMake(SL_kScreenWidth*0.8, SL_kScreenWidth*0.8);
+        _avWriterInput.videoSize = CGSizeMake(SL_kScreenWidth*0.8, SL_kScreenHeight*0.8);
         _avWriterInput.delegate = self;
     }
     return _avWriterInput;
