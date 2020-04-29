@@ -35,12 +35,12 @@
 #pragma mark - UI
 - (void)setupUI {
     self.navigationItem.title = @"iOS Crash防护";
-    [self testKVO];
+    [self testWildPointer];
 }
 
 #pragma mark - Container Crash
 
-//不可变数组防护 越界和nil值
+///不可变数组防护 越界和nil值
 - (void)testArray {
     //越界
     NSArray *array = @[@"且行且珍惜"];
@@ -55,7 +55,7 @@
     NSArray *array2 = [NSArray arrayWithObjects:strings count:2];
     NSArray *array3 = [NSArray arrayWithObject:nil];
 }
-//可变数组防护 越界和nil值
+///可变数组防护 越界和nil值
 - (void)testMutableArray {
     //越界
     NSMutableArray *mArray = [NSMutableArray array];
@@ -74,7 +74,7 @@
     [mArray addObject:nilObj];
 }
 
-//不可变字典防护 nil值
+///不可变字典防护 nil值
 - (void)testDictionary {
     NSString *nilValue = nil;
     NSString *nilKey = nil;
@@ -84,7 +84,7 @@
     [NSDictionary dictionaryWithObject:nilValue forKey:@"key"];
     [NSDictionary dictionaryWithObjects:@[@"w",@"s",@"l"] forKeys:@[@"1",@"2",nilKey]];
 }
-//可变字典防护 nil值
+///可变字典防护 nil值
 - (void)testMutableDictionary {
     NSString *nilValue = nil;
     NSString *nilKey = nil;
@@ -97,7 +97,7 @@
     NSMutableDictionary *mDict1 = [NSMutableDictionary dictionaryWithDictionary:@{nilKey:nilValue}];
 }
 
-//不可变字符串防护
+///不可变字符串防护
 - (void)testString {
     NSString *string = @"wsl2ls";
     [string characterAtIndex:10];
@@ -106,7 +106,7 @@
     [string substringWithRange:NSMakeRange(10, 10)];
     [string substringWithRange:NSMakeRange(2, 10)];
 }
-//可变字符串防护
+///可变字符串防护
 - (void)testMutableString {
     NSMutableString *stringM = [NSMutableString stringWithFormat:@"wsl2ls"];
     stringM = [NSMutableString stringWithFormat:@"wsl"];
@@ -120,7 +120,7 @@
 }
 
 #pragma mark - Unrecognized Selector
-// 测试未识别方法 crash防护
+/// 测试未识别方法 crash防护
 - (void)testUnrecognizedSelector {
     //未定义、未实现的实例方法
     [self performSelector:@selector(undefineInstanceMethodTest:)];
@@ -129,7 +129,7 @@
 }
 
 #pragma mark - KVO
-// 测试KVO防护
+/// 测试KVO防护
 - (void)testKVO {
     //被观察对象提前释放 导致Crash
     UILabel *label = [[UILabel alloc] init];
@@ -147,7 +147,7 @@
 }
 
 #pragma mark - KVC
-// 测试KVC防护
+/// 测试KVC防护
 - (void)testKVC {
     NSString *nilKey = nil;
     NSString *nilValue = nil;
@@ -161,7 +161,7 @@
 }
 
 #pragma mark - 野指针
-///野指针  随机性太强，不方便复现和定位问题，我们需要做的就是把随机变为必现，方便查找解决
+///野指针  随机性太强，不方便复现和定位问题，我们需要做的就是把随机变为必现，并且定位到对应的代码，方便查找解决
 //https://www.jianshu.com/p/9fd4dc046046?utm_source=oschina-app
 - (void)testWildPointer {
     UILabel *label = [[UILabel alloc] init];
