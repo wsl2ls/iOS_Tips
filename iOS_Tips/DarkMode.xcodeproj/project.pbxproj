@@ -90,15 +90,6 @@
 		78B104A8232F57C50051579F /* DarkModeUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 78B104A7232F57C50051579F /* DarkModeUITests.m */; };
 		78D30964239688EF00DC373A /* GLESUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 78D3095E239688EF00DC373A /* GLESUtils.m */; };
 		78D30965239688EF00DC373A /* GLESMath.c in Sources */ = {isa = PBXBuildFile; fileRef = 78D30960239688EF00DC373A /* GLESMath.c */; };
-		78D6F3642444836A00C0D61D /* NSArray+SLCrashProtector.m in Sources */ = {isa = PBXBuildFile; fileRef = 78D6F3632444836A00C0D61D /* NSArray+SLCrashProtector.m */; };
-		78D6F3682444841D00C0D61D /* NSMutableArray+SLCrashProtector.m in Sources */ = {isa = PBXBuildFile; fileRef = 78D6F3662444841D00C0D61D /* NSMutableArray+SLCrashProtector.m */; };
-		78D6F36D2444845300C0D61D /* NSDictionary+SLCrashProtector.m in Sources */ = {isa = PBXBuildFile; fileRef = 78D6F3692444845200C0D61D /* NSDictionary+SLCrashProtector.m */; };
-		78D6F36E2444845300C0D61D /* NSMutableDictionary+SLCrashProtector.m in Sources */ = {isa = PBXBuildFile; fileRef = 78D6F36A2444845200C0D61D /* NSMutableDictionary+SLCrashProtector.m */; };
-		78D6F37A24454D7D00C0D61D /* NSString+SLCrashProtector.m in Sources */ = {isa = PBXBuildFile; fileRef = 78D6F37924454D7D00C0D61D /* NSString+SLCrashProtector.m */; };
-		78D6F37D2445554300C0D61D /* NSMutableString+SLCrashProtector.m in Sources */ = {isa = PBXBuildFile; fileRef = 78D6F37C2445554300C0D61D /* NSMutableString+SLCrashProtector.m */; };
-		78D6F3802445A1DB00C0D61D /* NSObject+SLCrashProtector.m in Sources */ = {isa = PBXBuildFile; fileRef = 78D6F37F2445A1DB00C0D61D /* NSObject+SLCrashProtector.m */; };
-		78D6F3832447062300C0D61D /* SLCrashHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 78D6F3822447062300C0D61D /* SLCrashHandler.m */; };
-		78D6F3862448599900C0D61D /* SLKVODelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 78D6F3852448599900C0D61D /* SLKVODelegate.m */; };
 		78DAA113235FF61E00A60F64 /* SLEditVideoClipping.m in Sources */ = {isa = PBXBuildFile; fileRef = 78DAA112235FF61E00A60F64 /* SLEditVideoClipping.m */; };
 		78DAA1162360256200A60F64 /* SLEditSelectedBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 78DAA1152360256200A60F64 /* SLEditSelectedBox.m */; };
 		78E1791723517F700007E4BB /* SLImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E1791223517F700007E4BB /* SLImageView.m */; };
@@ -270,25 +261,6 @@
 		78D30961239688EF00DC373A /* GLESUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLESUtils.h; sourceTree = "<group>"; };
 		78D30962239688EF00DC373A /* Vector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vector.h; sourceTree = "<group>"; };
 		78D30963239688EF00DC373A /* GLESMath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLESMath.h; sourceTree = "<group>"; };
-		78D6F3622444836A00C0D61D /* NSArray+SLCrashProtector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSArray+SLCrashProtector.h"; sourceTree = "<group>"; };
-		78D6F3632444836A00C0D61D /* NSArray+SLCrashProtector.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSArray+SLCrashProtector.m"; sourceTree = "<group>"; };
-		78D6F365244483DC00C0D61D /* SLCrashProtector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLCrashProtector.h; sourceTree = "<group>"; };
-		78D6F3662444841D00C0D61D /* NSMutableArray+SLCrashProtector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableArray+SLCrashProtector.m"; sourceTree = "<group>"; };
-		78D6F3672444841D00C0D61D /* NSMutableArray+SLCrashProtector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableArray+SLCrashProtector.h"; sourceTree = "<group>"; };
-		78D6F3692444845200C0D61D /* NSDictionary+SLCrashProtector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+SLCrashProtector.m"; sourceTree = "<group>"; };
-		78D6F36A2444845200C0D61D /* NSMutableDictionary+SLCrashProtector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableDictionary+SLCrashProtector.m"; sourceTree = "<group>"; };
-		78D6F36B2444845200C0D61D /* NSMutableDictionary+SLCrashProtector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableDictionary+SLCrashProtector.h"; sourceTree = "<group>"; };
-		78D6F36C2444845200C0D61D /* NSDictionary+SLCrashProtector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+SLCrashProtector.h"; sourceTree = "<group>"; };
-		78D6F37824454D7D00C0D61D /* NSString+SLCrashProtector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+SLCrashProtector.h"; sourceTree = "<group>"; };
-		78D6F37924454D7D00C0D61D /* NSString+SLCrashProtector.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSString+SLCrashProtector.m"; sourceTree = "<group>"; };
-		78D6F37B2445554300C0D61D /* NSMutableString+SLCrashProtector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSMutableString+SLCrashProtector.h"; sourceTree = "<group>"; };
-		78D6F37C2445554300C0D61D /* NSMutableString+SLCrashProtector.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSMutableString+SLCrashProtector.m"; sourceTree = "<group>"; };
-		78D6F37E2445A1DB00C0D61D /* NSObject+SLCrashProtector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSObject+SLCrashProtector.h"; sourceTree = "<group>"; };
-		78D6F37F2445A1DB00C0D61D /* NSObject+SLCrashProtector.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSObject+SLCrashProtector.m"; sourceTree = "<group>"; };
-		78D6F3812447062300C0D61D /* SLCrashHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLCrashHandler.h; sourceTree = "<group>"; };
-		78D6F3822447062300C0D61D /* SLCrashHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLCrashHandler.m; sourceTree = "<group>"; };
-		78D6F3842448599900C0D61D /* SLKVODelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLKVODelegate.h; sourceTree = "<group>"; };
-		78D6F3852448599900C0D61D /* SLKVODelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLKVODelegate.m; sourceTree = "<group>"; };
 		78DAA111235FF61E00A60F64 /* SLEditVideoClipping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLEditVideoClipping.h; sourceTree = "<group>"; };
 		78DAA112235FF61E00A60F64 /* SLEditVideoClipping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLEditVideoClipping.m; sourceTree = "<group>"; };
 		78DAA1142360256200A60F64 /* SLEditSelectedBox.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLEditSelectedBox.h; sourceTree = "<group>"; };
@@ -554,7 +526,6 @@
 		788ADB342441F46500302CD9 /* Crash */ = {
 			isa = PBXGroup;
 			children = (
-				78D6F3612444832E00C0D61D /* SLCrashProtector */,
 				788ADB352441F48F00302CD9 /* SLCrashViewController.h */,
 				788ADB362441F48F00302CD9 /* SLCrashViewController.m */,
 				788ADB372441F48F00302CD9 /* SLCrashViewController.xib */,
@@ -652,32 +623,6 @@
 				78D30963239688EF00DC373A /* GLESMath.h */,
 			);
 			path = OpenGLUtils;
-			sourceTree = "<group>";
-		};
-		78D6F3612444832E00C0D61D /* SLCrashProtector */ = {
-			isa = PBXGroup;
-			children = (
-				78D6F365244483DC00C0D61D /* SLCrashProtector.h */,
-				78D6F3812447062300C0D61D /* SLCrashHandler.h */,
-				78D6F3822447062300C0D61D /* SLCrashHandler.m */,
-				78D6F3622444836A00C0D61D /* NSArray+SLCrashProtector.h */,
-				78D6F3632444836A00C0D61D /* NSArray+SLCrashProtector.m */,
-				78D6F3672444841D00C0D61D /* NSMutableArray+SLCrashProtector.h */,
-				78D6F3662444841D00C0D61D /* NSMutableArray+SLCrashProtector.m */,
-				78D6F36C2444845200C0D61D /* NSDictionary+SLCrashProtector.h */,
-				78D6F3692444845200C0D61D /* NSDictionary+SLCrashProtector.m */,
-				78D6F36B2444845200C0D61D /* NSMutableDictionary+SLCrashProtector.h */,
-				78D6F36A2444845200C0D61D /* NSMutableDictionary+SLCrashProtector.m */,
-				78D6F37824454D7D00C0D61D /* NSString+SLCrashProtector.h */,
-				78D6F37924454D7D00C0D61D /* NSString+SLCrashProtector.m */,
-				78D6F37B2445554300C0D61D /* NSMutableString+SLCrashProtector.h */,
-				78D6F37C2445554300C0D61D /* NSMutableString+SLCrashProtector.m */,
-				78D6F3842448599900C0D61D /* SLKVODelegate.h */,
-				78D6F3852448599900C0D61D /* SLKVODelegate.m */,
-				78D6F37E2445A1DB00C0D61D /* NSObject+SLCrashProtector.h */,
-				78D6F37F2445A1DB00C0D61D /* NSObject+SLCrashProtector.m */,
-			);
-			path = SLCrashProtector;
 			sourceTree = "<group>";
 		};
 		78E1791023517F700007E4BB /* SLAnimateImageView */ = {
@@ -1009,7 +954,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				78D6F37A24454D7D00C0D61D /* NSString+SLCrashProtector.m in Sources */,
 				782CFB1D239DDE95001B5528 /* SLSplitScreenViewController.m in Sources */,
 				7857977823725C21004CD664 /* SLFaceDetectController.m in Sources */,
 				7835048524586BAC0071283E /* queue.c in Sources */,
@@ -1026,8 +970,6 @@
 				78D30964239688EF00DC373A /* GLESUtils.m in Sources */,
 				784B720923348241006AEE47 /* SLAvCaptureTool.m in Sources */,
 				786147F42362D79000C5424C /* SLMosaicView.m in Sources */,
-				78D6F36D2444845300C0D61D /* NSDictionary+SLCrashProtector.m in Sources */,
-				78D6F36E2444845300C0D61D /* NSMutableDictionary+SLCrashProtector.m in Sources */,
 				78A4BD48236C5DFE0021AE32 /* SLImageZoomView.m in Sources */,
 				782E3EB82373F911001E0DF9 /* SLFilterViewController.m in Sources */,
 				78B10482232F57C30051579F /* AppDelegate.m in Sources */,
@@ -1037,10 +979,7 @@
 				788ACD652390EA3A00737EC2 /* SLCubeViewController.m in Sources */,
 				786147FA23630C4D00C5424C /* UIImage+SLCommon.m in Sources */,
 				78FA0F9D235407E6003E456B /* SLDrawView.m in Sources */,
-				78D6F3642444836A00C0D61D /* NSArray+SLCrashProtector.m in Sources */,
 				780F5303236D8462000D0EA8 /* SLGridView.m in Sources */,
-				78D6F37D2445554300C0D61D /* NSMutableString+SLCrashProtector.m in Sources */,
-				78D6F3832447062300C0D61D /* SLCrashHandler.m in Sources */,
 				7851CB43233222E2002295B5 /* UIView+SLFrame.m in Sources */,
 				7830A5A42358904600BC79BA /* UIView+SLImage.m in Sources */,
 				78A35B1C23978A5D004BCCB7 /* SLShaderCubeViewController.m in Sources */,
@@ -1051,11 +990,9 @@
 				782E3EB12373D889001E0DF9 /* SLAvCaptureSession.m in Sources */,
 				78E179362351A40D0007E4BB /* SLEditMenuView.m in Sources */,
 				78F54916233383D800910215 /* SLBlurView.m in Sources */,
-				78D6F3802445A1DB00C0D61D /* NSObject+SLCrashProtector.m in Sources */,
 				787F01A3236AD8A5002AC1A9 /* SLEditImageController.m in Sources */,
 				780F5306236D8570000D0EA8 /* SLImageClipController.m in Sources */,
 				782CFB6A239E68D5001B5528 /* SLSpecialEffectsViewController.m in Sources */,
-				78D6F3862448599900C0D61D /* SLKVODelegate.m in Sources */,
 				78B10493232F57C50051579F /* main.m in Sources */,
 				78E179372351A40D0007E4BB /* SLShotFocusView.m in Sources */,
 				78A4BD45236C5DF20021AE32 /* SLEditVideoController.m in Sources */,
@@ -1068,7 +1005,6 @@
 				788ACD622390BFD400737EC2 /* SLLoadImageVC.m in Sources */,
 				78777CE6238FF65C006FA671 /* SLDelayPerform.m in Sources */,
 				788ADB382441F48F00302CD9 /* SLCrashViewController.m in Sources */,
-				78D6F3682444841D00C0D61D /* NSMutableArray+SLCrashProtector.m in Sources */,
 				78DAA1162360256200A60F64 /* SLEditSelectedBox.m in Sources */,
 				782CFB20239DEA05001B5528 /* SLSplitScreenCell.m in Sources */,
 				7830A59E2358520200BC79BA /* SLEditTextView.m in Sources */,
@@ -1260,7 +1196,7 @@
 					"@executable_path/Frameworks",
 				);
 				NEW_SETTING = "";
-				PRODUCT_BUNDLE_IDENTIFIER = com.wsl.demo;
+				PRODUCT_BUNDLE_IDENTIFIER = com.wsl.demo1;
 				PRODUCT_NAME = "iOS - Tips";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1288,7 +1224,7 @@
 					"@executable_path/Frameworks",
 				);
 				NEW_SETTING = "";
-				PRODUCT_BUNDLE_IDENTIFIER = com.wsl.demo;
+				PRODUCT_BUNDLE_IDENTIFIER = com.wsl.demo1;
 				PRODUCT_NAME = "iOS - Tips";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";

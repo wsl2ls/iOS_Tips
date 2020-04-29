@@ -35,7 +35,7 @@
 #pragma mark - UI
 - (void)setupUI {
     self.navigationItem.title = @"iOS Crash防护";
-    [self testWildPointer];
+//    [self testWildPointer];
 }
 
 #pragma mark - Container Crash
@@ -174,10 +174,6 @@
     
     //向野指针label指向的内存对象发送修改颜色的消息，结果是newView接收到了，因为newView和label是同类，可以处理此消息,所以没有崩溃
     label.backgroundColor = [UIColor orangeColor];
-    
-    
-    
-   
     
 }
 
