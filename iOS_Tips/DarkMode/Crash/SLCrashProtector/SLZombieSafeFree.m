@@ -73,7 +73,7 @@ void safe_free(void* p){
             if (strcmp("@", type) == 0) {
                 memset(obj, 0x55, memSiziee);
                 memcpy(obj, &sYHCatchIsa, sizeof(void*));//把我们自己的类的isa复制过去
-                object_setClass(obj, sYHCatchIsa);
+                object_setClass(obj, [SLZombieCatcher class]);
                 ((SLZombieCatcher *)obj).originClass = origClass;
                 __sync_fetch_and_add(&unfreeSize,(int)memSiziee);//多线程下int的原子加操作,多线程对全局变量进行自加，不用理线程锁了
                 ds_queue_put(_unfreeQueue, p);
