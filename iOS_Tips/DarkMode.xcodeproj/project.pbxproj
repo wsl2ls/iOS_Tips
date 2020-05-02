@@ -77,6 +77,8 @@
 		787C7DC1245D74E4005DF7ED /* NSArray+SLCrashProtector.m in Sources */ = {isa = PBXBuildFile; fileRef = 787C7DB7245D74E4005DF7ED /* NSArray+SLCrashProtector.m */; };
 		787C7DC2245D74E4005DF7ED /* NSMutableString+SLCrashProtector.m in Sources */ = {isa = PBXBuildFile; fileRef = 787C7DBA245D74E4005DF7ED /* NSMutableString+SLCrashProtector.m */; };
 		787C7DC3245D74E4005DF7ED /* NSString+SLCrashProtector.m in Sources */ = {isa = PBXBuildFile; fileRef = 787C7DBB245D74E4005DF7ED /* NSString+SLCrashProtector.m */; };
+		787C7DC8245D77D9005DF7ED /* SLZombieCatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 787C7DC6245D77D8005DF7ED /* SLZombieCatcher.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		787C7DC9245D77D9005DF7ED /* SLZombieSafeFree.m in Sources */ = {isa = PBXBuildFile; fileRef = 787C7DC7245D77D9005DF7ED /* SLZombieSafeFree.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		787F01A3236AD8A5002AC1A9 /* SLEditImageController.m in Sources */ = {isa = PBXBuildFile; fileRef = 787F01A2236AD8A5002AC1A9 /* SLEditImageController.m */; };
 		78804A7E237D5E3E0087E152 /* SLWaterMarkController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78804A7D237D5E3E0087E152 /* SLWaterMarkController.m */; };
 		788ACD622390BFD400737EC2 /* SLLoadImageVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 788ACD612390BFD400737EC2 /* SLLoadImageVC.m */; };
@@ -243,6 +245,10 @@
 		787C7DBB245D74E4005DF7ED /* NSString+SLCrashProtector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+SLCrashProtector.m"; sourceTree = "<group>"; };
 		787C7DBC245D74E4005DF7ED /* NSDictionary+SLCrashProtector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+SLCrashProtector.h"; sourceTree = "<group>"; };
 		787C7DBD245D74E4005DF7ED /* NSArray+SLCrashProtector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+SLCrashProtector.h"; sourceTree = "<group>"; };
+		787C7DC4245D77D8005DF7ED /* SLZombieCatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLZombieCatcher.h; sourceTree = "<group>"; };
+		787C7DC5245D77D8005DF7ED /* SLZombieSafeFree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLZombieSafeFree.h; sourceTree = "<group>"; };
+		787C7DC6245D77D8005DF7ED /* SLZombieCatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLZombieCatcher.m; sourceTree = "<group>"; };
+		787C7DC7245D77D9005DF7ED /* SLZombieSafeFree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLZombieSafeFree.m; sourceTree = "<group>"; };
 		787F01A1236AD8A5002AC1A9 /* SLEditImageController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLEditImageController.h; sourceTree = "<group>"; };
 		787F01A2236AD8A5002AC1A9 /* SLEditImageController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLEditImageController.m; sourceTree = "<group>"; };
 		78804A7C237D5E3E0087E152 /* SLWaterMarkController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLWaterMarkController.h; sourceTree = "<group>"; };
@@ -483,6 +489,10 @@
 				7862533924599D420017F8F1 /* SLCrashProtector.h */,
 				7862532F24599D420017F8F1 /* SLKVODelegate.h */,
 				7862533A24599D420017F8F1 /* SLKVODelegate.m */,
+				787C7DC4245D77D8005DF7ED /* SLZombieCatcher.h */,
+				787C7DC6245D77D8005DF7ED /* SLZombieCatcher.m */,
+				787C7DC5245D77D8005DF7ED /* SLZombieSafeFree.h */,
+				787C7DC7245D77D9005DF7ED /* SLZombieSafeFree.m */,
 			);
 			path = SLCrashProtector;
 			sourceTree = "<group>";
@@ -1036,6 +1046,7 @@
 				7851CB362331CC87002295B5 /* SLDarkModeViewController.m in Sources */,
 				78D30965239688EF00DC373A /* GLESMath.c in Sources */,
 				788ACD652390EA3A00737EC2 /* SLCubeViewController.m in Sources */,
+				787C7DC9245D77D9005DF7ED /* SLZombieSafeFree.m in Sources */,
 				786147FA23630C4D00C5424C /* UIImage+SLCommon.m in Sources */,
 				78FA0F9D235407E6003E456B /* SLDrawView.m in Sources */,
 				780F5303236D8462000D0EA8 /* SLGridView.m in Sources */,
@@ -1059,6 +1070,7 @@
 				782CFB6A239E68D5001B5528 /* SLSpecialEffectsViewController.m in Sources */,
 				78B10493232F57C50051579F /* main.m in Sources */,
 				78E179372351A40D0007E4BB /* SLShotFocusView.m in Sources */,
+				787C7DC8245D77D9005DF7ED /* SLZombieCatcher.m in Sources */,
 				78A4BD45236C5DF20021AE32 /* SLEditVideoController.m in Sources */,
 				78B10485232F57C30051579F /* SceneDelegate.m in Sources */,
 				783FB45C2394A4E10039AEFD /* SLShaderLanguageViewController.m in Sources */,
