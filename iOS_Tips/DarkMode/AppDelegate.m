@@ -20,6 +20,11 @@
     return YES;
 }
 
+//内存警告
+- (void)applicationDidReceiveMemoryWarning:(UIApplication *)application {
+    free_some_mem(1024*1024*10);
+    NSLog(@"内存警告");
+}
 
 #pragma mark - UISceneSession lifecycle
 
