@@ -10,9 +10,7 @@
 
 @interface SLCrashViewController ()
 
-@property (nonatomic, strong) NSTimer *timer;
-
-@property (nonatomic, unsafe_unretained) NSString *unsafeString;
+@property (nonatomic, copy) void(^testBlock)(void); //测试循环引用
 
 //未实现的实例方法
 - (id)undefineInstanceMethodTest:(id)sender;
@@ -35,7 +33,7 @@
 #pragma mark - UI
 - (void)setupUI {
     self.navigationItem.title = @"iOS Crash防护";
-    [self testWildPointer];
+    [self testMemoryLeak];
 }
 
 #pragma mark - Container Crash
@@ -179,8 +177,12 @@
     
 }
 
-
 #pragma mark - 内存泄漏/循环引用
-
+//测试内存泄漏/循环引用
+- (void)testMemoryLeak {
+    self.testBlock = ^{
+        self;
+    };
+}
 
 @end

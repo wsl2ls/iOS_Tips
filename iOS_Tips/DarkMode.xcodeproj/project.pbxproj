@@ -470,6 +470,9 @@
 		7862532B24599D420017F8F1 /* SLCrashProtector */ = {
 			isa = PBXGroup;
 			children = (
+				7862533924599D420017F8F1 /* SLCrashProtector.h */,
+				7862533D24599D420017F8F1 /* SLCrashHandler.h */,
+				7862533224599D420017F8F1 /* SLCrashHandler.m */,
 				787C7DBD245D74E4005DF7ED /* NSArray+SLCrashProtector.h */,
 				787C7DB7245D74E4005DF7ED /* NSArray+SLCrashProtector.m */,
 				787C7DB6245D74E3005DF7ED /* NSMutableArray+SLCrashProtector.h */,
@@ -484,9 +487,6 @@
 				787C7DBA245D74E4005DF7ED /* NSMutableString+SLCrashProtector.m */,
 				7862533724599D420017F8F1 /* NSObject+SLCrashProtector.h */,
 				7862532C24599D420017F8F1 /* NSObject+SLCrashProtector.m */,
-				7862533D24599D420017F8F1 /* SLCrashHandler.h */,
-				7862533224599D420017F8F1 /* SLCrashHandler.m */,
-				7862533924599D420017F8F1 /* SLCrashProtector.h */,
 				7862532F24599D420017F8F1 /* SLKVODelegate.h */,
 				7862533A24599D420017F8F1 /* SLKVODelegate.m */,
 				787C7DC4245D77D8005DF7ED /* SLZombieCatcher.h */,
