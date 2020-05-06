@@ -184,5 +184,9 @@
         self;
     };
 }
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+//     [self.navigationController popViewControllerAnimated:YES];
+    [self.navigationController popToViewController:self.navigationController.viewControllers.firstObject animated:YES];
+}
 
 @end

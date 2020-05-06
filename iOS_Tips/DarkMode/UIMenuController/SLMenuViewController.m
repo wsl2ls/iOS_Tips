@@ -72,6 +72,10 @@
     [self.titleLabel addGestureRecognizer:longPressGestureRecognizer];
 }
 
+- (void)dealloc {
+    
+}
+
 //长按显示菜单 UIMenuController
 - (void)longPressShowMenuView:(UILongPressGestureRecognizer *)longPress {
     //编辑过程中，self.textView是第一响应者
