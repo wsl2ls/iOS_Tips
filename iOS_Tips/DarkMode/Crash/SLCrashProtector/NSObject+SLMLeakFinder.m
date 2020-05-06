@@ -19,7 +19,7 @@
     return YES;
 }
 - (void)notDealloc {
-     NSLog(@"内存泄露了");
+    NSLog(@"内存泄露了: %@ 没释放",NSStringFromClass(self.class));
 }
 
 @end

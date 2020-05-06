@@ -1,18 +1,17 @@
 //
-//  NSObject+SLMLeakFinder.h
+//  UIViewController+SLMLeakFinder.h
 //  DarkMode
 //
 //  Created by wsl on 2020/5/6.
 //  Copyright © 2020 https://github.com/wsl2ls   ----- . All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface NSObject (SLMLeakFinder)
-/////对象即将释放时调用此方法
-- (BOOL)willDealloc;
+@interface UIViewController (SLMLeakFinder)
+
 @end
 
 NS_ASSUME_NONNULL_END

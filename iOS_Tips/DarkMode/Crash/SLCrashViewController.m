@@ -178,15 +178,16 @@
 }
 
 #pragma mark - 内存泄漏/循环引用
-//测试内存泄漏/循环引用
+///测试内存泄漏/循环引用
+//思路来源：https://github.com/Tencent/MLeaksFinder.git
 - (void)testMemoryLeak {
     self.testBlock = ^{
         self;
     };
 }
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-//     [self.navigationController popViewControllerAnimated:YES];
-    [self.navigationController popToViewController:self.navigationController.viewControllers.firstObject animated:YES];
+     [self.navigationController popViewControllerAnimated:YES];
+//    [self.navigationController popToViewController:self.navigationController.viewControllers.firstObject animated:YES];
 }
 
 @end
