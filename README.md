@@ -89,7 +89,7 @@
 
 ## 11、iOS Crash防护 (doing)
 
-> NSArray/NSMutableArray、NSDictionary/NSMutableDictionary、NSString/NSMutableString、Unrecognized Selector、KVO、KVC 防护
+> NSArray/NSMutableArray、NSDictionary/NSMutableDictionary、NSString/NSMutableString、Unrecognized Selector、KVO、KVC 、野指针定位
 
 ## 问题说明：
 
