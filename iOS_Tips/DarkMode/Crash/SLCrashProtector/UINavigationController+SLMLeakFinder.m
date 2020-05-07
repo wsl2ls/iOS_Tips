@@ -18,6 +18,7 @@
     dispatch_once(&onceToken, ^{
         SL_ExchangeInstanceMethod([UINavigationController class], @selector(popViewControllerAnimated:), [UINavigationController class], @selector(sl_popViewControllerAnimated:));
         SL_ExchangeInstanceMethod([UINavigationController class], @selector(popToViewController:animated:), [UINavigationController class], @selector(sl_popToViewController:animated:));
+        SL_ExchangeInstanceMethod([UINavigationController class], @selector(popToRootViewControllerAnimated:), [UINavigationController class], @selector(sl_popToRootViewControllerAnimated:));
     });
 }
 
@@ -55,7 +56,6 @@
     
     return poppedViewController;
 }
-
 - (NSArray<UIViewController *> *)sl_popToViewController:(UIViewController *)viewController animated:(BOOL)animated {
     NSArray<UIViewController *> *poppedViewControllers = [self sl_popToViewController:viewController animated:animated];
     for (UIViewController *viewController in poppedViewControllers) {
@@ -63,24 +63,19 @@
     }
     return poppedViewControllers;
 }
-//
-//- (NSArray<UIViewController *> *)sl_popToRootViewControllerAnimated:(BOOL)animated {
-//    NSArray<UIViewController *> *poppedViewControllers = [self sl_popToRootViewControllerAnimated:animated];
-//
-//    for (UIViewController *viewController in poppedViewControllers) {
-//        [viewController willDealloc];
-//    }
-//
-//    return poppedViewControllers;
-//}
+- (NSArray<UIViewController *> *)sl_popToRootViewControllerAnimated:(BOOL)animated {
+    NSArray<UIViewController *> *poppedViewControllers = [self sl_popToRootViewControllerAnimated:animated];
+    for (UIViewController *viewController in poppedViewControllers) {
+        [viewController willDealloc];
+    }
+    return poppedViewControllers;
+}
 
 - (BOOL)willDealloc {
     if (![super willDealloc]) {
         return NO;
     }
-    
     //    [self willReleaseChildren:self.viewControllers];
-    
     return YES;
 }
 

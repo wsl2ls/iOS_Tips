@@ -185,9 +185,11 @@
         self;
     };
 }
+//点击屏幕
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-     [self.navigationController popViewControllerAnimated:YES];
+//     [self.navigationController popViewControllerAnimated:YES];
 //    [self.navigationController popToViewController:self.navigationController.viewControllers.firstObject animated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end
