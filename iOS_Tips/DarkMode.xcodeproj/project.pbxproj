@@ -83,6 +83,7 @@
 		787C7DCF2462B03D005DF7ED /* UINavigationController+SLMLeakFinder.m in Sources */ = {isa = PBXBuildFile; fileRef = 787C7DCE2462B03D005DF7ED /* UINavigationController+SLMLeakFinder.m */; };
 		787C7DD22462C5F3005DF7ED /* UIViewController+SLMLeakFinder.m in Sources */ = {isa = PBXBuildFile; fileRef = 787C7DD12462C5F3005DF7ED /* UIViewController+SLMLeakFinder.m */; };
 		787C7E42246557A5005DF7ED /* SLZombieFinder.m in Sources */ = {isa = PBXBuildFile; fileRef = 787C7E41246557A5005DF7ED /* SLZombieFinder.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		787C7E4524656524005DF7ED /* UIView+SLMLeakFinder.m in Sources */ = {isa = PBXBuildFile; fileRef = 787C7E4424656524005DF7ED /* UIView+SLMLeakFinder.m */; };
 		787F01A3236AD8A5002AC1A9 /* SLEditImageController.m in Sources */ = {isa = PBXBuildFile; fileRef = 787F01A2236AD8A5002AC1A9 /* SLEditImageController.m */; };
 		78804A7E237D5E3E0087E152 /* SLWaterMarkController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78804A7D237D5E3E0087E152 /* SLWaterMarkController.m */; };
 		788ACD622390BFD400737EC2 /* SLLoadImageVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 788ACD612390BFD400737EC2 /* SLLoadImageVC.m */; };
@@ -261,6 +262,8 @@
 		787C7DD12462C5F3005DF7ED /* UIViewController+SLMLeakFinder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+SLMLeakFinder.m"; sourceTree = "<group>"; };
 		787C7E40246557A5005DF7ED /* SLZombieFinder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLZombieFinder.h; sourceTree = "<group>"; };
 		787C7E41246557A5005DF7ED /* SLZombieFinder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLZombieFinder.m; sourceTree = "<group>"; };
+		787C7E4324656524005DF7ED /* UIView+SLMLeakFinder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+SLMLeakFinder.h"; sourceTree = "<group>"; };
+		787C7E4424656524005DF7ED /* UIView+SLMLeakFinder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+SLMLeakFinder.m"; sourceTree = "<group>"; };
 		787F01A1236AD8A5002AC1A9 /* SLEditImageController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLEditImageController.h; sourceTree = "<group>"; };
 		787F01A2236AD8A5002AC1A9 /* SLEditImageController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLEditImageController.m; sourceTree = "<group>"; };
 		78804A7C237D5E3E0087E152 /* SLWaterMarkController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLWaterMarkController.h; sourceTree = "<group>"; };
@@ -513,6 +516,8 @@
 				787C7DCE2462B03D005DF7ED /* UINavigationController+SLMLeakFinder.m */,
 				787C7DD02462C5F3005DF7ED /* UIViewController+SLMLeakFinder.h */,
 				787C7DD12462C5F3005DF7ED /* UIViewController+SLMLeakFinder.m */,
+				787C7E4324656524005DF7ED /* UIView+SLMLeakFinder.h */,
+				787C7E4424656524005DF7ED /* UIView+SLMLeakFinder.m */,
 			);
 			path = SLCrashProtector;
 			sourceTree = "<group>";
@@ -1080,6 +1085,7 @@
 				787C7DBE245D74E4005DF7ED /* NSMutableArray+SLCrashProtector.m in Sources */,
 				78A1998C2451BEE7005B2B4B /* UIButton+SLTitleImage.m in Sources */,
 				783504642452C20B0071283E /* SLMethod.m in Sources */,
+				787C7E4524656524005DF7ED /* UIView+SLMLeakFinder.m in Sources */,
 				7862533F24599D420017F8F1 /* NSObject+SLCrashProtector.m in Sources */,
 				787C7DC2245D74E4005DF7ED /* NSMutableString+SLCrashProtector.m in Sources */,
 				782E3EB12373D889001E0DF9 /* SLAvCaptureSession.m in Sources */,

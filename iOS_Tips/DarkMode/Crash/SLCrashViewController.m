@@ -11,6 +11,7 @@
 @interface SLCrashViewController ()
 
 @property (nonatomic, copy) void(^testBlock)(void); //测试循环引用
+@property (nonatomic, strong) NSMutableArray *testMArray; //测试循环引用
 
 //未实现的实例方法
 - (id)undefineInstanceMethodTest:(id)sender;
@@ -184,10 +185,10 @@
 ///测试内存泄漏/循环引用
 //思路来源：https://github.com/Tencent/MLeaksFinder.git
 - (void)testMemoryLeak {
-    //    __weak typeof(self) weakSelf = self;
-    self.testBlock = ^{
-        self;
-    };
+    //    self.testBlock = ^{
+    //        self;
+    //    };
+    //    self.testMArray = [[NSMutableArray alloc] initWithObjects:self, nil];
 }
 //点击屏幕
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {

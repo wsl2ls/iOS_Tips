@@ -10,6 +10,7 @@
 #import "SLCrashProtector.h"
 #import "NSObject+SLMLeakFinder.h"
 
+static const void *const kSLPoppedDetailVCKey = &kSLPoppedDetailVCKey;
 
 @implementation UINavigationController (SLMLeakFinder)
 
@@ -22,37 +23,37 @@
     });
 }
 
-//- (void)sl_pushViewController:(UIViewController *)viewController animated:(BOOL)animated {
-//    if (self.splitViewController) {
-//        id detailViewController = objc_getAssociatedObject(self, kSLPoppedDetailVCKey);
-//        if ([detailViewController isKindOfClass:[UIViewController class]]) {
-//            [detailViewController willDealloc];
-//            objc_setAssociatedObject(self, kSLPoppedDetailVCKey, nil, OBJC_ASSOCIATION_RETAIN);
-//        }
-//    }
-//
-//    [self sl_pushViewController:viewController animated:animated];
-//}
+- (void)sl_pushViewController:(UIViewController *)viewController animated:(BOOL)animated {
+    if (self.splitViewController) {
+        id detailViewController = objc_getAssociatedObject(self, kSLPoppedDetailVCKey);
+        if ([detailViewController isKindOfClass:[UIViewController class]]) {
+            [detailViewController willDealloc];
+            objc_setAssociatedObject(self, kSLPoppedDetailVCKey, nil, OBJC_ASSOCIATION_RETAIN);
+        }
+    }
+    
+    [self sl_pushViewController:viewController animated:animated];
+}
 
 - (UIViewController *)sl_popViewControllerAnimated:(BOOL)animated {
     UIViewController *poppedViewController = [self sl_popViewControllerAnimated:animated];
     [poppedViewController willDealloc];
     
-    //    if (!poppedViewController) {
-    //        return nil;
-    //    }
-    //
-    //    // Detail VC in UISplitViewController is not dealloced until another detail VC is shown
-    //    if (self.splitViewController &&
-    //        self.splitViewController.viewControllers.firstObject == self &&
-    //        self.splitViewController == poppedViewController.splitViewController) {
-    //        objc_setAssociatedObject(self, kSLPoppedDetailVCKey, poppedViewController, OBJC_ASSOCIATION_RETAIN);
-    //        return poppedViewController;
-    //    }
-    //
-    //    // VC is not dealloced until disappear when popped using a left-edge swipe gesture
-    //    extern const void *const kHasBeenPoppedKey;
-    //    objc_setAssociatedObject(poppedViewController, kHasBeenPoppedKey, @(YES), OBJC_ASSOCIATION_RETAIN);
+    if (!poppedViewController) {
+        return nil;
+    }
+    
+    // Detail VC in UISplitViewController is not dealloced until another detail VC is shown
+    if (self.splitViewController &&
+        self.splitViewController.viewControllers.firstObject == self &&
+        self.splitViewController == poppedViewController.splitViewController) {
+        objc_setAssociatedObject(self, kSLPoppedDetailVCKey, poppedViewController, OBJC_ASSOCIATION_RETAIN);
+        return poppedViewController;
+    }
+    
+    // VC is not dealloced until disappear when popped using a left-edge swipe gesture
+    extern const void *const kHasBeenPoppedKey;
+    objc_setAssociatedObject(poppedViewController, kHasBeenPoppedKey, @(YES), OBJC_ASSOCIATION_RETAIN);
     
     return poppedViewController;
 }
@@ -72,10 +73,12 @@
 }
 
 - (BOOL)willDealloc {
+    //如果该对象不需要释放，就return NO
     if (![super willDealloc]) {
         return NO;
     }
-    //    [self willReleaseChildren:self.viewControllers];
+    //即将释放子控制器集合
+    [self willReleaseChildren:self.viewControllers];
     return YES;
 }
 
