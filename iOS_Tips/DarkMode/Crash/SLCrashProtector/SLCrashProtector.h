@@ -13,7 +13,7 @@
 
 
 #import "SLZombieCatcher.h"
-#import "SLZombieSafeFree.h"
+#import "SLZombieFinder.h"
 
 /*交换实例方法*/
 static inline void SL_ExchangeInstanceMethod(Class _originalClass ,SEL _originalSel, Class _targetClass, SEL _targetSel){

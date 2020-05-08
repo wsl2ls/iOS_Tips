@@ -7,7 +7,6 @@
 //
 
 #import "SLCrashViewController.h"
-#import "SLZombieFinder.h"
 
 @interface SLCrashViewController ()
 
@@ -34,7 +33,7 @@
 #pragma mark - UI
 - (void)setupUI {
     self.navigationItem.title = @"iOS Crash防护";
-    [self testWildPointer];
+    [self testMemoryLeak];
 }
 
 #pragma mark - Container Crash
@@ -163,8 +162,8 @@
 ///野指针  随机性太强，不方便复现和定位问题，我们需要做的就是把随机变为必现，并且定位到对应的代码，方便查找解决
 ///思路来源： https://www.jianshu.com/p/9fd4dc046046?utm_source=oschina-app
 - (void)testWildPointer {
-    
-    [SLZombieFinder installSniffer];
+    //开启僵尸对象嗅探定位
+    [SLZombieFinder startSniffer];
     
     UILabel *label = [[UILabel alloc] init];
     //-fno-objc-arc 记得设置此类编译方式支持MRC
@@ -185,16 +184,16 @@
 ///测试内存泄漏/循环引用
 //思路来源：https://github.com/Tencent/MLeaksFinder.git
 - (void)testMemoryLeak {
-//    __weak typeof(self) weakSelf = self;
+    //    __weak typeof(self) weakSelf = self;
     self.testBlock = ^{
         self;
     };
 }
 //点击屏幕
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-//     [self.navigationController popViewControllerAnimated:YES];
-//    [self.navigationController popToViewController:self.navigationController.viewControllers.firstObject animated:YES];
-//    [self dismissViewControllerAnimated:YES completion:nil];
+    //     [self.navigationController popViewControllerAnimated:YES];
+    //    [self.navigationController popToViewController:self.navigationController.viewControllers.firstObject animated:YES];
+    //    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end
