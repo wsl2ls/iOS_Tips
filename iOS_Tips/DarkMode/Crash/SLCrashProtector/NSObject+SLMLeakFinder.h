@@ -11,7 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface NSObject (SLMLeakFinder)
-/////对象即将释放时调用此方法
+///对象即将释放时调用此方法
 - (BOOL)willDealloc;
 @end
 
