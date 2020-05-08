@@ -139,8 +139,8 @@
             break;
         case 10: {
             SLCrashViewController *crashViewController = [[SLCrashViewController alloc] init];
-//            [self.navigationController pushViewController:crashViewController animated:YES];
-            [self presentViewController:crashViewController animated:YES completion:nil];
+            [self.navigationController pushViewController:crashViewController animated:YES];
+//            [self presentViewController:crashViewController animated:YES completion:nil];
         }
             break;
         default:

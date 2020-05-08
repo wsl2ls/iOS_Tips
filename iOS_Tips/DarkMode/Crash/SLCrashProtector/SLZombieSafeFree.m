@@ -32,8 +32,8 @@ int unfreeSize = 0;//用来记录我们偷偷保存的内存的大小
 
     
 #ifdef DEBUG
-    loadCatchProxyClass();
-    init_safe_free();
+//    loadCatchProxyClass();
+//    init_safe_free();
 #endif
     
 }

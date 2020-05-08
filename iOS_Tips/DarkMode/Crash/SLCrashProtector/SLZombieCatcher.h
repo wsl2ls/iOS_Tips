@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 /*
    -fno-objc-arc 记得设置此类编译方式支持MRC
  */
-///捕获僵尸对象 定位到方法
+///僵尸对象，处理发向野指针的消息 定位到方法
 @interface SLZombieCatcher : NSProxy
 ///原类
 @property (nonatomic, assign) Class originClass;
