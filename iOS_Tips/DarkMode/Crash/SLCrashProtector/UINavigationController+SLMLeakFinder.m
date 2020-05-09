@@ -52,8 +52,8 @@ static const void *const kSLPoppedDetailVCKey = &kSLPoppedDetailVCKey;
     }
     
     // VC is not dealloced until disappear when popped using a left-edge swipe gesture
-    extern const void *const kHasBeenPoppedKey;
-    objc_setAssociatedObject(poppedViewController, kHasBeenPoppedKey, @(YES), OBJC_ASSOCIATION_RETAIN);
+    extern const void *const kSLHasBeenPoppedKey;
+    objc_setAssociatedObject(poppedViewController, kSLHasBeenPoppedKey, @(YES), OBJC_ASSOCIATION_RETAIN);
     
     return poppedViewController;
 }

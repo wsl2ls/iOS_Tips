@@ -17,7 +17,7 @@ const void *const kSLHasBeenPoppedKey = &kSLHasBeenPoppedKey;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         SL_ExchangeInstanceMethod([UIViewController class], @selector(viewDidDisappear:), [UIViewController class], @selector(sl_viewDidDisappear:));
-        SL_ExchangeInstanceMethod([UIViewController class], @selector(viewWillAppear:), [UIViewController class], @selector(sl_viewWillAppea:));
+        SL_ExchangeInstanceMethod([UIViewController class], @selector(viewWillAppear:), [UIViewController class], @selector(sl_viewWillAppear:));
         SL_ExchangeInstanceMethod([UIViewController class], @selector(dismissViewControllerAnimated:completion:), [UIViewController class], @selector(sl_dismissViewControllerAnimated:completion:));
     });
 }
