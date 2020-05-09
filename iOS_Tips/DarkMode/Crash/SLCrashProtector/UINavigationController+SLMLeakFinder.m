@@ -17,6 +17,7 @@ static const void *const kSLPoppedDetailVCKey = &kSLPoppedDetailVCKey;
 + (void)load {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
+        SL_ExchangeInstanceMethod([UINavigationController class], @selector(pushViewController:animated:), [UINavigationController class], @selector(sl_pushViewController:animated:));
         SL_ExchangeInstanceMethod([UINavigationController class], @selector(popViewControllerAnimated:), [UINavigationController class], @selector(sl_popViewControllerAnimated:));
         SL_ExchangeInstanceMethod([UINavigationController class], @selector(popToViewController:animated:), [UINavigationController class], @selector(sl_popToViewController:animated:));
         SL_ExchangeInstanceMethod([UINavigationController class], @selector(popToRootViewControllerAnimated:), [UINavigationController class], @selector(sl_popToRootViewControllerAnimated:));
@@ -78,7 +79,7 @@ static const void *const kSLPoppedDetailVCKey = &kSLPoppedDetailVCKey;
         return NO;
     }
     //即将释放子控制器集合
-    [self willReleaseChildren:self.viewControllers];
+//    [self willReleaseChildren:self.viewControllers];
     return YES;
 }
 
