@@ -185,16 +185,10 @@
 ///测试内存泄漏/循环引用
 //思路来源：https://github.com/Tencent/MLeaksFinder.git
 - (void)testMemoryLeak {
-    //    self.testBlock = ^{
-    //        self;
-    //    };
-    //    self.testMArray = [[NSMutableArray alloc] initWithObjects:self, nil];
-}
-//点击屏幕
-- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    //     [self.navigationController popViewControllerAnimated:YES];
-    //    [self.navigationController popToViewController:self.navigationController.viewControllers.firstObject animated:YES];
-    //    [self dismissViewControllerAnimated:YES completion:nil];
+        self.testBlock = ^{
+            self;
+        };
+//        self.testMArray = [[NSMutableArray alloc] initWithObjects:self, nil];
 }
 
 @end

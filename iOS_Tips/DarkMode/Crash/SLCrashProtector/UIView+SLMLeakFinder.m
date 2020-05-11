@@ -15,8 +15,6 @@
     if (![super willDealloc]) {
         return NO;
     }
-    //即将释放子对象
-//    [self willReleaseChildren:self.subviews];
     return YES;
 }
 

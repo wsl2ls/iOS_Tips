@@ -32,7 +32,6 @@ static const void *const kSLPoppedDetailVCKey = &kSLPoppedDetailVCKey;
             objc_setAssociatedObject(self, kSLPoppedDetailVCKey, nil, OBJC_ASSOCIATION_RETAIN);
         }
     }
-    
     [self sl_pushViewController:viewController animated:animated];
 }
 
@@ -78,8 +77,6 @@ static const void *const kSLPoppedDetailVCKey = &kSLPoppedDetailVCKey;
     if (![super willDealloc]) {
         return NO;
     }
-    //即将释放子控制器集合
-//    [self willReleaseChildren:self.viewControllers];
     return YES;
 }
 
