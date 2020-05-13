@@ -19,7 +19,7 @@
  
 ## 1、 暗黑模式适配
 
-![暗黑模式](https://github.com/wsl2ls/iOS_TipsPreview/PrviewPicture/暗黑模式.gif)
+![暗黑模式](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/暗黑模式.gif)
   
 ## 2、AppleID登录应用
 
