@@ -34,20 +34,20 @@
 
 > 主要类：SLAvCaptureTool(音视频采集录制工具)、SLAvEditExport(导出编辑的音视频)。关于视频的压缩问题，可以通过降低采集时的分辨率sessionPreset、降低写入文件时的分辨率(AVVideoWidthKey宽AVVideoHeightKey高)和码率(AVVideoCodecKey)、指定高的FormatProfile(AVVideoProfileLevelKey)等方法来实现，同时也要保证一定的清晰度满足业务的需求， 可以看看这篇文章https://www.jianshu.com/p/4f69c22c6dce 
 
-|![拍摄视频.gif](PrviewPicture/3、小视频1.gif)|![拍摄照片](PrviewPicture/3、小视频2.gif)|![横屏视频](PrviewPicture/3、小视频3.gif)|
+|![拍摄视频.gif](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/3、小视频1.gif)|![拍摄照片](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/3、小视频2.gif)|![横屏视频](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/3、小视频3.gif)|
 
 *****
 
-|![视频编辑](PrviewPicture/3、小视频4.gif)|![视频编辑](PrviewPicture/3、小视频5.gif)|![图片编辑](PrviewPicture/3、小视频6.gif)|
+|![视频编辑](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/3、小视频4.gif)|![视频编辑](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/3、小视频5.gif)|![图片编辑](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/3、小视频6.gif)|
 
 ****
 
-|![图片编辑](PrviewPicture/3、小视频7.gif)|![图片裁剪](PrviewPicture/3、小视频8.gif)|
+|![图片编辑](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/3、小视频7.gif)|![图片裁剪](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/3、小视频8.gif)|
 
 
 ## 4、[人脸检测](https://www.jianshu.com/p/f236dc161a90) 
 
-![人脸识别](PrviewPicture/4、人脸识别.gif)
+![人脸识别](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/4、人脸识别.gif)
 
 ## 5、[实时滤镜拍摄和导出](https://www.jianshu.com/p/f236dc161a90)
 
@@ -61,13 +61,13 @@
 
 * 遗留问题：一个启动周期内，第一次启动摄像头时打开特慢，之后就特别块，还没找到原因，望知道到的告知一下🤝
 
-![GPUImage框架的使用](PrviewPicture/6、GPUImage.gif)
+![GPUImage框架的使用](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/6、GPUImage.gif)
 
 ## 7、VideoToolBox和AudioToolBox音视频编解码
 
 > 请查看本仓库下的 VideoEncoder&Decoder 文件
 
-![音视频编码](PrviewPicture/7、音视频编码.gif)
+![音视频编码](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/7、音视频编码.gif)
 
 ## 8、[OpenGL ES学习](https://www.jianshu.com/p/9259689cac06)
 
@@ -77,7 +77,7 @@
 > * 3、GLSL 滤镜集合：灰度、旋涡、正方形马赛克、六边形马赛克
 > * 4 、GLSL 抖音部分特效：分屏、缩放、抖动、灵魂出窍、毛刺
 
-|![OpenGLES学习.gif](PrviewPicture/8、OpenGLES学习1.gif)|![OpenGLES学习](PrviewPicture/8、OpenGLES学习2.gif)|![OpenGLES学习](PrviewPicture/8、OpenGLES学习3.gif)|
+|![OpenGLES学习.gif](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/8、OpenGLES学习1.gif)|![OpenGLES学习](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/8、OpenGLES学习2.gif)|![OpenGLES学习](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/8、OpenGLES学习3.gif)|
 
 ## 9、[LeetCode算法练习](https://github.com/wsl2ls/AlgorithmSet.git)
 
@@ -85,7 +85,7 @@
 
 ## 10、[键盘和UIMenuController的并存问题]()
 
-| ![问题描述.gif](PrviewPicture/10、键盘和UIMenuController不能同时出现的问题描述.gif) | ![并存问题解决](PrviewPicture/10、键盘和UIMenuController并存问题解决.gif) |
+| ![问题描述.gif](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/10、键盘和UIMenuController不能同时出现的问题描述.gif) | ![并存问题解决](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/10、键盘和UIMenuController并存问题解决.gif) |
 
 ## 11、iOS Crash防护 (doing)
 
