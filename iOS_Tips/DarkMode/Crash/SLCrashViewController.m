@@ -182,8 +182,9 @@
 }
 
 #pragma mark - 内存泄漏/循环引用
-///测试内存泄漏/循环引用
+///测试是否内存泄漏/循环引用
 //思路来源：https://github.com/Tencent/MLeaksFinder.git
+//查找循引用连 FBRetainCycleDetector  https://yq.aliyun.com/articles/66857  、 https://blog.csdn.net/majiakun1/article/details/78747226
 - (void)testMemoryLeak {
         self.testBlock = ^{
             self;
