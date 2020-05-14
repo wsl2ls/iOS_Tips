@@ -19,10 +19,13 @@
 static inline void SL_ExchangeInstanceMethod(Class _originalClass ,SEL _originalSel, Class _targetClass, SEL _targetSel){
     Method methodOriginal = class_getInstanceMethod(_originalClass, _originalSel);
     Method methodNew = class_getInstanceMethod(_targetClass, _targetSel);
+    // class_addMethod 返回成功表示被替换的方法没实现，然后会通过 class_addMethod 方法先实现；返回失败则表示被替换方法已存在，可以直接进行 IMP 指针交换
     BOOL didAddMethod = class_addMethod(_originalClass, _originalSel, method_getImplementation(methodNew), method_getTypeEncoding(methodNew));
     if (didAddMethod) {
+        // 进行方法的替换
         class_replaceMethod(_originalClass, _targetSel, method_getImplementation(methodOriginal), method_getTypeEncoding(methodOriginal));
     }else{
+        // 交换 IMP 指针
         method_exchangeImplementations(methodOriginal, methodNew);
     }
 }
