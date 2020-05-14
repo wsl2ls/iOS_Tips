@@ -1302,7 +1302,7 @@
 					"@executable_path/Frameworks",
 				);
 				NEW_SETTING = "";
-				PRODUCT_BUNDLE_IDENTIFIER = com.wsl.demo1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.wsl;
 				PRODUCT_NAME = "iOS - Tips";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1330,7 +1330,7 @@
 					"@executable_path/Frameworks",
 				);
 				NEW_SETTING = "";
-				PRODUCT_BUNDLE_IDENTIFIER = com.wsl.demo1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.wsl;
 				PRODUCT_NAME = "iOS - Tips";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";

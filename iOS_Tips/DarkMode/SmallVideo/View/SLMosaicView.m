@@ -68,7 +68,7 @@ CGFloat angleBetweenLines(CGPoint line1Start, CGPoint line1End, CGPoint line2Sta
             if (image) {
                 /** 创建颜色图片 */
                 CGColorSpaceRef colorRef = CGColorSpaceCreateDeviceRGB();
-                CGContextRef contextRef = CGBitmapContextCreate(nil, image.size.width, image.size.height, 8, image.size.width*4, colorRef, kCGImageAlphaPremultipliedFirst | kCGBitmapByteOrder32Little);
+                CGContextRef contextRef = CGBitmapContextCreate(nil, image.size.width, image.size.height, 8, 0, colorRef, kCGImageAlphaPremultipliedFirst | kCGBitmapByteOrder32Little);
                 
                 CGRect imageRect = CGRectMake(0, 0, image.size.width, image.size.height);
                 CGContextClipToMask(contextRef, imageRect, image.CGImage);
