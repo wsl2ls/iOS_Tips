@@ -1,24 +1,36 @@
 PODS:
   - GPUImage (0.1.7)
+  - Growing (2.8.14)
+  - GrowingAutoTrackKit (2.8.14):
+    - GrowingCoreKit (= 2.8.14)
+  - GrowingCoreKit (2.8.14):
+    - Growing (= 2.8.14)
   - Masonry (1.1.0)
   - MBProgressHUD (1.1.0)
 
 DEPENDENCIES:
   - GPUImage
+  - GrowingAutoTrackKit
   - Masonry
   - MBProgressHUD
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
     - GPUImage
+    - Growing
+    - GrowingAutoTrackKit
+    - GrowingCoreKit
     - Masonry
     - MBProgressHUD
 
 SPEC CHECKSUMS:
   GPUImage: 733a5f0fab92df9de1c37ba9df520a833ccb406d
+  Growing: ec5fc88118df7806c0067d5574f62e8744429b9f
+  GrowingAutoTrackKit: 0d032d4c7388ad782abe9f87088d72999eca791f
+  GrowingCoreKit: c2dc837a423f3a5a452d356fe2e84e4cd8525913
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
   MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
 
-PODFILE CHECKSUM: 3c426797360e462458a7cd1a59fb76dfb57bd4fa
+PODFILE CHECKSUM: 7541dca43f9a736983b2d717abbdb44d5000d6f5
 
 COCOAPODS: 1.9.1

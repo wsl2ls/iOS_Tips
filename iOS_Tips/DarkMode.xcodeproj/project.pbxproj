@@ -69,6 +69,12 @@
 		7862533F24599D420017F8F1 /* NSObject+SLCrashProtector.m in Sources */ = {isa = PBXBuildFile; fileRef = 7862532C24599D420017F8F1 /* NSObject+SLCrashProtector.m */; };
 		7862534324599D420017F8F1 /* SLCrashHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 7862533224599D420017F8F1 /* SLCrashHandler.m */; };
 		7862534524599D420017F8F1 /* SLKVODelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7862533A24599D420017F8F1 /* SLKVODelegate.m */; };
+		78665C6A246D4B7C0001B749 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 78665C69246D4B7C0001B749 /* Foundation.framework */; };
+		78665C6C246D4B880001B749 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 78665C6B246D4B880001B749 /* Security.framework */; };
+		78665C6E246D4B950001B749 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 78665C6D246D4B950001B749 /* CoreTelephony.framework */; };
+		78665C70246D4B9F0001B749 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 78665C6F246D4B9F0001B749 /* SystemConfiguration.framework */; };
+		78665C72246D4BB10001B749 /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 78665C71246D4BB10001B749 /* libicucore.tbd */; };
+		78665C74246D4BBB0001B749 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 78665C73246D4BBB0001B749 /* libsqlite3.tbd */; };
 		78777CE0238FEA48006FA671 /* SLOpenGLController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78777CDF238FEA48006FA671 /* SLOpenGLController.m */; };
 		78777CE6238FF65C006FA671 /* SLDelayPerform.m in Sources */ = {isa = PBXBuildFile; fileRef = 78777CE5238FF65C006FA671 /* SLDelayPerform.m */; };
 		787C7DBE245D74E4005DF7ED /* NSMutableArray+SLCrashProtector.m in Sources */ = {isa = PBXBuildFile; fileRef = 787C7DB2245D74E3005DF7ED /* NSMutableArray+SLCrashProtector.m */; };
@@ -234,6 +240,12 @@
 		7862533924599D420017F8F1 /* SLCrashProtector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLCrashProtector.h; sourceTree = "<group>"; };
 		7862533A24599D420017F8F1 /* SLKVODelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLKVODelegate.m; sourceTree = "<group>"; };
 		7862533D24599D420017F8F1 /* SLCrashHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLCrashHandler.h; sourceTree = "<group>"; };
+		78665C69246D4B7C0001B749 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		78665C6B246D4B880001B749 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		78665C6D246D4B950001B749 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		78665C6F246D4B9F0001B749 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		78665C71246D4BB10001B749 /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
+		78665C73246D4BBB0001B749 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		78777CDE238FEA48006FA671 /* SLOpenGLController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLOpenGLController.h; sourceTree = "<group>"; };
 		78777CDF238FEA48006FA671 /* SLOpenGLController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLOpenGLController.m; sourceTree = "<group>"; };
 		78777CE4238FF65C006FA671 /* SLDelayPerform.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLDelayPerform.h; sourceTree = "<group>"; };
@@ -286,7 +298,7 @@
 		78A4BD46236C5DFD0021AE32 /* SLImageZoomView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLImageZoomView.h; sourceTree = "<group>"; };
 		78A4BD47236C5DFD0021AE32 /* SLImageZoomView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLImageZoomView.m; sourceTree = "<group>"; };
 		78AA10F42371A7B50044A6F8 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
-		78B1047D232F57C30051579F /* iOS - Tips.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "iOS - Tips.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		78B1047D232F57C30051579F /* SLTips.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SLTips.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		78B10480232F57C30051579F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		78B10481232F57C30051579F /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		78B10483232F57C30051579F /* SceneDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SceneDelegate.h; sourceTree = "<group>"; };
@@ -350,6 +362,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				78665C74246D4BBB0001B749 /* libsqlite3.tbd in Frameworks */,
+				78665C72246D4BB10001B749 /* libicucore.tbd in Frameworks */,
+				78665C70246D4B9F0001B749 /* SystemConfiguration.framework in Frameworks */,
+				78665C6E246D4B950001B749 /* CoreTelephony.framework in Frameworks */,
+				78665C6C246D4B880001B749 /* Security.framework in Frameworks */,
+				78665C6A246D4B7C0001B749 /* Foundation.framework in Frameworks */,
 				78E1791B23517FC50007E4BB /* WebP.framework in Frameworks */,
 				E355F901834CD33D6E9169A8 /* libPods-DarkMode.a in Frameworks */,
 			);
@@ -375,6 +393,12 @@
 		22F14068B7B884754D3106E5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				78665C73246D4BBB0001B749 /* libsqlite3.tbd */,
+				78665C71246D4BB10001B749 /* libicucore.tbd */,
+				78665C6F246D4B9F0001B749 /* SystemConfiguration.framework */,
+				78665C6D246D4B950001B749 /* CoreTelephony.framework */,
+				78665C6B246D4B880001B749 /* Security.framework */,
+				78665C69246D4B7C0001B749 /* Foundation.framework */,
 				FC41CA32573EE16859D535A1 /* libPods-DarkMode.a */,
 			);
 			name = Frameworks;
@@ -647,7 +671,7 @@
 		78B1047E232F57C30051579F /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				78B1047D232F57C30051579F /* iOS - Tips.app */,
+				78B1047D232F57C30051579F /* SLTips.app */,
 				78B10498232F57C50051579F /* DarkModeTests.xctest */,
 				78B104A3232F57C50051579F /* DarkModeUITests.xctest */,
 			);
@@ -853,7 +877,7 @@
 			);
 			name = DarkMode;
 			productName = DarkMode;
-			productReference = 78B1047D232F57C30051579F /* iOS - Tips.app */;
+			productReference = 78B1047D232F57C30051579F /* SLTips.app */;
 			productType = "com.apple.product-type.application";
 		};
 		78B10497232F57C50051579F /* DarkModeTests */ = {
@@ -1303,7 +1327,7 @@
 				);
 				NEW_SETTING = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.wsl;
-				PRODUCT_NAME = "iOS - Tips";
+				PRODUCT_NAME = SLTips;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1331,7 +1355,7 @@
 				);
 				NEW_SETTING = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.wsl;
-				PRODUCT_NAME = "iOS - Tips";
+				PRODUCT_NAME = SLTips;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

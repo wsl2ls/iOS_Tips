@@ -5,4 +5,5 @@ pod 'GPUImage'
 #pod 'MLeaksFinder'
 pod 'MBProgressHUD'
 pod 'Masonry'
+pod 'GrowingAutoTrackKit'   #埋点三方
 end
