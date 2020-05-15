@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-//iOS Crash防护  思路来源： https://xiaozhuanlan.com/topic/6280793154
+//iOS Crash防护 
 @interface SLCrashViewController : UIViewController
 
 @end
