@@ -13,7 +13,7 @@
 > 8、OpenGL ES学习   
 > 9、LeetCode算法练习  
 > 10、键盘和UIMenuController的并存问题  
-> 11、iOS Crash防护 (doing)  
+> 11、iOS Crash防护
 > 问题说明
  
  
@@ -53,7 +53,7 @@
 
 >  主要类: 是由SLAvCaptureTool拆分的 SLAvCaptureSession（采集） + SLAvWriterInput（录制） 两个工具类，方便扩展，录制写入实现的方式也略有不同
 
-![人脸识别](PrviewPicture/5、实时滤镜拍摄.gif)
+![人脸识别](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/5、实时滤镜拍摄.gif)
 
 ## 6、[GPUImage框架的使用](https://www.jianshu.com/p/97740cd381f7)
 
@@ -87,7 +87,7 @@
 
 | ![问题描述.gif](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/10、键盘和UIMenuController不能同时出现的问题描述.gif) | ![并存问题解决](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/10、键盘和UIMenuController并存问题解决.gif) |
 
-## 11、iOS Crash防护 (doing)
+## 11、iOS Crash防护 
 
 > NSArray/NSMutableArray、NSDictionary/NSMutableDictionary、NSString/NSMutableString、Unrecognized Selector、KVO、KVC 、野指针定位、内存泄漏/循环引用
 
