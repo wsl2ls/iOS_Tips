@@ -7,7 +7,6 @@
 //
 
 #import "AppDelegate.h"
-#import "Growing.h"
 
 
 @interface AppDelegate ()
@@ -19,13 +18,6 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    
-    
-    [Growing startWithAccountId:@"9d1cd7f1d044264a"];
-    // 其他配置
-    // 开启Growing调试日志 可以开启日志
-    // [Growing setEnableLog:YES];
-    
     return YES;
 }
 
@@ -33,16 +25,6 @@
 - (void)applicationDidReceiveMemoryWarning:(UIApplication *)application {
     //    free_some_mem(1024*1024*10);
     NSLog(@"内存警告");
-}
-
-- (BOOL)application:(UIApplication *)application openURL:(nonnull NSURL *)url options:(nonnull NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
-   if ([Growing handleUrl:url]){
-        // 请务必确保该函数被调用
-        NSLog(@"埋点SDK有效");
-        return YES;
-    }
-     NSLog(@"埋点SDK失败");
-    return NO;
 }
 
 #pragma mark - UISceneSession lifecycle
