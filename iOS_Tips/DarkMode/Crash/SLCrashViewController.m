@@ -7,6 +7,7 @@
 //
 
 #import "SLCrashViewController.h"
+#import "BSBacktraceLogger.h"
 
 @interface SLCrashViewController ()
 
@@ -34,7 +35,7 @@
 #pragma mark - UI
 - (void)setupUI {
     self.navigationItem.title = @"iOS Crash防护";
-    [self testMemoryLeak];
+    [self testCallStack];
 }
 
 #pragma mark - Container Crash
@@ -190,6 +191,19 @@
             self;
         };
 //        self.testMArray = [[NSMutableArray alloc] initWithObjects:self, nil];
+}
+
+
+#pragma mark - 线程调用栈
+///记录线程的调用栈
+- (void)testCallStack {
+    //打印当前线程调用栈
+    BSLOG;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+         //在子线程中 打印主线程调用栈，会发现栈基本是空的，因为都已释放了
+//           BSLOG_MAIN
+    });
+//    BSLOG_MAIN
 }
 
 @end
