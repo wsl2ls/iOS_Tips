@@ -61,6 +61,7 @@
 		7851CB372331CC87002295B5 /* SLDarkModeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7851CB352331CC87002295B5 /* SLDarkModeViewController.xib */; };
 		7851CB43233222E2002295B5 /* UIView+SLFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 7851CB41233222E2002295B5 /* UIView+SLFrame.m */; };
 		7857977823725C21004CD664 /* SLFaceDetectController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7857977723725C21004CD664 /* SLFaceDetectController.m */; };
+		7857FD4B24729E8500D3D986 /* BSBacktraceLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 7857FD4A24729E8500D3D986 /* BSBacktraceLogger.m */; };
 		7860D78E2398D34E008C53EC /* SLMixColorTextureVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7860D78D2398D34E008C53EC /* SLMixColorTextureVC.m */; };
 		7860D791239922B4008C53EC /* SLGLKPyramidVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7860D790239922B4008C53EC /* SLGLKPyramidVC.m */; };
 		786147F12362A39500C5424C /* Resources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 786147F02362A39500C5424C /* Resources.bundle */; };
@@ -224,6 +225,8 @@
 		7851CB42233222E2002295B5 /* UIView+SLFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+SLFrame.h"; sourceTree = "<group>"; };
 		7857977623725C21004CD664 /* SLFaceDetectController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLFaceDetectController.h; sourceTree = "<group>"; };
 		7857977723725C21004CD664 /* SLFaceDetectController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLFaceDetectController.m; sourceTree = "<group>"; };
+		7857FD4924729E8500D3D986 /* BSBacktraceLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSBacktraceLogger.h; sourceTree = "<group>"; };
+		7857FD4A24729E8500D3D986 /* BSBacktraceLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSBacktraceLogger.m; sourceTree = "<group>"; };
 		7860D78C2398D34E008C53EC /* SLMixColorTextureVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLMixColorTextureVC.h; sourceTree = "<group>"; };
 		7860D78D2398D34E008C53EC /* SLMixColorTextureVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLMixColorTextureVC.m; sourceTree = "<group>"; };
 		7860D78F239922B4008C53EC /* SLGLKPyramidVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLGLKPyramidVC.h; sourceTree = "<group>"; };
@@ -416,6 +419,7 @@
 		7835047E24586BA30071283E /* ThirdLibary */ = {
 			isa = PBXGroup;
 			children = (
+				7857FD4824729E8500D3D986 /* BSBacktraceLogger */,
 				78D3095D239688EF00DC373A /* OpenGLUtils */,
 				7835047F24586BAC0071283E /* Fishhook */,
 			);
@@ -504,6 +508,15 @@
 				78A1998B2451BEE7005B2B4B /* UIButton+SLTitleImage.m */,
 			);
 			path = SLCategory;
+			sourceTree = "<group>";
+		};
+		7857FD4824729E8500D3D986 /* BSBacktraceLogger */ = {
+			isa = PBXGroup;
+			children = (
+				7857FD4924729E8500D3D986 /* BSBacktraceLogger.h */,
+				7857FD4A24729E8500D3D986 /* BSBacktraceLogger.m */,
+			);
+			path = BSBacktraceLogger;
 			sourceTree = "<group>";
 		};
 		7862532B24599D420017F8F1 /* SLCrashProtector */ = {
@@ -1095,6 +1108,7 @@
 				7851CB362331CC87002295B5 /* SLDarkModeViewController.m in Sources */,
 				78D30965239688EF00DC373A /* GLESMath.c in Sources */,
 				788ACD652390EA3A00737EC2 /* SLCubeViewController.m in Sources */,
+				7857FD4B24729E8500D3D986 /* BSBacktraceLogger.m in Sources */,
 				787C7DC9245D77D9005DF7ED /* SLZombieSafeFree.m in Sources */,
 				786147FA23630C4D00C5424C /* UIImage+SLCommon.m in Sources */,
 				78FA0F9D235407E6003E456B /* SLDrawView.m in Sources */,
