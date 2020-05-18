@@ -25,6 +25,7 @@ int unfreeSize = 0;//用来记录我们偷偷保存的内存的大小
 #define MAX_STEAL_MEM_NUM 1024*1024*10//最多保留这么多个指针，再多就释放一部分
 #define BATCH_FREE_NUM 100//每次释放的时候释放指针数量
 
+/// 该类已弃用，有Hook冲突问题
 @implementation SLZombieSafeFree
 
 #pragma mark -------------------------- Life  Circle
