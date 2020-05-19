@@ -12,7 +12,7 @@
 #define BSLOG_MAIN NSLog(@"%@",[BSBacktraceLogger bs_backtraceOfMainThread]);
 #define BSLOG_ALL NSLog(@"%@",[BSBacktraceLogger bs_backtraceOfAllThread]);
 
-///记录线程的调用栈    https://github.com/bestswifter/BSBacktraceLogger
+///记录线程的函数调用栈    https://toutiao.io/posts/aveig6/preview
 @interface BSBacktraceLogger : NSObject
 
 ///返回调用栈字符串 上传或其他处理
