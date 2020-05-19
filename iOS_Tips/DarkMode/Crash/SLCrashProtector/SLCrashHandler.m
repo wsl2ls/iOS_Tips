@@ -9,7 +9,6 @@
 #import "SLCrashHandler.h"
 
 @implementation SLCrashError
-
 @end
 
 @implementation SLCrashHandler
@@ -24,7 +23,6 @@
 }
 
 /// 捕获崩溃异常
-
 - (void)catchCrashException:(NSException *)exception type:(SLCrashErrorType)errorType errorDesc:(NSString *)errorDesc {
     SLCrashError *crashError = [SLCrashError new];
     crashError.errorDesc = errorDesc;

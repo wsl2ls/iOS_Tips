@@ -46,7 +46,7 @@ typedef NS_ENUM(NSInteger, SLCrashErrorType) {
 
 /// 崩溃处理程序
 @interface SLCrashHandler : NSObject
-/// 异常捕获回调 提供给外界实现自定义处理  注意线程安全
+/// 异常捕获回调 提供给外界初始化实现自定义处理 ，日志上报等（注意线程安全）
 @property (nonatomic, copy) void(^crashHandlerBlock)(SLCrashError *crashError);
 
 /// 单例
