@@ -10,18 +10,20 @@
 #import "SLCrashProtector.h"
 
 
+
 @implementation NSArray (SLCrashProtector)
 
 + (void)load {
-    
     // 不可变数组
     // 越界保护
-    SL_ExchangeInstanceMethod(NSClassFromString(@"__NSArrayI"), @selector(objectAtIndex:), NSClassFromString(@"__NSArrayI"), @selector(sl_objectAtIndex:));
-    SL_ExchangeInstanceMethod(NSClassFromString(@"__NSArrayI"), @selector(objectAtIndexedSubscript:), NSClassFromString(@"__NSArrayI"), @selector(sl_objectAtIndexedSubscript:));
-    SL_ExchangeInstanceMethod(NSClassFromString(@"__NSSingleObjectArrayI"), @selector(objectAtIndex:), NSClassFromString(@"__NSSingleObjectArrayI"), @selector(sl_singleObjectAtIndex:));
-    // nil值保护
-    SL_ExchangeInstanceMethod(NSClassFromString(@"__NSPlaceholderArray"), @selector(initWithObjects:count:), NSClassFromString(@"__NSPlaceholderArray"), @selector(sl_initWithObjects:count:));
-    
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        SL_ExchangeInstanceMethod(NSClassFromString(@"__NSArrayI"), @selector(objectAtIndex:), NSClassFromString(@"__NSArrayI"), @selector(sl_objectAtIndex:));
+        SL_ExchangeInstanceMethod(NSClassFromString(@"__NSArrayI"), @selector(objectAtIndexedSubscript:), NSClassFromString(@"__NSArrayI"), @selector(sl_objectAtIndexedSubscript:));
+        SL_ExchangeInstanceMethod(NSClassFromString(@"__NSSingleObjectArrayI"), @selector(objectAtIndex:), NSClassFromString(@"__NSSingleObjectArrayI"), @selector(sl_singleObjectAtIndex:));
+        // nil值保护
+        SL_ExchangeInstanceMethod(NSClassFromString(@"__NSPlaceholderArray"), @selector(initWithObjects:count:), NSClassFromString(@"__NSPlaceholderArray"), @selector(sl_initWithObjects:count:));
+    });
 }
 
 #pragma mark - Array Safe Methods
@@ -33,7 +35,7 @@
             return [self sl_objectAtIndex:index];
         }
         @catch (NSException *exception) {
-            NSLog(@"异常:数组越界 %@", exception.reason);
+            [[SLCrashHandler defaultCrashHandler] catchCrashException:exception type:SLCrashErrorTypeArray errorDesc:[NSString stringWithFormat:@"异常:数组越界 %@",exception.reason]];
             return nil;
         }
     }else {
@@ -48,7 +50,7 @@
             return [self sl_singleObjectAtIndex:index];
         }
         @catch (NSException *exception) {
-            NSLog(@"异常:数组越界 %@", exception.reason);
+            [[SLCrashHandler defaultCrashHandler] catchCrashException:exception type:SLCrashErrorTypeArray errorDesc:[NSString stringWithFormat:@"异常:数组越界 %@",exception.reason]];
             return nil;
         }
     }else {
@@ -64,7 +66,7 @@
             return [self sl_objectAtIndexedSubscript:index];
         }
         @catch (NSException *exception) {
-            NSLog(@"异常:数组越界 %@", exception.reason);
+            [[SLCrashHandler defaultCrashHandler] catchCrashException:exception type:SLCrashErrorTypeArray errorDesc:[NSString stringWithFormat:@"异常:数组越界 %@",exception.reason]];
             return nil;
         }
     }
@@ -81,7 +83,7 @@
         }else{
             //记录错误
             NSString *errorInfo = [NSString stringWithFormat:@"异常:数组nil值 *** -[__NSPlaceholderArray initWithObjects:count:]: attempt to insert nil object from objects[%d]",i];
-            NSLog(@"%@",errorInfo);
+            [[SLCrashHandler defaultCrashHandler] catchCrashException:nil type:SLCrashErrorTypeArray errorDesc:errorInfo];
         }
     }
     return [self sl_initWithObjects:objectsNew count:index];

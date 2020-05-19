@@ -11,7 +11,7 @@
 
 #import <objc/runtime.h>
 
-
+#import "SLCrashHandler.h"
 #import "SLZombieCatcher.h"
 #import "SLZombieFinder.h"
 

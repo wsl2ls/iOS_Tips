@@ -10,6 +10,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/*
+  -fno-objc-arc 记得设置此类编译方式支持MRC
+*/
 ///zombie/野指针对象嗅探器     来源：https://github.com/sindrilin/LXDZombieSniffer.git
 @interface SLZombieFinder : NSObject
 

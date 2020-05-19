@@ -17,8 +17,27 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
+    
+    SLSetUncaughtExceptionHandler();
     return YES;
+}
+
+///系统异常捕获处理
+void HandleException(NSException *exception)
+{
+    // 异常的堆栈信息
+    NSArray *stackArray = [exception callStackSymbols];
+    // 出现异常的原因
+    NSString *reason = [exception reason];
+    // 异常名称
+    NSString *name = [exception name];
+    NSString *exceptionInfo = [NSString stringWithFormat:@"程序异常：%@ \nException reason：%@ \nException stack：%@",name, reason, stackArray];
+//    NSLog(@"%@", exceptionInfo);
+}
+//设置异常捕获处理方法
+void SLSetUncaughtExceptionHandler(void)
+{
+    NSSetUncaughtExceptionHandler(&HandleException);
 }
 
 //内存警告

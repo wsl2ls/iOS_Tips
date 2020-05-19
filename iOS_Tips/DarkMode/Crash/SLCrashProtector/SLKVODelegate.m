@@ -110,7 +110,7 @@
             [observer observeValueForKeyPath:keyPath ofObject:object change:change context:context];
         } @catch (NSException *exception) {
             NSString *reason = [NSString stringWithFormat:@"异常 KVO: %@",[exception description]];
-            NSLog(@"%@",reason);
+            [[SLCrashHandler defaultCrashHandler] catchCrashException:exception type:SLCrashErrorTypeArray errorDesc:reason];
         }
     }
 }

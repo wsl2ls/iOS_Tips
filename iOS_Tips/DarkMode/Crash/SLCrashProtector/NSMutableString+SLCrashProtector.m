@@ -12,11 +12,13 @@
 @implementation NSMutableString (SLCrashProtector)
 
 + (void)load {
-   
     //越界防护
-    Class stringClass = NSClassFromString(@"__NSCFString");
-    SL_ExchangeInstanceMethod(stringClass, @selector(insertString:atIndex:), stringClass, @selector(sl_insertString:atIndex:));
-    SL_ExchangeInstanceMethod(stringClass, @selector(deleteCharactersInRange:), stringClass, @selector(sl_deleteCharactersInRange:));
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        Class stringClass = NSClassFromString(@"__NSCFString");
+        SL_ExchangeInstanceMethod(stringClass, @selector(insertString:atIndex:), stringClass, @selector(sl_insertString:atIndex:));
+        SL_ExchangeInstanceMethod(stringClass, @selector(deleteCharactersInRange:), stringClass, @selector(sl_deleteCharactersInRange:));
+    });
 }
 
 #pragma mark - NSMutableString Safe Methods
@@ -27,7 +29,7 @@
             [self sl_insertString:aString atIndex:loc];
         }
         @catch (NSException *exception) {
-            NSLog(@"异常:MutableString越界 %@", exception.reason);
+            [[SLCrashHandler defaultCrashHandler] catchCrashException:exception type:SLCrashErrorTypeMString errorDesc:[@"异常:MutableString越界 " stringByAppendingString:exception.reason]];
         }
     }else{
         [self sl_insertString:aString atIndex:loc];
@@ -40,7 +42,7 @@
             [self sl_deleteCharactersInRange:range];
         }
         @catch (NSException *exception) {
-            NSLog(@"异常:MutableString越界 %@", exception.reason);
+            [[SLCrashHandler defaultCrashHandler] catchCrashException:exception type:SLCrashErrorTypeMString errorDesc:[@"异常:MutableString越界 " stringByAppendingString:exception.reason]];
         }
         if (range.location < self.length) {
             [self sl_deleteCharactersInRange:NSMakeRange(range.location, self.length-range.location)];

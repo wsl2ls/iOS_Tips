@@ -13,11 +13,14 @@
 
 + (void)load {
     //越界防护
-    Class stringClass = NSClassFromString(@"__NSCFConstantString");
-    SL_ExchangeInstanceMethod(stringClass, @selector(characterAtIndex:), stringClass, @selector(sl_characterAtIndex:));
-    SL_ExchangeInstanceMethod(stringClass, @selector(substringFromIndex:), stringClass, @selector(sl_substringFromIndex:));
-    SL_ExchangeInstanceMethod(stringClass, @selector(substringToIndex:), stringClass, @selector(sl_substringToIndex:));
-    SL_ExchangeInstanceMethod(stringClass, @selector(substringWithRange:), stringClass, @selector(sl_substringWithRange:));
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        Class stringClass = NSClassFromString(@"__NSCFConstantString");
+        SL_ExchangeInstanceMethod(stringClass, @selector(characterAtIndex:), stringClass, @selector(sl_characterAtIndex:));
+        SL_ExchangeInstanceMethod(stringClass, @selector(substringFromIndex:), stringClass, @selector(sl_substringFromIndex:));
+        SL_ExchangeInstanceMethod(stringClass, @selector(substringToIndex:), stringClass, @selector(sl_substringToIndex:));
+        SL_ExchangeInstanceMethod(stringClass, @selector(substringWithRange:), stringClass, @selector(sl_substringWithRange:));
+    });
 }
 
 #pragma mark - NSString Safe Methods
@@ -28,7 +31,7 @@
             [self sl_characterAtIndex:index];
         }
         @catch (NSException *exception) {
-            NSLog(@"异常:String越界 %@", exception.reason);
+            [[SLCrashHandler defaultCrashHandler] catchCrashException:exception type:SLCrashErrorTypeString errorDesc:[@"异常:String越界 " stringByAppendingString:exception.reason]];
         }
         return 0;
     }
@@ -41,7 +44,8 @@
         instance = [self sl_substringFromIndex:from];
     }
     @catch (NSException *exception) {
-        NSLog(@"异常:String越界 %@", exception.reason);
+        [[SLCrashHandler defaultCrashHandler] catchCrashException:exception type:SLCrashErrorTypeString errorDesc:[@"异常:String越界 " stringByAppendingString:exception.reason]];
+        
     }
     @finally {
         return instance;
@@ -54,7 +58,8 @@
         instance = [self sl_substringToIndex:to];
     }
     @catch (NSException *exception) {
-        NSLog(@"异常:String越界 %@", exception.reason);
+        [[SLCrashHandler defaultCrashHandler] catchCrashException:exception type:SLCrashErrorTypeString errorDesc:[@"异常:String越界 " stringByAppendingString:exception.reason]];
+        
     }
     @finally {
         return instance;
@@ -67,7 +72,8 @@
         instance = [self sl_substringWithRange:range];
     }
     @catch (NSException *exception) {
-        NSLog(@"异常:String越界 %@", exception.reason);
+        [[SLCrashHandler defaultCrashHandler] catchCrashException:exception type:SLCrashErrorTypeString errorDesc:[@"异常:String越界 " stringByAppendingString:exception.reason]];
+        
     }
     @finally {
         return instance;

@@ -12,12 +12,13 @@
 @implementation NSMutableDictionary (SLCrashProtector)
 
 + (void)load {
-    
-    Class __NSDictionaryMM = NSClassFromString(@"__NSDictionaryM");
-    SL_ExchangeInstanceMethod(__NSDictionaryMM, @selector(setObject:forKey:), __NSDictionaryMM, @selector(sl_setObject:forKey:));
-    SL_ExchangeInstanceMethod(__NSDictionaryMM, @selector(removeObjectForKey:), __NSDictionaryMM, @selector(sl_removeObjectForKey:));
-    SL_ExchangeInstanceMethod(__NSDictionaryMM, @selector(setObject:forKeyedSubscript:), __NSDictionaryMM, @selector(sl_setObject:forKeyedSubscript:));
-    
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        Class __NSDictionaryMM = NSClassFromString(@"__NSDictionaryM");
+        SL_ExchangeInstanceMethod(__NSDictionaryMM, @selector(setObject:forKey:), __NSDictionaryMM, @selector(sl_setObject:forKey:));
+        SL_ExchangeInstanceMethod(__NSDictionaryMM, @selector(removeObjectForKey:), __NSDictionaryMM, @selector(sl_removeObjectForKey:));
+        SL_ExchangeInstanceMethod(__NSDictionaryMM, @selector(setObject:forKeyedSubscript:), __NSDictionaryMM, @selector(sl_setObject:forKeyedSubscript:));
+    });
 }
 
 #pragma mark - MutableDictionary Safe Methods
@@ -28,7 +29,7 @@
             [self sl_setObject:anObject forKey:aKey];
         }
         @catch (NSException *exception) {
-            NSLog(@"异常:字典nil值 %@", exception.reason);
+            [[SLCrashHandler defaultCrashHandler] catchCrashException:exception type:SLCrashErrorTypeMDictionary errorDesc:[@"异常:字典nil值 " stringByAppendingString:exception.reason]];
         }
     }else{
         [self sl_setObject:anObject forKey:aKey];
@@ -41,7 +42,7 @@
             [self sl_removeObjectForKey:aKey];
         }
         @catch (NSException *exception) {
-            NSLog(@"异常:字典nil值 %@", exception.reason);
+            [[SLCrashHandler defaultCrashHandler] catchCrashException:exception type:SLCrashErrorTypeMDictionary errorDesc:[@"异常:字典nil值 " stringByAppendingString:exception.reason]];
         }
     }else{
         [self sl_removeObjectForKey:aKey];
@@ -54,7 +55,7 @@
             [self sl_setObject:anObject forKeyedSubscript:key];
         }
         @catch (NSException *exception) {
-            NSLog(@"异常:字典nil值 %@", exception.reason);
+            [[SLCrashHandler defaultCrashHandler] catchCrashException:exception type:SLCrashErrorTypeMDictionary errorDesc:[@"异常:字典nil值 " stringByAppendingString:exception.reason]];
         }
     }else{
         [self sl_setObject:anObject forKeyedSubscript:key];
@@ -74,7 +75,7 @@
             index ++;
         }else{
             NSString *errorInfo = [NSString stringWithFormat:@"异常:字典nil值 *** -[__NSPlaceholderDictionary initWithObjects:forKeys:count:]: attempt to insert nil object from objects[%d]",i];
-            NSLog(@"%@",errorInfo);
+            [[SLCrashHandler defaultCrashHandler] catchCrashException:nil type:SLCrashErrorTypeMDictionary errorDesc:errorInfo];
         }
     }
     return [self sl_initWithObjects:objectsNew forKeys:keysNew count:index];

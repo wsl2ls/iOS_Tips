@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// 未识别方法 crash防护
+/// 未识别方法 KVO KVC crash防护
 @interface NSObject (SLCrashProtector)
 
 @end

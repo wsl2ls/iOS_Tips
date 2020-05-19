@@ -55,9 +55,11 @@
 
 /// 打印
 #ifdef DEBUG
+#   define NSLog(fmt, ...) NSLog((fmt), ##__VA_ARGS__);
 #   define SL_Log(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
 #define SL_NSLog(...) printf("%f %s %ld :%s\n",[[NSDate date]timeIntervalSince1970],strrchr(__FILE__,'/'),[[NSNumber numberWithInt:__LINE__] integerValue],[[NSString stringWithFormat:__VA_ARGS__]UTF8String]);
 #else
+#   define NSLog(fmt, ...)
 #   define SL_Log(...)
 #   define SL_NSLog(...)
 #endif

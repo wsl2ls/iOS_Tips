@@ -195,7 +195,7 @@
 
 
 #pragma mark - 函数调用栈
-///记录线程的函数调用栈  https://toutiao.io/posts/aveig6/preview
+///获取线程的函数调用栈  https://toutiao.io/posts/aveig6/preview
 - (void)testCallStack {
     //打印当前线程调用栈
     BSLOG;
@@ -205,6 +205,8 @@
 //         BSLOG;
     });
 //    BSLOG_MAIN
+    
+//    NSLog(@"=== %@", [NSThread callStackSymbols]);
 }
 
 @end

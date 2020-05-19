@@ -14,12 +14,15 @@
 @implementation NSObject (SLCrashProtector)
 
 + (void)load {
-    /// Unrecognized Selector  未识别方法防护
-    [NSObject unrecognizedSelectorCrashProtector];
-    /// KVO  防护
-    [NSObject KVOCrashProtector];
-    /// KVC  防护
-    [NSObject KVCCrashProtector];
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        /// Unrecognized Selector  未识别方法防护
+        [NSObject unrecognizedSelectorCrashProtector];
+        /// KVO  防护
+        [NSObject KVOCrashProtector];
+        /// KVC  防护
+        [NSObject KVCCrashProtector];
+    });
 }
 
 #pragma mark - Unrecognized Selector
@@ -34,7 +37,7 @@
 - (id)sl_forwardingTargetForSelector:(SEL)aSelector {
     //判断当前类是否重写了消息转发的相关方法，如果重写了，就走正常的消息转发流程
     if (![self isOverideForwardingMethods:[self class]] && !IsSystemClass(self.class)) {
-        NSLog(@"异常:未识别方法 [%@ -%@]", NSStringFromClass([self class]) ,NSStringFromSelector(aSelector));
+        [[SLCrashHandler defaultCrashHandler] catchCrashException:nil type:SLCrashErrorTypeUnrecognizedSelector errorDesc:[NSString stringWithFormat:@"异常:未识别方法 [%@ +%@]",NSStringFromClass([self class]),NSStringFromSelector(aSelector)]];
         //如果SLCrashHandler也没有实现aSelector，就动态添加上aSelector
         if (!class_getInstanceMethod([SLCrashHandler class], aSelector)) {
             class_addMethod([SLCrashHandler class], aSelector, (IMP)SL_DynamicAddMethodIMP, "v@:");
@@ -48,7 +51,7 @@
 + (id)sl_forwardingTargetForSelector:(SEL)aSelector {
     //判断当前类是否重写了消息转发的相关方法，如果重写了，就走正常的消息转发流程
     if (![self isOverideForwardingMethods:[[self class] class]] && !IsSystemClass(self.class)) {
-        NSLog(@"异常:未识别方法 [%@ +%@]", NSStringFromClass([[self class] class]),NSStringFromSelector(aSelector));
+        [[SLCrashHandler defaultCrashHandler] catchCrashException:nil type:SLCrashErrorTypeUnrecognizedSelector errorDesc:[NSString stringWithFormat:@"异常:未识别方法 [%@ +%@]",NSStringFromClass([[self class] class]),NSStringFromSelector(aSelector)]];
         //如果SLCrashHandler也没有实现aSelector，就动态添加上aSelector
         if (!class_getInstanceMethod([[SLCrashHandler class] class], aSelector)) {
             class_addMethod([[SLCrashHandler class] class], aSelector, (IMP)SL_DynamicAddMethodIMP, "v@:");
@@ -107,9 +110,9 @@ static void *KVODefenderKey = &KVODefenderKey;
         } else {
             // 添加 KVO 信息操作失败：重复添加
             NSString *className = (NSStringFromClass(self.class) == nil) ? @"" : NSStringFromClass(self.class);
-            NSString *reason = [NSString stringWithFormat:@"异常 KVO: Repeated additions to the observer:%@ for the key path:'%@' from %@",
-                                observer, keyPath, className];
-            NSLog(@"%@",reason);
+            NSString *errorReason = [NSString stringWithFormat:@"异常 KVO: Repeated additions to the observer:%@ for the key path:'%@' from %@",
+                                     observer, keyPath, className];
+            [[SLCrashHandler defaultCrashHandler] catchCrashException:nil type:SLCrashErrorTypeKVO errorDesc:errorReason];
         }
     } else {
         [self sl_addObserver:observer forKeyPath:keyPath options:options context:context];
@@ -124,8 +127,8 @@ static void *KVODefenderKey = &KVODefenderKey;
         } else {
             // 移除 KVO 信息操作失败：移除了未注册的观察者
             NSString *className = NSStringFromClass(self.class) == nil ? @"" : NSStringFromClass(self.class);
-            NSString *reason = [NSString stringWithFormat:@"异常 KVO: Cannot remove an observer %@ for the key path '%@' from %@ , because it is not registered as an observer", observer, keyPath, className];
-            NSLog(@"%@",reason);
+            NSString *errorReason = [NSString stringWithFormat:@"异常 KVO: Cannot remove an observer %@ for the key path '%@' from %@ , because it is not registered as an observer", observer, keyPath, className];
+            [[SLCrashHandler defaultCrashHandler] catchCrashException:nil type:SLCrashErrorTypeKVO errorDesc:errorReason];
         }
     } else {
         [self sl_removeObserver:observer forKeyPath:keyPath];
@@ -140,8 +143,8 @@ static void *KVODefenderKey = &KVODefenderKey;
         } else {
             // 移除 KVO 信息操作失败：移除了未注册的观察者
             NSString *className = NSStringFromClass(self.class) == nil ? @"" : NSStringFromClass(self.class);
-            NSString *reason = [NSString stringWithFormat:@"异常 KVO: Cannot remove an observer %@ for the key path '%@' from %@ , because it is not registered as an observer", observer, keyPath, className];
-            NSLog(@"%@",reason);
+            NSString *errorReason = [NSString stringWithFormat:@"异常 KVO: Cannot remove an observer %@ for the key path '%@' from %@ , because it is not registered as an observer", observer, keyPath, className];
+            [[SLCrashHandler defaultCrashHandler] catchCrashException:nil type:SLCrashErrorTypeKVO errorDesc:errorReason];
         }
     }
     else {
@@ -157,8 +160,8 @@ static void *KVODefenderKey = &KVODefenderKey;
             NSArray *keyPaths =  [self.KVODelegate getAllKeyPaths];
             // 被观察者在 dealloc 时仍然注册着 KVO
             if (keyPaths.count > 0) {
-                NSString *reason = [NSString stringWithFormat:@"异常 KVO: An instance %@ was deallocated while key value observers were still registered with it. The Keypaths is:'%@'", self, [keyPaths componentsJoinedByString:@","]];
-                NSLog(@"%@",reason);
+                NSString *errorReason = [NSString stringWithFormat:@"异常 KVO: An instance %@ was deallocated while key value observers were still registered with it. The Keypaths is:'%@'", self, [keyPaths componentsJoinedByString:@","]];
+                [[SLCrashHandler defaultCrashHandler] catchCrashException:nil type:SLCrashErrorTypeKVO errorDesc:errorReason];
             }
             // 移除多余的观察者
             for (NSString *keyPath in keyPaths) {
@@ -197,7 +200,7 @@ static inline BOOL IsSystemClass(Class cls){
             [self sl_setValue:value forKey:key];
         }
         @catch (NSException *exception) {
-            NSLog(@"异常 KVC: %@", exception.reason);
+            [[SLCrashHandler defaultCrashHandler] catchCrashException:exception type:SLCrashErrorTypeKVC errorDesc:[@"异常 KVC: " stringByAppendingString:exception.reason]];
         }
         return;
     }
@@ -205,16 +208,15 @@ static inline BOOL IsSystemClass(Class cls){
 }
 - (void)setNilValueForKey:(NSString *)key {
     NSString *crashMessages = [NSString stringWithFormat:@"异常 KVC: [<%@ %p> setNilValueForKey]: could not set nil as the value for the key %@.",NSStringFromClass([self class]),self,key];
-    NSLog(@"%@", crashMessages);
+    [[SLCrashHandler defaultCrashHandler] catchCrashException:nil type:SLCrashErrorTypeKVC errorDesc:crashMessages];
 }
 - (void)setValue:(id)value forUndefinedKey:(NSString *)key {
     NSString *crashMessages = [NSString stringWithFormat:@"异常 KVC: [<%@ %p> setValue:forUndefinedKey:]: this class is not key value coding-compliant for the key: %@,value:%@'",NSStringFromClass([self class]),self,key,value];
-    NSLog(@"%@", crashMessages);
-    
+    [[SLCrashHandler defaultCrashHandler] catchCrashException:nil type:SLCrashErrorTypeKVC errorDesc:crashMessages];
 }
 - (nullable id)valueForUndefinedKey:(NSString *)key {
     NSString *crashMessages = [NSString stringWithFormat:@"异常 KVC: [<%@ %p> valueForUndefinedKey:]: this class is not key value coding-compliant for the key: %@",NSStringFromClass([self class]),self,key];
-    NSLog(@"%@", crashMessages);
+    [[SLCrashHandler defaultCrashHandler] catchCrashException:nil type:SLCrashErrorTypeKVC errorDesc:crashMessages];
     return self;
 }
 
