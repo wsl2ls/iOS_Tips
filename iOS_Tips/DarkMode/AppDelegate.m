@@ -23,8 +23,7 @@
 }
 
 ///系统异常捕获处理
-void HandleException(NSException *exception)
-{
+void HandleException(NSException *exception) {
     // 异常的堆栈信息
     NSArray *stackArray = [exception callStackSymbols];
     // 出现异常的原因

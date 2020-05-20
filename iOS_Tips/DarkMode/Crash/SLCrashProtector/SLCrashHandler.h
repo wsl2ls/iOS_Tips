@@ -41,6 +41,8 @@ typedef NS_ENUM(NSInteger, SLCrashErrorType) {
 @property (nonatomic, copy) NSString *errorDesc;
 /// 异常对象
 @property (nonatomic, strong) NSException *exception;
+/// 当前线程的函数调用栈
+@property (nonatomic, copy) NSArray<NSString *> *callStackSymbol;
 
 @end
 

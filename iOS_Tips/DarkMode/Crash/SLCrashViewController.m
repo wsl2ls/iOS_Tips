@@ -35,6 +35,9 @@
 #pragma mark - UI
 - (void)setupUI {
     self.navigationItem.title = @"iOS Crash防护";
+    [SLCrashHandler defaultCrashHandler].crashHandlerBlock = ^(SLCrashError * _Nonnull crashError) {
+//        NSLog(@"%@/%@" ,crashError.errorDesc, [BSBacktraceLogger bs_backtraceOfCurrentThread]);
+    };
     [self testCallStack];
 }
 
@@ -193,20 +196,17 @@
 //        self.testMArray = [[NSMutableArray alloc] initWithObjects:self, nil];
 }
 
-
 #pragma mark - 函数调用栈
-///获取线程的函数调用栈  https://toutiao.io/posts/aveig6/preview
+///获取任意线程的函数调用栈  https://toutiao.io/posts/aveig6/preview
 - (void)testCallStack {
     //打印当前线程调用栈
-    BSLOG;
+//    BSLOG;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
          //在子线程中 打印主线程调用栈，会发现栈基本是空的，因为都已释放了
 //           BSLOG_MAIN
-//         BSLOG;
+         BSLOG;
     });
 //    BSLOG_MAIN
-    
-//    NSLog(@"=== %@", [NSThread callStackSymbols]);
 }
 
 @end

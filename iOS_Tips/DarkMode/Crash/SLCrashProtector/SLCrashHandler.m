@@ -28,7 +28,9 @@
     crashError.errorDesc = errorDesc;
     crashError.errorType = SLCrashErrorTypeArray;
     crashError.exception = exception;
-    NSLog(@"%@",errorDesc);
+    //获取当前线程的函数调用栈
+    crashError.callStackSymbol = [NSThread callStackSymbols];
+    NSLog(@"%@" ,errorDesc);
     if (self.crashHandlerBlock) {
         self.crashHandlerBlock(crashError);
     }
