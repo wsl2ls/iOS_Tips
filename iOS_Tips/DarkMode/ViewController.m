@@ -15,6 +15,7 @@
 #import "SLOpenGLController.h"
 #import "SLMenuViewController.h"
 #import "SLCrashViewController.h"
+#import "SLWebViewController.h"
 
 @interface ViewController ()<UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, strong) NSMutableArray *dataSource;
@@ -55,7 +56,8 @@
                                            @"VideoToolBox和AudioToolBox音视频编解码",
                                            @"OpenGL-ES学习", @"LeetCode算法练习集合",
                                            @"键盘和UIMenuController不能同时存在的问题",
-                                           @"iOS Crash防护"]];
+                                           @"iOS Crash防护",
+                                           @"WKWebView优化"]];
     [self.tableView reloadData];
 }
 
@@ -140,7 +142,11 @@
         case 10: {
             SLCrashViewController *crashViewController = [[SLCrashViewController alloc] init];
             [self.navigationController pushViewController:crashViewController animated:YES];
-//            [self presentViewController:crashViewController animated:YES completion:nil];
+        }
+            break;
+        case 11: {
+            SLWebViewController *webViewController = [[SLWebViewController alloc] init];
+            [self.navigationController pushViewController:webViewController animated:YES];
         }
             break;
         default:

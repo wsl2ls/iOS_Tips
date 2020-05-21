@@ -34,11 +34,9 @@ void HandleException(NSException *exception) {
 //    NSLog(@"%@", exceptionInfo);
 }
 //设置异常捕获处理方法
-void SLSetUncaughtExceptionHandler(void)
-{
+void SLSetUncaughtExceptionHandler(void) {
     NSSetUncaughtExceptionHandler(&HandleException);
 }
-
 //内存警告
 - (void)applicationDidReceiveMemoryWarning:(UIApplication *)application {
     //    free_some_mem(1024*1024*10);
