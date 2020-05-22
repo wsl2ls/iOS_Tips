@@ -123,6 +123,7 @@
 		78E179362351A40D0007E4BB /* SLEditMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E179332351A40D0007E4BB /* SLEditMenuView.m */; };
 		78E179372351A40D0007E4BB /* SLShotFocusView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E179342351A40D0007E4BB /* SLShotFocusView.m */; };
 		78E72D5124766E4B00751373 /* SLWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E72D5024766E4B00751373 /* SLWebViewController.m */; };
+		78E72D542477A4E700751373 /* SLWebTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E72D532477A4E700751373 /* SLWebTableViewController.m */; };
 		78EF8B6024162B96008D0CD7 /* SLMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78EF8B5E24162B96008D0CD7 /* SLMenuViewController.m */; };
 		78EF8B6124162B96008D0CD7 /* SLMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 78EF8B5F24162B96008D0CD7 /* SLMenuViewController.xib */; };
 		78EF8B6424188767008D0CD7 /* SLAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78EF8B6324188767008D0CD7 /* SLAlertView.m */; };
@@ -345,6 +346,8 @@
 		78E179352351A40D0007E4BB /* SLEditMenuView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLEditMenuView.h; sourceTree = "<group>"; };
 		78E72D4F24766E4B00751373 /* SLWebViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLWebViewController.h; sourceTree = "<group>"; };
 		78E72D5024766E4B00751373 /* SLWebViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLWebViewController.m; sourceTree = "<group>"; };
+		78E72D522477A4E700751373 /* SLWebTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLWebTableViewController.h; sourceTree = "<group>"; };
+		78E72D532477A4E700751373 /* SLWebTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLWebTableViewController.m; sourceTree = "<group>"; };
 		78EF8B5D24162B96008D0CD7 /* SLMenuViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLMenuViewController.h; sourceTree = "<group>"; };
 		78EF8B5E24162B96008D0CD7 /* SLMenuViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLMenuViewController.m; sourceTree = "<group>"; };
 		78EF8B5F24162B96008D0CD7 /* SLMenuViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SLMenuViewController.xib; sourceTree = "<group>"; };
@@ -823,6 +826,8 @@
 			children = (
 				78E72D4F24766E4B00751373 /* SLWebViewController.h */,
 				78E72D5024766E4B00751373 /* SLWebViewController.m */,
+				78E72D522477A4E700751373 /* SLWebTableViewController.h */,
+				78E72D532477A4E700751373 /* SLWebTableViewController.m */,
 			);
 			path = WKWebView;
 			sourceTree = "<group>";
@@ -1135,6 +1140,7 @@
 				78E1791823517F700007E4BB /* SLImage.m in Sources */,
 				787C7DBE245D74E4005DF7ED /* NSMutableArray+SLCrashProtector.m in Sources */,
 				78A1998C2451BEE7005B2B4B /* UIButton+SLTitleImage.m in Sources */,
+				78E72D542477A4E700751373 /* SLWebTableViewController.m in Sources */,
 				783504642452C20B0071283E /* SLMethod.m in Sources */,
 				787C7E4524656524005DF7ED /* UIView+SLMLeakFinder.m in Sources */,
 				7862533F24599D420017F8F1 /* NSObject+SLCrashProtector.m in Sources */,

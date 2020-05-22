@@ -1,16 +1,15 @@
 //
-//  SLWebViewController.m
+//  SLWebTableViewController.m
 //  DarkMode
 //
-//  Created by wsl on 2020/5/21.
+//  Created by wsl on 2020/5/22.
 //  Copyright © 2020 https://github.com/wsl2ls   ----- . All rights reserved.
 //
 
-#import "SLWebViewController.h"
-#import <WebKit/WebKit.h>
 #import "SLWebTableViewController.h"
+#import <WebKit/WebKit.h>
 
-@interface SLWebViewController ()
+@interface SLWebTableViewController ()<UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic, strong) WKWebView * webView;
 ///网页加载进度视图
@@ -18,19 +17,15 @@
 /// WKWebView 内容的高度
 @property (nonatomic, assign) CGFloat webContentHeight;
 
+@property (nonatomic, strong) UITableView *tableView;
+
 @end
 
-@implementation SLWebViewController
+@implementation SLWebTableViewController
 
-#pragma mark - Override
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    SLWebTableViewController *webTableViewController = [[SLWebTableViewController alloc] init];
-    [self.navigationController pushViewController:webTableViewController animated:YES];
-    return;
-    
-    [self setupUI];
+    [self setupUi];
     [self addKVO];
 }
 - (void)viewWillDisappear:(BOOL)animated {
@@ -42,27 +37,35 @@
     NSLog(@"%@释放了",NSStringFromClass(self.class));
 }
 
-
-#pragma mark - UI
-- (void)setupUI {
-    self.view.backgroundColor = UIColor.whiteColor;
-    UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithTitle:@"上一步" style:UIBarButtonItemStyleDone target:self action:@selector(goBackAction:)];
-    UIBarButtonItem *forwardItem = [[UIBarButtonItem alloc] initWithTitle:@"下一步" style:UIBarButtonItemStyleDone target:self action:@selector(goForwardAction:)];
-    self.navigationItem.rightBarButtonItems = @[forwardItem,backItem];
-    
-    [self.view addSubview:self.webView];
-    
+#pragma mark - SetupUI
+- (void)setupUi {
+    self.view.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:self.tableView];
+    [self configureWebTable];
+}
+- (void)configureWebTable {
+    self.tableView.tableHeaderView = self.webView;
+    self.tableView.bounces = NO;
+    self.webView.scrollView.bounces = NO;
 }
 
 #pragma mark - Getter
+- (UITableView *)tableView {
+    if (_tableView == nil) {
+        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, SL_kScreenWidth, SL_kScreenHeight) style:UITableViewStyleGrouped];
+        _tableView.delegate = self;
+        _tableView.dataSource = self;
+        _tableView.estimatedRowHeight = 0;
+        [_tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"cellId"];
+    }
+    return _tableView;
+}
 - (WKWebView *)webView {
     if(_webView == nil){
         //创建网页配置
         WKWebViewConfiguration *config = [[WKWebViewConfiguration alloc] init];
-        
         _webView = [[WKWebView alloc] initWithFrame:CGRectMake(0, 0, SL_kScreenWidth, SL_kScreenHeight) configuration:config];
-        
-        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"https://baidu.com"]];
+        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"https://www.jianshu.com/p/5cf0d241ae12"]];
         [_webView loadRequest:request];
     }
     return _webView;
@@ -123,14 +126,41 @@
     }
 }
 
-#pragma mark - Events Handle
-//返回上一步
-- (void)goBackAction:(id)sender{
-    [_webView goBack];
+#pragma mark - EventsHandle
+
+#pragma mark - HelpMethods
+
+#pragma mark - UITableViewDelegate,UITableViewDataSource
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
 }
-//前往下一步
-- (void)goForwardAction:(id)sender{
-    [_webView goForward];
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return 20;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 80;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 44;
+}
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    UILabel *label = [UILabel new];
+    label.text = @"评论";
+    label.textColor = UIColor.whiteColor;
+    label.textAlignment = NSTextAlignmentCenter;
+    label.backgroundColor = [UIColor orangeColor];
+    return label;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    return 0.1;
+}
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+    return nil;
+}
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"cellId" forIndexPath:indexPath];
+    cell.textLabel.text = [NSString stringWithFormat:@"第%ld条评论",(long)indexPath.row];
+    return cell;
 }
 
 @end
