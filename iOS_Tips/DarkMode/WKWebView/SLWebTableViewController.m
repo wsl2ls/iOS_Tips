@@ -39,6 +39,7 @@
 
 #pragma mark - SetupUI
 - (void)setupUi {
+    self.title = @"WKWebView + UITableView";
     self.view.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.tableView];
     [self configureWebTable];
@@ -55,7 +56,6 @@
         _tableView.delegate = self;
         _tableView.dataSource = self;
         _tableView.estimatedRowHeight = 0;
-        [_tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"cellId"];
     }
     return _tableView;
 }
@@ -65,6 +65,7 @@
         WKWebViewConfiguration *config = [[WKWebViewConfiguration alloc] init];
         
         _webView = [[WKWebView alloc] initWithFrame:CGRectMake(0, 0, SL_kScreenWidth, SL_kScreenHeight) configuration:config];
+        
         NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"https://www.jianshu.com/p/5cf0d241ae12"]];
         [_webView loadRequest:request];
         
@@ -166,8 +167,12 @@
     return nil;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"cellId" forIndexPath:indexPath];
+    UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"cellId"];
+    if (!cell) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cellId"];
+    }
     cell.textLabel.text = [NSString stringWithFormat:@"第%ld条评论",(long)indexPath.row];
+    cell.detailTextLabel.text = @"方案一：WebView作为TableView的Header, 撑开webView，显示渲染全部内容，容易造成内存暴涨";
     return cell;
 }
 
