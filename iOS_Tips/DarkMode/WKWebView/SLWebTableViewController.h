@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /*
    WKWebView + UITableView
-   方案一：WebView作为TableView的Header,但不撑开webView
+   方案一：WebView作为TableView的Header, 撑开webView
  */
 @interface SLWebTableViewController : UIViewController
 

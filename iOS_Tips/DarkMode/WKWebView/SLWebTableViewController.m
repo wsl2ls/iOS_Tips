@@ -14,7 +14,7 @@
 @property (nonatomic, strong) WKWebView * webView;
 ///网页加载进度视图
 @property (nonatomic, strong) UIProgressView * progressView;
-/// WKWebView 内容的高度
+/// WKWebView 内容的高度  默认屏幕高
 @property (nonatomic, assign) CGFloat webContentHeight;
 
 @property (nonatomic, strong) UITableView *tableView;
@@ -44,9 +44,8 @@
     [self configureWebTable];
 }
 - (void)configureWebTable {
+    self.webView.sl_h = _webContentHeight == 0 ? SL_kScreenHeight : _webContentHeight;
     self.tableView.tableHeaderView = self.webView;
-    self.tableView.bounces = NO;
-    self.webView.scrollView.bounces = NO;
 }
 
 #pragma mark - Getter
@@ -122,6 +121,7 @@
     }else if ([keyPath isEqualToString:NSStringFromSelector(@selector(contentSize))]
               && object == _webView.scrollView && _webContentHeight != _webView.scrollView.contentSize.height) {
         _webContentHeight = _webView.scrollView.contentSize.height;
+        [self configureWebTable];
         NSLog(@"WebViewContentSize = %@",NSStringFromCGSize(_webView.scrollView.contentSize))
     }
 }
@@ -130,6 +130,9 @@
 
 #pragma mark - HelpMethods
 
+#pragma mark - UIScrollViewDelegate
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+}
 #pragma mark - UITableViewDelegate,UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;

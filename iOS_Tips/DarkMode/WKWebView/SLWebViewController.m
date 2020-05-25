@@ -25,11 +25,6 @@
 #pragma mark - Override
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    SLWebTableViewController *webTableViewController = [[SLWebTableViewController alloc] init];
-    [self.navigationController pushViewController:webTableViewController animated:YES];
-    return;
-    
     [self setupUI];
     [self addKVO];
 }
@@ -42,13 +37,13 @@
     NSLog(@"%@释放了",NSStringFromClass(self.class));
 }
 
-
 #pragma mark - UI
 - (void)setupUI {
     self.view.backgroundColor = UIColor.whiteColor;
+    UIBarButtonItem *testItem = [[UIBarButtonItem alloc] initWithTitle:@"Test" style:UIBarButtonItemStyleDone target:self action:@selector(testAction:)];
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithTitle:@"上一步" style:UIBarButtonItemStyleDone target:self action:@selector(goBackAction:)];
     UIBarButtonItem *forwardItem = [[UIBarButtonItem alloc] initWithTitle:@"下一步" style:UIBarButtonItemStyleDone target:self action:@selector(goForwardAction:)];
-    self.navigationItem.rightBarButtonItems = @[forwardItem,backItem];
+    self.navigationItem.rightBarButtonItems = @[forwardItem,backItem,testItem];
     
     [self.view addSubview:self.webView];
     
@@ -62,7 +57,7 @@
         
         _webView = [[WKWebView alloc] initWithFrame:CGRectMake(0, 0, SL_kScreenWidth, SL_kScreenHeight) configuration:config];
         
-        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"https://baidu.com"]];
+        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"https://www.baidu.com"]];
         [_webView loadRequest:request];
     }
     return _webView;
@@ -131,6 +126,11 @@
 //前往下一步
 - (void)goForwardAction:(id)sender{
     [_webView goForward];
+}
+
+- (void)testAction:(id)sender {
+    SLWebTableViewController *webTableViewController = [[SLWebTableViewController alloc] init];
+    [self.navigationController pushViewController:webTableViewController animated:YES];
 }
 
 @end
