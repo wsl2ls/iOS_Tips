@@ -63,9 +63,22 @@
     if(_webView == nil){
         //创建网页配置
         WKWebViewConfiguration *config = [[WKWebViewConfiguration alloc] init];
+        
+        
+        // 是使用h5的视频播放器在线播放, 还是使用原生播放器全屏播放
+        config.allowsInlineMediaPlayback = YES;
+        //设置视频是否需要用户手动播放  设置为NO则会允许自动播放
+        config.mediaTypesRequiringUserActionForPlayback = YES;
+        //设置是否允许画中画技术 在特定设备上有效
+        config.allowsPictureInPictureMediaPlayback = YES;
+        
         _webView = [[WKWebView alloc] initWithFrame:CGRectMake(0, 0, SL_kScreenWidth, SL_kScreenHeight) configuration:config];
-        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"https://www.jianshu.com/p/5cf0d241ae12"]];
-        [_webView loadRequest:request];
+        //        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"https://www.jianshu.com/p/5cf0d241ae12"]];
+        //        [_webView loadRequest:request];
+        
+        NSString *path = [[NSBundle mainBundle] pathForResource:@"JStoOC.html" ofType:nil];
+        NSString *htmlString = [[NSString alloc]initWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
+        [_webView loadHTMLString:htmlString baseURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] bundlePath]]];
     }
     return _webView;
 }

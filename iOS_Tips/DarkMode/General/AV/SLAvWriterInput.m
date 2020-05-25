@@ -240,7 +240,7 @@
 /// 完成写入
 - (void)finishWriting {
     __weak typeof(self) weakSelf = self;
-    if(_assetWriter && self.isStartWriting) {
+    if(_assetWriter && self.isStartWriting && self.assetWriter.status != AVAssetWriterStatusUnknown) {
         [_assetWriter finishWritingWithCompletionHandler:^{
             if ([weakSelf.delegate respondsToSelector:@selector(writerInput:didFinishRecordingToOutputFileAtURL:error:)]) {
                 SL_DISPATCH_ON_MAIN_THREAD(^{

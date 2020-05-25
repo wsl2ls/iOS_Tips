@@ -124,6 +124,7 @@
 		78E179372351A40D0007E4BB /* SLShotFocusView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E179342351A40D0007E4BB /* SLShotFocusView.m */; };
 		78E72D5124766E4B00751373 /* SLWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E72D5024766E4B00751373 /* SLWebViewController.m */; };
 		78E72D542477A4E700751373 /* SLWebTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E72D532477A4E700751373 /* SLWebTableViewController.m */; };
+		78E72D59247BA29600751373 /* JStoOC.html in Resources */ = {isa = PBXBuildFile; fileRef = 78E72D58247BA29600751373 /* JStoOC.html */; };
 		78EF8B6024162B96008D0CD7 /* SLMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78EF8B5E24162B96008D0CD7 /* SLMenuViewController.m */; };
 		78EF8B6124162B96008D0CD7 /* SLMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 78EF8B5F24162B96008D0CD7 /* SLMenuViewController.xib */; };
 		78EF8B6424188767008D0CD7 /* SLAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78EF8B6324188767008D0CD7 /* SLAlertView.m */; };
@@ -348,6 +349,7 @@
 		78E72D5024766E4B00751373 /* SLWebViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLWebViewController.m; sourceTree = "<group>"; };
 		78E72D522477A4E700751373 /* SLWebTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLWebTableViewController.h; sourceTree = "<group>"; };
 		78E72D532477A4E700751373 /* SLWebTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLWebTableViewController.m; sourceTree = "<group>"; };
+		78E72D58247BA29600751373 /* JStoOC.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = JStoOC.html; sourceTree = "<group>"; };
 		78EF8B5D24162B96008D0CD7 /* SLMenuViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLMenuViewController.h; sourceTree = "<group>"; };
 		78EF8B5E24162B96008D0CD7 /* SLMenuViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLMenuViewController.m; sourceTree = "<group>"; };
 		78EF8B5F24162B96008D0CD7 /* SLMenuViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SLMenuViewController.xib; sourceTree = "<group>"; };
@@ -824,6 +826,7 @@
 		78E72D4E24766E1300751373 /* WKWebView */ = {
 			isa = PBXGroup;
 			children = (
+				78E72D58247BA29600751373 /* JStoOC.html */,
 				78E72D4F24766E4B00751373 /* SLWebViewController.h */,
 				78E72D5024766E4B00751373 /* SLWebViewController.m */,
 				78E72D522477A4E700751373 /* SLWebTableViewController.h */,
@@ -1026,6 +1029,7 @@
 				782CFB2B239E0479001B5528 /* SplitScreen_3.vsh in Resources */,
 				782CFB5B239E6227001B5528 /* Gray.vsh in Resources */,
 				782CFB5E239E622E001B5528 /* Mosaic.vsh in Resources */,
+				78E72D59247BA29600751373 /* JStoOC.html in Resources */,
 				782CFB7A239E6A11001B5528 /* Glitch.vsh in Resources */,
 				782CFB5A239E6227001B5528 /* Gray.fsh in Resources */,
 				782CFB66239E6651001B5528 /* HexagonMosaic.fsh in Resources */,

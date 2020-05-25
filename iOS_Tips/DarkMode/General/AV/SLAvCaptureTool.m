@@ -408,7 +408,7 @@
     if (_isRecording) {
         _isRecording = NO;
         __weak typeof(self) weakSelf = self;
-        if(_assetWriter && self.canWrite) {
+        if(_assetWriter && self.canWrite && self.assetWriter.status != AVAssetWriterStatusUnknown) {
             [_assetWriter finishWritingWithCompletionHandler:^{
                 if ([weakSelf.delegate respondsToSelector:@selector(captureTool:didFinishRecordingToOutputFileAtURL:error:)]) {
                     SL_DISPATCH_ON_MAIN_THREAD(^{
@@ -448,7 +448,7 @@
     if (_isRecording) {
         _isRecording = NO;
         __weak typeof(self) weakSelf = self;
-        if(_assetWriter && self.canWrite) {
+        if(_assetWriter && self.canWrite && self.assetWriter.status != AVAssetWriterStatusUnknown) {
             [_assetWriter finishWritingWithCompletionHandler:^{
                 if ([weakSelf.delegate respondsToSelector:@selector(captureTool:didFinishRecordingToOutputFileAtURL:error:)]) {
                     SL_DISPATCH_ON_MAIN_THREAD(^{
