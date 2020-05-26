@@ -9,6 +9,7 @@
 #import "SLWebViewController.h"
 #import <WebKit/WebKit.h>
 #import "SLWebTableViewController.h"
+#import "SLWebTableViewController2.h"
 
 @interface SLWebViewController ()
 
@@ -129,7 +130,7 @@
 }
 
 - (void)testAction:(id)sender {
-    SLWebTableViewController *webTableViewController = [[SLWebTableViewController alloc] init];
+    SLWebTableViewController2 *webTableViewController = [[SLWebTableViewController2 alloc] init];
     [self.navigationController pushViewController:webTableViewController animated:YES];
 }
 

@@ -12,12 +12,11 @@
 @interface SLWebTableViewController ()<UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic, strong) WKWebView * webView;
+@property (nonatomic, strong) UITableView *tableView;
 ///网页加载进度视图
 @property (nonatomic, strong) UIProgressView * progressView;
 /// WKWebView 内容的高度  默认屏幕高
 @property (nonatomic, assign) CGFloat webContentHeight;
-
-@property (nonatomic, strong) UITableView *tableView;
 
 @end
 
@@ -39,7 +38,7 @@
 
 #pragma mark - SetupUI
 - (void)setupUi {
-    self.title = @"WKWebView + UITableView";
+    self.title = @"WKWebView+UITableView（方案1）";
     self.view.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.tableView];
     [self configureWebTable];
@@ -66,12 +65,12 @@
         
         _webView = [[WKWebView alloc] initWithFrame:CGRectMake(0, 0, SL_kScreenWidth, SL_kScreenHeight) configuration:config];
         
-//        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"https://www.jianshu.com/p/5cf0d241ae12"]];
-//        [_webView loadRequest:request];
+        //        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"https://www.jianshu.com/p/5cf0d241ae12"]];
+        //        [_webView loadRequest:request];
         
-                NSString *path = [[NSBundle mainBundle] pathForResource:@"JStoOC.html" ofType:nil];
-                NSString *htmlString = [[NSString alloc]initWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
-                [_webView loadHTMLString:htmlString baseURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] bundlePath]]];
+        NSString *path = [[NSBundle mainBundle] pathForResource:@"JStoOC.html" ofType:nil];
+        NSString *htmlString = [[NSString alloc]initWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
+        [_webView loadHTMLString:htmlString baseURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] bundlePath]]];
     }
     return _webView;
 }
