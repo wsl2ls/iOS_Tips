@@ -10,12 +10,12 @@
 #import <WebKit/WebKit.h>
 
 ///动力元素  力的作用对象
-@interface DynamicItem : NSObject <UIDynamicItem>
+@interface SLDynamicItem : NSObject <UIDynamicItem>
 @property (nonatomic, readwrite) CGPoint center;
 @property (nonatomic, readonly) CGRect bounds;
 @property (nonatomic, readwrite) CGAffineTransform transform;
 @end
-@implementation DynamicItem
+@implementation SLDynamicItem
 - (instancetype)init {
     self = [super init];
     if (self) {
@@ -52,7 +52,7 @@
 @end
 
 
-@interface SLWebTableViewController2 ()<UITableViewDelegate,UITableViewDataSource, UIDynamicAnimatorDelegate>
+@interface SLWebTableViewController2 ()<UITableViewDelegate,UITableViewDataSource, UIDynamicAnimatorDelegate,WKNavigationDelegate>
 
 @property (nonatomic, strong) WKWebView * webView;
 @property (nonatomic, strong) UITableView *tableView;
@@ -102,16 +102,15 @@
     self.title = @"WKWebView+UITableView（方案2）";
     self.view.backgroundColor = [UIColor whiteColor];
     
-    self.bounceDistanceThreshold = 64;
+    self.bounceDistanceThreshold = self.view.frame.size.height * 0.66;
     [self.view addGestureRecognizer:self.panRecognizer];
     [self.view addSubview:self.webView];
-    
 }
 
 #pragma mark - Getter
 - (UITableView *)tableView {
     if (_tableView == nil) {
-        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, SL_kScreenWidth, SL_kScreenHeight) style:UITableViewStyleGrouped];
+        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, SL_kScreenHeight, SL_kScreenWidth, SL_kScreenHeight) style:UITableViewStyleGrouped];
         _tableView.delegate = self;
         _tableView.dataSource = self;
         _tableView.estimatedRowHeight = 1;
@@ -125,6 +124,7 @@
         WKWebViewConfiguration *config = [[WKWebViewConfiguration alloc] init];
         
         _webView = [[WKWebView alloc] initWithFrame:CGRectMake(0, 0, SL_kScreenWidth, SL_kScreenHeight) configuration:config];
+        _webView.navigationDelegate = self;
         _webView.scrollView.scrollEnabled = NO;
         
         //                NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"https://www.jianshu.com/p/5cf0d241ae12"]];
@@ -203,6 +203,7 @@
     }else if ([keyPath isEqualToString:NSStringFromSelector(@selector(contentSize))]
               && object == _webView.scrollView && _webContentHeight != _webView.scrollView.contentSize.height) {
         _webContentHeight = _webView.scrollView.contentSize.height;
+        [self changeWebViewContentSize];
         NSLog(@"WebViewContentSize = %@",NSStringFromCGSize(_webView.scrollView.contentSize))
     }
 }
@@ -219,7 +220,7 @@
         case UIGestureRecognizerStateChanged: {
             CGPoint translation = [recognizer translationInView:self.view];
             //拖动过程中调整scrollView.contentOffset
-            [self scrollViewsWithDeltaY:translation.y];
+            [self scrollViewsSetContentOffsetY:translation.y];
             [recognizer setTranslation:CGPointZero inView:self.view];
         }
             break;
@@ -243,7 +244,7 @@
             }
             
             //动力元素 力的操作对象
-            DynamicItem *item = [[DynamicItem alloc] init];
+            SLDynamicItem *item = [[SLDynamicItem alloc] init];
             item.center = CGPointZero;
             __block CGFloat lastCenterY = 0;
             UIDynamicItemBehavior *inertialBehavior = [[UIDynamicItemBehavior alloc] initWithItems:@[item]];
@@ -254,7 +255,7 @@
             __weak typeof(self) weakSelf = self;
             inertialBehavior.action = ^{
                 //惯性力 移动的距离
-                [weakSelf scrollViewsWithDeltaY:lastCenterY - item.center.y];
+                [weakSelf scrollViewsSetContentOffsetY:lastCenterY - item.center.y];
                 lastCenterY = item.center.y;
             };
             self.inertialBehavior = inertialBehavior;
@@ -268,8 +269,8 @@
 
 #pragma mark - Help Methods
 /// 根据拖拽手势在屏幕上的拖拽距离，调整scrollView.contentOffset
-- (void)scrollViewsWithDeltaY:(CGFloat)deltaY {
-    if (deltaY < 0) { //上拉
+- (void)scrollViewsSetContentOffsetY:(CGFloat)deltaY {
+    if (deltaY < 0) { //上滑
         if ([self.webView.scrollView isReachBottom]) { //webView已滑到底，此时应滑动tableView
             if ([self.tableView isReachBottom]) { //tableView也到底
                 if (self.tableView.frame.size.height < self.view.sl_h) { //tableView不足一屏，webView bounce
@@ -288,7 +289,7 @@
         } else {
             self.webView.scrollView.contentOffset = CGPointMake(0, MIN(self.webView.scrollView.contentOffset.y - deltaY, [self.webView.scrollView maxContentOffsetY]));
         }
-    } else if (deltaY > 0) { //下拉
+    } else if (deltaY > 0) { //下滑
         if ([self.tableView isReachTop]) { //tableView滑到顶，此时应滑动webView
             if ([self.webView.scrollView isReachTop]) { //webView到顶
                 CGFloat bounceDelta = MAX(0, (self.bounceDistanceThreshold - fabs(self.webView.scrollView.contentOffset.y)) / self.bounceDistanceThreshold) * 0.5;
@@ -303,20 +304,21 @@
     }
 }
 
-//区分滚动到边缘处回弹 和 拉到边缘后以极小的初速度滚动
+//两种回弹触发方式：
+//1.惯性滚动到边缘处回弹
 - (void)performBounceIfNeededForScrollView:(UIScrollView *)scrollView isAtTop:(BOOL)isTop {
     if (self.inertialBehavior) {
         [self performBounceForScrollView:scrollView isAtTop:isTop];
     }
 }
-//滑动到底部或顶部边界时，执行吸附力/回弹效果
+//2.手指拉到边缘处回弹
 - (void)performBounceForScrollView:(UIScrollView *)scrollView isAtTop:(BOOL)isTop {
     if (!self.bounceBehavior) {
         //移除惯性力
         [self.dynamicAnimator removeBehavior:self.inertialBehavior];
         
         //吸附力操作元素
-        DynamicItem *item = [[DynamicItem alloc] init];
+        SLDynamicItem *item = [[SLDynamicItem alloc] init];
         item.center = scrollView.contentOffset;
         //吸附力的锚点Y
         CGFloat attachedToAnchorY = 0;
@@ -347,12 +349,53 @@
     }
 }
 
+//改变webView的占位Div标签的高度 以及tableView的位置
+- (void)changeWebViewContentSize {
+    //调整占位Div高度
+    NSString *jsString = [NSString stringWithFormat:@"changeHeight(%f)", self.tableView.frame.size.height];
+    [_webView evaluateJavaScript:jsString completionHandler:^(id _Nullable data, NSError * _Nullable error) {
+    }];
+    
+    //调整tableView位置
+    CGRect frame = self.tableView.frame;
+    frame.origin.y = self.webView.scrollView.contentSize.height - self.tableView.frame.size.height;
+    self.tableView.frame = frame;
+    
+    //如果tableView已经有滚动，调整位置后滚回顶部
+    if (self.webView.scrollView.contentOffset.y > [self separatorYBetweenArticleAndComment] &&
+        self.webView.scrollView.contentOffset.y < [self.webView.scrollView maxContentOffsetY] &&
+        self.tableView.contentOffset.y > 0) {
+        [self.tableView scrollToTopWithAnimated:NO];
+    }
+}
+- (CGFloat)separatorYBetweenArticleAndComment {
+    return self.webView.scrollView.contentSize.height - self.tableView.frame.size.height - self.webView.scrollView.frame.size.height;
+}
+
+#pragma mark - UIDynamicAnimatorDelegate
+//动力装置即将启动
+- (void)dynamicAnimatorWillResume:(UIDynamicAnimator *)animator {
+    //    防止误触tableView的点击事件
+    self.webView.userInteractionEnabled = NO;
+    self.tableView.userInteractionEnabled = NO;
+}
+//动力装置暂停
+- (void)dynamicAnimatorDidPause:(UIDynamicAnimator *)animator {
+    self.webView.userInteractionEnabled = YES;
+    self.tableView.userInteractionEnabled = YES;
+}
+
+#pragma mark - WKNavigationDelegate
+- (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
+    [self.webView.scrollView addSubview:self.tableView];
+}
+
 #pragma mark - UITableViewDelegate,UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 20;
+    return 15;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     return 44;
@@ -378,7 +421,7 @@
     }
     cell.detailTextLabel.numberOfLines = 0;
     cell.textLabel.text = [NSString stringWithFormat:@"第%ld条评论",(long)indexPath.row];
-    cell.detailTextLabel.text = @"方案2：";
+    cell.detailTextLabel.text = @"方案2：将WKWebView作为主体，其加载的HTML最后留一个空白占位div，用于确定tableView的位置。tableView加到webView.scrollView上，在监听到webView.scrollView的内容尺寸变化后，不断调整tableView的位置对应于该空白div的位置，同时将该div的尺寸设置为tableView的尺寸";
     return cell;
 }
 
