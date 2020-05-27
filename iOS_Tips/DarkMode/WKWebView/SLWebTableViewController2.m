@@ -52,7 +52,7 @@
 @end
 
 
-@interface SLWebTableViewController2 ()<UITableViewDelegate,UITableViewDataSource, UIDynamicAnimatorDelegate,WKNavigationDelegate>
+@interface SLWebTableViewController2 ()<UITableViewDelegate,UITableViewDataSource, UIDynamicAnimatorDelegate,WKNavigationDelegate,UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong) WKWebView * webView;
 @property (nonatomic, strong) UITableView *tableView;
@@ -126,11 +126,16 @@
         _webView = [[WKWebView alloc] initWithFrame:CGRectMake(0, 0, SL_kScreenWidth, SL_kScreenHeight) configuration:config];
         _webView.navigationDelegate = self;
         _webView.scrollView.scrollEnabled = NO;
+        if (@available(iOS 11.0, *)) {
+            _webView.scrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+        } else {
+            self.automaticallyAdjustsScrollViewInsets = NO;
+        }
         
         //                NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"https://www.jianshu.com/p/5cf0d241ae12"]];
         //                [_webView loadRequest:request];
         
-        NSString *path = [[NSBundle mainBundle] pathForResource:@"2.html" ofType:nil];
+        NSString *path = [[NSBundle mainBundle] pathForResource:@"JStoOC.html" ofType:nil];
         NSString *htmlString = [[NSString alloc]initWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
         [_webView loadHTMLString:htmlString baseURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] bundlePath]]];
     }
@@ -150,7 +155,7 @@
 - (UIPanGestureRecognizer *)panRecognizer {
     if (!_panRecognizer) {
         _panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGestureRecognizer:)];
-        //        _panRecognizer.delegate = self;
+        _panRecognizer.delegate = self;
     }
     return _panRecognizer;
 }
@@ -176,6 +181,12 @@
                               forKeyPath:@"contentSize"
                                  options:NSKeyValueObservingOptionNew
                                  context:nil];
+    
+    //监听tableView内容高度
+    [self.tableView addObserver:self
+                     forKeyPath:@"contentSize"
+                        options:NSKeyValueObservingOptionNew
+                        context:nil];
 }
 ///移除监听
 - (void)removeKVO {
@@ -184,6 +195,8 @@
                   forKeyPath:NSStringFromSelector(@selector(estimatedProgress))];
     [_webView.scrollView removeObserver:self
                              forKeyPath:NSStringFromSelector(@selector(contentSize))];
+    [_tableView removeObserver:self
+                    forKeyPath:NSStringFromSelector(@selector(contentSize))];
 }
 //kvo监听 必须实现此方法
 -(void)observeValueForKeyPath:(NSString *)keyPath
@@ -205,6 +218,9 @@
         _webContentHeight = _webView.scrollView.contentSize.height;
         [self changeWebViewContentSize];
         //        NSLog(@"WebViewContentSize = %@",NSStringFromCGSize(_webView.scrollView.contentSize))
+    }else if ([keyPath isEqualToString:NSStringFromSelector(@selector(contentSize))]
+              && object == _tableView) {
+        [self changeWebViewContentSize];
     }
 }
 
@@ -354,6 +370,7 @@
     //调整tableView位置
     CGRect frame = self.tableView.frame;
     frame.origin.y = self.webView.scrollView.contentSize.height - self.tableView.frame.size.height;
+    frame.size.height = [self tableViewHeight];
     self.tableView.frame = frame;
     
     //如果webView的内容还没有滑到底部，tableView已经有滚动，调整tableView位置后滚回顶部
@@ -365,6 +382,14 @@
 }
 - (CGFloat)separatorYBetweenArticleAndComment {
     return self.webView.scrollView.contentSize.height - self.tableView.frame.size.height - self.webView.scrollView.frame.size.height;
+}
+
+/// tableView的最大高度为屏幕高度，当内容不足一屏时，高度为内容高度。
+- (CGFloat)tableViewHeight {
+    if(self.tableView.contentSize.height < SL_kScreenHeight) {
+        return self.tableView.contentSize.height;
+    }
+    return SL_kScreenHeight;
 }
 
 #pragma mark - UIDynamicAnimatorDelegate
@@ -379,6 +404,13 @@
     self.webView.userInteractionEnabled = YES;
     self.tableView.userInteractionEnabled = YES;
 }
+#pragma mark - UIGestureRecognizerDelegate
+// 避免影响横滑手势
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
+    CGPoint velocity = [(UIPanGestureRecognizer *)gestureRecognizer velocityInView:self.view];
+    return fabs(velocity.y) > fabs(velocity.x);
+}
+
 
 #pragma mark - WKNavigationDelegate
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
@@ -390,7 +422,7 @@
     return 1;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 15;
+    return 10;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     return 44;
@@ -416,7 +448,7 @@
     }
     cell.detailTextLabel.numberOfLines = 0;
     cell.textLabel.text = [NSString stringWithFormat:@"第%ld条评论",(long)indexPath.row];
-    cell.detailTextLabel.text = @"方案2：将tableView加到WKWebView.scrollView上, WKWebView加载的HTML最后留一个空白占位div，用于确定tableView的位置，在监听到webView.scrollView.contentSize变化后，不断调整tableView的位置，同时将该div的尺寸设置为tableView的尺寸。禁用tableView和webView.scrollVie的scrollEnabled = NO，通过添加pan手势,手动调整contentOffset。";
+    cell.detailTextLabel.text = @"方案2：将tableView加到WKWebView.scrollView上, WKWebView加载的HTML最后留一个空白占位div，用于确定tableView的位置，在监听到webView.scrollView.contentSize变化后，不断调整tableView的位置，同时将该div的尺寸设置为tableView的尺寸。禁用tableView和webView.scrollVie的scrollEnabled = NO，通过添加pan手势,手动调整contentOffset。tableView的最大高度为屏幕高度，当内容不足一屏时，高度为内容高度。";
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
