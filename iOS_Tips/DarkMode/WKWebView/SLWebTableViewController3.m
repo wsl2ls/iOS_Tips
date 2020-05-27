@@ -11,6 +11,9 @@
 #import <WebKit/WebKit.h>
 
 @interface SLWebTableViewController3 ()<UITableViewDelegate,UITableViewDataSource, UIDynamicAnimatorDelegate,WKNavigationDelegate,UIGestureRecognizerDelegate>
+{
+    int _dataCount;  //tableView的数据个数
+}
 
 @property (nonatomic, strong) WKWebView * webView;
 @property (nonatomic, strong) UITableView *tableView;
@@ -95,13 +98,11 @@
         } else {
             self.automaticallyAdjustsScrollViewInsets = NO;
         }
-        
-        //                        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"https://www.jianshu.com/p/5cf0d241ae12"]];
-        //                        [_webView loadRequest:request];
-        
-        NSString *path = [[NSBundle mainBundle] pathForResource:@"JStoOC.html" ofType:nil];
-        NSString *htmlString = [[NSString alloc]initWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
-        [_webView loadHTMLString:htmlString baseURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] bundlePath]]];
+        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:SL_WeiBo]];
+        [_webView loadRequest:request];
+        //        NSString *path = [[NSBundle mainBundle] pathForResource:@"JStoOC.html" ofType:nil];
+        //        NSString *htmlString = [[NSString alloc]initWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
+        //        [_webView loadHTMLString:htmlString baseURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] bundlePath]]];
     }
     return _webView;
 }
@@ -173,7 +174,6 @@
               && object == _webView.scrollView && _webContentHeight != _webView.scrollView.contentSize.height) {
         _webContentHeight = _webView.scrollView.contentSize.height;
         [self changeWebViewHeight];
-        NSLog(@"===== %f",_webContentHeight);
     }
 }
 
@@ -249,13 +249,18 @@
                 self.tableView.contentOffset = CGPointMake(0, MIN(self.tableView.contentOffset.y - deltaY, [self.tableView maxContentOffsetY]));
             }
         } else {
-            self.webView.scrollView.contentOffset = CGPointMake(0, MIN(self.webView.scrollView.contentOffset.y - deltaY, [self.webView.scrollView maxContentOffsetY]));
+            if (self.tableView.contentOffset.y <0) {
+                //如果此时tableView顶部准备下拉回弹，则调整tableView.contentOffset
+                self.tableView.contentOffset = CGPointMake(0, MIN(self.tableView.contentOffset.y - deltaY, [self.tableView maxContentOffsetY]));
+            }else {
+                self.webView.scrollView.contentOffset = CGPointMake(0, MIN(self.webView.scrollView.contentOffset.y - deltaY, [self.webView.scrollView maxContentOffsetY]));
+            }
         }
     } else if (deltaY > 0) { //下滑
         if ([self.tableView isTop]) { //tableView滑到顶，此时应滑动webView
             if ([self.webView.scrollView isTop]) { //webView到顶
                 CGFloat bounceDelta = MAX(0, (self.maxBounceDistance - fabs(self.tableView.contentOffset.y)) / self.maxBounceDistance) * 0.5;
-                self.tableView.contentOffset = CGPointMake(0, self.tableView.contentOffset.y - deltaY * bounceDelta);
+                self.tableView.contentOffset = CGPointMake(0, self.tableView.contentOffset.y - bounceDelta * deltaY);
                 [self performBounceIfNeededForScrollView:self.tableView isAtTop:YES];
             } else {
                 //tableView内容到顶后，调整webView.contentOffset
@@ -336,18 +341,19 @@
     return fabs(velocity.y) > fabs(velocity.x);
 }
 
-
 #pragma mark - WKNavigationDelegate
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
-    
+    //这里可以在webView加载完成之后，再刷新显示tableView的数据
+    _dataCount = 10;
+    [self.tableView reloadData];
 }
 
 #pragma mark - UITableViewDelegate,UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+    return _dataCount == 0 ? 0 : 1;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 1;
+    return _dataCount;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     return 44;

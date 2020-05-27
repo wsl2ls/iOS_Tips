@@ -59,7 +59,7 @@
         
         _webView = [[WKWebView alloc] initWithFrame:CGRectMake(0, 0, SL_kScreenWidth, SL_kScreenHeight) configuration:config];
         
-        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"https://www.baidu.com"]];
+        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:SL_JianShuUrl]];
         [_webView loadRequest:request];
     }
     return _webView;
@@ -116,7 +116,7 @@
     }else if ([keyPath isEqualToString:NSStringFromSelector(@selector(contentSize))]
               && object == _webView.scrollView && _webContentHeight != _webView.scrollView.contentSize.height) {
         _webContentHeight = _webView.scrollView.contentSize.height;
-        NSLog(@"WebViewContentSize = %@",NSStringFromCGSize(_webView.scrollView.contentSize))
+//        NSLog(@"WebViewContentSize = %@",NSStringFromCGSize(_webView.scrollView.contentSize))
     }
 }
 
