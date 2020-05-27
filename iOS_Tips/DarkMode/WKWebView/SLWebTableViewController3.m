@@ -98,11 +98,11 @@
         } else {
             self.automaticallyAdjustsScrollViewInsets = NO;
         }
-        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:SL_WeiBo]];
-        [_webView loadRequest:request];
-        //        NSString *path = [[NSBundle mainBundle] pathForResource:@"JStoOC.html" ofType:nil];
-        //        NSString *htmlString = [[NSString alloc]initWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
-        //        [_webView loadHTMLString:htmlString baseURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] bundlePath]]];
+        //        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:SL_WeiBo]];
+        //        [_webView loadRequest:request];
+        NSString *path = [[NSBundle mainBundle] pathForResource:@"JStoOC.html" ofType:nil];
+        NSString *htmlString = [[NSString alloc]initWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
+        [_webView loadHTMLString:htmlString baseURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] bundlePath]]];
     }
     return _webView;
 }
@@ -173,7 +173,7 @@
     }else if ([keyPath isEqualToString:NSStringFromSelector(@selector(contentSize))]
               && object == _webView.scrollView && _webContentHeight != _webView.scrollView.contentSize.height) {
         _webContentHeight = _webView.scrollView.contentSize.height;
-        [self changeWebViewHeight];
+        [self webViewContentSizeChanged];
     }
 }
 
@@ -313,13 +313,15 @@
     }
 }
 
-//改变WebView高度
-- (void)changeWebViewHeight {
-    // webViewHeight的最大高度为屏幕高度，当内容不足一屏时，高度为内容高度。
+//webViewContentSize发生了变化，需要针对变化做出调整
+- (void)webViewContentSizeChanged {
+    // webViewHeight的最大高度为屏幕高度，当内容contentSize不足一屏时，高度为内容contentSize高度。
     CGRect frame = self.webView.frame;
     frame.size.height = self.webView.scrollView.contentSize.height < SL_kScreenHeight ? self.webView.scrollView.contentSize.height : SL_kScreenHeight;
     self.webView.frame = frame;
     self.tableView.tableHeaderView = self.webView;
+    //当WebView的contentSize改变时，tableView滚到顶部
+    [self.tableView scrollToTopWithAnimated:NO];
 }
 
 #pragma mark - UIDynamicAnimatorDelegate
