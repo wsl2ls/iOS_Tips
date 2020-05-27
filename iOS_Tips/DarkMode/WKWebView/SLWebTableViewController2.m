@@ -98,6 +98,11 @@
         _tableView.dataSource = self;
         _tableView.estimatedRowHeight = 1;
         _tableView.scrollEnabled = NO;
+        if (@available(iOS 11.0, *)) {
+            _tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+        } else {
+            self.automaticallyAdjustsScrollViewInsets = NO;
+        }
     }
     return _tableView;
 }
@@ -105,7 +110,6 @@
     if(_webView == nil){
         //创建网页配置
         WKWebViewConfiguration *config = [[WKWebViewConfiguration alloc] init];
-        
         _webView = [[WKWebView alloc] initWithFrame:CGRectMake(0, 0, SL_kScreenWidth, SL_kScreenHeight) configuration:config];
         _webView.navigationDelegate = self;
         _webView.scrollView.scrollEnabled = NO;
@@ -114,7 +118,7 @@
         } else {
             self.automaticallyAdjustsScrollViewInsets = NO;
         }
-        
+
         NSString *path = [[NSBundle mainBundle] pathForResource:@"JStoOC.html" ofType:nil];
         NSString *htmlString = [[NSString alloc]initWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
         [_webView loadHTMLString:htmlString baseURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] bundlePath]]];
@@ -196,11 +200,11 @@
     }else if ([keyPath isEqualToString:NSStringFromSelector(@selector(contentSize))]
               && object == _webView.scrollView && _webContentHeight != _webView.scrollView.contentSize.height) {
         _webContentHeight = _webView.scrollView.contentSize.height;
-        [self changeWebViewContentSize];
+        [self webViewContentSizeChanged];
         //        NSLog(@"WebViewContentSize = %@",NSStringFromCGSize(_webView.scrollView.contentSize))
     }else if ([keyPath isEqualToString:NSStringFromSelector(@selector(contentSize))]
               && object == _tableView) {
-        [self changeWebViewContentSize];
+        [self webViewContentSizeChanged];
     }
 }
 
@@ -341,7 +345,7 @@
 }
 
 //改变webView的占位Div标签的高度 以及tableView的位置
-- (void)changeWebViewContentSize {
+- (void)webViewContentSizeChanged {
     //调整占位Div高度
     NSString *jsString = [NSString stringWithFormat:@"changeHeight(%f)", self.tableView.frame.size.height];
     [_webView evaluateJavaScript:jsString completionHandler:^(id _Nullable data, NSError * _Nullable error) {

@@ -8,9 +8,6 @@
 
 #import "SLWebViewController.h"
 #import <WebKit/WebKit.h>
-#import "SLWebTableViewController.h"
-#import "SLWebTableViewController2.h"
-#import "SLWebTableViewController3.h"
 
 @interface SLWebViewController ()
 
@@ -42,13 +39,16 @@
 #pragma mark - UI
 - (void)setupUI {
     self.view.backgroundColor = UIColor.whiteColor;
-    UIBarButtonItem *testItem = [[UIBarButtonItem alloc] initWithTitle:@"Test" style:UIBarButtonItemStyleDone target:self action:@selector(testAction:)];
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithTitle:@"上一步" style:UIBarButtonItemStyleDone target:self action:@selector(goBackAction:)];
     UIBarButtonItem *forwardItem = [[UIBarButtonItem alloc] initWithTitle:@"下一步" style:UIBarButtonItemStyleDone target:self action:@selector(goForwardAction:)];
-    self.navigationItem.rightBarButtonItems = @[forwardItem,backItem,testItem];
+    self.navigationItem.rightBarButtonItems = @[forwardItem,backItem];
     
     [self.view addSubview:self.webView];
-    
+    if (@available(iOS 11.0, *)) {
+        _webView.scrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+    } else {
+        self.automaticallyAdjustsScrollViewInsets = NO;
+    }
 }
 
 #pragma mark - Getter
@@ -128,11 +128,6 @@
 //前往下一步
 - (void)goForwardAction:(id)sender{
     [_webView goForward];
-}
-
-- (void)testAction:(id)sender {
-    SLWebTableViewController3 *webTableViewController = [[SLWebTableViewController3 alloc] init];
-    [self.navigationController pushViewController:webTableViewController animated:YES];
 }
 
 @end

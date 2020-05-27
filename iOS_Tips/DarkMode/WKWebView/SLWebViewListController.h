@@ -1,8 +1,8 @@
 //
-//  SLWebViewController.h
+//  SLWebViewListController.h
 //  DarkMode
 //
-//  Created by wsl on 2020/5/21.
+//  Created by wsl on 2020/5/27.
 //  Copyright © 2020 https://github.com/wsl2ls   ----- . All rights reserved.
 //
 
@@ -10,8 +10,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-///WKWebView的使用
-@interface SLWebViewController : UIViewController
+/// 关于WKWebView的知识点列表
+@interface SLWebViewListController : UIViewController
 
 @end
 

@@ -15,7 +15,7 @@
 #import "SLOpenGLController.h"
 #import "SLMenuViewController.h"
 #import "SLCrashViewController.h"
-#import "SLWebViewController.h"
+#import "SLWebViewListController.h"
 
 @interface ViewController ()<UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, strong) NSMutableArray *dataSource;
@@ -145,7 +145,7 @@
         }
             break;
         case 11: {
-            SLWebViewController *webViewController = [[SLWebViewController alloc] init];
+            SLWebViewListController *webViewController = [[SLWebViewListController alloc] init];
             [self.navigationController pushViewController:webViewController animated:YES];
         }
             break;
