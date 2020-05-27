@@ -62,11 +62,7 @@
     if(_webView == nil){
         //创建网页配置
         WKWebViewConfiguration *config = [[WKWebViewConfiguration alloc] init];
-        
         _webView = [[WKWebView alloc] initWithFrame:CGRectMake(0, 0, SL_kScreenWidth, SL_kScreenHeight) configuration:config];
-        
-        //        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"https://www.jianshu.com/p/5cf0d241ae12"]];
-        //        [_webView loadRequest:request];
         
         NSString *path = [[NSBundle mainBundle] pathForResource:@"JStoOC.html" ofType:nil];
         NSString *htmlString = [[NSString alloc]initWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];

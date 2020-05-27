@@ -126,6 +126,7 @@
 		78E72D542477A4E700751373 /* SLWebTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E72D532477A4E700751373 /* SLWebTableViewController.m */; };
 		78E72D59247BA29600751373 /* JStoOC.html in Resources */ = {isa = PBXBuildFile; fileRef = 78E72D58247BA29600751373 /* JStoOC.html */; };
 		78E72D5C247BDDE700751373 /* SLWebTableViewController2.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E72D5B247BDDE700751373 /* SLWebTableViewController2.m */; };
+		78E72D70247E536400751373 /* SLWebTableViewController3.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E72D6F247E536400751373 /* SLWebTableViewController3.m */; };
 		78EF8B6024162B96008D0CD7 /* SLMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78EF8B5E24162B96008D0CD7 /* SLMenuViewController.m */; };
 		78EF8B6124162B96008D0CD7 /* SLMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 78EF8B5F24162B96008D0CD7 /* SLMenuViewController.xib */; };
 		78EF8B6424188767008D0CD7 /* SLAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78EF8B6324188767008D0CD7 /* SLAlertView.m */; };
@@ -353,6 +354,8 @@
 		78E72D58247BA29600751373 /* JStoOC.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = JStoOC.html; sourceTree = "<group>"; };
 		78E72D5A247BDDE700751373 /* SLWebTableViewController2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLWebTableViewController2.h; sourceTree = "<group>"; };
 		78E72D5B247BDDE700751373 /* SLWebTableViewController2.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLWebTableViewController2.m; sourceTree = "<group>"; };
+		78E72D6E247E536400751373 /* SLWebTableViewController3.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLWebTableViewController3.h; sourceTree = "<group>"; };
+		78E72D6F247E536400751373 /* SLWebTableViewController3.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLWebTableViewController3.m; sourceTree = "<group>"; };
 		78EF8B5D24162B96008D0CD7 /* SLMenuViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLMenuViewController.h; sourceTree = "<group>"; };
 		78EF8B5E24162B96008D0CD7 /* SLMenuViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLMenuViewController.m; sourceTree = "<group>"; };
 		78EF8B5F24162B96008D0CD7 /* SLMenuViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SLMenuViewController.xib; sourceTree = "<group>"; };
@@ -836,6 +839,8 @@
 				78E72D532477A4E700751373 /* SLWebTableViewController.m */,
 				78E72D5A247BDDE700751373 /* SLWebTableViewController2.h */,
 				78E72D5B247BDDE700751373 /* SLWebTableViewController2.m */,
+				78E72D6E247E536400751373 /* SLWebTableViewController3.h */,
+				78E72D6F247E536400751373 /* SLWebTableViewController3.m */,
 			);
 			path = WKWebView;
 			sourceTree = "<group>";
@@ -1149,6 +1154,7 @@
 				78E1791823517F700007E4BB /* SLImage.m in Sources */,
 				787C7DBE245D74E4005DF7ED /* NSMutableArray+SLCrashProtector.m in Sources */,
 				78A1998C2451BEE7005B2B4B /* UIButton+SLTitleImage.m in Sources */,
+				78E72D70247E536400751373 /* SLWebTableViewController3.m in Sources */,
 				78E72D542477A4E700751373 /* SLWebTableViewController.m in Sources */,
 				783504642452C20B0071283E /* SLMethod.m in Sources */,
 				787C7E4524656524005DF7ED /* UIView+SLMLeakFinder.m in Sources */,
