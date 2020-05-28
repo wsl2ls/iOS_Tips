@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /*
   WKWebView + UITableView
-  方案4：[UIScrollView addSubView: WKWebView & UITableView];
+  方案4：(较推荐)[UIScrollView addSubView: WKWebView & UITableView];
 */
 @interface SLWebTableViewController4 : UIViewController
 

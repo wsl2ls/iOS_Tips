@@ -41,7 +41,7 @@
 @property (nonatomic, strong) UITableView *tableView;
 ///网页加载进度视图
 @property (nonatomic, strong) UIProgressView * progressView;
-/// WKWebView 内容的高度  默认屏幕高
+/// WKWebView 内容的高度 
 @property (nonatomic, assign) CGFloat webContentHeight;
 
 /// self.view拖拽手势
@@ -418,12 +418,6 @@
     label.textAlignment = NSTextAlignmentCenter;
     label.backgroundColor = [UIColor orangeColor];
     return label;
-}
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    return 0.1;
-}
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-    return nil;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"cellId"];

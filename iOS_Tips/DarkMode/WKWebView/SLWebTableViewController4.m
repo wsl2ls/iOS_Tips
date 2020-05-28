@@ -12,105 +12,155 @@
 @interface SLWebTableViewController4 ()<UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate,
 WKNavigationDelegate>
 {
-    CGFloat _lastWebViewContentHeight;
-    CGFloat _lastTableViewContentHeight;
+    CGFloat _webViewContentHeight;
+    CGFloat _tableViewContentHeight;
+    int _dataCount;  //tableView的数据个数
 }
 
+///网页加载进度视图
+@property (nonatomic, strong) UIProgressView * progressView;
 
-@property (nonatomic, strong) WKWebView     *webView;
+@property (nonatomic, strong) WKWebView  *webView;
+@property (nonatomic, strong) UITableView *tableView;
 
-@property (nonatomic, strong) UITableView   *tableView;
+@property (nonatomic, strong) UIScrollView *containerScrollView;
+@property (nonatomic, strong) UIView *contentView;
 
-@property (nonatomic, strong) UIScrollView  *containerScrollView;
-
-@property (nonatomic, strong) UIView        *contentView;
 @end
 
 @implementation SLWebTableViewController4
 
+#pragma mark - Override
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self initValue];
-    [self initView];
-    [self addObservers];
-    
-    NSString *path = @"https://www.jianshu.com/u/e15d1f644bea";
-    
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:path]];
-    request.cachePolicy = NSURLRequestReloadIgnoringCacheData;
-    [self.webView loadRequest:request];
+    [self seupUI];
+    [self addKVO];
 }
-
-- (void)dealloc{
-    [self removeObservers];
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [self.progressView removeFromSuperview];
 }
-
+- (void)dealloc {
+    [self removeKVO];
+    NSLog(@"%@释放了",NSStringFromClass(self.class));
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
 
-- (void)initValue{
-    _lastWebViewContentHeight = 0;
-    _lastTableViewContentHeight = 0;
-}
-
-- (void)initView{
-    [self.contentView addSubview:self.webView];
-    [self.contentView addSubview:self.tableView];
+#pragma mark - UI
+- (void)seupUI{
+    _webViewContentHeight = 0;
+    _tableViewContentHeight = 0;
+    self.view.backgroundColor = [UIColor whiteColor];
     
     [self.view addSubview:self.containerScrollView];
     [self.containerScrollView addSubview:self.contentView];
-    
-    self.contentView.frame = CGRectMake(0, 0, self.view.sl_width, self.view.sl_height * 2);
-    self.webView.sl_top = 0;
-    self.webView.sl_height = self.view.sl_height;
-    self.tableView.sl_top = self.webView.sl_bottom;
+    [self.contentView addSubview:self.webView];
+    [self.contentView addSubview:self.tableView];
 }
 
+#pragma mark - Getter
+- (WKWebView *)webView{
+    if (_webView == nil) {
+        WKWebViewConfiguration *configuration = [[WKWebViewConfiguration alloc] init];
+        _webView = [[WKWebView alloc] initWithFrame:self.view.bounds configuration:configuration];
+        _webView.scrollView.scrollEnabled = NO;
+        _webView.navigationDelegate = self;
+        NSString *path = [[NSBundle mainBundle] pathForResource:@"JStoOC.html" ofType:nil];
+        NSString *htmlString = [[NSString alloc]initWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
+        [_webView loadHTMLString:htmlString baseURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] bundlePath]]];
+    }
+    return _webView;
+}
+- (UITableView *)tableView{
+    if (_tableView == nil) {
+        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, self.view.sl_height, self.view.sl_width, self.view.sl_height) style:UITableViewStylePlain];
+        _tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
+        _tableView.delegate = self;
+        _tableView.dataSource = self;
+        _tableView.scrollEnabled = NO;
+    }
+    return _tableView;
+}
+- (UIScrollView *)containerScrollView{
+    if (_containerScrollView == nil) {
+        _containerScrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
+        _containerScrollView.delegate = self;
+        _containerScrollView.alwaysBounceVertical = YES;
+    }
+    return _containerScrollView;
+}
+- (UIView *)contentView{
+    if (_contentView == nil) {
+        _contentView = [[UIView alloc] initWithFrame: CGRectMake(0, 0, self.view.sl_width, self.view.sl_height * 2)];
+    }
+    return _contentView;
+}
+- (UIProgressView *)progressView {
+    if (!_progressView){
+        _progressView = [[UIProgressView alloc] initWithFrame:CGRectMake(0, 0, SL_kScreenWidth, 2)];
+        _progressView.tintColor = [UIColor blueColor];
+        _progressView.trackTintColor = [UIColor clearColor];
+    }
+    if (_progressView.superview == nil) {
+        [self.navigationController.navigationBar addSubview:_progressView];
+    }
+    return _progressView;
+}
 
-#pragma mark - Observers
-- (void)addObservers{
+#pragma mark - KVO
+- (void)addKVO{
+    [self.webView addObserver:self
+                   forKeyPath:NSStringFromSelector(@selector(estimatedProgress))
+                      options:NSKeyValueObservingOptionNew
+                      context:nil];
     [self.webView addObserver:self forKeyPath:@"scrollView.contentSize" options:NSKeyValueObservingOptionNew context:nil];
     [self.tableView addObserver:self forKeyPath:@"contentSize" options:NSKeyValueObservingOptionNew context:nil];
 }
-
-- (void)removeObservers{
+- (void)removeKVO{
+    [_webView removeObserver:self
+                  forKeyPath:NSStringFromSelector(@selector(estimatedProgress))];
     [self.webView removeObserver:self forKeyPath:@"scrollView.contentSize"];
     [self.tableView removeObserver:self forKeyPath:@"contentSize"];
 }
-
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context{
-    if (object == _webView) {
-        if ([keyPath isEqualToString:@"scrollView.contentSize"]) {
-            [self updateContainerScrollViewContentSize:0 webViewContentHeight:0];
+    
+    if ([keyPath isEqualToString:NSStringFromSelector(@selector(estimatedProgress))]
+        && object == _webView) {
+        //        NSLog(@"网页加载进度 = %f",_webView.estimatedProgress);
+        self.progressView.progress = _webView.estimatedProgress;
+        if (_webView.estimatedProgress >= 1.0f) {
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                self.progressView.progress = 0;
+            });
         }
-    }else if(object == _tableView) {
-        if ([keyPath isEqualToString:@"contentSize"]) {
-            [self updateContainerScrollViewContentSize:0 webViewContentHeight:0];
-        }
+    }else if (object == _webView && [keyPath isEqualToString:@"scrollView.contentSize"] && _webViewContentHeight != _webView.scrollView.contentSize.height) {
+        _webViewContentHeight = _webView.scrollView.contentSize.height;
+        [self updateContainerScrollViewContentSize:0 webViewContentHeight:0];
+    }else if(object == _tableView && [keyPath isEqualToString:@"contentSize"] && _tableViewContentHeight != _tableView.contentSize.height ) {
+        _tableViewContentHeight = _tableView.contentSize.height;
+        [self updateContainerScrollViewContentSize:0 webViewContentHeight:0];
     }
 }
 
+/// 根据WebView和tableView的ContentSize变化做出调整
 - (void)updateContainerScrollViewContentSize:(NSInteger)flag webViewContentHeight:(CGFloat)inWebViewContentHeight{
     
     CGFloat webViewContentHeight = flag==1 ?inWebViewContentHeight :self.webView.scrollView.contentSize.height;
     CGFloat tableViewContentHeight = self.tableView.contentSize.height;
     
-    if (webViewContentHeight == _lastWebViewContentHeight && tableViewContentHeight == _lastTableViewContentHeight) {
-        return;
-    }
-    
-    _lastWebViewContentHeight = webViewContentHeight;
-    _lastTableViewContentHeight = tableViewContentHeight;
-    
     self.containerScrollView.contentSize = CGSizeMake(self.view.sl_width, webViewContentHeight + tableViewContentHeight);
     
-    CGFloat webViewHeight = (webViewContentHeight < self.view.sl_height) ?webViewContentHeight :self.view.sl_height ;
-    CGFloat tableViewHeight = tableViewContentHeight < self.view.sl_height ?tableViewContentHeight :self.view.sl_height;
-    self.webView.sl_height = webViewHeight <= 0.1 ?0.1 :webViewHeight;
+    //如果内容不满一屏，则webView、tableView高度为内容高，超过一屏则最大高为一屏高
+    CGFloat webViewHeight = (webViewContentHeight < self.view.sl_height) ? webViewContentHeight : self.view.sl_height ;
+    CGFloat tableViewHeight = tableViewContentHeight < self.view.sl_height ? tableViewContentHeight : self.view.sl_height;
+    
     self.contentView.sl_height = webViewHeight + tableViewHeight;
+    
+    self.webView.sl_height = webViewHeight <= 0.1 ?0.1 :webViewHeight;
     self.tableView.sl_height = tableViewHeight;
-    self.tableView.sl_top = self.webView.sl_bottom;
+    self.tableView.sl_y = self.webView.sl_height;
     
     //Fix:contentSize变化时需要更新各个控件的位置
     [self scrollViewDidScroll:self.containerScrollView];
@@ -155,68 +205,43 @@ WKNavigationDelegate>
         NSLog(@"do nothing");
     }
 }
-
-#pragma mark - UITableViewDataSouce
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 1;
+#pragma mark - WKNavigationDelegate
+- (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
+    //这里可以在webView加载完成之后，再刷新显示tableView的数据
+    _dataCount = 15;
+    [self.tableView reloadData];
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 200;
+#pragma mark - UITableViewDelegate,UITableViewDataSource
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return _dataCount == 0 ? 0 : 1;
 }
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
-        cell.backgroundColor = [UIColor redColor];
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return _dataCount;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 44;
+}
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    UILabel *label = [UILabel new];
+    label.text = @"评论";
+    label.textColor = UIColor.whiteColor;
+    label.textAlignment = NSTextAlignmentCenter;
+    label.backgroundColor = [UIColor orangeColor];
+    return label;
+}
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"cellId"];
+    if (!cell) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cellId"];
     }
-    
-    cell.textLabel.text = @(indexPath.row).stringValue;
+    cell.detailTextLabel.numberOfLines = 0;
+    cell.textLabel.text = [NSString stringWithFormat:@"第%ld条评论",(long)indexPath.row];
+    cell.detailTextLabel.text = @"方案4";
     return cell;
 }
-
-#pragma mark - private
-- (WKWebView *)webView{
-    if (_webView == nil) {
-        WKWebViewConfiguration *configuration = [[WKWebViewConfiguration alloc] init];
-        _webView = [[WKWebView alloc] initWithFrame:self.view.bounds configuration:configuration];
-        _webView.scrollView.scrollEnabled = NO;
-        _webView.navigationDelegate = self;
-    }
-    
-    return _webView;
-}
-
-- (UITableView *)tableView{
-    if (_tableView == nil) {
-        _tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
-        _tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
-        _tableView.delegate = self;
-        _tableView.dataSource = self;
-        _tableView.tableFooterView = [UIView new];
-        _tableView.scrollEnabled = NO;
-        
-    }
-    return _tableView;
-}
-
-- (UIScrollView *)containerScrollView{
-    if (_containerScrollView == nil) {
-        _containerScrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
-        _containerScrollView.delegate = self;
-        _containerScrollView.alwaysBounceVertical = YES;
-    }
-    
-    return _containerScrollView;
-}
-
-- (UIView *)contentView{
-    if (_contentView == nil) {
-        _contentView = [[UIView alloc] init];
-    }
-    
-    return _contentView;
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 @end

@@ -136,10 +136,6 @@
     }
 }
 
-#pragma mark - EventsHandle
-
-#pragma mark - HelpMethods
-
 #pragma mark - UIScrollViewDelegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
 }
@@ -160,12 +156,6 @@
     label.textAlignment = NSTextAlignmentCenter;
     label.backgroundColor = [UIColor orangeColor];
     return label;
-}
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    return 0.1;
-}
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-    return nil;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"cellId"];
