@@ -125,10 +125,8 @@ WKNavigationDelegate>
     [self.tableView removeObserver:self forKeyPath:@"contentSize"];
 }
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context{
-    
     if ([keyPath isEqualToString:NSStringFromSelector(@selector(estimatedProgress))]
         && object == _webView) {
-        //        NSLog(@"网页加载进度 = %f",_webView.estimatedProgress);
         self.progressView.progress = _webView.estimatedProgress;
         if (_webView.estimatedProgress >= 1.0f) {
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -137,24 +135,22 @@ WKNavigationDelegate>
         }
     }else if (object == _webView && [keyPath isEqualToString:@"scrollView.contentSize"] && _webViewContentHeight != _webView.scrollView.contentSize.height) {
         _webViewContentHeight = _webView.scrollView.contentSize.height;
-        [self updateContainerScrollViewContentSize:0 webViewContentHeight:0];
+        [self updateContainerScrollViewContentSize];
     }else if(object == _tableView && [keyPath isEqualToString:@"contentSize"] && _tableViewContentHeight != _tableView.contentSize.height ) {
         _tableViewContentHeight = _tableView.contentSize.height;
-        [self updateContainerScrollViewContentSize:0 webViewContentHeight:0];
+        [self updateContainerScrollViewContentSize];
     }
 }
 
-/// 根据WebView和tableView的ContentSize变化做出调整
-- (void)updateContainerScrollViewContentSize:(NSInteger)flag webViewContentHeight:(CGFloat)inWebViewContentHeight{
+#pragma mark - Help Methods
+/// 根据WebView和tableView的ContentSize变化，调整父scrollView.contentSize、WebView和tableView的高度位置、
+- (void)updateContainerScrollViewContentSize{
     
-    CGFloat webViewContentHeight = flag==1 ?inWebViewContentHeight :self.webView.scrollView.contentSize.height;
-    CGFloat tableViewContentHeight = self.tableView.contentSize.height;
-    
-    self.containerScrollView.contentSize = CGSizeMake(self.view.sl_width, webViewContentHeight + tableViewContentHeight);
+    self.containerScrollView.contentSize = CGSizeMake(self.view.sl_width, _webViewContentHeight + _tableViewContentHeight);
     
     //如果内容不满一屏，则webView、tableView高度为内容高，超过一屏则最大高为一屏高
-    CGFloat webViewHeight = (webViewContentHeight < self.view.sl_height) ? webViewContentHeight : self.view.sl_height ;
-    CGFloat tableViewHeight = tableViewContentHeight < self.view.sl_height ? tableViewContentHeight : self.view.sl_height;
+    CGFloat webViewHeight = (_webViewContentHeight < self.view.sl_height) ? _webViewContentHeight : self.view.sl_height ;
+    CGFloat tableViewHeight = _tableViewContentHeight < self.view.sl_height ? _tableViewContentHeight : self.view.sl_height;
     
     self.contentView.sl_height = webViewHeight + tableViewHeight;
     
@@ -162,7 +158,7 @@ WKNavigationDelegate>
     self.tableView.sl_height = tableViewHeight;
     self.tableView.sl_y = self.webView.sl_height;
     
-    //Fix:contentSize变化时需要更新各个控件的位置
+    //contentSize变化时需要更新各个控件的位置
     [self scrollViewDidScroll:self.containerScrollView];
 }
 
@@ -177,29 +173,26 @@ WKNavigationDelegate>
     CGFloat webViewHeight = self.webView.sl_height;
     CGFloat tableViewHeight = self.tableView.sl_height;
     
-    CGFloat webViewContentHeight = self.webView.scrollView.contentSize.height;
-    CGFloat tableViewContentHeight = self.tableView.contentSize.height;
-    
     if (offsetY <= 0) {
         self.contentView.sl_top = 0;
         self.webView.scrollView.contentOffset = CGPointZero;
         self.tableView.contentOffset = CGPointZero;
-    }else if(offsetY < webViewContentHeight - webViewHeight){
+    }else if(offsetY < _webViewContentHeight - webViewHeight){
         self.contentView.sl_top = offsetY;
         self.webView.scrollView.contentOffset = CGPointMake(0, offsetY);
         self.tableView.contentOffset = CGPointZero;
-    }else if(offsetY < webViewContentHeight){
-        self.contentView.sl_top = webViewContentHeight - webViewHeight;
-        self.webView.scrollView.contentOffset = CGPointMake(0, webViewContentHeight - webViewHeight);
+    }else if(offsetY < _webViewContentHeight){
+        self.contentView.sl_top = _webViewContentHeight - webViewHeight;
+        self.webView.scrollView.contentOffset = CGPointMake(0, _webViewContentHeight - webViewHeight);
         self.tableView.contentOffset = CGPointZero;
-    }else if(offsetY < webViewContentHeight + tableViewContentHeight - tableViewHeight){
+    }else if(offsetY < _webViewContentHeight + _tableViewContentHeight - tableViewHeight){
         self.contentView.sl_top = offsetY - webViewHeight;
-        self.tableView.contentOffset = CGPointMake(0, offsetY - webViewContentHeight);
-        self.webView.scrollView.contentOffset = CGPointMake(0, webViewContentHeight - webViewHeight);
-    }else if(offsetY <= webViewContentHeight + tableViewContentHeight ){
+        self.tableView.contentOffset = CGPointMake(0, offsetY - _webViewContentHeight);
+        self.webView.scrollView.contentOffset = CGPointMake(0, _webViewContentHeight - webViewHeight);
+    }else if(offsetY <= _webViewContentHeight + _tableViewContentHeight ){
         self.contentView.sl_top = self.containerScrollView.contentSize.height - self.contentView.sl_height;
-        self.webView.scrollView.contentOffset = CGPointMake(0, webViewContentHeight - webViewHeight);
-        self.tableView.contentOffset = CGPointMake(0, tableViewContentHeight - tableViewHeight);
+        self.webView.scrollView.contentOffset = CGPointMake(0, _webViewContentHeight - webViewHeight);
+        self.tableView.contentOffset = CGPointMake(0, _tableViewContentHeight - tableViewHeight);
     }else {
         //do nothing
         NSLog(@"do nothing");
@@ -237,7 +230,7 @@ WKNavigationDelegate>
     }
     cell.detailTextLabel.numberOfLines = 0;
     cell.textLabel.text = [NSString stringWithFormat:@"第%ld条评论",(long)indexPath.row];
-    cell.detailTextLabel.text = @"方案4";
+    cell.detailTextLabel.text = @" 方案4：(较推荐) \n [UIScrollView addSubView: WKWebView & UITableView]; \n UIScrollView.contenSize = WKWebView.contenSize + UITableView.contenSize; \n WKWebView和UITableView的最大高度为一屏高，并禁用scrollEnabled=NO，然后根据UIScrollView的滑动偏移量调整WKWebView和UITableView的展示区域contenOffset。";
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
