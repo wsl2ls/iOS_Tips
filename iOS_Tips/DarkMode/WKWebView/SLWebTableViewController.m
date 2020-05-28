@@ -174,7 +174,7 @@
     }
     cell.detailTextLabel.numberOfLines = 0;
     cell.textLabel.text = [NSString stringWithFormat:@"第%ld条评论",(long)indexPath.row];
-    cell.detailTextLabel.text = @"方案一：WebView作为TableView的Header, 撑开webView，显示渲染全部内容，容易造成内存暴涨（不建议使用）";
+    cell.detailTextLabel.text = @"方案1：WebView作为TableView的Header, 撑开webView，显示渲染全部内容，当内容过多时，比如大量图片时，容易造成内存暴涨（不建议使用）";
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

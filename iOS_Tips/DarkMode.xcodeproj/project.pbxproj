@@ -128,6 +128,7 @@
 		78E72D5C247BDDE700751373 /* SLWebTableViewController2.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E72D5B247BDDE700751373 /* SLWebTableViewController2.m */; };
 		78E72D70247E536400751373 /* SLWebTableViewController3.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E72D6F247E536400751373 /* SLWebTableViewController3.m */; };
 		78E72D73247E861300751373 /* SLWebViewListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E72D72247E861300751373 /* SLWebViewListController.m */; };
+		78E72D76247F9FFC00751373 /* SLWebTableViewController4.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E72D75247F9FFC00751373 /* SLWebTableViewController4.m */; };
 		78EF8B6024162B96008D0CD7 /* SLMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78EF8B5E24162B96008D0CD7 /* SLMenuViewController.m */; };
 		78EF8B6124162B96008D0CD7 /* SLMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 78EF8B5F24162B96008D0CD7 /* SLMenuViewController.xib */; };
 		78EF8B6424188767008D0CD7 /* SLAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78EF8B6324188767008D0CD7 /* SLAlertView.m */; };
@@ -359,6 +360,8 @@
 		78E72D6F247E536400751373 /* SLWebTableViewController3.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLWebTableViewController3.m; sourceTree = "<group>"; };
 		78E72D71247E861300751373 /* SLWebViewListController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLWebViewListController.h; sourceTree = "<group>"; };
 		78E72D72247E861300751373 /* SLWebViewListController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLWebViewListController.m; sourceTree = "<group>"; };
+		78E72D74247F9FFC00751373 /* SLWebTableViewController4.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLWebTableViewController4.h; sourceTree = "<group>"; };
+		78E72D75247F9FFC00751373 /* SLWebTableViewController4.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLWebTableViewController4.m; sourceTree = "<group>"; };
 		78EF8B5D24162B96008D0CD7 /* SLMenuViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLMenuViewController.h; sourceTree = "<group>"; };
 		78EF8B5E24162B96008D0CD7 /* SLMenuViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLMenuViewController.m; sourceTree = "<group>"; };
 		78EF8B5F24162B96008D0CD7 /* SLMenuViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SLMenuViewController.xib; sourceTree = "<group>"; };
@@ -846,6 +849,8 @@
 				78E72D5B247BDDE700751373 /* SLWebTableViewController2.m */,
 				78E72D6E247E536400751373 /* SLWebTableViewController3.h */,
 				78E72D6F247E536400751373 /* SLWebTableViewController3.m */,
+				78E72D74247F9FFC00751373 /* SLWebTableViewController4.h */,
+				78E72D75247F9FFC00751373 /* SLWebTableViewController4.m */,
 			);
 			path = WKWebView;
 			sourceTree = "<group>";
@@ -1180,6 +1185,7 @@
 				783FB45C2394A4E10039AEFD /* SLShaderLanguageViewController.m in Sources */,
 				7835048424586BAC0071283E /* fishhook.c in Sources */,
 				787C7E42246557A5005DF7ED /* SLZombieFinder.m in Sources */,
+				78E72D76247F9FFC00751373 /* SLWebTableViewController4.m in Sources */,
 				78E1791923517F700007E4BB /* SLImageDecoder.m in Sources */,
 				78E72D73247E861300751373 /* SLWebViewListController.m in Sources */,
 				782CFB57239E5FE6001B5528 /* SLShaderFilterViewController.m in Sources */,
