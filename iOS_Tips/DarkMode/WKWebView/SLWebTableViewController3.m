@@ -19,7 +19,7 @@
 @property (nonatomic, strong) UITableView *tableView;
 ///网页加载进度视图
 @property (nonatomic, strong) UIProgressView * progressView;
-/// WKWebView 内容的高度  默认屏幕高
+/// WKWebView 内容的高度 
 @property (nonatomic, assign) CGFloat webContentHeight;
 
 /// self.view拖拽手势
@@ -60,7 +60,7 @@
 
 #pragma mark - SetupUI
 - (void)setupUi {
-    self.title = @"WKWebView+UITableView（方案2）";
+    self.title = @"WKWebView+UITableView（方案3）";
     self.view.backgroundColor = [UIColor whiteColor];
     
     self.maxBounceDistance = 100;
@@ -89,7 +89,6 @@
     if(_webView == nil){
         //创建网页配置
         WKWebViewConfiguration *config = [[WKWebViewConfiguration alloc] init];
-        
         _webView = [[WKWebView alloc] initWithFrame:CGRectMake(0, 0, SL_kScreenWidth, 1) configuration:config];
         _webView.navigationDelegate = self;
         _webView.scrollView.scrollEnabled = NO;
@@ -98,8 +97,8 @@
         } else {
             self.automaticallyAdjustsScrollViewInsets = NO;
         }
-        //        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:SL_WeiBo]];
-        //        [_webView loadRequest:request];
+//                NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:SL_GithubUrl]];
+//                [_webView loadRequest:request];
         NSString *path = [[NSBundle mainBundle] pathForResource:@"JStoOC.html" ofType:nil];
         NSString *htmlString = [[NSString alloc]initWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
         [_webView loadHTMLString:htmlString baseURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] bundlePath]]];
@@ -203,7 +202,7 @@
                 } else if ([self.tableView isBottom] &&
                            [self.webView.scrollView isBottom]) {
                     //底部
-                    if (self.tableView.frame.size.height < self.view.sl_h) { //tableView不足一屏，webView bounce
+                    if (self.tableView.frame.size.height < self.view.sl_height) { //tableView不足一屏，webView bounce
                         [self performBounceForScrollView:self.webView.scrollView isAtTop:NO];
                     } else {
                         [self performBounceForScrollView:self.tableView isAtTop:NO];
@@ -320,7 +319,7 @@
     frame.size.height = self.webView.scrollView.contentSize.height < SL_kScreenHeight ? self.webView.scrollView.contentSize.height : SL_kScreenHeight;
     self.webView.frame = frame;
     self.tableView.tableHeaderView = self.webView;
-    //当WebView的contentSize改变时，tableView滚到顶部
+    //当WebView的contentSize改变时，tableView滚到顶部WebView，tableView展示内容向下移，更新展示区域
     [self.tableView scrollToTopWithAnimated:NO];
 }
 
@@ -368,12 +367,6 @@
     label.backgroundColor = [UIColor orangeColor];
     return label;
 }
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    return 0.1;
-}
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-    return nil;
-}
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"cellId"];
     if (!cell) {
@@ -381,7 +374,7 @@
     }
     cell.detailTextLabel.numberOfLines = 0;
     cell.textLabel.text = [NSString stringWithFormat:@"第%ld条评论",(long)indexPath.row];
-    cell.detailTextLabel.text = @"方案3：WKWebView作为TableView的Header, 但不撑开webView。禁用tableView和webView.scrollVie的scrollEnabled = NO，通过添加pan手势,手动调整contentOffset。WebView的最大高度为屏幕高度，当内容不足一屏时，高度为内容高度。和方案2类似";
+    cell.detailTextLabel.text = @"方案3：\n WKWebView作为TableView的Header, 但不撑开webView。\n 禁用tableView和webView.scrollVie的scrollEnabled = NO，通过添加pan手势,手动调整contentOffset。\n WebView的最大高度为屏幕高度，当内容不足一屏时，高度为内容高度。和方案2类似，但是不需要插入占位Div";
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

@@ -59,17 +59,17 @@
 #pragma mark - UI
 - (void)setupUI {
     self.zoomView.image = self.image;
-    self.maxGridRect = CGRectMake(KGridLRMargin, KGridTopMargin, self.view.sl_w - KGridLRMargin * 2, self.view.sl_h - KGridTopMargin - KGridBottomMargin- KBottomMenuHeight);
+    self.maxGridRect = CGRectMake(KGridLRMargin, KGridTopMargin, self.view.sl_width - KGridLRMargin * 2, self.view.sl_height - KGridTopMargin - KGridBottomMargin- KBottomMenuHeight);
     
-    CGSize newSize = CGSizeMake(self.view.sl_w - 2 * KGridLRMargin, (self.view.sl_w - 2 * KGridLRMargin)*self.image.size.height/self.image.size.width);
+    CGSize newSize = CGSizeMake(self.view.sl_width - 2 * KGridLRMargin, (self.view.sl_width - 2 * KGridLRMargin)*self.image.size.height/self.image.size.width);
     if (newSize.height > self.maxGridRect.size.height) {
         newSize = CGSizeMake(self.maxGridRect.size.height*self.image.size.width/self.image.size.height, self.maxGridRect.size.height);
         self.zoomView.sl_size = newSize;
         self.zoomView.sl_y = KGridTopMargin;
-        self.zoomView.sl_centerX = self.view.sl_w/2.0;
+        self.zoomView.sl_centerX = self.view.sl_width/2.0;
     }else {
         self.zoomView.sl_size = newSize;
-        self.zoomView.center = CGPointMake(self.view.sl_w/2.0, (self.view.sl_h - KBottomMenuHeight)/2.0);
+        self.zoomView.center = CGPointMake(self.view.sl_width/2.0, (self.view.sl_height - KBottomMenuHeight)/2.0);
     }
     
     [self.view addSubview:self.zoomView];
@@ -88,8 +88,8 @@
 #pragma mark - Getter
 - (SLImageZoomView *)zoomView {
     if (!_zoomView) {
-        _zoomView = [[SLImageZoomView alloc] initWithFrame:CGRectMake(KGridLRMargin, KGridTopMargin, self.view.sl_w - KGridLRMargin *2,( self.view.sl_w - KGridLRMargin *2)*self.image.size.height/self.image.size.width)];
-        _zoomView.sl_centerY = (self.view.sl_h - KBottomMenuHeight)/2.0;
+        _zoomView = [[SLImageZoomView alloc] initWithFrame:CGRectMake(KGridLRMargin, KGridTopMargin, self.view.sl_width - KGridLRMargin *2,( self.view.sl_width - KGridLRMargin *2)*self.image.size.height/self.image.size.width)];
+        _zoomView.sl_centerY = (self.view.sl_height - KBottomMenuHeight)/2.0;
         _zoomView.backgroundColor = [UIColor blackColor];
         _zoomView.zoomViewDelegate = self;
     }
@@ -104,7 +104,7 @@
 }
 - (UIButton *)rotateBtn {
     if (_rotateBtn == nil) {
-        _rotateBtn = [[UIButton alloc] initWithFrame:CGRectMake(30, self.view.sl_h - KBottomMenuHeight, 40, 30)];
+        _rotateBtn = [[UIButton alloc] initWithFrame:CGRectMake(30, self.view.sl_height - KBottomMenuHeight, 40, 30)];
         [_rotateBtn setTitle:@"旋转" forState:UIControlStateNormal];
         [_rotateBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         _rotateBtn.titleLabel.font = [UIFont boldSystemFontOfSize:16];
@@ -114,7 +114,7 @@
 }
 - (UIButton *)cancleClipBtn {
     if (_cancleClipBtn == nil) {
-        _cancleClipBtn = [[UIButton alloc] initWithFrame:CGRectMake(30, self.view.sl_h - 30 - 20, 40, 30)];
+        _cancleClipBtn = [[UIButton alloc] initWithFrame:CGRectMake(30, self.view.sl_height - 30 - 20, 40, 30)];
         [_cancleClipBtn setImage:[UIImage imageNamed:@"EditImageClipCancel"] forState:UIControlStateNormal];
         _cancleClipBtn.titleLabel.font = [UIFont systemFontOfSize:14];
         [_cancleClipBtn addTarget:self action:@selector(cancleClipClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -124,7 +124,7 @@
 - (UIButton *)recoveryBtn {
     if (_recoveryBtn == nil) {
         _recoveryBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 40, 30)];
-        _recoveryBtn.sl_centerX = self.view.sl_w/2.0;
+        _recoveryBtn.sl_centerX = self.view.sl_width/2.0;
         _recoveryBtn.sl_centerY = self.cancleClipBtn.center.y;
         [_recoveryBtn setTitle:@"还原" forState:UIControlStateNormal];
         [_recoveryBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -135,7 +135,7 @@
 }
 - (UIButton *)doneClipBtn {
     if (_doneClipBtn == nil) {
-        _doneClipBtn = [[UIButton alloc] initWithFrame:CGRectMake(self.view.sl_w - 30 - 40, self.view.sl_h - 30 - 20, 40, 30)];
+        _doneClipBtn = [[UIButton alloc] initWithFrame:CGRectMake(self.view.sl_width - 30 - 40, self.view.sl_height - 30 - 20, 40, 30)];
         [_doneClipBtn setImage:[UIImage imageNamed:@"EditImageClipDone"] forState:UIControlStateNormal];
         [_doneClipBtn addTarget:self action:@selector(doneClipClicked:) forControlEvents:UIControlEventTouchUpInside];
     }
@@ -252,15 +252,15 @@
     CGFloat width = CGRectGetWidth(self.zoomView.frame);
     CGFloat height = CGRectGetHeight(self.zoomView.frame);
     //计算旋转之后
-    CGSize newSize = CGSizeMake(self.view.sl_w - 2 * KGridLRMargin, (self.view.sl_w - 2 * KGridLRMargin)*height/width);
+    CGSize newSize = CGSizeMake(self.view.sl_width - 2 * KGridLRMargin, (self.view.sl_width - 2 * KGridLRMargin)*height/width);
     if (newSize.height > self.gridView.maxGridRect.size.height) {
         newSize = CGSizeMake(self.gridView.maxGridRect.size.height*width/height, self.gridView.maxGridRect.size.height);
         self.zoomView.sl_size = newSize;
         self.zoomView.sl_y = KGridTopMargin;
-        self.zoomView.sl_centerX = self.view.sl_w/2.0;
+        self.zoomView.sl_centerX = self.view.sl_width/2.0;
     }else {
         self.zoomView.sl_size = newSize;
-        self.zoomView.center = CGPointMake(self.view.sl_w/2.0, (self.view.sl_h - KBottomMenuHeight)/2.0);
+        self.zoomView.center = CGPointMake(self.view.sl_width/2.0, (self.view.sl_height - KBottomMenuHeight)/2.0);
     }
     self.gridView.gridRect = self.zoomView.frame;
     
@@ -312,21 +312,21 @@
                           delay:0.0
                         options:UIViewAnimationOptionBeginFromCurrentState
                      animations:^{
-        CGSize newSize = CGSizeMake(self.view.sl_w - 2 * KGridLRMargin, (self.view.sl_w - 2 * KGridLRMargin)*gridView.gridRect.size.height/gridView.gridRect.size.width);
+        CGSize newSize = CGSizeMake(self.view.sl_width - 2 * KGridLRMargin, (self.view.sl_width - 2 * KGridLRMargin)*gridView.gridRect.size.height/gridView.gridRect.size.width);
         if (newSize.height > self.gridView.maxGridRect.size.height) {
             newSize = CGSizeMake(self.gridView.maxGridRect.size.height*gridView.gridRect.size.width/gridView.gridRect.size.height, self.gridView.maxGridRect.size.height);
             self.zoomView.sl_size = newSize;
             self.zoomView.sl_y = KGridTopMargin;
-            self.zoomView.sl_centerX = self.view.sl_w/2.0;
+            self.zoomView.sl_centerX = self.view.sl_width/2.0;
         }else {
             self.zoomView.sl_size = newSize;
-            self.zoomView.center = CGPointMake(self.view.sl_w/2.0, (self.view.sl_h - KBottomMenuHeight)/2.0);
+            self.zoomView.center = CGPointMake(self.view.sl_width/2.0, (self.view.sl_height - KBottomMenuHeight)/2.0);
         }
         //重置最小缩放系数
         [self resetMinimumZoomScale];
         [self.zoomView setZoomScale:self.zoomView.zoomScale];
         // 调整contentOffset
-        CGFloat zoomScale = self.zoomView.sl_w/gridView.gridRect.size.width;
+        CGFloat zoomScale = self.zoomView.sl_width/gridView.gridRect.size.width;
         gridView.gridRect = self.zoomView.frame;
         [self.zoomView setZoomScale:self.zoomView.zoomScale * zoomScale];
         self.zoomView.contentOffset = CGPointMake(gridRectOfImage.origin.x*self.zoomView.zoomScale, gridRectOfImage.origin.y*self.zoomView.zoomScale);

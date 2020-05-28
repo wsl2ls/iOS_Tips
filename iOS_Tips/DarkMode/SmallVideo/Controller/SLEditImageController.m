@@ -68,10 +68,10 @@
     self.zoomView.pinchGestureRecognizer.enabled = NO;
     self.zoomView.image = self.image;
     if (self.image.size.width > 0) {
-       self.zoomView.imageView.frame = CGRectMake(0, 0, self.zoomView.sl_w, self.zoomView.sl_w * self.image.size.height/self.image.size.width);
+       self.zoomView.imageView.frame = CGRectMake(0, 0, self.zoomView.sl_width, self.zoomView.sl_width * self.image.size.height/self.image.size.width);
     }
-    if (self.zoomView.imageView.sl_h <= self.zoomView.sl_h) {
-        self.zoomView.imageView.center = CGPointMake(self.zoomView.sl_w/2.0, self.zoomView.sl_h/2.0);
+    if (self.zoomView.imageView.sl_height <= self.zoomView.sl_height) {
+        self.zoomView.imageView.center = CGPointMake(self.zoomView.sl_width/2.0, self.zoomView.sl_height/2.0);
     }
     
     //添加裁剪完成监听
@@ -184,8 +184,8 @@
 - (SLBlurView *)editBtn {
     if (_editBtn == nil) {
         _editBtn = [[SLBlurView alloc] initWithFrame:CGRectMake(0, 0, 70, 70)];
-        _editBtn.center = CGPointMake(self.view.sl_w/2.0, self.view.sl_h - 80);
-        _editBtn.layer.cornerRadius = _editBtn.sl_w/2.0;
+        _editBtn.center = CGPointMake(self.view.sl_width/2.0, self.view.sl_height - 80);
+        _editBtn.layer.cornerRadius = _editBtn.sl_width/2.0;
         UIButton * btn = [[UIButton alloc] initWithFrame:_editBtn.bounds];
         [btn setImage:[UIImage imageNamed:@"edit"] forState:UIControlStateNormal];
         [btn addTarget:self action:@selector(editBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -196,8 +196,8 @@
 - (SLBlurView *)againShotBtn {
     if (_againShotBtn == nil) {
         _againShotBtn = [[SLBlurView alloc] initWithFrame:CGRectMake(0, 0, 70, 70)];
-        _againShotBtn.center = CGPointMake((self.view.sl_w/2 - 70/2.0)/2.0, self.view.sl_h - 80);
-        _againShotBtn.layer.cornerRadius = _againShotBtn.sl_w/2.0;
+        _againShotBtn.center = CGPointMake((self.view.sl_width/2 - 70/2.0)/2.0, self.view.sl_height - 80);
+        _againShotBtn.layer.cornerRadius = _againShotBtn.sl_width/2.0;
         UIButton * btn = [[UIButton alloc] initWithFrame:_againShotBtn.bounds];
         [btn setImage:[UIImage imageNamed:@"cancle"] forState:UIControlStateNormal];
         [btn addTarget:self action:@selector(againShotBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -208,8 +208,8 @@
 - (UIButton *)saveAlbumBtn {
     if (_saveAlbumBtn == nil) {
         _saveAlbumBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 70, 70)];
-        _saveAlbumBtn.center = CGPointMake(self.view.sl_w/2.0 + 70/2.0+ (self.view.sl_w/2 - 70/2.0)/2.0, self.view.sl_h - 80);
-        _saveAlbumBtn.layer.cornerRadius = _saveAlbumBtn.sl_w/2.0;
+        _saveAlbumBtn.center = CGPointMake(self.view.sl_width/2.0 + 70/2.0+ (self.view.sl_width/2 - 70/2.0)/2.0, self.view.sl_height - 80);
+        _saveAlbumBtn.layer.cornerRadius = _saveAlbumBtn.sl_width/2.0;
         _saveAlbumBtn.backgroundColor = [UIColor whiteColor];
         [_saveAlbumBtn setImage:[UIImage imageNamed:@"save"] forState:UIControlStateNormal];
         [_saveAlbumBtn addTarget:self action:@selector(saveAlbumBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -229,7 +229,7 @@
 }
 - (UIButton *)doneEditBtn {
     if (_doneEditBtn == nil) {
-        _doneEditBtn = [[UIButton alloc] initWithFrame:CGRectMake(self.view.sl_w - 50 - 15, 30, 40, 30)];
+        _doneEditBtn = [[UIButton alloc] initWithFrame:CGRectMake(self.view.sl_width - 50 - 15, 30, 40, 30)];
         _doneEditBtn.hidden = YES;
         _doneEditBtn.backgroundColor = [UIColor colorWithRed:45/255.0 green:175/255.0 blue:45/255.0 alpha:1];
         [_doneEditBtn setTitle:@"完成" forState:UIControlStateNormal];
@@ -242,7 +242,7 @@
 }
 - (SLEditMenuView *)editMenuView {
     if (!_editMenuView) {
-        _editMenuView = [[SLEditMenuView alloc] initWithFrame:CGRectMake(0, self.view.sl_h - 80 -  60, self.view.sl_w, 80 + 60)];
+        _editMenuView = [[SLEditMenuView alloc] initWithFrame:CGRectMake(0, self.view.sl_height - 80 -  60, self.view.sl_width, 80 + 60)];
         _editMenuView.hidden = YES;
         __weak typeof(self) weakSelf = self;
         _editMenuView.editObject = SLEditObjectPicture;
@@ -270,12 +270,12 @@
                     imageView.userInteractionEnabled = YES;
                     CGRect imageRect = [weakSelf.zoomView convertRect:weakSelf.zoomView.imageView.frame toView:weakSelf.view];
                     CGPoint center = CGPointZero;
-                    center.x = fabs(imageRect.origin.x)+weakSelf.zoomView.sl_w/2.0;
+                    center.x = fabs(imageRect.origin.x)+weakSelf.zoomView.sl_width/2.0;
                     center.y = 0;
-                    if (imageRect.origin.y >= 0 && imageRect.size.height <= weakSelf.zoomView.sl_h) {
+                    if (imageRect.origin.y >= 0 && imageRect.size.height <= weakSelf.zoomView.sl_height) {
                         center.y = imageRect.size.height/2.0;
                     }else {
-                        center.y = fabs(imageRect.origin.y) + weakSelf.zoomView.sl_h/2.0;
+                        center.y = fabs(imageRect.origin.y) + weakSelf.zoomView.sl_height/2.0;
                     }
                     imageView.transform = CGAffineTransformMakeScale(1/weakSelf.zoomView.zoomScale, 1/weakSelf.zoomView.zoomScale);
                     center = CGPointMake(center.x/weakSelf.zoomView.zoomScale, center.y/weakSelf.zoomView.zoomScale);
@@ -300,12 +300,12 @@
                     }
                     CGRect imageRect = [weakSelf.zoomView convertRect:weakSelf.zoomView.imageView.frame toView:weakSelf.view];
                     CGPoint center = CGPointZero;
-                    center.x = fabs(imageRect.origin.x)+weakSelf.zoomView.sl_w/2.0;
+                    center.x = fabs(imageRect.origin.x)+weakSelf.zoomView.sl_width/2.0;
                     center.y = 0;
-                    if (imageRect.origin.y >= 0 && imageRect.size.height <= weakSelf.zoomView.sl_h) {
+                    if (imageRect.origin.y >= 0 && imageRect.size.height <= weakSelf.zoomView.sl_height) {
                         center.y = imageRect.size.height/2.0;
                     }else {
-                        center.y = fabs(imageRect.origin.y) + weakSelf.zoomView.sl_h/2.0;
+                        center.y = fabs(imageRect.origin.y) + weakSelf.zoomView.sl_height/2.0;
                     }
                     label.transform = CGAffineTransformMakeScale(1/weakSelf.zoomView.zoomScale, 1/weakSelf.zoomView.zoomScale);
                     center = CGPointMake(center.x/weakSelf.zoomView.zoomScale, center.y/weakSelf.zoomView.zoomScale);
@@ -451,11 +451,11 @@
     self.zoomView.zoomScale = 1;
     self.zoomView.image = self.image;
     self.zoomView.pinchGestureRecognizer.enabled = NO;
-    self.zoomView.imageView.frame = CGRectMake(0, 0, self.zoomView.sl_w, self.zoomView.sl_w * self.image.size.height/self.image.size.width);
-    if (self.zoomView.imageView.sl_h <= self.zoomView.sl_h) {
-        self.zoomView.imageView.center = CGPointMake(self.zoomView.sl_w/2.0, self.zoomView.sl_h/2.0);
+    self.zoomView.imageView.frame = CGRectMake(0, 0, self.zoomView.sl_width, self.zoomView.sl_width * self.image.size.height/self.image.size.width);
+    if (self.zoomView.imageView.sl_height <= self.zoomView.sl_height) {
+        self.zoomView.imageView.center = CGPointMake(self.zoomView.sl_width/2.0, self.zoomView.sl_height/2.0);
     }
-    self.zoomView.contentSize = CGSizeMake(self.zoomView.imageView.sl_w, self.zoomView.imageView.sl_h);
+    self.zoomView.contentSize = CGSizeMake(self.zoomView.imageView.sl_width, self.zoomView.imageView.sl_height);
 }
 //完成编辑 导出编辑后的对象
 - (void)doneEditBtnClicked:(id)sender {
@@ -533,12 +533,12 @@
         }else if (!CGRectIntersectsRect(imageRect, rect)) {
             //如果出了父视图zoomView的范围，则置于父视图中心
             CGPoint center = CGPointZero;
-            center.x = fabs(imageRect.origin.x)+self.zoomView.sl_w/2.0;
+            center.x = fabs(imageRect.origin.x)+self.zoomView.sl_width/2.0;
             center.y = 0;
-            if (imageRect.origin.y >= 0 && imageRect.size.height <= self.zoomView.sl_h) {
+            if (imageRect.origin.y >= 0 && imageRect.size.height <= self.zoomView.sl_height) {
                 center.y = imageRect.size.height/2.0;
             }else {
-                center.y = fabs(imageRect.origin.y) + self.zoomView.sl_h/2.0;
+                center.y = fabs(imageRect.origin.y) + self.zoomView.sl_height/2.0;
             }
             center = CGPointMake(center.x/self.zoomView.zoomScale, center.y/self.zoomView.zoomScale);
             pan.view.center = center;
@@ -583,11 +583,11 @@
     UIImage *clipImage = notification.userInfo[@"image"];
     self.zoomView.zoomScale = 1;
     self.zoomView.image = clipImage;
-    self.zoomView.imageView.frame = CGRectMake(0, 0, self.zoomView.sl_w, self.zoomView.sl_w * clipImage.size.height/clipImage.size.width);
-    if (self.zoomView.imageView.sl_h <= self.zoomView.sl_h) {
-        self.zoomView.imageView.center = CGPointMake(self.zoomView.sl_w/2.0, self.zoomView.sl_h/2.0);
+    self.zoomView.imageView.frame = CGRectMake(0, 0, self.zoomView.sl_width, self.zoomView.sl_width * clipImage.size.height/clipImage.size.width);
+    if (self.zoomView.imageView.sl_height <= self.zoomView.sl_height) {
+        self.zoomView.imageView.center = CGPointMake(self.zoomView.sl_width/2.0, self.zoomView.sl_height/2.0);
     }
-    self.zoomView.contentSize = CGSizeMake(self.zoomView.imageView.sl_w, self.zoomView.imageView.sl_h);
+    self.zoomView.contentSize = CGSizeMake(self.zoomView.imageView.sl_width, self.zoomView.imageView.sl_height);
     
     _drawView.frame = self.zoomView.imageView.bounds;
     _mosaicView.frame = self.zoomView.imageView.bounds;

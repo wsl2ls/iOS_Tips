@@ -41,7 +41,7 @@
 @property (nonatomic, strong) UITableView *tableView;
 ///网页加载进度视图
 @property (nonatomic, strong) UIProgressView * progressView;
-/// WKWebView 内容的高度  默认屏幕高
+/// WKWebView 内容的高度 
 @property (nonatomic, assign) CGFloat webContentHeight;
 
 /// self.view拖拽手势
@@ -234,7 +234,7 @@
                 } else if ([self.tableView isBottom] &&
                            [self.webView.scrollView isBottom]) {
                     //底部
-                    if (self.tableView.frame.size.height < self.view.sl_h) { //tableView不足一屏，webView bounce
+                    if (self.tableView.frame.size.height < self.view.sl_height) { //tableView不足一屏，webView bounce
                         [self performBounceForScrollView:self.webView.scrollView isAtTop:NO];
                     } else {
                         [self performBounceForScrollView:self.tableView isAtTop:NO];
@@ -273,7 +273,7 @@
     if (deltaY < 0) { //上滑
         if ([self.webView.scrollView isBottom]) { //webView已滑到底，此时应滑动tableView
             if ([self.tableView isBottom]) { //tableView也到底
-                if (self.tableView.frame.size.height < self.view.sl_h) { //tableView不足一屏，webView bounce
+                if (self.tableView.frame.size.height < self.view.sl_height) { //tableView不足一屏，webView bounce
                     self.tableView.contentOffset = CGPointMake(0, self.tableView.contentSize.height - self.tableView.frame.size.height);
                     CGFloat bounceDelta = MAX(0, (self.maxBounceDistance - fabs(self.webView.scrollView.contentOffset.y - self.webView.scrollView.maxContentOffsetY)) / self.maxBounceDistance) * 0.5;
                     self.webView.scrollView.contentOffset = CGPointMake(0, self.webView.scrollView.contentOffset.y - deltaY * bounceDelta);
@@ -419,12 +419,6 @@
     label.backgroundColor = [UIColor orangeColor];
     return label;
 }
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    return 0.1;
-}
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-    return nil;
-}
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"cellId"];
     if (!cell) {
@@ -432,7 +426,7 @@
     }
     cell.detailTextLabel.numberOfLines = 0;
     cell.textLabel.text = [NSString stringWithFormat:@"第%ld条评论",(long)indexPath.row];
-    cell.detailTextLabel.text = @"方案2：将tableView加到WKWebView.scrollView上, WKWebView加载的HTML最后留一个空白占位div，用于确定tableView的位置，在监听到webView.scrollView.contentSize变化后，不断调整tableView的位置，同时将该div的尺寸设置为tableView的尺寸。禁用tableView和webView.scrollVie的scrollEnabled = NO，通过添加pan手势,手动调整contentOffset。tableView的最大高度为屏幕高度，当内容不足一屏时，高度为内容高度。";
+    cell.detailTextLabel.text = @"方案2：将tableView加到WKWebView.scrollView上, WKWebView加载的HTML最后留一个空白占位div，用于确定tableView的位置; \n 在监听到webView.scrollView.contentSize变化后，不断调整tableView的位置，同时将该div的尺寸设置为tableView的尺寸。\n 禁用tableView和webView.scrollVie的scrollEnabled = NO，通过添加pan手势,手动调整contentOffset。tableView的最大高度为屏幕高度，当内容不足一屏时，高度为内容高度。";
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

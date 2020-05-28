@@ -44,7 +44,7 @@
     [self configureWebTable];
 }
 - (void)configureWebTable {
-    self.webView.sl_h = _webContentHeight == 0 ? SL_kScreenHeight : _webContentHeight;
+    self.webView.sl_height = _webContentHeight == 0 ? SL_kScreenHeight : _webContentHeight;
     self.tableView.tableHeaderView = self.webView;
 }
 
@@ -136,10 +136,6 @@
     }
 }
 
-#pragma mark - EventsHandle
-
-#pragma mark - HelpMethods
-
 #pragma mark - UIScrollViewDelegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
 }
@@ -161,12 +157,6 @@
     label.backgroundColor = [UIColor orangeColor];
     return label;
 }
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    return 0.1;
-}
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-    return nil;
-}
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"cellId"];
     if (!cell) {
@@ -174,7 +164,7 @@
     }
     cell.detailTextLabel.numberOfLines = 0;
     cell.textLabel.text = [NSString stringWithFormat:@"第%ld条评论",(long)indexPath.row];
-    cell.detailTextLabel.text = @"方案一：WebView作为TableView的Header, 撑开webView，显示渲染全部内容，容易造成内存暴涨（不建议使用）";
+    cell.detailTextLabel.text = @"方案1：WebView作为TableView的Header, 撑开webView，显示渲染全部内容，当内容过多时，比如大量图片时，容易造成内存暴涨（不建议使用）";
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

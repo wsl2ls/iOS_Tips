@@ -72,10 +72,10 @@
     self.avPlayer.url = self.videoPath;
     self.avPlayer.delegate = self;
     if (self.avPlayer.naturalSize.width != CGSizeZero.width) {
-         self.preview.sl_h = self.preview.sl_w *  self.avPlayer.naturalSize.height/ self.avPlayer.naturalSize.width;
+         self.preview.sl_height = self.preview.sl_width *  self.avPlayer.naturalSize.height/ self.avPlayer.naturalSize.width;
     }
     self.avPlayer.monitor = self.preview;
-    self.preview.center = CGPointMake(self.view.sl_w/2.0, self.view.sl_h/2.0);
+    self.preview.center = CGPointMake(self.view.sl_width/2.0, self.view.sl_height/2.0);
     [self.avPlayer play];
     
     [self.view addSubview:self.againShotBtn];
@@ -143,7 +143,7 @@
     graffitiLayer.frame = self.drawView.bounds;
     // 把水印在预览层上的坐标转换为视频资源文件上的坐标
     // 视频Layer上的坐标系原点在左下角，单位是px像素
-    CGSize scaleSize = CGSizeMake(self.avPlayer.naturalSize.width/self.preview.sl_w, self.avPlayer.naturalSize.height/self.preview.sl_h);
+    CGSize scaleSize = CGSizeMake(self.avPlayer.naturalSize.width/self.preview.sl_width, self.avPlayer.naturalSize.height/self.preview.sl_height);
     CGRect changeRect = CGRectMake(0, 0, CGRectGetWidth(graffitiLayer.frame)*scaleSize.width, CGRectGetHeight(graffitiLayer.frame)*scaleSize.height);
     graffitiLayer.frame = changeRect;
     UIImage *image = [self.drawView sl_imageByViewInRect:self.drawView.bounds];
@@ -164,10 +164,10 @@
         animatedLayer.frame = view.bounds;
         // 把水印在预览层上的坐标转换为视频资源文件上的坐标
         // 视频Layer上的坐标系原点在左下角，单位是px像素
-        CGSize scaleSize = CGSizeMake(self.avPlayer.naturalSize.width/self.preview.sl_w, self.avPlayer.naturalSize.height/self.preview.sl_h);
+        CGSize scaleSize = CGSizeMake(self.avPlayer.naturalSize.width/self.preview.sl_width, self.avPlayer.naturalSize.height/self.preview.sl_height);
         CGRect changeRect = CGRectMake(0, 0, CGRectGetWidth(animatedLayer.frame)*scaleSize.width, CGRectGetHeight(animatedLayer.frame)*scaleSize.height);
         animatedLayer.frame = changeRect;
-        animatedLayer.position =  CGPointMake(view.center.x*scaleSize.width, (self.preview.sl_h - view.center.y)*scaleSize.height);
+        animatedLayer.position =  CGPointMake(view.center.x*scaleSize.width, (self.preview.sl_height - view.center.y)*scaleSize.height);
         
         //形变
         CGAffineTransform transform = view.transform;
@@ -240,8 +240,8 @@
 - (SLBlurView *)editBtn {
     if (_editBtn == nil) {
         _editBtn = [[SLBlurView alloc] initWithFrame:CGRectMake(0, 0, 70, 70)];
-        _editBtn.center = CGPointMake(self.view.sl_w/2.0, self.view.sl_h - 80);
-        _editBtn.layer.cornerRadius = _editBtn.sl_w/2.0;
+        _editBtn.center = CGPointMake(self.view.sl_width/2.0, self.view.sl_height - 80);
+        _editBtn.layer.cornerRadius = _editBtn.sl_width/2.0;
         UIButton * btn = [[UIButton alloc] initWithFrame:_editBtn.bounds];
         [btn setImage:[UIImage imageNamed:@"edit"] forState:UIControlStateNormal];
         [btn addTarget:self action:@selector(editBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -252,8 +252,8 @@
 - (SLBlurView *)againShotBtn {
     if (_againShotBtn == nil) {
         _againShotBtn = [[SLBlurView alloc] initWithFrame:CGRectMake(0, 0, 70, 70)];
-        _againShotBtn.center = CGPointMake((self.view.sl_w/2 - 70/2.0)/2.0, self.view.sl_h - 80);
-        _againShotBtn.layer.cornerRadius = _againShotBtn.sl_w/2.0;
+        _againShotBtn.center = CGPointMake((self.view.sl_width/2 - 70/2.0)/2.0, self.view.sl_height - 80);
+        _againShotBtn.layer.cornerRadius = _againShotBtn.sl_width/2.0;
         UIButton * btn = [[UIButton alloc] initWithFrame:_againShotBtn.bounds];
         [btn setImage:[UIImage imageNamed:@"cancle"] forState:UIControlStateNormal];
         [btn addTarget:self action:@selector(againShotBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -264,8 +264,8 @@
 - (UIButton *)saveAlbumBtn {
     if (_saveAlbumBtn == nil) {
         _saveAlbumBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 70, 70)];
-        _saveAlbumBtn.center = CGPointMake(self.view.sl_w/2.0 + 70/2.0+ (self.view.sl_w/2 - 70/2.0)/2.0, self.view.sl_h - 80);
-        _saveAlbumBtn.layer.cornerRadius = _saveAlbumBtn.sl_w/2.0;
+        _saveAlbumBtn.center = CGPointMake(self.view.sl_width/2.0 + 70/2.0+ (self.view.sl_width/2 - 70/2.0)/2.0, self.view.sl_height - 80);
+        _saveAlbumBtn.layer.cornerRadius = _saveAlbumBtn.sl_width/2.0;
         _saveAlbumBtn.backgroundColor = [UIColor whiteColor];
         [_saveAlbumBtn setImage:[UIImage imageNamed:@"save"] forState:UIControlStateNormal];
         [_saveAlbumBtn addTarget:self action:@selector(saveAlbumBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -285,7 +285,7 @@
 }
 - (UIButton *)doneEditBtn {
     if (_doneEditBtn == nil) {
-        _doneEditBtn = [[UIButton alloc] initWithFrame:CGRectMake(self.view.sl_w - 50 - 15, 30, 40, 30)];
+        _doneEditBtn = [[UIButton alloc] initWithFrame:CGRectMake(self.view.sl_width - 50 - 15, 30, 40, 30)];
         _doneEditBtn.hidden = YES;
         _doneEditBtn.backgroundColor = [UIColor colorWithRed:45/255.0 green:175/255.0 blue:45/255.0 alpha:1];
         [_doneEditBtn setTitle:@"完成" forState:UIControlStateNormal];
@@ -298,7 +298,7 @@
 }
 - (SLEditMenuView *)editMenuView {
     if (!_editMenuView) {
-        _editMenuView = [[SLEditMenuView alloc] initWithFrame:CGRectMake(0, self.view.sl_h - 80 -  60, self.view.sl_w, 80 + 60)];
+        _editMenuView = [[SLEditMenuView alloc] initWithFrame:CGRectMake(0, self.view.sl_height - 80 -  60, self.view.sl_width, 80 + 60)];
         _editMenuView.hidden = YES;
         _editMenuView.editObject = SLEditObjectVideo;
         __weak typeof(self) weakSelf = self;
@@ -321,7 +321,7 @@
                     SLImageView *imageView = [[SLImageView alloc] initWithFrame:CGRectMake(0, 0, image.size.width/[UIScreen mainScreen].scale, image.size.height/[UIScreen mainScreen].scale)];
                     imageView.autoPlayAnimatedImage = YES;
                     imageView.userInteractionEnabled = YES;
-                    imageView.center = CGPointMake(weakSelf.preview.sl_w/2.0, weakSelf.preview.sl_h/2.0);
+                    imageView.center = CGPointMake(weakSelf.preview.sl_width/2.0, weakSelf.preview.sl_height/2.0);
                     imageView.image = image;
                     [weakSelf.watermarkArray addObject:imageView];
                     [weakSelf.preview addSubview:imageView];
@@ -339,7 +339,7 @@
                     if (label.text.length == 0 || label == nil) {
                         return;
                     }
-                    label.center = CGPointMake(weakSelf.preview.sl_w/2.0, weakSelf.preview.sl_h/2.0);
+                    label.center = CGPointMake(weakSelf.preview.sl_width/2.0, weakSelf.preview.sl_height/2.0);
                     [weakSelf.preview addSubview:label];
                     [weakSelf.watermarkArray addObject:label];
                     [weakSelf addRotateAndPinchGestureRecognizer:label];
@@ -357,7 +357,7 @@
                 };
                 [weakSelf hiddenEditMenus:YES];
                 weakSelf.preview.transform = CGAffineTransformMakeScale((SL_kScreenWidth - 30 * 2)/SL_kScreenWidth, (SL_kScreenWidth - 30 * 2)/SL_kScreenWidth);
-                weakSelf.preview.center = CGPointMake(SL_kScreenWidth/2.0, (SL_kScreenHeight - weakSelf.videoClippingView.sl_h)/2.0);
+                weakSelf.preview.center = CGPointMake(SL_kScreenWidth/2.0, (SL_kScreenHeight - weakSelf.videoClippingView.sl_height)/2.0);
                 weakSelf.videoClippingView.asset = [AVAsset assetWithURL:weakSelf.videoPath];
                 [weakSelf.view addSubview:weakSelf.videoClippingView];
             }
@@ -603,7 +603,7 @@
             [self.watermarkArray removeObject:(SLImageView *)pan.view];
         }else if (!CGRectIntersectsRect(previewRect, rect)) {
             //如果出了父视图preview的范围，则置于父视图中心
-            pan.view.center = CGPointMake(self.preview.sl_w/2.0, self.preview.sl_h/2.0);
+            pan.view.center = CGPointMake(self.preview.sl_width/2.0, self.preview.sl_height/2.0);
         }
         [self.trashTips removeFromSuperview];
         [SLDelayPerform sl_startDelayPerform:^{
