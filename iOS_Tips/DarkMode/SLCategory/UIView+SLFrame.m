@@ -28,21 +28,21 @@
     return self.frame.origin.y;
 }
 
-- (void)setSl_w:(CGFloat)sl_w {
+- (void)setSl_width:(CGFloat)sl_w {
     CGRect frame = self.frame;
     frame.size.width = sl_w;
     self.frame = frame;
 }
-- (CGFloat)sl_w {
+- (CGFloat)sl_width {
     return self.frame.size.width;
 }
 
-- (void)setSl_h:(CGFloat)sl_h {
+- (void)setSl_height:(CGFloat)sl_h {
     CGRect frame = self.frame;
     frame.size.height = sl_h;
     self.frame = frame;
 }
-- (CGFloat)sl_h {
+- (CGFloat)sl_height {
     return self.frame.size.height;
 }
 
@@ -81,5 +81,44 @@
 - (CGPoint)sl_origin {
     return self.frame.origin;
 }
+
+- (CGFloat)sl_left{
+    return self.frame.origin.x;
+}
+- (void)setSl_left:(CGFloat)left{
+    CGRect frame = self.frame;
+    frame.origin.x = left;
+    self.frame = frame;
+}
+
+- (CGFloat)sl_right{
+    return CGRectGetMaxX(self.frame);
+}
+
+-(void)setSl_right:(CGFloat)right{
+    CGRect frame = self.frame;
+    frame.origin.x = right - frame.size.width;
+    self.frame = frame;
+}
+
+- (CGFloat)sl_top{
+    return self.frame.origin.y;
+}
+
+- (void)setSl_top:(CGFloat)top{
+    CGRect frame = self.frame;
+    frame.origin.y = top;
+    self.frame = frame;
+}
+
+- (CGFloat)sl_bottom{
+    return CGRectGetMaxY(self.frame);
+}
+- (void)setSl_bottom:(CGFloat)bottom{
+    CGRect frame = self.frame;
+    frame.origin.y = bottom - frame.size.height;
+    self.frame = frame;
+}
+
 
 @end

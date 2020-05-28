@@ -234,7 +234,7 @@
                 } else if ([self.tableView isBottom] &&
                            [self.webView.scrollView isBottom]) {
                     //底部
-                    if (self.tableView.frame.size.height < self.view.sl_h) { //tableView不足一屏，webView bounce
+                    if (self.tableView.frame.size.height < self.view.sl_height) { //tableView不足一屏，webView bounce
                         [self performBounceForScrollView:self.webView.scrollView isAtTop:NO];
                     } else {
                         [self performBounceForScrollView:self.tableView isAtTop:NO];
@@ -273,7 +273,7 @@
     if (deltaY < 0) { //上滑
         if ([self.webView.scrollView isBottom]) { //webView已滑到底，此时应滑动tableView
             if ([self.tableView isBottom]) { //tableView也到底
-                if (self.tableView.frame.size.height < self.view.sl_h) { //tableView不足一屏，webView bounce
+                if (self.tableView.frame.size.height < self.view.sl_height) { //tableView不足一屏，webView bounce
                     self.tableView.contentOffset = CGPointMake(0, self.tableView.contentSize.height - self.tableView.frame.size.height);
                     CGFloat bounceDelta = MAX(0, (self.maxBounceDistance - fabs(self.webView.scrollView.contentOffset.y - self.webView.scrollView.maxContentOffsetY)) / self.maxBounceDistance) * 0.5;
                     self.webView.scrollView.contentOffset = CGPointMake(0, self.webView.scrollView.contentOffset.y - deltaY * bounceDelta);

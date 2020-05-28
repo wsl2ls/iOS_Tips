@@ -274,7 +274,7 @@ static CGFloat THDegreesToRadians(CGFloat degrees) {
 }
 - (UIButton *)switchCameraBtn {
     if (_switchCameraBtn == nil) {
-        _switchCameraBtn = [[UIButton alloc] initWithFrame:CGRectMake(self.view.sl_w - 30 - 30, 44 , 30, 30)];
+        _switchCameraBtn = [[UIButton alloc] initWithFrame:CGRectMake(self.view.sl_width - 30 - 30, 44 , 30, 30)];
         [_switchCameraBtn setImage:[UIImage imageNamed:@"cameraAround"] forState:UIControlStateNormal];
         [_switchCameraBtn addTarget:self action:@selector(switchCameraClicked:) forControlEvents:UIControlEventTouchUpInside];
     }

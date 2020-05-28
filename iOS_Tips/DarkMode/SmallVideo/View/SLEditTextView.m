@@ -81,7 +81,7 @@
     CGSize itemSize = CGSizeMake(20, 20);
     CGFloat space = (self.frame.size.width - count * itemSize.width)/(count + 1);
     for (int i = 0; i < count; i++) {
-        UIButton * colorBtn = [[UIButton alloc] initWithFrame:CGRectMake(space + (itemSize.width + space)*i, self.sl_h - keyboardHeight - 20 - 20, itemSize.width, itemSize.height)];
+        UIButton * colorBtn = [[UIButton alloc] initWithFrame:CGRectMake(space + (itemSize.width + space)*i, self.sl_height - keyboardHeight - 20 - 20, itemSize.width, itemSize.height)];
         [self addSubview:colorBtn];
         if (i == 0) {
             [colorBtn addTarget:self action:@selector(colorSwitchBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -117,7 +117,7 @@
 }
 - (UIButton *)doneEditBtn {
     if (_doneEditBtn == nil) {
-        _doneEditBtn = [[UIButton alloc] initWithFrame:CGRectMake(self.sl_w - 50 - 15, 30, 40, 30)];
+        _doneEditBtn = [[UIButton alloc] initWithFrame:CGRectMake(self.sl_width - 50 - 15, 30, 40, 30)];
         _doneEditBtn.backgroundColor = [UIColor colorWithRed:45/255.0 green:175/255.0 blue:45/255.0 alpha:1];
         [_doneEditBtn setTitle:@"完成" forState:UIControlStateNormal];
         [_doneEditBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -221,15 +221,15 @@
 #pragma mark - UITextViewDelegate
 -(void)textViewDidChange:(UITextView *)textView{
     //最大高度
-    CGFloat maxHeight = self.sl_h - 100 - _keyboardHeight - 20 - 20 - 20;
-    CGSize constraintSize = CGSizeMake(self.sl_w - 2*30, MAXFLOAT);
+    CGFloat maxHeight = self.sl_height - 100 - _keyboardHeight - 20 - 20 - 20;
+    CGSize constraintSize = CGSizeMake(self.sl_width - 2*30, MAXFLOAT);
     CGSize size = [textView sizeThatFits:constraintSize];
     if (size.height >= maxHeight) {
         textView.sl_y = 100 - (size.height - maxHeight);
     } else {
         textView.sl_y = 100;
     }
-    textView.sl_h = size.height;
-    textView.sl_w = size.width;
+    textView.sl_height = size.height;
+    textView.sl_width = size.width;
 }
 @end

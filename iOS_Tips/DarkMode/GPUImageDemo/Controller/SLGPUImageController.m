@@ -175,7 +175,7 @@
     if (_backBtn == nil) {
         _backBtn = [[UIButton alloc] init];
         _backBtn.frame = CGRectMake(0, 0, 30, 30);
-        _backBtn.center = CGPointMake((self.view.sl_w/2 - 70/2.0)/2.0, self.view.sl_h - 80);
+        _backBtn.center = CGPointMake((self.view.sl_width/2 - 70/2.0)/2.0, self.view.sl_height - 80);
         [_backBtn setImage:[UIImage imageNamed:@"back"] forState:UIControlStateNormal];
         [_backBtn addTarget:self action:@selector(backBtn:) forControlEvents:UIControlEventTouchUpInside];
     }
@@ -186,9 +186,9 @@
         _shotBtn = [[SLBlurView alloc] init];
         _shotBtn.userInteractionEnabled = YES;
         _shotBtn.frame = CGRectMake(0, 0, 70, 70);
-        _shotBtn.center = CGPointMake(self.view.sl_w/2.0, self.view.sl_h - 80);
+        _shotBtn.center = CGPointMake(self.view.sl_width/2.0, self.view.sl_height - 80);
         _shotBtn.clipsToBounds = YES;
-        _shotBtn.layer.cornerRadius = _shotBtn.sl_w/2.0;
+        _shotBtn.layer.cornerRadius = _shotBtn.sl_width/2.0;
         //轻触拍照，长按摄像
         UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(takePicture:)];
         [_shotBtn addGestureRecognizer:tap];
@@ -197,7 +197,7 @@
         [_shotBtn addGestureRecognizer:longPress];
         //中心白色
         self.whiteView.frame = CGRectMake(0, 0, 50, 50);
-        self.whiteView.center = CGPointMake(_shotBtn.sl_w/2.0, _shotBtn.sl_h/2.0);
+        self.whiteView.center = CGPointMake(_shotBtn.sl_width/2.0, _shotBtn.sl_height/2.0);
         self.whiteView.layer.cornerRadius = self.whiteView.frame.size.width/2.0;
         [_shotBtn addSubview:self.whiteView];
     }
@@ -205,7 +205,7 @@
 }
 - (UIButton *)switchCameraBtn {
     if (_switchCameraBtn == nil) {
-        _switchCameraBtn = [[UIButton alloc] initWithFrame:CGRectMake(self.view.sl_w - 30 - 30, 44 , 30, 30)];
+        _switchCameraBtn = [[UIButton alloc] initWithFrame:CGRectMake(self.view.sl_width - 30 - 30, 44 , 30, 30)];
         [_switchCameraBtn setImage:[UIImage imageNamed:@"cameraAround"] forState:UIControlStateNormal];
         [_switchCameraBtn addTarget:self action:@selector(switchCameraClicked:) forControlEvents:UIControlEventTouchUpInside];
     }
@@ -256,7 +256,7 @@
 }
 - (UILabel *)tipsLabel {
     if (_tipsLabel == nil) {
-        _tipsLabel = [[UILabel alloc] initWithFrame:CGRectMake((self.view.sl_w - 140)/2.0, self.shotBtn.sl_y - 20 - 30, 140, 20)];
+        _tipsLabel = [[UILabel alloc] initWithFrame:CGRectMake((self.view.sl_width - 140)/2.0, self.shotBtn.sl_y - 20 - 30, 140, 20)];
         _tipsLabel.textColor = [UIColor whiteColor];
         _tipsLabel.font = [UIFont systemFontOfSize:14];
         _tipsLabel.textAlignment = NSTextAlignmentCenter;
@@ -448,7 +448,7 @@
         transform = CGAffineTransformMakeRotation(0);
     }
     // 水印层
-    UIView *watermarkView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.sl_w, self.view.sl_h)];
+    UIView *watermarkView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.sl_width, self.view.sl_height)];
     watermarkView.backgroundColor = [UIColor clearColor];
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 60, 80)];
     label.text = @"iOS2679114653";
@@ -488,7 +488,7 @@
         return;
     }
     CGPoint point = [tap locationInView:self.captureView];
-    if(point.y > self.shotBtn.sl_y || point.y < self.switchCameraBtn.sl_y + self.switchCameraBtn.sl_h) {
+    if(point.y > self.shotBtn.sl_y || point.y < self.switchCameraBtn.sl_y + self.switchCameraBtn.sl_height) {
         return;
     }
     [self focusAtPoint:point];
@@ -587,11 +587,11 @@
     switch (longPress.state) {
         case UIGestureRecognizerStateBegan:{
             self.shotBtn.sl_size = CGSizeMake(100, 100);
-            self.shotBtn.center = CGPointMake(self.view.sl_w/2.0, self.view.sl_h - 80);
-            self.shotBtn.layer.cornerRadius =  self.shotBtn.sl_h/2.0;
+            self.shotBtn.center = CGPointMake(self.view.sl_width/2.0, self.view.sl_height - 80);
+            self.shotBtn.layer.cornerRadius =  self.shotBtn.sl_height/2.0;
             self.whiteView.sl_size = CGSizeMake(40, 40);
-            self.whiteView.center = CGPointMake(self.shotBtn.sl_w/2.0, self.shotBtn.sl_h/2.0);
-            self.whiteView.layer.cornerRadius = self.whiteView.sl_w/2.0;
+            self.whiteView.center = CGPointMake(self.shotBtn.sl_width/2.0, self.shotBtn.sl_height/2.0);
+            self.whiteView.layer.cornerRadius = self.whiteView.sl_width/2.0;
             //开始计时
             [self startTimer];
             //添加进度条
@@ -609,11 +609,11 @@
             break;
         case UIGestureRecognizerStateEnded:{
             self.shotBtn.sl_size = CGSizeMake(70, 70);
-            self.shotBtn.center = CGPointMake(self.view.sl_w/2.0, self.view.sl_h - 80);
-            self.shotBtn.layer.cornerRadius =  self.shotBtn.sl_h/2.0;
+            self.shotBtn.center = CGPointMake(self.view.sl_width/2.0, self.view.sl_height - 80);
+            self.shotBtn.layer.cornerRadius =  self.shotBtn.sl_height/2.0;
             self.whiteView.sl_size = CGSizeMake(50, 50);
-            self.whiteView.center = CGPointMake(self.shotBtn.sl_w/2.0, self.shotBtn.sl_h/2.0);
-            self.whiteView.layer.cornerRadius = self.whiteView.sl_w/2.0;
+            self.whiteView.center = CGPointMake(self.shotBtn.sl_width/2.0, self.shotBtn.sl_height/2.0);
+            self.whiteView.layer.cornerRadius = self.whiteView.sl_width/2.0;
             //取消计时器
             dispatch_source_cancel(self->_gcdTimer);
             self->_durationOfVideo = 0;

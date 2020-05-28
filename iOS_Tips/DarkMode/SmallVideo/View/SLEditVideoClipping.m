@@ -77,14 +77,14 @@ SLVideoClippingStateMake(BOOL position, CGFloat value, UIGestureRecognizerState 
 }
 - (void)setFrame:(CGRect)frame{
     [super setFrame:frame];
-    self.boxInside.frame = CGRectMake(0, 0, self.sl_w, self.sl_h);
-    self.leftTime.frame = CGRectMake(-10, 0, 10, self.sl_h);
-    self.rightTime.frame = CGRectMake(self.sl_w, 0, 10, self.sl_h);
+    self.boxInside.frame = CGRectMake(0, 0, self.sl_width, self.sl_height);
+    self.leftTime.frame = CGRectMake(-10, 0, 10, self.sl_height);
+    self.rightTime.frame = CGRectMake(self.sl_width, 0, 10, self.sl_height);
 }
 #pragma mark - Getter
 - (UIView *)boxInside {
     if (!_boxInside) {
-        _boxInside = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.sl_w, self.sl_h)];
+        _boxInside = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.sl_width, self.sl_height)];
         _boxInside.backgroundColor = [UIColor clearColor];
         _boxInside.layer.borderColor = [UIColor whiteColor].CGColor;
         _boxInside.layer.borderWidth = 2;
@@ -93,7 +93,7 @@ SLVideoClippingStateMake(BOOL position, CGFloat value, UIGestureRecognizerState 
 }
 - (UILabel *)leftTime {
     if (!_leftTime) {
-        _leftTime = [[UILabel alloc] initWithFrame:CGRectMake(-10, 0, 10, self.sl_h)];
+        _leftTime = [[UILabel alloc] initWithFrame:CGRectMake(-10, 0, 10, self.sl_height)];
         _leftTime.text = @"||";
         _leftTime.textAlignment = NSTextAlignmentCenter;
         _leftTime.backgroundColor = [UIColor whiteColor];
@@ -108,7 +108,7 @@ SLVideoClippingStateMake(BOOL position, CGFloat value, UIGestureRecognizerState 
 }
 - (UILabel *)rightTime {
     if (!_rightTime) {
-        _rightTime = [[UILabel alloc] initWithFrame:CGRectMake(self.sl_w, 0, 10, self.sl_h)];
+        _rightTime = [[UILabel alloc] initWithFrame:CGRectMake(self.sl_width, 0, 10, self.sl_height)];
         _rightTime.text = @"||";
         _rightTime.tag = 1;
         _rightTime.textAlignment = NSTextAlignmentCenter;
@@ -126,26 +126,26 @@ SLVideoClippingStateMake(BOOL position, CGFloat value, UIGestureRecognizerState 
 - (void)changeClippingRange:(UIPanGestureRecognizer *)pan {
     CGPoint transP = [pan translationInView:self];
     if (pan.state == UIGestureRecognizerStateBegan) {
-        self.changeClippingRange(SLVideoClippingStateMake(pan.view.tag, (pan.view.tag == 0 ? self.boxInside.sl_x/self.sl_w : self.rightTime.sl_x/self.sl_w), UIGestureRecognizerStateBegan));
+        self.changeClippingRange(SLVideoClippingStateMake(pan.view.tag, (pan.view.tag == 0 ? self.boxInside.sl_x/self.sl_width : self.rightTime.sl_x/self.sl_width), UIGestureRecognizerStateBegan));
     } else if (pan.state == UIGestureRecognizerStateChanged ) {
         if (pan.view == self.leftTime ) {
             //裁剪的视频时长必须>=1秒
-            if (pan.view.sl_x + transP.x < -10 || (self.rightTime.sl_x - self.boxInside.sl_x -  transP.x)/self.sl_w*self.totalDuration < 1) {
+            if (pan.view.sl_x + transP.x < -10 || (self.rightTime.sl_x - self.boxInside.sl_x -  transP.x)/self.sl_width*self.totalDuration < 1) {
                 NSLog(@"视频超出了裁剪范围或裁剪后的时长小于1s");
             }else {
                 self.boxInside.sl_x = self.boxInside.sl_x + transP.x;
-                self.boxInside.sl_w = self.boxInside.sl_w - transP.x;
+                self.boxInside.sl_width = self.boxInside.sl_width - transP.x;
                 pan.view.center = CGPointMake(pan.view.center.x + transP.x, pan.view.center.y);
             }
         }else if (pan.view == self.rightTime) {
-            if (pan.view.sl_x + transP.x > self.sl_w || (self.rightTime.sl_x + transP.x - self.boxInside.sl_x)/self.sl_w*self.totalDuration < 1) {
+            if (pan.view.sl_x + transP.x > self.sl_width || (self.rightTime.sl_x + transP.x - self.boxInside.sl_x)/self.sl_width*self.totalDuration < 1) {
                 NSLog(@"视频超出了裁剪范围或裁剪后的时长小于1s");
             }else {
-                self.boxInside.sl_w = self.boxInside.sl_w + transP.x;
+                self.boxInside.sl_width = self.boxInside.sl_width + transP.x;
                 pan.view.center = CGPointMake(pan.view.center.x + transP.x, pan.view.center.y);
             }
         }
-        self.changeClippingRange(SLVideoClippingStateMake(pan.view.tag, (pan.view.tag == 0 ? self.boxInside.sl_x/self.sl_w : self.rightTime.sl_x/self.sl_w), UIGestureRecognizerStateChanged));
+        self.changeClippingRange(SLVideoClippingStateMake(pan.view.tag, (pan.view.tag == 0 ? self.boxInside.sl_x/self.sl_width : self.rightTime.sl_x/self.sl_width), UIGestureRecognizerStateChanged));
         [self setNeedsDisplay];
         [pan setTranslation:CGPointZero inView:self];
     }else if (pan.state == UIGestureRecognizerStateEnded || pan.state == UIGestureRecognizerStateFailed || pan.state == UIGestureRecognizerStateCancelled) {
@@ -154,11 +154,11 @@ SLVideoClippingStateMake(BOOL position, CGFloat value, UIGestureRecognizerState 
                 pan.view.sl_x = -10;
             }
         }else if (pan.view == self.rightTime) {
-            if (pan.view.sl_x  > self.sl_w) {
-                pan.view.sl_x = self.sl_w;
+            if (pan.view.sl_x  > self.sl_width) {
+                pan.view.sl_x = self.sl_width;
             }
         }
-        self.changeClippingRange(SLVideoClippingStateMake(pan.view.tag, (pan.view.tag == 0 ? self.boxInside.sl_x/self.sl_w : self.rightTime.sl_x/self.sl_w), UIGestureRecognizerStateEnded));
+        self.changeClippingRange(SLVideoClippingStateMake(pan.view.tag, (pan.view.tag == 0 ? self.boxInside.sl_x/self.sl_width : self.rightTime.sl_x/self.sl_width), UIGestureRecognizerStateEnded));
     }
 }
 @end
@@ -209,7 +209,7 @@ SLVideoClippingStateMake(BOOL position, CGFloat value, UIGestureRecognizerState 
 #pragma mark - Getter
 - (UIView *)contentView {
     if (!_contentView) {
-        _contentView = [[UIView alloc] initWithFrame:CGRectMake(40, 10, self.sl_w - 40 * 2, 50)];
+        _contentView = [[UIView alloc] initWithFrame:CGRectMake(40, 10, self.sl_width - 40 * 2, 50)];
         _contentView.backgroundColor = [UIColor blackColor];
         _contentView.layer.borderColor = [UIColor lightGrayColor].CGColor;
         _contentView.clipsToBounds = YES;
@@ -253,7 +253,7 @@ SLVideoClippingStateMake(BOOL position, CGFloat value, UIGestureRecognizerState 
 }
 - (UIButton *)cancleBtn {
     if (_cancleBtn == nil) {
-        _cancleBtn = [[UIButton alloc] initWithFrame:CGRectMake(10, self.sl_h - 10 - 30, 30, 30)];
+        _cancleBtn = [[UIButton alloc] initWithFrame:CGRectMake(10, self.sl_height - 10 - 30, 30, 30)];
         [_cancleBtn setTitle:@"取消" forState:UIControlStateNormal];
         [_cancleBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         _cancleBtn.titleLabel.font = [UIFont systemFontOfSize:14];
@@ -263,7 +263,7 @@ SLVideoClippingStateMake(BOOL position, CGFloat value, UIGestureRecognizerState 
 }
 - (UIButton *)doneBtn {
     if (_doneBtn == nil) {
-        _doneBtn = [[UIButton alloc] initWithFrame:CGRectMake(self.sl_w - 30 - 10, self.sl_h - 10 - 30, 30, 30)];
+        _doneBtn = [[UIButton alloc] initWithFrame:CGRectMake(self.sl_width - 30 - 10, self.sl_height - 10 - 30, 30, 30)];
         [_doneBtn setTitle:@"完成" forState:UIControlStateNormal];
         [_doneBtn setTitleColor:[UIColor colorWithRed:45/255.0 green:175/255.0 blue:45/255.0 alpha:1] forState:UIControlStateNormal];
         _doneBtn.titleLabel.font = [UIFont systemFontOfSize:14];
@@ -300,12 +300,12 @@ SLVideoClippingStateMake(BOOL position, CGFloat value, UIGestureRecognizerState 
     }
     if (maxImageCount * maximumSize.width/[UIScreen mainScreen].scale < self.contentView.frame.size.width) {
         maxImageCount = self.contentView.frame.size.width * [UIScreen mainScreen].scale / maximumSize.width;
-        self.contentView.sl_w = maxImageCount * maximumSize.width/[UIScreen mainScreen].scale;
-        self.contentView.sl_x = (self.sl_w - self.contentView.sl_w)/2.0;
+        self.contentView.sl_width = maxImageCount * maximumSize.width/[UIScreen mainScreen].scale;
+        self.contentView.sl_x = (self.sl_width - self.contentView.sl_width)/2.0;
         self.clippingBox.frame = self.contentView.frame;
-        imageViewSize = CGSizeMake(self.contentView.sl_h*maximumSize.width/maximumSize.height, self.contentView.sl_h);
+        imageViewSize = CGSizeMake(self.contentView.sl_height*maximumSize.width/maximumSize.height, self.contentView.sl_height);
     }else {
-        imageViewSize = CGSizeMake(self.contentView.sl_w/maxImageCount, self.contentView.sl_h);
+        imageViewSize = CGSizeMake(self.contentView.sl_width/maxImageCount, self.contentView.sl_height);
     }
     
     //视频帧大小 像素

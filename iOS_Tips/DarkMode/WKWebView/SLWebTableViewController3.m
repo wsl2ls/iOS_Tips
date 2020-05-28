@@ -60,7 +60,7 @@
 
 #pragma mark - SetupUI
 - (void)setupUi {
-    self.title = @"WKWebView+UITableView（方案2）";
+    self.title = @"WKWebView+UITableView（方案3）";
     self.view.backgroundColor = [UIColor whiteColor];
     
     self.maxBounceDistance = 100;
@@ -203,7 +203,7 @@
                 } else if ([self.tableView isBottom] &&
                            [self.webView.scrollView isBottom]) {
                     //底部
-                    if (self.tableView.frame.size.height < self.view.sl_h) { //tableView不足一屏，webView bounce
+                    if (self.tableView.frame.size.height < self.view.sl_height) { //tableView不足一屏，webView bounce
                         [self performBounceForScrollView:self.webView.scrollView isAtTop:NO];
                     } else {
                         [self performBounceForScrollView:self.tableView isAtTop:NO];

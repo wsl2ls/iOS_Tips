@@ -44,7 +44,7 @@
     [self configureWebTable];
 }
 - (void)configureWebTable {
-    self.webView.sl_h = _webContentHeight == 0 ? SL_kScreenHeight : _webContentHeight;
+    self.webView.sl_height = _webContentHeight == 0 ? SL_kScreenHeight : _webContentHeight;
     self.tableView.tableHeaderView = self.webView;
 }
 

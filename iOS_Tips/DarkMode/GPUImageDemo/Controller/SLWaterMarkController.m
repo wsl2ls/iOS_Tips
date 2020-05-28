@@ -120,8 +120,8 @@
 - (SLBlurView *)addWatermark {
     if (_addWatermark == nil) {
         _addWatermark = [[SLBlurView alloc] initWithFrame:CGRectMake(0, 0, 70, 70)];
-        _addWatermark.center = CGPointMake(self.view.sl_w/2.0, self.view.sl_h - 80);
-        _addWatermark.layer.cornerRadius = _addWatermark.sl_w/2.0;
+        _addWatermark.center = CGPointMake(self.view.sl_width/2.0, self.view.sl_height - 80);
+        _addWatermark.layer.cornerRadius = _addWatermark.sl_width/2.0;
         UIButton * btn = [[UIButton alloc] initWithFrame:_addWatermark.bounds];
         [btn setTitle:@"add水印" forState:UIControlStateNormal];
         [btn addTarget:self action:@selector(addWatermarkClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -132,8 +132,8 @@
 - (SLBlurView *)againShotBtn {
     if (_againShotBtn == nil) {
         _againShotBtn = [[SLBlurView alloc] initWithFrame:CGRectMake(0, 0, 70, 70)];
-        _againShotBtn.center = CGPointMake((self.view.sl_w/2 - 70/2.0)/2.0, self.view.sl_h - 80);
-        _againShotBtn.layer.cornerRadius = _againShotBtn.sl_w/2.0;
+        _againShotBtn.center = CGPointMake((self.view.sl_width/2 - 70/2.0)/2.0, self.view.sl_height - 80);
+        _againShotBtn.layer.cornerRadius = _againShotBtn.sl_width/2.0;
         UIButton * btn = [[UIButton alloc] initWithFrame:_againShotBtn.bounds];
         [btn setImage:[UIImage imageNamed:@"cancle"] forState:UIControlStateNormal];
         [btn addTarget:self action:@selector(againShotBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -144,8 +144,8 @@
 - (UIButton *)saveAlbumBtn {
     if (_saveAlbumBtn == nil) {
         _saveAlbumBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 70, 70)];
-        _saveAlbumBtn.center = CGPointMake(self.view.sl_w/2.0 + 70/2.0+ (self.view.sl_w/2 - 70/2.0)/2.0, self.view.sl_h - 80);
-        _saveAlbumBtn.layer.cornerRadius = _saveAlbumBtn.sl_w/2.0;
+        _saveAlbumBtn.center = CGPointMake(self.view.sl_width/2.0 + 70/2.0+ (self.view.sl_width/2 - 70/2.0)/2.0, self.view.sl_height - 80);
+        _saveAlbumBtn.layer.cornerRadius = _saveAlbumBtn.sl_width/2.0;
         _saveAlbumBtn.backgroundColor = [UIColor whiteColor];
         [_saveAlbumBtn setImage:[UIImage imageNamed:@"save"] forState:UIControlStateNormal];
         [_saveAlbumBtn addTarget:self action:@selector(saveAlbumBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -177,14 +177,14 @@
     // 水印层
     UIView *watermarkView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SL_kScreenWidth, SL_kScreenHeight)];
     watermarkView.backgroundColor = [UIColor clearColor];
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 200, self.view.sl_w, 80)];
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 200, self.view.sl_width, 80)];
     label.text = @"简书：且行且珍惜_iOS \n GitHub：wsl2ls";
     label.font = [UIFont systemFontOfSize:24];
     label.numberOfLines = 0;
     label.textAlignment = NSTextAlignmentCenter;
     label.textColor = [UIColor redColor];
     SLImageView *imageView = [[SLImageView alloc] initWithFrame:CGRectMake(0, 88, 100, 100)];
-    imageView.sl_centerX = self.view.sl_w/2.0;
+    imageView.sl_centerX = self.view.sl_width/2.0;
     NSString *myBundlePath = [[NSBundle mainBundle] pathForResource:@"Resources" ofType:@"bundle"];
     NSBundle *myBundle = [NSBundle bundleWithPath:myBundlePath];
     NSString *imagePath = [myBundle pathForResource:@"stickers_1" ofType:@"gif" inDirectory:@"StickingImages"];
