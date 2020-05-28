@@ -44,7 +44,7 @@
 #pragma mark - Data
 - (void)getData {
     //tableView、UIAlertView等系统控件，在不自定义颜色的情况下，默认颜色都是动态的，支持暗黑模式
-    [self.titles addObjectsFromArray:@[@" WKWebView的使用 ", @" WKWebView + UITableView（方案1 不推荐）", @" WKWebView + UITableView（方案2）",@" WKWebView + UITableView（方案3）(推荐)", @"WKWebView + UITableView（方案4）(较推荐) "]];
+    [self.titles addObjectsFromArray:@[@" WKWebView的使用 ", @" WKWebView + UITableView（方案1 不推荐）", @" WKWebView + UITableView（方案2）",@" WKWebView + UITableView（方案3）(推荐)", @"WKWebView + UITableView（方案4）(推荐) "]];
     [self.subTitles addObjectsFromArray:@[@"", @" tableView.tableHeaderView = webView 撑开webView ", @" [webView.scrollView addSubview:tableView] + 占位Div ",@"tableView.tableHeaderView = webView 不撑开webView ", @"[UIScrollView addSubView: WKWebView & UITableView]"]];
     [self.classArray addObjectsFromArray:@[[SLWebViewController class], [SLWebTableViewController class], [SLWebTableViewController2 class], [SLWebTableViewController3 class], [SLWebTableViewController4 class]]];
     [self.tableView reloadData];

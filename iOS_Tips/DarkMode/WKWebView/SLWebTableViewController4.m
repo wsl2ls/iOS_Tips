@@ -53,6 +53,7 @@ WKNavigationDelegate>
     _webViewContentHeight = 0;
     _tableViewContentHeight = 0;
     self.view.backgroundColor = [UIColor whiteColor];
+    self.title = @"WKWebView+UITableView（方案4）";
     
     [self.view addSubview:self.containerScrollView];
     [self.containerScrollView addSubview:self.contentView];
@@ -143,7 +144,7 @@ WKNavigationDelegate>
 }
 
 #pragma mark - Help Methods
-/// 根据WebView和tableView的ContentSize变化，调整父scrollView.contentSize、WebView和tableView的高度位置、
+/// 根据WebView和tableView的ContentSize变化，调整父scrollView.contentSize、WebView和tableView的高度位置、展示区域
 - (void)updateContainerScrollViewContentSize{
     
     self.containerScrollView.contentSize = CGSizeMake(self.view.sl_width, _webViewContentHeight + _tableViewContentHeight);
@@ -153,12 +154,11 @@ WKNavigationDelegate>
     CGFloat tableViewHeight = _tableViewContentHeight < self.view.sl_height ? _tableViewContentHeight : self.view.sl_height;
     
     self.contentView.sl_height = webViewHeight + tableViewHeight;
-    
     self.webView.sl_height = webViewHeight <= 0.1 ?0.1 :webViewHeight;
     self.tableView.sl_height = tableViewHeight;
     self.tableView.sl_y = self.webView.sl_height;
     
-    //contentSize变化时需要更新各个控件的位置
+    //更新展示区域
     [self scrollViewDidScroll:self.containerScrollView];
 }
 
@@ -169,33 +169,38 @@ WKNavigationDelegate>
     }
     
     CGFloat offsetY = scrollView.contentOffset.y;
-    
     CGFloat webViewHeight = self.webView.sl_height;
     CGFloat tableViewHeight = self.tableView.sl_height;
     
     if (offsetY <= 0) {
-        self.contentView.sl_top = 0;
+        //顶部下拉
+        self.contentView.sl_y = 0;
         self.webView.scrollView.contentOffset = CGPointZero;
         self.tableView.contentOffset = CGPointZero;
     }else if(offsetY < _webViewContentHeight - webViewHeight){
-        self.contentView.sl_top = offsetY;
+        //父scrollView偏移量的展示范围在webView的最大偏移量内容区域
+        //contentView相对位置保持不动，调整webView的contentOffset
+        self.contentView.sl_y = offsetY;
         self.webView.scrollView.contentOffset = CGPointMake(0, offsetY);
         self.tableView.contentOffset = CGPointZero;
     }else if(offsetY < _webViewContentHeight){
-        self.contentView.sl_top = _webViewContentHeight - webViewHeight;
+        //webView滑到了底部
+        self.contentView.sl_y = _webViewContentHeight - webViewHeight;
         self.webView.scrollView.contentOffset = CGPointMake(0, _webViewContentHeight - webViewHeight);
         self.tableView.contentOffset = CGPointZero;
     }else if(offsetY < _webViewContentHeight + _tableViewContentHeight - tableViewHeight){
-        self.contentView.sl_top = offsetY - webViewHeight;
+        //父scrollView偏移量的展示范围到达tableView的最大偏移量内容区域
+        //调整tableView的contentOffset
+        self.contentView.sl_y = offsetY - webViewHeight;
         self.tableView.contentOffset = CGPointMake(0, offsetY - _webViewContentHeight);
         self.webView.scrollView.contentOffset = CGPointMake(0, _webViewContentHeight - webViewHeight);
     }else if(offsetY <= _webViewContentHeight + _tableViewContentHeight ){
-        self.contentView.sl_top = self.containerScrollView.contentSize.height - self.contentView.sl_height;
+        //tableView滑到了底部
+        self.contentView.sl_y = self.containerScrollView.contentSize.height - self.contentView.sl_height;
         self.webView.scrollView.contentOffset = CGPointMake(0, _webViewContentHeight - webViewHeight);
         self.tableView.contentOffset = CGPointMake(0, _tableViewContentHeight - tableViewHeight);
     }else {
-        //do nothing
-        NSLog(@"do nothing");
+       
     }
 }
 #pragma mark - WKNavigationDelegate
@@ -230,7 +235,7 @@ WKNavigationDelegate>
     }
     cell.detailTextLabel.numberOfLines = 0;
     cell.textLabel.text = [NSString stringWithFormat:@"第%ld条评论",(long)indexPath.row];
-    cell.detailTextLabel.text = @" 方案4：(较推荐) \n [UIScrollView addSubView: WKWebView & UITableView]; \n UIScrollView.contenSize = WKWebView.contenSize + UITableView.contenSize; \n WKWebView和UITableView的最大高度为一屏高，并禁用scrollEnabled=NO，然后根据UIScrollView的滑动偏移量调整WKWebView和UITableView的展示区域contenOffset。";
+    cell.detailTextLabel.text = @" 方案4：(推荐) \n [UIScrollView addSubView: WKWebView & UITableView]; \n UIScrollView.contenSize = WKWebView.contenSize + UITableView.contenSize; \n WKWebView和UITableView的最大高度为一屏高，并禁用scrollEnabled=NO，然后根据UIScrollView的滑动偏移量调整WKWebView和UITableView的展示区域contenOffset。";
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

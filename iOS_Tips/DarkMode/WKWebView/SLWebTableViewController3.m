@@ -319,7 +319,7 @@
     frame.size.height = self.webView.scrollView.contentSize.height < SL_kScreenHeight ? self.webView.scrollView.contentSize.height : SL_kScreenHeight;
     self.webView.frame = frame;
     self.tableView.tableHeaderView = self.webView;
-    //当WebView的contentSize改变时，tableView滚到顶部
+    //当WebView的contentSize改变时，tableView滚到顶部WebView，tableView展示内容向下移，更新展示区域
     [self.tableView scrollToTopWithAnimated:NO];
 }
 
