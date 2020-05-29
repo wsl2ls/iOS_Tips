@@ -132,6 +132,7 @@
 		78E72D792480B36800751373 /* SLScrollViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E72D782480B36800751373 /* SLScrollViewController.m */; };
 		78E72D7C24810E2D00751373 /* SLDynamicItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E72D7B24810E2D00751373 /* SLDynamicItem.m */; };
 		78E72D7F24810ECC00751373 /* UIScrollView+SLCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E72D7E24810ECC00751373 /* UIScrollView+SLCommon.m */; };
+		78E72D8224811F6600751373 /* SLWebCacheViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E72D8124811F6600751373 /* SLWebCacheViewController.m */; };
 		78EF8B6024162B96008D0CD7 /* SLMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78EF8B5E24162B96008D0CD7 /* SLMenuViewController.m */; };
 		78EF8B6124162B96008D0CD7 /* SLMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 78EF8B5F24162B96008D0CD7 /* SLMenuViewController.xib */; };
 		78EF8B6424188767008D0CD7 /* SLAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78EF8B6324188767008D0CD7 /* SLAlertView.m */; };
@@ -371,6 +372,8 @@
 		78E72D7B24810E2D00751373 /* SLDynamicItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLDynamicItem.m; sourceTree = "<group>"; };
 		78E72D7D24810ECC00751373 /* UIScrollView+SLCommon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+SLCommon.h"; sourceTree = "<group>"; };
 		78E72D7E24810ECC00751373 /* UIScrollView+SLCommon.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+SLCommon.m"; sourceTree = "<group>"; };
+		78E72D8024811F6600751373 /* SLWebCacheViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLWebCacheViewController.h; sourceTree = "<group>"; };
+		78E72D8124811F6600751373 /* SLWebCacheViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLWebCacheViewController.m; sourceTree = "<group>"; };
 		78EF8B5D24162B96008D0CD7 /* SLMenuViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLMenuViewController.h; sourceTree = "<group>"; };
 		78EF8B5E24162B96008D0CD7 /* SLMenuViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLMenuViewController.m; sourceTree = "<group>"; };
 		78EF8B5F24162B96008D0CD7 /* SLMenuViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SLMenuViewController.xib; sourceTree = "<group>"; };
@@ -866,6 +869,8 @@
 				78E72D75247F9FFC00751373 /* SLWebTableViewController4.m */,
 				78E72D772480B36800751373 /* SLScrollViewController.h */,
 				78E72D782480B36800751373 /* SLScrollViewController.m */,
+				78E72D8024811F6600751373 /* SLWebCacheViewController.h */,
+				78E72D8124811F6600751373 /* SLWebCacheViewController.m */,
 			);
 			path = WKWebView;
 			sourceTree = "<group>";
@@ -1167,6 +1172,7 @@
 				78D30965239688EF00DC373A /* GLESMath.c in Sources */,
 				788ACD652390EA3A00737EC2 /* SLCubeViewController.m in Sources */,
 				7857FD4B24729E8500D3D986 /* BSBacktraceLogger.m in Sources */,
+				78E72D8224811F6600751373 /* SLWebCacheViewController.m in Sources */,
 				787C7DC9245D77D9005DF7ED /* SLZombieSafeFree.m in Sources */,
 				786147FA23630C4D00C5424C /* UIImage+SLCommon.m in Sources */,
 				78FA0F9D235407E6003E456B /* SLDrawView.m in Sources */,
