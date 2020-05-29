@@ -12,6 +12,7 @@
 #import "SLWebTableViewController2.h"
 #import "SLWebTableViewController3.h"
 #import "SLWebTableViewController4.h"
+#import "SLScrollViewController.h"
 
 @interface SLWebViewListController ()<UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, strong) UITableView *tableView;
@@ -44,9 +45,9 @@
 #pragma mark - Data
 - (void)getData {
     //tableView、UIAlertView等系统控件，在不自定义颜色的情况下，默认颜色都是动态的，支持暗黑模式
-    [self.titles addObjectsFromArray:@[@" WKWebView的使用 ", @" WKWebView + UITableView（方案1 不推荐）", @" WKWebView + UITableView（方案2）",@" WKWebView + UITableView（方案3）(推荐)", @"WKWebView + UITableView（方案4）(推荐) "]];
-    [self.subTitles addObjectsFromArray:@[@"", @" tableView.tableHeaderView = webView 撑开webView ", @" [webView.scrollView addSubview:tableView] + 占位Div ",@"tableView.tableHeaderView = webView 不撑开webView ", @"[UIScrollView addSubView: WKWebView & UITableView]"]];
-    [self.classArray addObjectsFromArray:@[[SLWebViewController class], [SLWebTableViewController class], [SLWebTableViewController2 class], [SLWebTableViewController3 class], [SLWebTableViewController4 class]]];
+    [self.titles addObjectsFromArray:@[@" WKWebView的使用 ", @" WKWebView + UITableView（方案1 不推荐）", @" WKWebView + UITableView（方案2）",@" WKWebView + UITableView（方案3）(推荐)", @"WKWebView + UITableView（方案4）(推荐) ", @"UIScrollView的实现原理"]];
+    [self.subTitles addObjectsFromArray:@[@"", @" tableView.tableHeaderView = webView 撑开webView ", @" [webView.scrollView addSubview:tableView] + 占位Div ",@"tableView.tableHeaderView = webView 不撑开webView ", @"[UIScrollView addSubView: WKWebView & UITableView]", @"SLScrollView继承于UIView，自定义实现UIScrollView的效果"]];
+    [self.classArray addObjectsFromArray:@[[SLWebViewController class], [SLWebTableViewController class], [SLWebTableViewController2 class], [SLWebTableViewController3 class], [SLWebTableViewController4 class], [SLScrollViewController class]]];
     [self.tableView reloadData];
 }
 #pragma mark - Getter

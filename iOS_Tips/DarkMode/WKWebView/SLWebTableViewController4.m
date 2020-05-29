@@ -68,7 +68,7 @@ WKNavigationDelegate>
         _webView = [[WKWebView alloc] initWithFrame:self.view.bounds configuration:configuration];
         _webView.scrollView.scrollEnabled = NO;
         _webView.navigationDelegate = self;
-        NSString *path = [[NSBundle mainBundle] pathForResource:@"JStoOC.html" ofType:nil];
+        NSString *path = [[NSBundle mainBundle] pathForResource:@"WebTableView.html" ofType:nil];
         NSString *htmlString = [[NSString alloc]initWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
         [_webView loadHTMLString:htmlString baseURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] bundlePath]]];
     }
