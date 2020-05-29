@@ -7,26 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SLDynamicItem.h"
 
 NS_ASSUME_NONNULL_BEGIN
-
-///动力元素  力的作用对象
-@interface SLDynamicItem : NSObject <UIDynamicItem>
-@property (nonatomic, readwrite) CGPoint center;
-@property (nonatomic, readonly) CGRect bounds;
-@property (nonatomic, readwrite) CGAffineTransform transform;
-@end
-
-@interface UIScrollView (WebTableView)
-/// Y轴方向的最大的偏移量
-- (CGFloat)maxContentOffsetY;
-/// 在底部
-- (BOOL)isBottom;
-/// 在顶部
-- (BOOL)isTop;
-/// 滚动到顶部
-- (void)scrollToTopWithAnimated:(BOOL)animated;
-@end
 
 /*
   WKWebView + UITableView

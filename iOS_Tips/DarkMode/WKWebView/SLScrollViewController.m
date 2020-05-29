@@ -7,7 +7,7 @@
 //
 
 #import "SLScrollViewController.h"
-#import "SLWebTableViewController2.h"
+#import "SLDynamicItem.h"
 
 ///继承于UIView， 自定义实现UIScrollView的效果
 @interface  SLScrollView : UIView <UIGestureRecognizerDelegate, UIDynamicAnimatorDelegate>

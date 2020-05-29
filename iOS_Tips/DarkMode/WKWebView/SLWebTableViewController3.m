@@ -7,8 +7,9 @@
 //
 
 #import "SLWebTableViewController3.h"
-#import "SLWebTableViewController2.h"
 #import <WebKit/WebKit.h>
+#import "SLDynamicItem.h"
+#import "UIScrollView+SLCommon.h"
 
 @interface SLWebTableViewController3 ()<UITableViewDelegate,UITableViewDataSource, UIDynamicAnimatorDelegate,WKNavigationDelegate,UIGestureRecognizerDelegate>
 {
@@ -195,12 +196,12 @@
         case UIGestureRecognizerStateEnded: {
             // 这个if是为了避免在拉到边缘时，以一个非常小的初速度松手不回弹的问题
             if (fabs([recognizer velocityInView:self.view].y) < 120) {
-                if ([self.tableView isTop] &&
-                    [self.webView.scrollView isTop]) {
+                if ([self.tableView sl_isTop] &&
+                    [self.webView.scrollView sl_isTop]) {
                     //顶部
                     [self performBounceForScrollView:self.tableView isAtTop:YES];
-                } else if ([self.tableView isBottom] &&
-                           [self.webView.scrollView isBottom]) {
+                } else if ([self.tableView sl_isBottom] &&
+                           [self.webView.scrollView sl_isBottom]) {
                     //底部
                     if (self.tableView.frame.size.height < self.view.sl_height) { //tableView不足一屏，webView bounce
                         [self performBounceForScrollView:self.webView.scrollView isAtTop:NO];
@@ -240,25 +241,25 @@
 /// 根据拖拽手势在屏幕上的拖拽距离，调整scrollView.contentOffset
 - (void)scrollViewsSetContentOffsetY:(CGFloat)deltaY {
     if (deltaY < 0) { //上滑
-        if ([self.webView.scrollView isBottom]) { //webView已滑到底，此时应滑动tableView
-            if ([self.tableView isBottom]) { //tableView也到底
-                CGFloat bounceDelta = MAX(0, (self.maxBounceDistance - fabs(self.tableView.contentOffset.y - self.tableView.maxContentOffsetY)) / self.maxBounceDistance) * 0.5;
+        if ([self.webView.scrollView sl_isBottom]) { //webView已滑到底，此时应滑动tableView
+            if ([self.tableView sl_isBottom]) { //tableView也到底
+                CGFloat bounceDelta = MAX(0, (self.maxBounceDistance - fabs(self.tableView.contentOffset.y - self.tableView.sl_maxContentOffsetY)) / self.maxBounceDistance) * 0.5;
                 self.tableView.contentOffset = CGPointMake(0, self.tableView.contentOffset.y - deltaY * bounceDelta);
                 [self performBounceIfNeededForScrollView:self.tableView isAtTop:NO];
             } else {
-                self.tableView.contentOffset = CGPointMake(0, MIN(self.tableView.contentOffset.y - deltaY, [self.tableView maxContentOffsetY]));
+                self.tableView.contentOffset = CGPointMake(0, MIN(self.tableView.contentOffset.y - deltaY, [self.tableView sl_maxContentOffsetY]));
             }
         } else {
             if (self.tableView.contentOffset.y <0) {
                 //如果此时tableView顶部准备下拉回弹，则调整tableView.contentOffset
-                self.tableView.contentOffset = CGPointMake(0, MIN(self.tableView.contentOffset.y - deltaY, [self.tableView maxContentOffsetY]));
+                self.tableView.contentOffset = CGPointMake(0, MIN(self.tableView.contentOffset.y - deltaY, [self.tableView sl_maxContentOffsetY]));
             }else {
-                self.webView.scrollView.contentOffset = CGPointMake(0, MIN(self.webView.scrollView.contentOffset.y - deltaY, [self.webView.scrollView maxContentOffsetY]));
+                self.webView.scrollView.contentOffset = CGPointMake(0, MIN(self.webView.scrollView.contentOffset.y - deltaY, [self.webView.scrollView sl_maxContentOffsetY]));
             }
         }
     } else if (deltaY > 0) { //下滑
-        if ([self.tableView isTop]) { //tableView滑到顶，此时应滑动webView
-            if ([self.webView.scrollView isTop]) { //webView到顶
+        if ([self.tableView sl_isTop]) { //tableView滑到顶，此时应滑动webView
+            if ([self.webView.scrollView sl_isTop]) { //webView到顶
                 CGFloat bounceDelta = MAX(0, (self.maxBounceDistance - fabs(self.tableView.contentOffset.y)) / self.maxBounceDistance) * 0.5;
                 self.tableView.contentOffset = CGPointMake(0, self.tableView.contentOffset.y - bounceDelta * deltaY);
                 [self performBounceIfNeededForScrollView:self.tableView isAtTop:YES];
@@ -275,13 +276,13 @@
 
 //两种回弹触发方式：
 //1.惯性滚动到边缘处回弹
-- (void)performBounceIfNeededForScrollView:(UIScrollView *)scrollView isAtTop:(BOOL)isTop {
+- (void)performBounceIfNeededForScrollView:(UIScrollView *)scrollView isAtTop:(BOOL)sl_isTop {
     if (self.inertialBehavior) {
-        [self performBounceForScrollView:scrollView isAtTop:isTop];
+        [self performBounceForScrollView:scrollView isAtTop:sl_isTop];
     }
 }
 //2.手指拉到边缘处回弹
-- (void)performBounceForScrollView:(UIScrollView *)scrollView isAtTop:(BOOL)isTop {
+- (void)performBounceForScrollView:(UIScrollView *)scrollView isAtTop:(BOOL)sl_isTop {
     if (!self.bounceBehavior) {
         //移除惯性力
         [self.dynamicAnimator removeBehavior:self.inertialBehavior];
@@ -293,9 +294,9 @@
         CGFloat attachedToAnchorY = 0;
         if (scrollView == self.tableView) {
             //顶部时吸附力的Y轴锚点是0  底部时的锚点是Y轴最大偏移量
-            attachedToAnchorY = isTop ? 0 : [self.tableView maxContentOffsetY];
+            attachedToAnchorY = sl_isTop ? 0 : [self.tableView sl_maxContentOffsetY];
         } else {
-            attachedToAnchorY = [self.webView.scrollView maxContentOffsetY];
+            attachedToAnchorY = [self.webView.scrollView sl_maxContentOffsetY];
         }
         //吸附力
         UIAttachmentBehavior *bounceBehavior = [[UIAttachmentBehavior alloc] initWithItem:item attachedToAnchor:CGPointMake(0, attachedToAnchorY)];
@@ -321,7 +322,7 @@
     self.webView.frame = frame;
     self.tableView.tableHeaderView = self.webView;
     //当WebView的contentSize改变时，tableView滚到顶部WebView，tableView展示内容向下移，更新展示区域
-    [self.tableView scrollToTopWithAnimated:NO];
+    [self.tableView sl_scrollToTopWithAnimated:NO];
 }
 
 #pragma mark - UIDynamicAnimatorDelegate
