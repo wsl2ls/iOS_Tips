@@ -10,17 +10,17 @@
 
 @implementation UIScrollView (SLCommon)
 
-- (CGFloat)maxContentOffsetY {
+- (CGFloat)sl_maxContentOffsetY {
     return MAX(0, self.contentSize.height - self.frame.size.height);
 }
-- (BOOL)isBottom {
-    return self.contentOffset.y + 0.5 >= [self maxContentOffsetY] ||
-    fabs(self.contentOffset.y - [self maxContentOffsetY]) < FLT_EPSILON;
+- (BOOL)sl_isBottom {
+    return self.contentOffset.y + 0.5 >= [self sl_maxContentOffsetY] ||
+    fabs(self.contentOffset.y - [self sl_maxContentOffsetY]) < FLT_EPSILON;
 }
-- (BOOL)isTop {
+- (BOOL)sl_isTop {
     return self.contentOffset.y <= 0;
 }
-- (void)scrollToTopWithAnimated:(BOOL)animated {
+- (void)sl_scrollToTopWithAnimated:(BOOL)animated {
     [self setContentOffset:CGPointZero animated:animated];
 }
 

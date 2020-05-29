@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-///WKWebView的使用
+///关于WKWebView的使用可以看我之前的总结：  https://github.com/wsl2ls/WKWebView
 @interface SLWebViewController : UIViewController
 
 @end
