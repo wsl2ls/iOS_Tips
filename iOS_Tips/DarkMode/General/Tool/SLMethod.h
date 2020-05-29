@@ -28,9 +28,32 @@ CG_INLINE SLCornerRadii SLCornerRadiiMake(CGFloat topLeft,CGFloat topRight,CGFlo
     };
 }
 
+static NSString * const SLUserDefaultsKey = @"SLUserDefaultsKey";
+
 /// 辅助公共方法集合
 @interface SLMethod : NSObject
 
+/// 以SLUserDefaultsKey为根key，统一管理userDefaults存储的数据
++ (void)userDefaultsSetObject:(nullable id)value forKey:(NSString *)key;
++ (id)userDefaultsObjectForKey:(NSString *)key;
+
+/**
+ *  动态计算文字的宽高
+ *  @param text    文字
+ *  @param font    文字的font
+ *  @param maxSize 最大 size
+ *  @return 返回text的size
+ */
++ (CGSize)sizeFromText:(NSString *)text textFont:(UIFont *)font maxSize:(CGSize)maxSize;
+
+/**
+ 动态计算属性字符串的宽高
+
+ @param attributedText 属性字符串
+ @param maxSize 最大 size
+ @return 返回属性字符串的size
+ */
++ (CGSize)sizeFromAttributedText:(NSAttributedString *)attributedText maxSize:(CGSize)maxSize;
 /// 切四个不同半径圆角的函数
 /// @param bounds 区域
 /// @param cornerRadii 四个圆角的半径
