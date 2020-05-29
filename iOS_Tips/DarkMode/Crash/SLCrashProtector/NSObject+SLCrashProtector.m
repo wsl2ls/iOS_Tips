@@ -102,7 +102,7 @@ static void *KVODefenderKey = &KVODefenderKey;
 
 // 添加监听者
 - (void)sl_addObserver:(NSObject *)observer forKeyPath:(NSString *)keyPath options:(NSKeyValueObservingOptions)options context:(void *)context{
-//    if (!IsSystemClass(self.class)) {
+    if (!IsSystemClass(self.class)) {
         objc_setAssociatedObject(self, KVODefenderKey, KVODefenderValue, OBJC_ASSOCIATION_RETAIN);
         if ([self.KVODelegate addInfoToMapWithObserver:observer forKeyPath:keyPath options:options context:context]) {
             // 如果添加 KVO 信息操作成功，则调用系统添加方法
@@ -114,13 +114,13 @@ static void *KVODefenderKey = &KVODefenderKey;
                                      observer, keyPath, className];
             [[SLCrashHandler defaultCrashHandler] catchCrashException:nil type:SLCrashErrorTypeKVO errorDesc:errorReason];
         }
-//    } else {
-//        [self sl_addObserver:observer forKeyPath:keyPath options:options context:context];
-//    }
+    } else {
+        [self sl_addObserver:observer forKeyPath:keyPath options:options context:context];
+    }
 }
 // 移除监听者
 - (void)sl_removeObserver:(NSObject *)observer forKeyPath:(NSString *)keyPath{
-//    if (!IsSystemClass(self.class)) {
+    if (!IsSystemClass(self.class)) {
         if ([self.KVODelegate removeInfoInMapWithObserver:observer forKeyPath:keyPath]) {
             // 如果移除 KVO 信息操作成功，则调用系统移除方法
             [self sl_removeObserver:self.KVODelegate forKeyPath:keyPath];
@@ -130,13 +130,13 @@ static void *KVODefenderKey = &KVODefenderKey;
             NSString *errorReason = [NSString stringWithFormat:@"异常 KVO: Cannot remove an observer %@ for the key path '%@' from %@ , because it is not registered as an observer", observer, keyPath, className];
             [[SLCrashHandler defaultCrashHandler] catchCrashException:nil type:SLCrashErrorTypeKVO errorDesc:errorReason];
         }
-//    } else {
-//        [self sl_removeObserver:observer forKeyPath:keyPath];
-//    }
+    } else {
+        [self sl_removeObserver:observer forKeyPath:keyPath];
+    }
 }
 // 移除监听者
 - (void)sl_removeObserver:(NSObject *)observer forKeyPath:(NSString *)keyPath context:(nullable void *)context{
-//    if (!IsSystemClass(self.class)) {
+    if (!IsSystemClass(self.class)) {
         if ([self.KVODelegate removeInfoInMapWithObserver:observer forKeyPath:keyPath  context:context]) {
             // 如果移除 KVO 信息操作成功，则调用系统移除方法
             [self sl_removeObserver:self.KVODelegate forKeyPath:keyPath context:context];
@@ -146,9 +146,9 @@ static void *KVODefenderKey = &KVODefenderKey;
             NSString *errorReason = [NSString stringWithFormat:@"异常 KVO: Cannot remove an observer %@ for the key path '%@' from %@ , because it is not registered as an observer", observer, keyPath, className];
             [[SLCrashHandler defaultCrashHandler] catchCrashException:nil type:SLCrashErrorTypeKVO errorDesc:errorReason];
         }
-//    } else {
-//        [self sl_removeObserver:observer forKeyPath:keyPath context:context];
-//    }
+    } else {
+        [self sl_removeObserver:observer forKeyPath:keyPath context:context];
+    }
 }
 // 释放
 - (void)sl_KVODealloc{
