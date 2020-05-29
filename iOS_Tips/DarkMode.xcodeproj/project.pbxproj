@@ -124,7 +124,7 @@
 		78E179372351A40D0007E4BB /* SLShotFocusView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E179342351A40D0007E4BB /* SLShotFocusView.m */; };
 		78E72D5124766E4B00751373 /* SLWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E72D5024766E4B00751373 /* SLWebViewController.m */; };
 		78E72D542477A4E700751373 /* SLWebTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E72D532477A4E700751373 /* SLWebTableViewController.m */; };
-		78E72D59247BA29600751373 /* JStoOC.html in Resources */ = {isa = PBXBuildFile; fileRef = 78E72D58247BA29600751373 /* JStoOC.html */; };
+		78E72D59247BA29600751373 /* WebTableView.html in Resources */ = {isa = PBXBuildFile; fileRef = 78E72D58247BA29600751373 /* WebTableView.html */; };
 		78E72D5C247BDDE700751373 /* SLWebTableViewController2.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E72D5B247BDDE700751373 /* SLWebTableViewController2.m */; };
 		78E72D70247E536400751373 /* SLWebTableViewController3.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E72D6F247E536400751373 /* SLWebTableViewController3.m */; };
 		78E72D73247E861300751373 /* SLWebViewListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E72D72247E861300751373 /* SLWebViewListController.m */; };
@@ -353,7 +353,7 @@
 		78E72D5024766E4B00751373 /* SLWebViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLWebViewController.m; sourceTree = "<group>"; };
 		78E72D522477A4E700751373 /* SLWebTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLWebTableViewController.h; sourceTree = "<group>"; };
 		78E72D532477A4E700751373 /* SLWebTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLWebTableViewController.m; sourceTree = "<group>"; };
-		78E72D58247BA29600751373 /* JStoOC.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = JStoOC.html; sourceTree = "<group>"; };
+		78E72D58247BA29600751373 /* WebTableView.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = WebTableView.html; sourceTree = "<group>"; };
 		78E72D5A247BDDE700751373 /* SLWebTableViewController2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLWebTableViewController2.h; sourceTree = "<group>"; };
 		78E72D5B247BDDE700751373 /* SLWebTableViewController2.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLWebTableViewController2.m; sourceTree = "<group>"; };
 		78E72D6E247E536400751373 /* SLWebTableViewController3.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLWebTableViewController3.h; sourceTree = "<group>"; };
@@ -838,7 +838,7 @@
 		78E72D4E24766E1300751373 /* WKWebView */ = {
 			isa = PBXGroup;
 			children = (
-				78E72D58247BA29600751373 /* JStoOC.html */,
+				78E72D58247BA29600751373 /* WebTableView.html */,
 				78E72D71247E861300751373 /* SLWebViewListController.h */,
 				78E72D72247E861300751373 /* SLWebViewListController.m */,
 				78E72D4F24766E4B00751373 /* SLWebViewController.h */,
@@ -1049,7 +1049,7 @@
 				782CFB2B239E0479001B5528 /* SplitScreen_3.vsh in Resources */,
 				782CFB5B239E6227001B5528 /* Gray.vsh in Resources */,
 				782CFB5E239E622E001B5528 /* Mosaic.vsh in Resources */,
-				78E72D59247BA29600751373 /* JStoOC.html in Resources */,
+				78E72D59247BA29600751373 /* WebTableView.html in Resources */,
 				782CFB7A239E6A11001B5528 /* Glitch.vsh in Resources */,
 				782CFB5A239E6227001B5528 /* Gray.fsh in Resources */,
 				782CFB66239E6651001B5528 /* HexagonMosaic.fsh in Resources */,
