@@ -226,6 +226,7 @@
                 [weakSelf scrollViewsSetContentOffsetY:lastCenterY - item.center.y];
                 lastCenterY = item.center.y;
             };
+             //注意，self.inertialBehavior 的修饰符是weak，惯性力结束停止之后，会释放inertialBehavior对象，self.inertialBehavior = nil
             self.inertialBehavior = inertialBehavior;
             [self.dynamicAnimator addBehavior:inertialBehavior];
         }
@@ -366,6 +367,12 @@
     label.textAlignment = NSTextAlignmentCenter;
     label.backgroundColor = [UIColor orangeColor];
     return label;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    return 0.1;
+}
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
+    return nil;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"cellId"];
