@@ -857,8 +857,20 @@
 				78E72D72247E861300751373 /* SLWebViewListController.m */,
 				78E72D4F24766E4B00751373 /* SLWebViewController.h */,
 				78E72D5024766E4B00751373 /* SLWebViewController.m */,
+				78E72D8324822E7500751373 /* WebTableView */,
+				78E72D8024811F6600751373 /* SLWebCacheViewController.h */,
+				78E72D8124811F6600751373 /* SLWebCacheViewController.m */,
+			);
+			path = WKWebView;
+			sourceTree = "<group>";
+		};
+		78E72D8324822E7500751373 /* WebTableView */ = {
+			isa = PBXGroup;
+			children = (
 				78E72D7A24810E2D00751373 /* SLDynamicItem.h */,
 				78E72D7B24810E2D00751373 /* SLDynamicItem.m */,
+				78E72D772480B36800751373 /* SLScrollViewController.h */,
+				78E72D782480B36800751373 /* SLScrollViewController.m */,
 				78E72D522477A4E700751373 /* SLWebTableViewController.h */,
 				78E72D532477A4E700751373 /* SLWebTableViewController.m */,
 				78E72D5A247BDDE700751373 /* SLWebTableViewController2.h */,
@@ -867,12 +879,8 @@
 				78E72D6F247E536400751373 /* SLWebTableViewController3.m */,
 				78E72D74247F9FFC00751373 /* SLWebTableViewController4.h */,
 				78E72D75247F9FFC00751373 /* SLWebTableViewController4.m */,
-				78E72D772480B36800751373 /* SLScrollViewController.h */,
-				78E72D782480B36800751373 /* SLScrollViewController.m */,
-				78E72D8024811F6600751373 /* SLWebCacheViewController.h */,
-				78E72D8124811F6600751373 /* SLWebCacheViewController.m */,
 			);
-			path = WKWebView;
+			path = WebTableView;
 			sourceTree = "<group>";
 		};
 		78EF8B5C24162B07008D0CD7 /* UIMenuController */ = {
