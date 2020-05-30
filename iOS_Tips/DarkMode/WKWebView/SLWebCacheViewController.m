@@ -7,8 +7,9 @@
 //
 
 #import "SLWebCacheViewController.h"
-
 #import <WebKit/WebKit.h>
+#import "SLUrlProtocol.h"
+#import "WKWebView+SLExtension.h"
 
 @interface SLWebCacheViewController ()
 
@@ -34,6 +35,7 @@
 }
 - (void)dealloc {
     [self removeKVO];
+    [WKWebView sl_unregisterSchemeForSupportHttpProtocol];
     NSLog(@"%@释放了",NSStringFromClass(self.class));
 }
 
@@ -50,17 +52,19 @@
     if(_webView == nil){
         //创建网页配置
         WKWebViewConfiguration *config = [[WKWebViewConfiguration alloc] init];
-        
         _webView = [[WKWebView alloc] initWithFrame:CGRectMake(0, 0, SL_kScreenWidth, SL_kScreenHeight) configuration:config];
-
-        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"https://github.com/wsl2ls/WKWebView"]];
-        [_webView loadRequest:request];
-        
         if (@available(iOS 11.0, *)) {
             _webView.scrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
         } else {
             self.automaticallyAdjustsScrollViewInsets = NO;
         }
+
+        //注册协议类, 然后URL加载系统就会在请求发出时使用我们创建的协议对象对该请求进行拦截处理，不需要拦截的时候，要进行注销unregisterClass
+        [NSURLProtocol registerClass:[SLUrlProtocol class]];
+        [WKWebView sl_registerSchemeForSupportHttpProtocol];
+        
+        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:SL_JianShuUrl]];
+        [_webView loadRequest:request];
         [self.view addSubview:self.webView];
     }
     return _webView;

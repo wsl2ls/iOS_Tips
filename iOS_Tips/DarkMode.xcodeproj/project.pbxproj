@@ -133,6 +133,8 @@
 		78E72D7C24810E2D00751373 /* SLDynamicItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E72D7B24810E2D00751373 /* SLDynamicItem.m */; };
 		78E72D7F24810ECC00751373 /* UIScrollView+SLCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E72D7E24810ECC00751373 /* UIScrollView+SLCommon.m */; };
 		78E72D8224811F6600751373 /* SLWebCacheViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E72D8124811F6600751373 /* SLWebCacheViewController.m */; };
+		78E72D86248284B700751373 /* SLUrlProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E72D85248284B700751373 /* SLUrlProtocol.m */; };
+		78E72D8C2482958300751373 /* WKWebView+SLExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E72D8B2482958300751373 /* WKWebView+SLExtension.m */; };
 		78EF8B6024162B96008D0CD7 /* SLMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78EF8B5E24162B96008D0CD7 /* SLMenuViewController.m */; };
 		78EF8B6124162B96008D0CD7 /* SLMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 78EF8B5F24162B96008D0CD7 /* SLMenuViewController.xib */; };
 		78EF8B6424188767008D0CD7 /* SLAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78EF8B6324188767008D0CD7 /* SLAlertView.m */; };
@@ -374,6 +376,10 @@
 		78E72D7E24810ECC00751373 /* UIScrollView+SLCommon.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+SLCommon.m"; sourceTree = "<group>"; };
 		78E72D8024811F6600751373 /* SLWebCacheViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLWebCacheViewController.h; sourceTree = "<group>"; };
 		78E72D8124811F6600751373 /* SLWebCacheViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLWebCacheViewController.m; sourceTree = "<group>"; };
+		78E72D84248284B700751373 /* SLUrlProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLUrlProtocol.h; sourceTree = "<group>"; };
+		78E72D85248284B700751373 /* SLUrlProtocol.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLUrlProtocol.m; sourceTree = "<group>"; };
+		78E72D8A2482958300751373 /* WKWebView+SLExtension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WKWebView+SLExtension.h"; sourceTree = "<group>"; };
+		78E72D8B2482958300751373 /* WKWebView+SLExtension.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "WKWebView+SLExtension.m"; sourceTree = "<group>"; };
 		78EF8B5D24162B96008D0CD7 /* SLMenuViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLMenuViewController.h; sourceTree = "<group>"; };
 		78EF8B5E24162B96008D0CD7 /* SLMenuViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLMenuViewController.m; sourceTree = "<group>"; };
 		78EF8B5F24162B96008D0CD7 /* SLMenuViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SLMenuViewController.xib; sourceTree = "<group>"; };
@@ -540,6 +546,8 @@
 				78A1998B2451BEE7005B2B4B /* UIButton+SLTitleImage.m */,
 				78E72D7D24810ECC00751373 /* UIScrollView+SLCommon.h */,
 				78E72D7E24810ECC00751373 /* UIScrollView+SLCommon.m */,
+				78E72D8A2482958300751373 /* WKWebView+SLExtension.h */,
+				78E72D8B2482958300751373 /* WKWebView+SLExtension.m */,
 			);
 			path = SLCategory;
 			sourceTree = "<group>";
@@ -860,6 +868,8 @@
 				78E72D8324822E7500751373 /* WebTableView */,
 				78E72D8024811F6600751373 /* SLWebCacheViewController.h */,
 				78E72D8124811F6600751373 /* SLWebCacheViewController.m */,
+				78E72D84248284B700751373 /* SLUrlProtocol.h */,
+				78E72D85248284B700751373 /* SLUrlProtocol.m */,
 			);
 			path = WKWebView;
 			sourceTree = "<group>";
@@ -1195,6 +1205,7 @@
 				787C7DBE245D74E4005DF7ED /* NSMutableArray+SLCrashProtector.m in Sources */,
 				78A1998C2451BEE7005B2B4B /* UIButton+SLTitleImage.m in Sources */,
 				78E72D70247E536400751373 /* SLWebTableViewController3.m in Sources */,
+				78E72D8C2482958300751373 /* WKWebView+SLExtension.m in Sources */,
 				78E72D542477A4E700751373 /* SLWebTableViewController.m in Sources */,
 				783504642452C20B0071283E /* SLMethod.m in Sources */,
 				787C7E4524656524005DF7ED /* UIView+SLMLeakFinder.m in Sources */,
@@ -1235,6 +1246,7 @@
 				78E72D7F24810ECC00751373 /* UIScrollView+SLCommon.m in Sources */,
 				78EF8B6424188767008D0CD7 /* SLAlertView.m in Sources */,
 				78E179312351A4020007E4BB /* SLShotViewController.m in Sources */,
+				78E72D86248284B700751373 /* SLUrlProtocol.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
