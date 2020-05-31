@@ -17,8 +17,8 @@ static NSString *SLUrlProtocolHandled = @"SLUrlProtocolHandled";
 @property (nonatomic, readwrite, strong) NSMutableData *data;
 @property (nonatomic, readwrite, strong) NSURLResponse *response;
 
-@property (nonatomic, copy) NSString *filePath;
-@property (nonatomic, copy) NSString *otherInfoPath;
+@property (nonatomic, copy) NSString *filePath; //缓存文件路径
+@property (nonatomic, copy) NSString *otherInfoPath; //缓存文件信息路径
 
 @end
 
@@ -59,8 +59,8 @@ static NSString *SLUrlProtocolHandled = @"SLUrlProtocolHandled";
     
     NSDate *date = [NSDate date];
     NSFileManager *fm = [NSFileManager defaultManager];
+    //缓存文件是否过期
     BOOL expire = false;
-    
     if ([fm fileExistsAtPath:self.filePath]) {
         //有缓存文件的情况
         NSDictionary *otherInfo = [NSDictionary dictionaryWithContentsOfFile:self.otherInfoPath];
@@ -106,17 +106,17 @@ static NSString *SLUrlProtocolHandled = @"SLUrlProtocolHandled";
     self.session = nil;
 }
 
-#pragma mark - Helper
+#pragma mark - Help Methods
 - (void)clear {
-    [self setData:nil];
-    [self setSession:nil];
-    [self setResponse:nil];
+    self.data = nil;
+    self.session = nil;
+    self.response = nil;
 }
 - (void)appendData:(NSData *)newData {
-    if ([self data] == nil) {
-        [self setData:[newData mutableCopy]];
+    if (self.data == nil) {
+        self.data = [newData mutableCopy];
     } else {
-        [[self data] appendData:newData];
+        [self.data appendData:newData];
     }
 }
 
@@ -149,8 +149,11 @@ didCompleteWithError:(nullable NSError *)error {
         [self.client URLProtocolDidFinishLoading:self];
         //开始缓存
         NSDate *date = [NSDate date];
-        NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%f",[date timeIntervalSince1970]],@"time",self.response.MIMEType,@"MIMEType",self.response.textEncodingName,@"textEncodingName", nil];
-        [dic writeToFile:self.otherInfoPath atomically:YES];
+        NSDictionary *info = @{@"time" : [NSString stringWithFormat:@"%f",[date timeIntervalSince1970]],
+                               @"MIMEType" : self.response.MIMEType,
+                               @"textEncodingName" : self.response.textEncodingName
+        };
+        [info writeToFile:self.otherInfoPath atomically:YES];
         [self.data writeToFile:self.filePath atomically:YES];
     }
     
