@@ -63,7 +63,7 @@
         [NSURLProtocol registerClass:[SLUrlProtocol class]];
         [WKWebView sl_registerSchemeForSupportHttpProtocol];
         
-        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:SL_JianShuUrl]];
+        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"https://www.baidu.com/"]];
         [_webView loadRequest:request];
         [self.view addSubview:self.webView];
     }
