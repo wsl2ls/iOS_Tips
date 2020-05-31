@@ -135,6 +135,7 @@
 		78E72D8224811F6600751373 /* SLWebCacheViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E72D8124811F6600751373 /* SLWebCacheViewController.m */; };
 		78E72D86248284B700751373 /* SLUrlProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E72D85248284B700751373 /* SLUrlProtocol.m */; };
 		78E72D8C2482958300751373 /* WKWebView+SLExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E72D8B2482958300751373 /* WKWebView+SLExtension.m */; };
+		78E72D8F2483DC2600751373 /* SLUrlCacheModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E72D8E2483DC2600751373 /* SLUrlCacheModel.m */; };
 		78EF8B6024162B96008D0CD7 /* SLMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78EF8B5E24162B96008D0CD7 /* SLMenuViewController.m */; };
 		78EF8B6124162B96008D0CD7 /* SLMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 78EF8B5F24162B96008D0CD7 /* SLMenuViewController.xib */; };
 		78EF8B6424188767008D0CD7 /* SLAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78EF8B6324188767008D0CD7 /* SLAlertView.m */; };
@@ -380,6 +381,8 @@
 		78E72D85248284B700751373 /* SLUrlProtocol.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLUrlProtocol.m; sourceTree = "<group>"; };
 		78E72D8A2482958300751373 /* WKWebView+SLExtension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WKWebView+SLExtension.h"; sourceTree = "<group>"; };
 		78E72D8B2482958300751373 /* WKWebView+SLExtension.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "WKWebView+SLExtension.m"; sourceTree = "<group>"; };
+		78E72D8D2483DC2600751373 /* SLUrlCacheModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLUrlCacheModel.h; sourceTree = "<group>"; };
+		78E72D8E2483DC2600751373 /* SLUrlCacheModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLUrlCacheModel.m; sourceTree = "<group>"; };
 		78EF8B5D24162B96008D0CD7 /* SLMenuViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLMenuViewController.h; sourceTree = "<group>"; };
 		78EF8B5E24162B96008D0CD7 /* SLMenuViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLMenuViewController.m; sourceTree = "<group>"; };
 		78EF8B5F24162B96008D0CD7 /* SLMenuViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SLMenuViewController.xib; sourceTree = "<group>"; };
@@ -870,6 +873,8 @@
 				78E72D8124811F6600751373 /* SLWebCacheViewController.m */,
 				78E72D84248284B700751373 /* SLUrlProtocol.h */,
 				78E72D85248284B700751373 /* SLUrlProtocol.m */,
+				78E72D8D2483DC2600751373 /* SLUrlCacheModel.h */,
+				78E72D8E2483DC2600751373 /* SLUrlCacheModel.m */,
 			);
 			path = WKWebView;
 			sourceTree = "<group>";
@@ -1191,6 +1196,7 @@
 				788ACD652390EA3A00737EC2 /* SLCubeViewController.m in Sources */,
 				7857FD4B24729E8500D3D986 /* BSBacktraceLogger.m in Sources */,
 				78E72D8224811F6600751373 /* SLWebCacheViewController.m in Sources */,
+				78E72D8F2483DC2600751373 /* SLUrlCacheModel.m in Sources */,
 				787C7DC9245D77D9005DF7ED /* SLZombieSafeFree.m in Sources */,
 				786147FA23630C4D00C5424C /* UIImage+SLCommon.m in Sources */,
 				78FA0F9D235407E6003E456B /* SLDrawView.m in Sources */,
