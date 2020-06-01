@@ -19,8 +19,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *cacheFolder;   //缓存文件夹
 @property (nonatomic, copy) NSString *subDirectory;   //子路径
 
-@property (nonatomic) BOOL isDownloadMode; //是否为下载模式
-@property (nonatomic) BOOL isSavedOnDisk;  //是否存磁盘
+@property (nonatomic, assign) BOOL isDownloadMode; //是否为下载模式
+@property (nonatomic, assign) BOOL isSavedOnDisk;  //是否存磁盘
 
 @property (nonatomic, strong) NSMutableDictionary *responseDic; //防止下载请求的循环调用
 
@@ -31,8 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSString *replaceUrl;
 @property (nonatomic, strong) NSData *replaceData;
 
-
-@property (nonatomic) BOOL isUsingURLProtocol; //缓存方案 默认是SLUrlCache
+@property (nonatomic, assign) BOOL isUsingURLProtocol; //缓存方案：SLUrlCache 和 SLUrlProtocol，默认是SLUrlCache
 
 + (SLWebCacheManager *)shareInstance;
 

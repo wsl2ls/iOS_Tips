@@ -199,7 +199,7 @@
                 if ([self.tableView sl_isTop] &&
                     [self.webView.scrollView sl_isTop]) {
                     //顶部
-                    [self performBounceForScrollView:self.tableView isAtTop:YES];
+                    [self performBounceForScrollView:self.webView.scrollView isAtTop:YES];
                 } else if ([self.tableView sl_isBottom] &&
                            [self.webView.scrollView sl_isBottom]) {
                     //底部
@@ -278,7 +278,7 @@
     }
 }
 //2.手指拉到边缘处回弹
-- (void)performBounceForScrollView:(UIScrollView *)scrollView isAtTop:(BOOL)sl_isTop {
+- (void)performBounceForScrollView:(UIScrollView *)scrollView isAtTop:(BOOL)isTop {
     if (!self.bounceBehavior) {
         //移除惯性力
         [self.dynamicAnimator removeBehavior:self.inertialBehavior];
@@ -290,7 +290,7 @@
         CGFloat attachedToAnchorY = 0;
         if (scrollView == self.tableView) {
             //顶部时吸附力的Y轴锚点是0  底部时的锚点是Y轴最大偏移量
-            attachedToAnchorY = sl_isTop ? 0 : [self.tableView sl_maxContentOffsetY];
+            attachedToAnchorY = isTop ? 0 : [self.tableView sl_maxContentOffsetY];
         }else {
             attachedToAnchorY = 0;
         }

@@ -59,7 +59,7 @@
                                           @" tableView.tableHeaderView = webView 不撑开webView ",
                                           @" [UIScrollView addSubView: WKWebView & UITableView]",
                                           @" SLScrollView继承于UIView，自定义实现UIScrollView的效果",
-                                          @" "]];
+                                          @" NSURLProtocol 和 NSURLCache 两种缓存方案"]];
     [self.classArray addObjectsFromArray:@[[SLWebViewController class],
                                            [SLWebTableViewController class],
                                            [SLWebTableViewController2 class],
