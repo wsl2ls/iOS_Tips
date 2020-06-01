@@ -82,7 +82,6 @@
     NSString *filePath = [self filePathFromRequest:request isInfo:NO];
     NSString *otherInfoPath = [self filePathFromRequest:request isInfo:YES];
     NSDate *date = [NSDate date];
-    self.isSavedOnDisk = NO;
     id isExist = [self.responseDic objectForKey:request.URL.absoluteString];
     if (isExist == nil) {
         [self.responseDic setValue:[NSNumber numberWithBool:TRUE] forKey:request.URL.absoluteString];
