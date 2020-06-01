@@ -250,19 +250,15 @@
                 self.tableView.contentOffset = CGPointMake(0, MIN(self.tableView.contentOffset.y - deltaY, [self.tableView sl_maxContentOffsetY]));
             }
         } else {
-            if (self.tableView.contentOffset.y <0) {
-                //如果此时tableView顶部准备下拉回弹，则调整tableView.contentOffset
-                self.tableView.contentOffset = CGPointMake(0, MIN(self.tableView.contentOffset.y - deltaY, [self.tableView sl_maxContentOffsetY]));
-            }else {
-                self.webView.scrollView.contentOffset = CGPointMake(0, MIN(self.webView.scrollView.contentOffset.y - deltaY, [self.webView.scrollView sl_maxContentOffsetY]));
-            }
+            self.webView.scrollView.contentOffset = CGPointMake(0, MIN(self.webView.scrollView.contentOffset.y - deltaY, [self.webView.scrollView sl_maxContentOffsetY]));
+            
         }
     } else if (deltaY > 0) { //下滑
         if ([self.tableView sl_isTop]) { //tableView滑到顶，此时应滑动webView
             if ([self.webView.scrollView sl_isTop]) { //webView到顶
-                CGFloat bounceDelta = MAX(0, (self.maxBounceDistance - fabs(self.tableView.contentOffset.y)) / self.maxBounceDistance) * 0.5;
-                self.tableView.contentOffset = CGPointMake(0, self.tableView.contentOffset.y - bounceDelta * deltaY);
-                [self performBounceIfNeededForScrollView:self.tableView isAtTop:YES];
+                CGFloat bounceDelta = MAX(0, (self.maxBounceDistance - fabs(self.webView.scrollView.contentOffset.y)) / self.maxBounceDistance) * 0.5;
+                self.webView.scrollView.contentOffset = CGPointMake(0, self.webView.scrollView.contentOffset.y - bounceDelta * deltaY);
+                [self performBounceIfNeededForScrollView:self.webView.scrollView isAtTop:YES];
             } else {
                 //tableView内容到顶后，调整webView.contentOffset
                 self.webView.scrollView.contentOffset = CGPointMake(0, MAX(self.webView.scrollView.contentOffset.y - deltaY, 0));
@@ -295,8 +291,8 @@
         if (scrollView == self.tableView) {
             //顶部时吸附力的Y轴锚点是0  底部时的锚点是Y轴最大偏移量
             attachedToAnchorY = sl_isTop ? 0 : [self.tableView sl_maxContentOffsetY];
-        } else {
-            attachedToAnchorY = [self.webView.scrollView sl_maxContentOffsetY];
+        }else {
+            attachedToAnchorY = 0;
         }
         //吸附力
         UIAttachmentBehavior *bounceBehavior = [[UIAttachmentBehavior alloc] initWithItem:item attachedToAnchor:CGPointMake(0, attachedToAnchorY)];
