@@ -135,7 +135,8 @@
 		78E72D8224811F6600751373 /* SLWebCacheViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E72D8124811F6600751373 /* SLWebCacheViewController.m */; };
 		78E72D86248284B700751373 /* SLUrlProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E72D85248284B700751373 /* SLUrlProtocol.m */; };
 		78E72D8C2482958300751373 /* WKWebView+SLExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E72D8B2482958300751373 /* WKWebView+SLExtension.m */; };
-		78E72D8F2483DC2600751373 /* SLUrlCacheModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E72D8E2483DC2600751373 /* SLUrlCacheModel.m */; };
+		78E72D8F2483DC2600751373 /* SLWebCacheManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E72D8E2483DC2600751373 /* SLWebCacheManager.m */; };
+		78E72D922484EEAA00751373 /* SLUrlCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E72D912484EEAA00751373 /* SLUrlCache.m */; };
 		78EF8B6024162B96008D0CD7 /* SLMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78EF8B5E24162B96008D0CD7 /* SLMenuViewController.m */; };
 		78EF8B6124162B96008D0CD7 /* SLMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 78EF8B5F24162B96008D0CD7 /* SLMenuViewController.xib */; };
 		78EF8B6424188767008D0CD7 /* SLAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78EF8B6324188767008D0CD7 /* SLAlertView.m */; };
@@ -381,8 +382,10 @@
 		78E72D85248284B700751373 /* SLUrlProtocol.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLUrlProtocol.m; sourceTree = "<group>"; };
 		78E72D8A2482958300751373 /* WKWebView+SLExtension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WKWebView+SLExtension.h"; sourceTree = "<group>"; };
 		78E72D8B2482958300751373 /* WKWebView+SLExtension.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "WKWebView+SLExtension.m"; sourceTree = "<group>"; };
-		78E72D8D2483DC2600751373 /* SLUrlCacheModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLUrlCacheModel.h; sourceTree = "<group>"; };
-		78E72D8E2483DC2600751373 /* SLUrlCacheModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLUrlCacheModel.m; sourceTree = "<group>"; };
+		78E72D8D2483DC2600751373 /* SLWebCacheManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLWebCacheManager.h; sourceTree = "<group>"; };
+		78E72D8E2483DC2600751373 /* SLWebCacheManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLWebCacheManager.m; sourceTree = "<group>"; };
+		78E72D902484EEAA00751373 /* SLUrlCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLUrlCache.h; sourceTree = "<group>"; };
+		78E72D912484EEAA00751373 /* SLUrlCache.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLUrlCache.m; sourceTree = "<group>"; };
 		78EF8B5D24162B96008D0CD7 /* SLMenuViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLMenuViewController.h; sourceTree = "<group>"; };
 		78EF8B5E24162B96008D0CD7 /* SLMenuViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLMenuViewController.m; sourceTree = "<group>"; };
 		78EF8B5F24162B96008D0CD7 /* SLMenuViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SLMenuViewController.xib; sourceTree = "<group>"; };
@@ -869,12 +872,7 @@
 				78E72D4F24766E4B00751373 /* SLWebViewController.h */,
 				78E72D5024766E4B00751373 /* SLWebViewController.m */,
 				78E72D8324822E7500751373 /* WebTableView */,
-				78E72D8024811F6600751373 /* SLWebCacheViewController.h */,
-				78E72D8124811F6600751373 /* SLWebCacheViewController.m */,
-				78E72D84248284B700751373 /* SLUrlProtocol.h */,
-				78E72D85248284B700751373 /* SLUrlProtocol.m */,
-				78E72D8D2483DC2600751373 /* SLUrlCacheModel.h */,
-				78E72D8E2483DC2600751373 /* SLUrlCacheModel.m */,
+				78E72D9324852C2F00751373 /* WebCache */,
 			);
 			path = WKWebView;
 			sourceTree = "<group>";
@@ -896,6 +894,21 @@
 				78E72D75247F9FFC00751373 /* SLWebTableViewController4.m */,
 			);
 			path = WebTableView;
+			sourceTree = "<group>";
+		};
+		78E72D9324852C2F00751373 /* WebCache */ = {
+			isa = PBXGroup;
+			children = (
+				78E72D8024811F6600751373 /* SLWebCacheViewController.h */,
+				78E72D8124811F6600751373 /* SLWebCacheViewController.m */,
+				78E72D8D2483DC2600751373 /* SLWebCacheManager.h */,
+				78E72D8E2483DC2600751373 /* SLWebCacheManager.m */,
+				78E72D84248284B700751373 /* SLUrlProtocol.h */,
+				78E72D85248284B700751373 /* SLUrlProtocol.m */,
+				78E72D902484EEAA00751373 /* SLUrlCache.h */,
+				78E72D912484EEAA00751373 /* SLUrlCache.m */,
+			);
+			path = WebCache;
 			sourceTree = "<group>";
 		};
 		78EF8B5C24162B07008D0CD7 /* UIMenuController */ = {
@@ -1196,7 +1209,7 @@
 				788ACD652390EA3A00737EC2 /* SLCubeViewController.m in Sources */,
 				7857FD4B24729E8500D3D986 /* BSBacktraceLogger.m in Sources */,
 				78E72D8224811F6600751373 /* SLWebCacheViewController.m in Sources */,
-				78E72D8F2483DC2600751373 /* SLUrlCacheModel.m in Sources */,
+				78E72D8F2483DC2600751373 /* SLWebCacheManager.m in Sources */,
 				787C7DC9245D77D9005DF7ED /* SLZombieSafeFree.m in Sources */,
 				786147FA23630C4D00C5424C /* UIImage+SLCommon.m in Sources */,
 				78FA0F9D235407E6003E456B /* SLDrawView.m in Sources */,
@@ -1219,6 +1232,7 @@
 				787C7DC2245D74E4005DF7ED /* NSMutableString+SLCrashProtector.m in Sources */,
 				782E3EB12373D889001E0DF9 /* SLAvCaptureSession.m in Sources */,
 				78E179362351A40D0007E4BB /* SLEditMenuView.m in Sources */,
+				78E72D922484EEAA00751373 /* SLUrlCache.m in Sources */,
 				78F54916233383D800910215 /* SLBlurView.m in Sources */,
 				787F01A3236AD8A5002AC1A9 /* SLEditImageController.m in Sources */,
 				780F5306236D8570000D0EA8 /* SLImageClipController.m in Sources */,

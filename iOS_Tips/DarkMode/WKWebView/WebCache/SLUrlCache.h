@@ -1,20 +1,17 @@
 //
-//  SLUrlProtocol.h
+//  SLUrlCache.h
 //  DarkMode
 //
-//  Created by wsl on 2020/5/30.
+//  Created by wsl on 2020/6/1.
 //  Copyright © 2020 https://github.com/wsl2ls   ----- . All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
-/*
- NSURLProtocol的简介：https://www.jianshu.com/p/ae5e8f9988d8
- */
 
-///
-@interface SLUrlProtocol : NSURLProtocol
+///缓存方案2：  NSURLCache
+@interface SLUrlCache : NSURLCache
 
 @end
 

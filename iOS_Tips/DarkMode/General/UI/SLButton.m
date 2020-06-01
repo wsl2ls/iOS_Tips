@@ -102,15 +102,16 @@
 - (void)imageTop:(CGFloat)space {
     CGSize imageSize = self.imageView.image.size;
     CGSize titleSize = [self.titleLabel sizeThatFits:CGSizeZero];
+    CGFloat heightGap = imageSize.height - titleSize.height; //高度差距
     [self.imageView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.centerX.mas_equalTo(self.mas_centerX);
         make.size.mas_equalTo(imageSize);
-        make.centerY.mas_equalTo(self.mas_centerY).offset(-imageSize.height/2.0-space/2.0);
+        make.centerY.mas_equalTo(self.mas_centerY).offset(-imageSize.height/2.0-space/2.0 + heightGap/2.0);
     }];
     [self.titleLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.centerX.mas_equalTo(self.mas_centerX);
         make.size.mas_equalTo(titleSize);
-        make.centerY.mas_equalTo(self.mas_centerY).offset(titleSize.height/2.0+space/2.0);
+        make.centerY.mas_equalTo(self.mas_centerY).offset(titleSize.height/2.0+space/2.0 + heightGap/2.0);
     }];
 }
 - (void)imageBottom:(CGFloat)space {

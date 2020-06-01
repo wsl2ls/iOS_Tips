@@ -7,15 +7,15 @@
 //
 
 #import "SLUrlProtocol.h"
-#import "SLUrlCacheModel.h"
+#import "SLWebCacheManager.h"
 
 static NSString *SLUrlProtocolHandled = @"SLUrlProtocolHandled";
 
 @interface SLUrlProtocol ()<NSURLSessionDelegate>
 
-@property (nonatomic, strong) NSURLSession *session;
-@property (nonatomic, readwrite, strong) NSMutableData *data;
-@property (nonatomic, readwrite, strong) NSURLResponse *response;
+@property (nonatomic, strong) NSURLSession *session;   //会话
+@property (nonatomic, readwrite, strong) NSMutableData *data;  //请求到的数据
+@property (nonatomic, readwrite, strong) NSURLResponse *response;  //响应信息
 
 @property (nonatomic, copy) NSString *filePath; //缓存文件路径
 @property (nonatomic, copy) NSString *otherInfoPath; //缓存文件信息路径
@@ -34,7 +34,6 @@ static NSString *SLUrlProtocolHandled = @"SLUrlProtocolHandled";
 }
 //可选方法，这个方法用来统一处理请求的request对象，可以修改头信息，或者重定向。没有特殊需要，则直接return request。
 + (NSURLRequest *)canonicalRequestForRequest:(NSURLRequest *)request {
-    //    NSURLRequest *re = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:SL_WeiBo]];
     return request;
 }
 //主要判断两个request是否相同，如果相同的话可以使用缓存数据，通常只需要调用父类的实现
@@ -52,45 +51,21 @@ static NSString *SLUrlProtocolHandled = @"SLUrlProtocolHandled";
  */
 - (void)startLoading {
     
-    SLUrlCacheModel *sModel = [SLUrlCacheModel shareInstance];
+    NSMutableURLRequest *mutableReqeust = [[self request] mutableCopy];
+    //标示该request已经处理过了，防止无限循环
+    [NSURLProtocol setProperty:@(YES) forKey:SLUrlProtocolHandled inRequest:mutableReqeust];
     
-    self.filePath = [sModel filePathFromRequest:self.request isInfo:NO];
-    self.otherInfoPath = [sModel filePathFromRequest:self.request isInfo:YES];
-    
-    NSDate *date = [NSDate date];
-    NSFileManager *fm = [NSFileManager defaultManager];
-    //缓存文件是否过期
-    BOOL expire = false;
-    if ([fm fileExistsAtPath:self.filePath]) {
-        //有缓存文件的情况
-        NSDictionary *otherInfo = [NSDictionary dictionaryWithContentsOfFile:self.otherInfoPath];
-        NSInteger createTime = [[otherInfo objectForKey:@"time"] integerValue];
-        if (sModel.cacheTime > 0) {
-            if (createTime + sModel.cacheTime < [date timeIntervalSince1970]) {
-                expire = true;
-            }
-        }
-        if (expire == false) {
-            //从缓存里读取数据
-            NSData *data = [NSData dataWithContentsOfFile:self.filePath];
-            NSURLResponse *response = [[NSURLResponse alloc] initWithURL:self.request.URL MIMEType:[otherInfo objectForKey:@"MIMEType"] expectedContentLength:data.length textEncodingName:[otherInfo objectForKey:@"textEncodingName"]];
-            
-            [self.client URLProtocol:self didReceiveResponse:response cacheStoragePolicy:NSURLCacheStorageNotAllowed];
-            [self.client URLProtocol:self didLoadData:data];
-            [self.client URLProtocolDidFinishLoading:self];
-        } else {
-            //cache失效了
-            [fm removeItemAtPath:self.filePath error:nil];      //清除缓存data
-            [fm removeItemAtPath:self.otherInfoPath error:nil]; //清除缓存其它信息
-        }
-    } else {
-        expire = true;
-    }
-    
-    if (expire) {
-        NSMutableURLRequest *mutableReqeust = [[self request] mutableCopy];
-        //标示该request已经处理过了，防止无限循环
-        [NSURLProtocol setProperty:@(YES) forKey:SLUrlProtocolHandled inRequest:mutableReqeust];
+    SLWebCacheManager *webCacheManager = [SLWebCacheManager shareInstance];
+    self.filePath = [webCacheManager filePathFromRequest:self.request isInfo:NO];
+    self.otherInfoPath = [webCacheManager filePathFromRequest:self.request isInfo:YES];
+    ///加载本地缓存数据
+    NSCachedURLResponse *cachedURLResponse = [webCacheManager localCacheResponeWithRequest:mutableReqeust];
+    if (cachedURLResponse) {
+        [self.client URLProtocol:self didReceiveResponse:cachedURLResponse.response cacheStoragePolicy:NSURLCacheStorageNotAllowed];
+        [self.client URLProtocol:self didLoadData:cachedURLResponse.data];
+        [self.client URLProtocolDidFinishLoading:self];
+    }else {
+        //没有缓存数据
         //使用NSURLSession继续把request发送出去
         NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
         NSOperationQueue *mainQueue = [NSOperationQueue mainQueue];
@@ -98,7 +73,6 @@ static NSString *SLUrlProtocolHandled = @"SLUrlProtocolHandled";
         NSURLSessionDataTask *task = [self.session dataTaskWithRequest:self.request];
         [task resume];
     }
-    
 }
 //停止请求加载
 - (void)stopLoading {
@@ -112,6 +86,7 @@ static NSString *SLUrlProtocolHandled = @"SLUrlProtocolHandled";
     self.session = nil;
     self.response = nil;
 }
+///合并数据
 - (void)appendData:(NSData *)newData {
     if (self.data == nil) {
         self.data = [newData mutableCopy];
@@ -121,7 +96,7 @@ static NSString *SLUrlProtocolHandled = @"SLUrlProtocolHandled";
 }
 
 #pragma mark - NSURLSessionDelegate
-//接收到返回信息时(还未开始下载), 执行的代理方法
+//接收到返回的响应信息时(还未开始下载), 执行的代理方法
 - (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask
 didReceiveResponse:(NSURLResponse *)response
  completionHandler:(void (^)(NSURLSessionResponseDisposition disposition))completionHandler {

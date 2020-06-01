@@ -8,8 +8,7 @@
 
 #import "SLWebCacheViewController.h"
 #import <WebKit/WebKit.h>
-#import "SLUrlProtocol.h"
-#import "WKWebView+SLExtension.h"
+#import "SLWebCacheManager.h"
 
 @interface SLWebCacheViewController ()
 
@@ -35,7 +34,7 @@
 }
 - (void)dealloc {
     [self removeKVO];
-    [WKWebView sl_unregisterSchemeForSupportHttpProtocol];
+    [[SLWebCacheManager shareInstance] closeCache];
     NSLog(@"%@释放了",NSStringFromClass(self.class));
 }
 
@@ -45,6 +44,8 @@
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithTitle:@"上一步" style:UIBarButtonItemStyleDone target:self action:@selector(goBackAction:)];
     UIBarButtonItem *forwardItem = [[UIBarButtonItem alloc] initWithTitle:@"下一步" style:UIBarButtonItemStyleDone target:self action:@selector(goForwardAction:)];
     self.navigationItem.rightBarButtonItems = @[forwardItem,backItem];
+    //开启缓存功能
+    [[SLWebCacheManager shareInstance] openCache];
 }
 
 #pragma mark - Getter
@@ -58,10 +59,6 @@
         } else {
             self.automaticallyAdjustsScrollViewInsets = NO;
         }
-
-        //注册协议类, 然后URL加载系统就会在请求发出时使用我们创建的协议对象对该请求进行拦截处理，不需要拦截的时候，要进行注销unregisterClass
-        [NSURLProtocol registerClass:[SLUrlProtocol class]];
-        [WKWebView sl_registerSchemeForSupportHttpProtocol];
         
         NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"https://www.baidu.com/"]];
         [_webView loadRequest:request];
