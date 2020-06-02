@@ -28,7 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// 子路径 默认 @"UrlCacheDownload"
 @property (nonatomic, copy) NSString *subDirectory;
 
-/// 以下3类都可以作为过滤不必要请求缓存的接口：若为空，表示不设置过滤，所有的请求都缓存，设置了之后，仅对在白名单里或符合UA的请求进行缓存
+/// 以下3类都可以作为过滤不必要请求缓存的接口：若都为空，表示不设置过滤，所有的请求都缓存，设置了之后，仅对在白名单里或符合UA的请求进行缓存
 @property (nonatomic, strong) NSArray *whiteListsHost;       //域名白名单
 @property (nonatomic, strong) NSArray *whiteListsRequestUrl; //请求地址白名单
 @property (nonatomic, strong) NSString *whiteUserAgent;     //WebView的user-agent白名单

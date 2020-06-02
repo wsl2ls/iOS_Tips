@@ -50,9 +50,11 @@
     SLWebCacheManager *cacheManager = [SLWebCacheManager shareInstance];
     cacheManager.whiteListsHost = @[@"www.baidu.com", @"github.com", @"www.jianshu.com", @"juejin.im"];
     //选择缓存方案
-    cacheManager.isUsingURLProtocol = NO;
+    cacheManager.isUsingURLProtocol = YES;
     //开启缓存功能
     [cacheManager openCache];
+    
+    [self.view addSubview:self.webView];
 }
 
 #pragma mark - Getter
@@ -69,7 +71,6 @@
         
         NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:SL_GithubUrl]];
         [_webView loadRequest:request];
-        [self.view addSubview:self.webView];
     }
     return _webView;
 }
