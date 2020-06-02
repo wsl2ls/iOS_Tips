@@ -14,6 +14,7 @@
 > 9、LeetCode算法练习  
 > 10、键盘和UIMenuController的并存问题  
 > 11、iOS Crash防护  
+> 12、WKWebView相关  
 > 问题说明
  
  
@@ -90,6 +91,10 @@
 ## 11、iOS Crash防护 
 
 > NSArray/NSMutableArray、NSDictionary/NSMutableDictionary、NSString/NSMutableString、Unrecognized Selector、KVO、KVC 、野指针定位、内存泄漏/循环引用
+
+## 12、WKWebView相关 
+
+> WKWebView的使用、WKWebView+UITableView混排、WKWebView缓存功能
 
 ## 问题说明：
 
