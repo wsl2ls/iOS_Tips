@@ -22,7 +22,7 @@
         return nil;
     }
     ///本地缓存的数据
-    NSCachedURLResponse *cachedResponse =  [[SLWebCacheManager shareInstance] localCacheResponeWithRequest:request];
+    NSCachedURLResponse *cachedResponse =  [[SLWebCacheManager shareInstance] loadCachedResponeWithRequest:request];
     if(!cachedResponse) {
         //没有缓存，请求网络数据
         cachedResponse = [[SLWebCacheManager shareInstance] requestNetworkData:request];

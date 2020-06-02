@@ -17,20 +17,17 @@ static NSString *SLUrlProtocolHandled = @"SLUrlProtocolHandled";
 @property (nonatomic, readwrite, strong) NSMutableData *data;  //请求到的数据
 @property (nonatomic, readwrite, strong) NSURLResponse *response;  //响应信息
 
-@property (nonatomic, copy) NSString *filePath; //缓存文件路径
-@property (nonatomic, copy) NSString *otherInfoPath; //缓存文件信息路径
-
 @end
 
 @implementation SLUrlProtocol
 
 //所有注册此Protocol的请求都会经过这个方法，根据request判断是否进行需要拦截
 + (BOOL)canInitWithRequest:(NSURLRequest *)request {
-    //判断该request是否已经处理过了，防止无限循环
-    if ([NSURLProtocol propertyForKey:SLUrlProtocolHandled inRequest:request]) {
+    if (![[SLWebCacheManager shareInstance] canCacheRequest:request]) {
         return NO;
     }
-    if (![[SLWebCacheManager shareInstance] canCacheRequest:request]) {
+    //判断该request是否已经处理过了，防止无限循环
+    if ([NSURLProtocol propertyForKey:SLUrlProtocolHandled inRequest:request]) {
         return NO;
     }
     return YES;
@@ -53,16 +50,13 @@ static NSString *SLUrlProtocolHandled = @"SLUrlProtocolHandled";
  同时设置"NSURLSessionDataDelegate"协议，接收Server端的响应
  */
 - (void)startLoading {
-    
     NSMutableURLRequest *mutableReqeust = [[self request] mutableCopy];
     //标示该request已经处理过了，防止无限循环
     [NSURLProtocol setProperty:@(YES) forKey:SLUrlProtocolHandled inRequest:mutableReqeust];
     
     SLWebCacheManager *webCacheManager = [SLWebCacheManager shareInstance];
-    self.filePath = [webCacheManager filePathFromRequest:self.request isInfo:NO];
-    self.otherInfoPath = [webCacheManager filePathFromRequest:self.request isInfo:YES];
     ///加载本地缓存数据
-    NSCachedURLResponse *cachedURLResponse = [webCacheManager localCacheResponeWithRequest:mutableReqeust];
+    NSCachedURLResponse *cachedURLResponse = [webCacheManager loadCachedResponeWithRequest:mutableReqeust];
     if (cachedURLResponse) {
         [self.client URLProtocol:self didReceiveResponse:cachedURLResponse.response cacheStoragePolicy:NSURLCacheStorageNotAllowed];
         [self.client URLProtocol:self didLoadData:cachedURLResponse.data];
@@ -115,6 +109,7 @@ didReceiveResponse:(NSURLResponse *)response
     //    if (dataStr) {
     //        NSLog(@"收到数据: %@", dataStr);
     //    }
+    //拼接数据
     [self appendData:data];
     [self.client URLProtocol:self didLoadData:data];
 }
@@ -125,16 +120,10 @@ didCompleteWithError:(nullable NSError *)error {
         [self.client URLProtocol:self didFailWithError:error];
     } else {
         [self.client URLProtocolDidFinishLoading:self];
-        //开始缓存
-        NSDate *date = [NSDate date];
-        NSDictionary *info = @{@"time" : [NSString stringWithFormat:@"%f",[date timeIntervalSince1970]],
-                               @"MIMEType" : self.response.MIMEType,
-                               @"textEncodingName" : self.response.textEncodingName
-        };
-        [info writeToFile:self.otherInfoPath atomically:YES];
-        [self.data writeToFile:self.filePath atomically:YES];
+        //开始写入缓存数据
+        NSCachedURLResponse *cachedResponse = [[NSCachedURLResponse alloc] initWithResponse:self.response data:[self.data mutableCopy]];
+        [[SLWebCacheManager shareInstance] writeCacheData:cachedResponse withRequest:[self.request mutableCopy]];
     }
-    
     [self clear];
 }
 
