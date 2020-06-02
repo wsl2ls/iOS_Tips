@@ -12,6 +12,10 @@
 #import "SLUrlProtocol.h"
 #import "WKWebView+SLExtension.h"
 
+@interface SLWebCacheManager ()
+@property (nonatomic, strong) NSMutableDictionary *responseDic; //防止下载请求的循环调用
+@end
+
 @implementation SLWebCacheManager
 
 #pragma mark - Public
@@ -42,6 +46,48 @@
         NSURLCache* urlCache = [[NSURLCache alloc] initWithMemoryCapacity:0 diskCapacity:0 diskPath:0];
         [NSURLCache setSharedURLCache:urlCache];
     }
+}
+///是否缓存该请求，该请求是否在白名单里或合法
+- (BOOL)canCacheRequest:(NSURLRequest *)request {
+    //User-Agent来过滤
+    if (self.whiteUserAgent.length > 0) {
+        NSString *uAgent = [request.allHTTPHeaderFields objectForKey:@"User-Agent"];
+        if (uAgent) {
+            if (![uAgent hasSuffix:self.whiteUserAgent]) {
+                return NO;
+            }
+        } else {
+            return NO;
+        }
+    }
+    //只允许GET方法通过
+    if ([request.HTTPMethod compare:@"GET"] != NSOrderedSame) {
+        return NO;
+    }
+    
+    //对于域名白名单的过滤
+    if (self.whiteListsHost.count > 0) {
+        BOOL isExist = [self.whiteListsHost containsObject:request.URL.host];
+        if (!isExist) {
+            return NO;
+        }
+    }
+    //请求地址白名单
+    if (self.whiteListsRequestUrl.count > 0) {
+        BOOL isExist = [self.whiteListsRequestUrl containsObject:request.URL.host];
+        if (!isExist) {
+            return NO;
+        }
+    }
+    
+    NSString *scheme = [[request.URL scheme] lowercaseString];
+    if ([scheme isEqualToString:@"http"] || [scheme isEqualToString:@"https"]) {
+        //
+    } else {
+        return NO;
+    }
+    
+    return YES;
 }
 ///加载本地缓存数据
 - (NSCachedURLResponse *)localCacheResponeWithRequest:(NSURLRequest *)request {
@@ -238,19 +284,19 @@
 }
 - (NSUInteger)cacheTime {
     if (!_cacheTime) {
-        _cacheTime = 0;
+        _cacheTime = 24 * 60 * 60;
     }
     return _cacheTime;
 }
-- (NSMutableDictionary *)whiteListsHost {
+- (NSArray *)whiteListsHost {
     if (!_whiteListsHost) {
-        _whiteListsHost = [NSMutableDictionary dictionary];
+        _whiteListsHost = [NSArray array];
     }
     return _whiteListsHost;
 }
-- (NSMutableDictionary *)whiteListsRequestUrl {
+- (NSArray *)whiteListsRequestUrl {
     if (!_whiteListsRequestUrl) {
-        _whiteListsRequestUrl = [NSMutableDictionary dictionary];
+        _whiteListsRequestUrl = [NSArray array];
     }
     return _whiteListsRequestUrl;
 }
@@ -260,11 +306,6 @@
     }
     return _whiteUserAgent;
 }
-- (NSString *)replaceUrl {
-    if (!_replaceUrl) {
-        _replaceUrl = @"";
-    }
-    return _replaceUrl;
-}
+
 
 @end

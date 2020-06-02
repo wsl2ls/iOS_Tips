@@ -18,11 +18,14 @@
 #pragma mark - Override
 ///开始缓存
 - (NSCachedURLResponse *)cachedResponseForRequest:(NSURLRequest *)request {
+    if (![[SLWebCacheManager shareInstance] canCacheRequest:request]) {
+        return nil;
+    }
     ///本地缓存的数据
     NSCachedURLResponse *cachedResponse =  [[SLWebCacheManager shareInstance] localCacheResponeWithRequest:request];
     if(!cachedResponse) {
         //没有缓存，请求网络数据
-       cachedResponse = [[SLWebCacheManager shareInstance] requestNetworkData:request];
+        cachedResponse = [[SLWebCacheManager shareInstance] requestNetworkData:request];
     }
     //调用系统的缓存方法，当然这里也可以不用调
     [self storeCachedResponse:cachedResponse forRequest:request];

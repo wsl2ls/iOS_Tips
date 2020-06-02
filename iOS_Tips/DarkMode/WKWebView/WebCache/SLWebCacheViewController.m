@@ -40,12 +40,19 @@
 
 #pragma mark - UI
 - (void)setupUI {
+    self.navigationItem.title = @"WK缓存方案";
     self.view.backgroundColor = UIColor.whiteColor;
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithTitle:@"上一步" style:UIBarButtonItemStyleDone target:self action:@selector(goBackAction:)];
     UIBarButtonItem *forwardItem = [[UIBarButtonItem alloc] initWithTitle:@"下一步" style:UIBarButtonItemStyleDone target:self action:@selector(goForwardAction:)];
-    self.navigationItem.rightBarButtonItems = @[forwardItem,backItem];
+     UIBarButtonItem *clearItem = [[UIBarButtonItem alloc] initWithTitle:@"清理缓存" style:UIBarButtonItemStyleDone target:self action:@selector(clearCacheAction:)];
+    self.navigationItem.rightBarButtonItems = @[forwardItem,backItem,clearItem];
+   
+    SLWebCacheManager *cacheManager = [SLWebCacheManager shareInstance];
+    cacheManager.whiteListsHost = @[@"www.baidu.com", @"github.com", @"www.jianshu.com", @"juejin.im"];
+    //选择缓存方案
+    cacheManager.isUsingURLProtocol = NO;
     //开启缓存功能
-    [[SLWebCacheManager shareInstance] openCache];
+    [cacheManager openCache];
 }
 
 #pragma mark - Getter
@@ -60,7 +67,7 @@
             self.automaticallyAdjustsScrollViewInsets = NO;
         }
         
-        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"https://www.baidu.com/"]];
+        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:SL_GithubUrl]];
         [_webView loadRequest:request];
         [self.view addSubview:self.webView];
     }
@@ -129,6 +136,10 @@
 //前往下一步
 - (void)goForwardAction:(id)sender{
     [_webView goForward];
+}
+//清理缓存
+- (void)clearCacheAction:(id)sender {
+    [[SLWebCacheManager shareInstance] clearCache];
 }
 
 @end

@@ -30,6 +30,9 @@ static NSString *SLUrlProtocolHandled = @"SLUrlProtocolHandled";
     if ([NSURLProtocol propertyForKey:SLUrlProtocolHandled inRequest:request]) {
         return NO;
     }
+    if (![[SLWebCacheManager shareInstance] canCacheRequest:request]) {
+        return NO;
+    }
     return YES;
 }
 //可选方法，这个方法用来统一处理请求的request对象，可以修改头信息，或者重定向。没有特殊需要，则直接return request。

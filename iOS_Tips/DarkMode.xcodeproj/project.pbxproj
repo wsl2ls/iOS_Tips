@@ -1452,7 +1452,7 @@
 					"@executable_path/Frameworks",
 				);
 				NEW_SETTING = "";
-				PRODUCT_BUNDLE_IDENTIFIER = com.wsl;
+				PRODUCT_BUNDLE_IDENTIFIER = com.wsl.tips;
 				PRODUCT_NAME = SLTips;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1480,7 +1480,7 @@
 					"@executable_path/Frameworks",
 				);
 				NEW_SETTING = "";
-				PRODUCT_BUNDLE_IDENTIFIER = com.wsl;
+				PRODUCT_BUNDLE_IDENTIFIER = com.wsl.tips;
 				PRODUCT_NAME = SLTips;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
