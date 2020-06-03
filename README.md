@@ -96,6 +96,8 @@
 
 > WKWebView的使用、WKWebView+UITableView混排、UIScrollView实现原理、WKWebView离线缓存功能
 
+![音视频编码](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/12、WKWebView.gif)
+
 ## 问题说明：
 
 > * 1、小视频拍摄录制失败，主要集中在plus和X系列手机上：可能是由于写入的视频宽高videoSize设置的问题，各位可以先试试这样设置
