@@ -8,8 +8,10 @@
 
 #import "SLWebViewController.h"
 #import <WebKit/WebKit.h>
+#import "WKWebView+SLExtension.h"
 
-@interface SLWebViewController ()
+///关于WKWebView的使用可以看我之前的总结：  https://github.com/wsl2ls/WKWebView
+@interface SLWebViewController ()<WKNavigationDelegate>
 
 @property (nonatomic, strong) WKWebView * webView;
 ///网页加载进度视图
@@ -42,7 +44,6 @@
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithTitle:@"上一步" style:UIBarButtonItemStyleDone target:self action:@selector(goBackAction:)];
     UIBarButtonItem *forwardItem = [[UIBarButtonItem alloc] initWithTitle:@"下一步" style:UIBarButtonItemStyleDone target:self action:@selector(goForwardAction:)];
     self.navigationItem.rightBarButtonItems = @[forwardItem,backItem];
-    
     [self.view addSubview:self.webView];
 }
 
@@ -52,14 +53,14 @@
         //创建网页配置
         WKWebViewConfiguration *config = [[WKWebViewConfiguration alloc] init];
         _webView = [[WKWebView alloc] initWithFrame:CGRectMake(0, 0, SL_kScreenWidth, SL_kScreenHeight) configuration:config];
+        _webView.navigationDelegate = self;
+        
+        [_webView sl_setCustomUserAgentWithType:SLSetUATypeAppend UAString:@"wsl2ls"];
+        NSString *ua = [_webView sl_getUserAgent];
+        NSLog(@" UserAgent: %@",ua);
         
         NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"https://www.jianshu.com/p/5cf0d241ae12"]];
         [_webView loadRequest:request];
-        if (@available(iOS 11.0, *)) {
-            _webView.scrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
-        } else {
-            self.automaticallyAdjustsScrollViewInsets = NO;
-        }
     }
     return _webView;
 }
@@ -126,6 +127,13 @@
 //前往下一步
 - (void)goForwardAction:(id)sender{
     [_webView goForward];
+}
+
+
+#pragma mark - WKNavigationDelegate
+// 根据WebView对于即将跳转的HTTP请求头信息和相关信息来决定是否跳转
+- (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {
+    decisionHandler(WKNavigationActionPolicyAllow);
 }
 
 @end

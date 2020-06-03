@@ -52,7 +52,7 @@
                                        @" WKWebView + UITableView（方案3）(推荐)",
                                        @" WKWebView + UITableView（方案4）(推荐) ",
                                        @" UIScrollView的实现原理",
-                                       @" WKWebView缓存功能"]];
+                                       @" WKWebView离线缓存"]];
     [self.subTitles addObjectsFromArray:@[@" WKWebView的使用、JS和OC的交互、网页内容加载进度条的实现",
                                           @" tableView.tableHeaderView = webView 撑开webView ",
                                           @" [webView.scrollView addSubview:tableView] + 占位Div ",
