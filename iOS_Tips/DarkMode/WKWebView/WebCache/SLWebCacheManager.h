@@ -39,7 +39,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)openCache;
 ///关闭缓存功能
 - (void)closeCache;
-///是否缓存该请求，该请求是否在白名单里或合法
+///是否可以缓存该请求，该请求是否在白名单里或合法
 - (BOOL)canCacheRequest:(NSURLRequest *)request;
 
 ///对应请求的缓存文件/信息路径

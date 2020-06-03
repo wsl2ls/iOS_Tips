@@ -39,6 +39,8 @@
         SLUrlCache * urlCache = [[SLUrlCache alloc] initWithMemoryCapacity:0 diskCapacity:0 diskPath:0];
         [NSURLCache setSharedURLCache:urlCache];
     }
+    //添加内存警告监听
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleMemoryWarning) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
 }
 ///关闭缓存功能
 - (void)closeCache {
@@ -48,6 +50,8 @@
         NSURLCache* urlCache = [[NSURLCache alloc] initWithMemoryCapacity:0 diskCapacity:0 diskPath:0];
         [NSURLCache setSharedURLCache:urlCache];
     }
+    //移除观察者
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 ///是否缓存该请求，该请求是否在白名单里或合法
 - (BOOL)canCacheRequest:(NSURLRequest *)request {
@@ -131,8 +135,6 @@
     //    NSLog(@"%@",cFilePath);
     return cFilePath;
 }
-
-#pragma mark - Function Helper
 //url加密
 + (NSString *)md5Hash:(NSString *)str {
     const char *cStr = [str UTF8String];
@@ -250,6 +252,10 @@
     if ([self folderSize] > self.diskCapacity) {
         [self clearCache];
     }
+}
+///接收到内存警告，清除缓存
+- (void)handleMemoryWarning {
+    [self clearCache];
 }
 ///强制清除缓存
 - (void)clearCache {
