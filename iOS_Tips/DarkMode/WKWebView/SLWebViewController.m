@@ -10,7 +10,7 @@
 #import <WebKit/WebKit.h>
 #import "WKWebView+SLExtension.h"
 
-///关于WKWebView的使用可以看我之前的总结：  https://github.com/wsl2ls/WKWebView
+///关于WKWebView的其他更多使用可以看我之前的总结：  https://github.com/wsl2ls/WKWebView
 @interface SLWebViewController ()<WKNavigationDelegate>
 
 @property (nonatomic, strong) WKWebView * webView;
@@ -45,6 +45,13 @@
     UIBarButtonItem *forwardItem = [[UIBarButtonItem alloc] initWithTitle:@"下一步" style:UIBarButtonItemStyleDone target:self action:@selector(goForwardAction:)];
     self.navigationItem.rightBarButtonItems = @[forwardItem,backItem];
     [self.view addSubview:self.webView];
+    
+    [self aboutUserAgent];
+    [self aboutCookie];
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"https://www.jianshu.com/p/5cf0d241ae12"]];
+    [_webView loadRequest:request];
+    
 }
 
 #pragma mark - Getter
@@ -54,13 +61,6 @@
         WKWebViewConfiguration *config = [[WKWebViewConfiguration alloc] init];
         _webView = [[WKWebView alloc] initWithFrame:CGRectMake(0, 0, SL_kScreenWidth, SL_kScreenHeight) configuration:config];
         _webView.navigationDelegate = self;
-        
-        [_webView sl_setCustomUserAgentWithType:SLSetUATypeAppend UAString:@"wsl2ls"];
-        NSString *ua = [_webView sl_getUserAgent];
-        NSLog(@" UserAgent: %@",ua);
-        
-        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"https://www.jianshu.com/p/5cf0d241ae12"]];
-        [_webView loadRequest:request];
     }
     return _webView;
 }
@@ -74,6 +74,28 @@
         [self.navigationController.navigationBar addSubview:_progressView];
     }
     return _progressView;
+}
+
+#pragma mark -  Help Methods
+///关于UserAgent
+- (void)aboutUserAgent {
+    [WKWebView sl_setCustomUserAgentWithType:SLSetUATypeAppend UAString:@"wsl2ls"];
+    NSString *ua = [WKWebView sl_getUserAgent];
+    NSLog(@" UserAgent: %@",ua);
+}
+///关于Cookie
+- (void)aboutCookie {
+    //设置自定义Cookie
+    [self.webView sl_setCookieWithName:@"iOS_Tips" value:@"wsl" domain:@"www.jianshu.com" path:@"/" expiresDate:[NSDate dateWithTimeIntervalSince1970:1593863893]];
+    NSSet *set = [self.webView sl_getAllCustomCookiesName];
+    
+    WKWebsiteDataStore *store = [WKWebsiteDataStore defaultDataStore];
+    [store.httpCookieStore getAllCookies:^(NSArray<NSHTTPCookie *> * cookies) {
+        [cookies enumerateObjectsUsingBlock:^(NSHTTPCookie * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            NSLog(@" name:%@; value:%@ domain:%@ ", obj.name, obj.value, obj.domain);
+            
+        }];
+    }];
 }
 
 #pragma mark - KVO
@@ -133,6 +155,12 @@
 #pragma mark - WKNavigationDelegate
 // 根据WebView对于即将跳转的HTTP请求头信息和相关信息来决定是否跳转
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {
+    
+    NSArray *cookies = [NSHTTPCookie cookiesWithResponseHeaderFields:[navigationAction.request allHTTPHeaderFields] forURL:navigationAction.request.URL];
+    // 读取请求头中的cookie
+    for (NSHTTPCookie *cookie in cookies) {
+        NSLog(@" cookie:%@", cookie);
+    }
     decisionHandler(WKNavigationActionPolicyAllow);
 }
 

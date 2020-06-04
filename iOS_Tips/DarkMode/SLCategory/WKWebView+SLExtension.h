@@ -26,9 +26,22 @@ typedef NS_ENUM (NSInteger, SLSetUAType){
 + (void)sl_unregisterSchemeForSupportHttpProtocol;
 
 /// 获取UA
-- (NSString *)sl_getUserAgent;
++ (NSString *)sl_getUserAgent;
 /// 设置UA
-- (void)sl_setCustomUserAgentWithType:(SLSetUAType)type UAString:(NSString *)customUserAgent;
++ (void)sl_setCustomUserAgentWithType:(SLSetUAType)type UAString:(NSString *)customUserAgent;
+
+///设置自定义Cookie
+- (void)sl_setCookieWithName:(NSString *)name
+                    value:(NSString *)value
+                   domain:(NSString *)domain
+                     path:(NSString *)path
+                 expiresDate:(NSDate *)expiresDate;
+///删除Cookie
+- (void)sl_deleteCookiesWithName:(NSString *)name;
+///获取所有的自定义Cookie
+- (NSSet<NSString *> *)sl_getAllCustomCookiesName;
+///移除自定义的所有Cookies
+- (void)sl_deleteAllCustomCookies;
 
 @end
 
