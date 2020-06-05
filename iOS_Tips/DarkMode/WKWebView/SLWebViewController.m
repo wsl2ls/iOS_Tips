@@ -9,6 +9,8 @@
 #import "SLWebViewController.h"
 #import <WebKit/WebKit.h>
 #import "WKWebView+SLExtension.h"
+#import "SLUrlProtocol.h"
+#import "SLUrlProtocolAddCookie.h"
 
 ///关于WKWebView的其他更多使用可以看我之前的总结：  https://github.com/wsl2ls/WKWebView
 @interface SLWebViewController ()<WKNavigationDelegate>
@@ -40,18 +42,21 @@
 
 #pragma mark - UI
 - (void)setupUI {
+    
     self.view.backgroundColor = UIColor.whiteColor;
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithTitle:@"上一步" style:UIBarButtonItemStyleDone target:self action:@selector(goBackAction:)];
     UIBarButtonItem *forwardItem = [[UIBarButtonItem alloc] initWithTitle:@"下一步" style:UIBarButtonItemStyleDone target:self action:@selector(goForwardAction:)];
     self.navigationItem.rightBarButtonItems = @[forwardItem,backItem];
-    [self.view addSubview:self.webView];
     
+    //UA 设置在WKWebView初始化之前
     [self aboutUserAgent];
+    //设置自定义Cookie在WKWebView初始化之前
     [self aboutCookie];
+    
+    [self.view addSubview:self.webView];
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"https://www.jianshu.com/p/5cf0d241ae12"]];
     [_webView loadRequest:request];
-    
 }
 
 #pragma mark - Getter
@@ -76,26 +81,39 @@
     return _progressView;
 }
 
-#pragma mark -  Help Methods
+#pragma mark -  Look Here
+///关于WKWebView的那些坑：  https://mp.weixin.qq.com/s/rhYKLIbXOsUJC_n6dt9UfA?
+- (void)aboutJsToOC {
+    ///关于JS和OC的交互以及API基本的使用可以看我之前的总结：  https://github.com/wsl2ls/WKWebView
+}
 ///关于UserAgent
 - (void)aboutUserAgent {
+    //设置UA  在WKWebView初始化之前设置，才能实时生效
     [WKWebView sl_setCustomUserAgentWithType:SLSetUATypeAppend UAString:@"wsl2ls"];
-    NSString *ua = [WKWebView sl_getUserAgent];
-    NSLog(@" UserAgent: %@",ua);
 }
-///关于Cookie
+///关于Cookie   https://www.jianshu.com/p/cd0d819b9851
 - (void)aboutCookie {
-    //设置自定义Cookie
-    [self.webView sl_setCookieWithName:@"iOS_Tips" value:@"wsl" domain:@"www.jianshu.com" path:@"/" expiresDate:[NSDate dateWithTimeIntervalSince1970:1593863893]];
-    NSSet *set = [self.webView sl_getAllCustomCookiesName];
+    ///添加自定义Cookie到WebView的Cookie管理器
+    [WKWebView sl_setCustomCookieWithName:@" 且行且珍惜_iOS " value:@" wsl❤ls " domain:@".jianshu.com" path:@"/" expiresDate:[NSDate dateWithTimeIntervalSince1970:1591440726]];
     
-    WKWebsiteDataStore *store = [WKWebsiteDataStore defaultDataStore];
-    [store.httpCookieStore getAllCookies:^(NSArray<NSHTTPCookie *> * cookies) {
-        [cookies enumerateObjectsUsingBlock:^(NSHTTPCookie * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            NSLog(@" name:%@; value:%@ domain:%@ ", obj.name, obj.value, obj.domain);
-            
-        }];
-    }];
+    //解决WKWebView上请求不会自动携带Cookie的问题
+    /*
+     方案1、①. [webView loadRequest]前，在request header中设置Cookie, 手动设置cookies，可以解决首个请求Cookie带不上的问题；
+     NSArray *cookieJar = [NSHTTPCookieStorage sharedHTTPCookieStorage].cookies;
+     NSDictionary *requestHeaderFields = [NSHTTPCookie requestHeaderFieldsWithCookies:cookieJar];
+     request.allHTTPHeaderFields = requestHeaderFields;
+     ②. 通过注入JS方法，document.cookie设置Cookie 解决后续页面(同域)Ajax、iframe 请求的 Cookie 问题；
+     WKUserContentController* userContentController = [WKUserContentController new];
+     WKUserScript * cookieScript = [[WKUserScript alloc] initWithSource: @"document.cookie = ' 且行且珍惜_iOS = wsl❤ls ';" injectionTime:WKUserScriptInjectionTimeAtDocumentStart forMainFrameOnly:NO];
+     [userContentController addUserScript:cookieScript];
+     config.userContentController = userContentController;
+     方案2、通过NSURLProtocol，拦截request，然后在请求头里添加Cookie的方式
+     */
+    
+    //这里采用方案2
+    
+    [WKWebView sl_registerSchemeForSupportHttpProtocol];
+    [NSURLProtocol registerClass:[SLUrlProtocolAddCookie class]];
 }
 
 #pragma mark - KVO
@@ -151,17 +169,17 @@
     [_webView goForward];
 }
 
-
 #pragma mark - WKNavigationDelegate
 // 根据WebView对于即将跳转的HTTP请求头信息和相关信息来决定是否跳转
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {
-    
-    NSArray *cookies = [NSHTTPCookie cookiesWithResponseHeaderFields:[navigationAction.request allHTTPHeaderFields] forURL:navigationAction.request.URL];
-    // 读取请求头中的cookie
-    for (NSHTTPCookie *cookie in cookies) {
-        NSLog(@" cookie:%@", cookie);
-    }
+    //请求头信息
+    NSDictionary *allHTTPHeaderFields =  [navigationAction.request allHTTPHeaderFields];
+    NSLog(@" UserAgent: %@",allHTTPHeaderFields[@"User-Agent"]);
     decisionHandler(WKNavigationActionPolicyAllow);
 }
-
+// 页面加载完成之后调用
+- (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
+    
+}
 @end
+

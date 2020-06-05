@@ -27,21 +27,17 @@ typedef NS_ENUM (NSInteger, SLSetUAType){
 
 /// 获取UA
 + (NSString *)sl_getUserAgent;
-/// 设置UA
+/// 设置UA  在WKWebView初始化之前设置，才能实时生效
 + (void)sl_setCustomUserAgentWithType:(SLSetUAType)type UAString:(NSString *)customUserAgent;
 
 ///设置自定义Cookie
-- (void)sl_setCookieWithName:(NSString *)name
++ (void)sl_setCustomCookieWithName:(NSString *)name
                     value:(NSString *)value
                    domain:(NSString *)domain
                      path:(NSString *)path
                  expiresDate:(NSDate *)expiresDate;
-///删除Cookie
-- (void)sl_deleteCookiesWithName:(NSString *)name;
-///获取所有的自定义Cookie
-- (NSSet<NSString *> *)sl_getAllCustomCookiesName;
-///移除自定义的所有Cookies
-- (void)sl_deleteAllCustomCookies;
+///查询获取所有Cookies
++ (void)sl_getAllCookies;
 
 @end
 

@@ -9,9 +9,9 @@
 #import "WKWebView+SLExtension.h"
 #import <objc/runtime.h>
 
-///该部分代码来源： https://github.com/dequan1331/WKWebViewExtension
+///资料： https://github.com/dequan1331/WKWebViewExtension、（WKWebView那些坑）https://mp.weixin.qq.com/s/rhYKLIbXOsUJC_n6dt9UfA?
 @interface WKWebView()
-@property(nonatomic,strong,readwrite)NSMutableDictionary<NSString *, NSString *> *HPKCookieDic;
+
 @end
 
 @implementation WKWebView (SLExtension)
@@ -55,7 +55,7 @@
     NSString *userAgent = [webView stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"];
     return userAgent;
 }
-/// 设置UA
+/// 设置UA  在WKWebView初始化之前设置 ，才能实时生效
 + (void)sl_setCustomUserAgentWithType:(SLSetUAType)type UAString:(NSString *)customUserAgent {
     if (!customUserAgent || customUserAgent.length <= 0) {
         return;
@@ -75,74 +75,45 @@
 }
 
 #pragma mark - Cookie
-- (void)setHPKCookieDic:(NSMutableDictionary *)HPKCookieDic{
-    objc_setAssociatedObject(self, @"HPKCookieDic", HPKCookieDic, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
-- (NSMutableDictionary *)HPKCookieDic{
-    NSMutableDictionary *HPKCookieDic = objc_getAssociatedObject(self, @"HPKCookieDic");
-    if (!HPKCookieDic) {
-        HPKCookieDic = @{}.mutableCopy;
-    }
-    return HPKCookieDic;
-}
 ///设置自定义Cookie
-- (void)sl_setCookieWithName:(NSString *)name
-                    value:(NSString *)value
-                   domain:(NSString *)domain
-                     path:(NSString *)path
-              expiresDate:(NSDate *)expiresDate{
-    if(!name || name.length <=0){
-        return;
-    }
-    
-    NSMutableString *cookieScript = [[NSMutableString alloc] init];
-    [cookieScript appendFormat:@"document.cookie='%@=%@;",name,value];
-    if(domain || domain.length > 0){
-        [cookieScript appendFormat:@"domain=%@;",domain];
-    }
-    if(path || path.length > 0){
-        [cookieScript appendFormat:@"path=%@;",path];
-    }
-    
-    [[self HPKCookieDic] setValue:cookieScript.copy forKey:name];
-    
-    if([expiresDate timeIntervalSince1970] != 0){
-        [cookieScript appendFormat:@"expires='+(new Date(%@).toUTCString());", @(([expiresDate timeIntervalSince1970]) * 1000)];
-    }
-    [cookieScript appendFormat:@"\n"];
-    
-    [self evaluateJavaScript:cookieScript.copy completionHandler:^(id _Nullable response, NSError * _Nullable error) {
-    }];
-}
-///删除Cookie
-- (void)sl_deleteCookiesWithName:(NSString *)name{
-    if(!name || name.length <=0){
-        return;
-    }
-    
-    if (![[[self HPKCookieDic] allKeys] containsObject:name]) {
-        return;
-    }
-    
-    NSMutableString *cookieScript = [[NSMutableString alloc] init];
-    
-    [cookieScript appendString:[[self HPKCookieDic] objectForKey:name]];
-    [cookieScript appendFormat:@"expires='+(new Date(%@).toUTCString());\n",@(0)];
-    
-    [[self HPKCookieDic] removeObjectForKey:name];
-    [self evaluateJavaScript:cookieScript.copy completionHandler:^(id _Nullable response, NSError * _Nullable error) {
-    }];
-}
-///获取所有的自定义Cookie
-- (NSSet<NSString *> *)sl_getAllCustomCookiesName{
-    return [[self HPKCookieDic] allKeys].copy;
-}
-///移除自定义的所有Cookies
-- (void)sl_deleteAllCustomCookies{
-    for (NSString *cookieName in [[self HPKCookieDic] allKeys]) {
-        [self sl_deleteCookiesWithName:cookieName];
++ (void)sl_setCustomCookieWithName:(NSString *)name
+                             value:(NSString *)value
+                            domain:(NSString *)domain
+                              path:(NSString *)path
+                       expiresDate:(NSDate *)expiresDate{
+    NSDictionary *mCookProperties = @{
+        NSHTTPCookieDomain: domain,
+        NSHTTPCookiePath: path,
+        NSHTTPCookieName: name,
+        NSHTTPCookieValue: value,
+        NSHTTPCookieExpires : expiresDate
+    };
+    NSHTTPCookie *myCookie = [NSHTTPCookie cookieWithProperties:mCookProperties];
+    if (@available(iOS 11.0, *)) {
+        WKWebsiteDataStore *store = [WKWebsiteDataStore defaultDataStore];
+        [store.httpCookieStore setCookie:myCookie completionHandler:^{
+        }];
+    } else {
+        [[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookie:myCookie];
+        [[NSUserDefaults standardUserDefaults] synchronize];
     }
 }
-
+///查询获取所有Cookies
++ (void)sl_getAllCookies {
+    if (@available(iOS 11.0, *)) {
+        WKWebsiteDataStore *store = [WKWebsiteDataStore defaultDataStore];
+        [store.httpCookieStore getAllCookies:^(NSArray<NSHTTPCookie *> * cookies) {
+            [cookies enumerateObjectsUsingBlock:^(NSHTTPCookie * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                //                    NSLog(@" name:%@; value:%@ domain:%@ ", obj.name, obj.value, obj.domain);
+            }];
+        }];
+    }
+    else {
+        NSArray *cookieJar = [NSHTTPCookieStorage sharedHTTPCookieStorage].cookies;
+        for (NSHTTPCookie *cookie in cookieJar) {
+            //                NSLog(@" name:%@; value:%@ domain:%@ ", cookie.name, cookie.value, cookie.domain);
+        }
+    }
+}
 
 @end
