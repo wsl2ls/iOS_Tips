@@ -111,6 +111,7 @@
 		78B10493232F57C50051579F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 78B10492232F57C50051579F /* main.m */; };
 		78B1049D232F57C50051579F /* DarkModeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 78B1049C232F57C50051579F /* DarkModeTests.m */; };
 		78B104A8232F57C50051579F /* DarkModeUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 78B104A7232F57C50051579F /* DarkModeUITests.m */; };
+		78BDE04B248A6A74002ED386 /* SLUrlProtocolAddCookie.m in Sources */ = {isa = PBXBuildFile; fileRef = 78BDE04A248A6A74002ED386 /* SLUrlProtocolAddCookie.m */; };
 		78D30964239688EF00DC373A /* GLESUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 78D3095E239688EF00DC373A /* GLESUtils.m */; };
 		78D30965239688EF00DC373A /* GLESMath.c in Sources */ = {isa = PBXBuildFile; fileRef = 78D30960239688EF00DC373A /* GLESMath.c */; };
 		78DAA113235FF61E00A60F64 /* SLEditVideoClipping.m in Sources */ = {isa = PBXBuildFile; fileRef = 78DAA112235FF61E00A60F64 /* SLEditVideoClipping.m */; };
@@ -334,6 +335,8 @@
 		78B104A3232F57C50051579F /* DarkModeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DarkModeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		78B104A7232F57C50051579F /* DarkModeUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DarkModeUITests.m; sourceTree = "<group>"; };
 		78B104A9232F57C50051579F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		78BDE049248A6A74002ED386 /* SLUrlProtocolAddCookie.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLUrlProtocolAddCookie.h; sourceTree = "<group>"; };
+		78BDE04A248A6A74002ED386 /* SLUrlProtocolAddCookie.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLUrlProtocolAddCookie.m; sourceTree = "<group>"; };
 		78D3095E239688EF00DC373A /* GLESUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLESUtils.m; sourceTree = "<group>"; };
 		78D3095F239688EF00DC373A /* Quaternion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Quaternion.h; sourceTree = "<group>"; };
 		78D30960239688EF00DC373A /* GLESMath.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = GLESMath.c; sourceTree = "<group>"; };
@@ -871,6 +874,8 @@
 				78E72D72247E861300751373 /* SLWebViewListController.m */,
 				78E72D4F24766E4B00751373 /* SLWebViewController.h */,
 				78E72D5024766E4B00751373 /* SLWebViewController.m */,
+				78BDE049248A6A74002ED386 /* SLUrlProtocolAddCookie.h */,
+				78BDE04A248A6A74002ED386 /* SLUrlProtocolAddCookie.m */,
 				78E72D8324822E7500751373 /* WebTableView */,
 				78E72D9324852C2F00751373 /* WebCache */,
 			);
@@ -1232,6 +1237,7 @@
 				787C7DC2245D74E4005DF7ED /* NSMutableString+SLCrashProtector.m in Sources */,
 				782E3EB12373D889001E0DF9 /* SLAvCaptureSession.m in Sources */,
 				78E179362351A40D0007E4BB /* SLEditMenuView.m in Sources */,
+				78BDE04B248A6A74002ED386 /* SLUrlProtocolAddCookie.m in Sources */,
 				78E72D922484EEAA00751373 /* SLUrlCache.m in Sources */,
 				78F54916233383D800910215 /* SLBlurView.m in Sources */,
 				787F01A3236AD8A5002AC1A9 /* SLEditImageController.m in Sources */,

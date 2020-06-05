@@ -1,33 +1,27 @@
 //
-//  SLUrlProtocol.m
+//  SLUrlProtocolAddCookie.m
 //  DarkMode
 //
-//  Created by wsl on 2020/5/30.
+//  Created by wsl on 2020/6/5.
 //  Copyright © 2020 https://github.com/wsl2ls   ----- . All rights reserved.
 //
 
-#import "SLUrlProtocol.h"
-#import "SLWebCacheManager.h"
+#import "SLUrlProtocolAddCookie.h"
 
-static NSString *SLUrlProtocolHandled = @"SLUrlProtocolHandled";
-
-@interface SLUrlProtocol ()<NSURLSessionDelegate>
-
+@interface SLUrlProtocolAddCookie () <NSURLSessionDelegate>
 @property (nonatomic, strong) NSURLSession *session;   //会话
-@property (nonatomic, readwrite, strong) NSMutableData *data;  //请求到的数据
-@property (nonatomic, readwrite, strong) NSURLResponse *response;  //响应信息
-
 @end
 
-@implementation SLUrlProtocol
+@implementation SLUrlProtocolAddCookie
 
 //所有注册此Protocol的请求都会经过这个方法，根据request判断是否进行需要拦截
 + (BOOL)canInitWithRequest:(NSURLRequest *)request {
-    if (![[SLWebCacheManager shareInstance] canCacheRequest:request]) {
+    //只允许GET方法通过，因为post请求body数据被清空
+    if ([request.HTTPMethod compare:@"GET"] != NSOrderedSame) {
         return NO;
     }
     //判断该request是否已经处理过了，防止无限循环
-    if ([NSURLProtocol propertyForKey:SLUrlProtocolHandled inRequest:request]) {
+    if ([NSURLProtocol propertyForKey:@"SLUrlProtocolHandled" inRequest:request]) {
         return NO;
     }
     return YES;
@@ -52,46 +46,25 @@ static NSString *SLUrlProtocolHandled = @"SLUrlProtocolHandled";
 - (void)startLoading {
     NSMutableURLRequest *mutableReqeust = [[self request] mutableCopy];
     //标示该request已经处理过了，防止无限循环
-    [NSURLProtocol setProperty:@(YES) forKey:SLUrlProtocolHandled inRequest:mutableReqeust];
+    [NSURLProtocol setProperty:@(YES) forKey:@"SLUrlProtocolHandled" inRequest:mutableReqeust];
     
-    SLWebCacheManager *webCacheManager = [SLWebCacheManager shareInstance];
-    ///加载本地缓存数据
-    NSCachedURLResponse *cachedURLResponse = [webCacheManager loadCachedResponeWithRequest:mutableReqeust];
-    if (cachedURLResponse) {
-        [self.client URLProtocol:self didReceiveResponse:cachedURLResponse.response cacheStoragePolicy:NSURLCacheStorageNotAllowed];
-        [self.client URLProtocol:self didLoadData:cachedURLResponse.data];
-        [self.client URLProtocolDidFinishLoading:self];
-    }else {
-        //没有缓存数据
-        //使用NSURLSession继续把request发送出去
-        NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
-        NSOperationQueue *mainQueue = [NSOperationQueue mainQueue];
-        self.session = [NSURLSession sessionWithConfiguration:config delegate:self delegateQueue:mainQueue];
-        NSURLSessionDataTask *task = [self.session dataTaskWithRequest:mutableReqeust];
-        [task resume];
-    }
+    NSArray *cookies = [NSHTTPCookieStorage sharedHTTPCookieStorage].cookies;
+    NSDictionary *requestHeaderFields = [NSHTTPCookie requestHeaderFieldsWithCookies:cookies];
+    mutableReqeust.allHTTPHeaderFields = requestHeaderFields;
+    
+    //使用NSURLSession继续把request发送出去
+    NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSOperationQueue *mainQueue = [NSOperationQueue mainQueue];
+    self.session = [NSURLSession sessionWithConfiguration:config delegate:self delegateQueue:mainQueue];
+    NSURLSessionDataTask *task = [self.session dataTaskWithRequest:mutableReqeust];
+    [task resume];
+    
 }
 //停止请求加载
 - (void)stopLoading {
     [self.session invalidateAndCancel];
     self.session = nil;
 }
-
-#pragma mark - Help Methods
-- (void)clear {
-    self.data = nil;
-    self.session = nil;
-    self.response = nil;
-}
-///合并数据
-- (void)appendData:(NSData *)newData {
-    if (self.data == nil) {
-        self.data = [newData mutableCopy];
-    } else {
-        [self.data appendData:newData];
-    }
-}
-
 #pragma mark - NSURLSessionDelegate
 //接收到返回的响应信息时(还未开始下载), 执行的代理方法
 - (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask
@@ -99,18 +72,13 @@ didReceiveResponse:(NSURLResponse *)response
  completionHandler:(void (^)(NSURLSessionResponseDisposition disposition))completionHandler {
     [self.client URLProtocol:self didReceiveResponse:response cacheStoragePolicy:NSURLCacheStorageNotAllowed];
     completionHandler(NSURLSessionResponseAllow);
-    self.response = response;
+    //请求头信息
+    NSDictionary *allHTTPHeaderFields =  [dataTask.currentRequest allHTTPHeaderFields];
+    NSLog(@" Cookie: %@",allHTTPHeaderFields[@"Cookie"]);
 }
 //接收到服务器返回的数据 调用多次，数据是分批返回的
 - (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask
     didReceiveData:(NSData *)data {
-    // 打印返回的数据
-    //    NSString *dataStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-    //    if (dataStr) {
-    //        NSLog(@"收到数据: %@", dataStr);
-    //    }
-    //拼接数据
-    [self appendData:data];
     [self.client URLProtocol:self didLoadData:data];
 }
 //请求结束或者是失败的时候调用
@@ -120,11 +88,7 @@ didCompleteWithError:(nullable NSError *)error {
         [self.client URLProtocol:self didFailWithError:error];
     } else {
         [self.client URLProtocolDidFinishLoading:self];
-        //开始写入缓存数据
-        NSCachedURLResponse *cachedResponse = [[NSCachedURLResponse alloc] initWithResponse:self.response data:[self.data mutableCopy]];
-        [[SLWebCacheManager shareInstance] writeCacheData:cachedResponse withRequest:[self.request mutableCopy]];
     }
-    [self clear];
 }
 
 @end

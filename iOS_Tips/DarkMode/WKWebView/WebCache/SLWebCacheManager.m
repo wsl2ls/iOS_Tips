@@ -46,6 +46,7 @@
 - (void)closeCache {
     [WKWebView sl_unregisterSchemeForSupportHttpProtocol];
     if (self.isUsingURLProtocol) {
+         [NSURLProtocol registerClass:[NSURLProtocol class]];
     }else {
         NSURLCache* urlCache = [[NSURLCache alloc] initWithMemoryCapacity:0 diskCapacity:0 diskPath:0];
         [NSURLCache setSharedURLCache:urlCache];
@@ -66,7 +67,8 @@
             return NO;
         }
     }
-    //只允许GET方法通过
+    //只允许GET方法通过，因为post请求body数据被清空
+    //如果通过 registerSchemeForCustomProtocol 注册了 http(s) scheme, 那么由WKWebView发起的所有 http(s)请求都会通过 IPC 传给主进程NSURLProtocol处理，导致post请求body被清空
     if ([request.HTTPMethod compare:@"GET"] != NSOrderedSame) {
         return NO;
     }
