@@ -46,6 +46,7 @@
 - (void)closeCache {
     [WKWebView sl_unregisterSchemeForSupportHttpProtocol];
     if (self.isUsingURLProtocol) {
+         [NSURLProtocol registerClass:[NSURLProtocol class]];
     }else {
         NSURLCache* urlCache = [[NSURLCache alloc] initWithMemoryCapacity:0 diskCapacity:0 diskPath:0];
         [NSURLCache setSharedURLCache:urlCache];

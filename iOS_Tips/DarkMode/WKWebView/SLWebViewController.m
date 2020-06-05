@@ -37,6 +37,8 @@
 }
 - (void)dealloc {
     [self removeKVO];
+    [WKWebView sl_unregisterSchemeForSupportHttpProtocol];
+    [NSURLProtocol registerClass:[NSURLProtocol class]];
     NSLog(@"%@释放了",NSStringFromClass(self.class));
 }
 
@@ -111,7 +113,7 @@
      */
     
     //这里采用方案2
-    
+    //用完记得取消注册sl_unregisterSchemeForSupportHttpProtocol
     [WKWebView sl_registerSchemeForSupportHttpProtocol];
     [NSURLProtocol registerClass:[SLUrlProtocolAddCookie class]];
 }
