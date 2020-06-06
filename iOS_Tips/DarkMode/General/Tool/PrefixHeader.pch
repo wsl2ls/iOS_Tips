@@ -76,6 +76,7 @@
 #import "SLAlertView.h"
 #import "Masonry.h"
 #import "SLCrashProtector.h"
+#import "SLMethod.h"
 
 #endif
 

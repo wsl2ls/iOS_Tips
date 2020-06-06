@@ -46,7 +46,7 @@
 - (void)closeCache {
     [WKWebView sl_unregisterSchemeForSupportHttpProtocol];
     if (self.isUsingURLProtocol) {
-         [NSURLProtocol registerClass:[NSURLProtocol class]];
+        [NSURLProtocol registerClass:[NSURLProtocol class]];
     }else {
         NSURLCache* urlCache = [[NSURLCache alloc] initWithMemoryCapacity:0 diskCapacity:0 diskPath:0];
         [NSURLCache setSharedURLCache:urlCache];
@@ -224,6 +224,9 @@
         [self.responseDic setValue:[NSNumber numberWithBool:TRUE] forKey:request.URL.absoluteString];
         NSURLSession *session = [NSURLSession sharedSession];
         NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+            if ([response isKindOfClass:[NSHTTPURLResponse class]]) {
+                NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
+            }
             if (error) {
                 cachedResponse = nil;
             } else {

@@ -15,7 +15,6 @@ static NSString *SLUrlProtocolHandled = @"SLUrlProtocolHandled";
 
 @property (nonatomic, strong) NSURLSession *session;   //会话
 @property (nonatomic, readwrite, strong) NSMutableData *data;  //请求到的数据
-@property (nonatomic, readwrite, strong) NSURLResponse *response;  //响应信息
 
 @end
 
@@ -81,7 +80,6 @@ static NSString *SLUrlProtocolHandled = @"SLUrlProtocolHandled";
 - (void)clear {
     self.data = nil;
     self.session = nil;
-    self.response = nil;
 }
 ///合并数据
 - (void)appendData:(NSData *)newData {
@@ -99,7 +97,6 @@ didReceiveResponse:(NSURLResponse *)response
  completionHandler:(void (^)(NSURLSessionResponseDisposition disposition))completionHandler {
     [self.client URLProtocol:self didReceiveResponse:response cacheStoragePolicy:NSURLCacheStorageNotAllowed];
     completionHandler(NSURLSessionResponseAllow);
-    self.response = response;
 }
 //接收到服务器返回的数据 调用多次，数据是分批返回的
 - (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask
@@ -121,7 +118,7 @@ didCompleteWithError:(nullable NSError *)error {
     } else {
         [self.client URLProtocolDidFinishLoading:self];
         //开始写入缓存数据
-        NSCachedURLResponse *cachedResponse = [[NSCachedURLResponse alloc] initWithResponse:self.response data:[self.data mutableCopy]];
+        NSCachedURLResponse *cachedResponse = [[NSCachedURLResponse alloc] initWithResponse:task.response data:[self.data mutableCopy]];
         [[SLWebCacheManager shareInstance] writeCacheData:cachedResponse withRequest:[self.request mutableCopy]];
     }
     [self clear];

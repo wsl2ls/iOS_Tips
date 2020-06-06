@@ -10,7 +10,7 @@
 #import <WebKit/WebKit.h>
 #import "SLWebCacheManager.h"
 
-@interface SLWebCacheViewController ()
+@interface SLWebCacheViewController ()<WKNavigationDelegate>
 
 @property (nonatomic, strong) WKWebView * webView;
 ///网页加载进度视图
@@ -34,6 +34,7 @@
 }
 - (void)dealloc {
     [self removeKVO];
+    //关闭缓存
     [[SLWebCacheManager shareInstance] closeCache];
     NSLog(@"%@释放了",NSStringFromClass(self.class));
 }
@@ -44,9 +45,9 @@
     self.view.backgroundColor = UIColor.whiteColor;
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithTitle:@"上一步" style:UIBarButtonItemStyleDone target:self action:@selector(goBackAction:)];
     UIBarButtonItem *forwardItem = [[UIBarButtonItem alloc] initWithTitle:@"下一步" style:UIBarButtonItemStyleDone target:self action:@selector(goForwardAction:)];
-     UIBarButtonItem *clearItem = [[UIBarButtonItem alloc] initWithTitle:@"清理缓存" style:UIBarButtonItemStyleDone target:self action:@selector(clearCacheAction:)];
+    UIBarButtonItem *clearItem = [[UIBarButtonItem alloc] initWithTitle:@"清理缓存" style:UIBarButtonItemStyleDone target:self action:@selector(clearCacheAction:)];
     self.navigationItem.rightBarButtonItems = @[forwardItem,backItem,clearItem];
-   
+    
     SLWebCacheManager *cacheManager = [SLWebCacheManager shareInstance];
     cacheManager.whiteListsHost = @[@"www.baidu.com", @"github.com", @"www.jianshu.com", @"juejin.im"];
     //选择缓存方案
@@ -55,6 +56,9 @@
     [cacheManager openCache];
     
     [self.view addSubview:self.webView];
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:SL_GithubUrl]];
+    [self.webView loadRequest:request];
 }
 
 #pragma mark - Getter
@@ -63,14 +67,12 @@
         //创建网页配置
         WKWebViewConfiguration *config = [[WKWebViewConfiguration alloc] init];
         _webView = [[WKWebView alloc] initWithFrame:CGRectMake(0, 0, SL_kScreenWidth, SL_kScreenHeight) configuration:config];
+        _webView.navigationDelegate = self;
         if (@available(iOS 11.0, *)) {
             _webView.scrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
         } else {
             self.automaticallyAdjustsScrollViewInsets = NO;
         }
-        
-        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:SL_GithubUrl]];
-        [_webView loadRequest:request];
     }
     return _webView;
 }
@@ -141,6 +143,13 @@
 //清理缓存
 - (void)clearCacheAction:(id)sender {
     [[SLWebCacheManager shareInstance] clearCache];
+}
+
+#pragma mark - WKNavigationDelegate
+// 根据客户端受到的服务器响应头以及response相关信息来决定是否可以跳转
+- (void)webView:(WKWebView *)webView decidePolicyForNavigationResponse:(WKNavigationResponse *)navigationResponse decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler{
+    //允许跳转
+    decisionHandler(WKNavigationResponsePolicyAllow);
 }
 
 @end

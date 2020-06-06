@@ -19,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) NSUInteger memoryCapacity;
 /// 磁盘缓存容量 默认50M
 @property (nonatomic, assign) NSUInteger diskCapacity;
-/// 缓存的有效时长 默认 24 * 60 * 60 一天 ，如果为0，表示永久有效，除非手动强制删除，否则有缓存之后，只从缓存读取
+/// 缓存的有效时长(s)  默认 24 * 60 * 60 一天 ，如果为0，表示永久有效，除非手动强制删除，否则有缓存之后，只从缓存读取
 @property (nonatomic, assign) NSUInteger cacheTime;
 /// 磁盘路径 默认 NSCachesDirectory
 @property (nonatomic, copy) NSString *diskPath;
