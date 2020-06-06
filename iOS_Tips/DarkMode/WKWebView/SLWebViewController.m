@@ -183,5 +183,10 @@
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
     
 }
+//进程被终止时调用
+- (void)webViewWebContentProcessDidTerminate:(WKWebView *)webView{
+    //当 WKWebView 总体内存占用过大，页面即将白屏的时候，系统会调用此回调函数，我们在该函数里执行[webView reload](这个时候 webView.URL 取值尚不为 nil）解决白屏问题。在一些高内存消耗的页面可能会频繁刷新当前页面，H5侧也要做相应的适配操作。
+    [webView reload];
+}
 @end
 
