@@ -112,6 +112,7 @@
 		78B1049D232F57C50051579F /* DarkModeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 78B1049C232F57C50051579F /* DarkModeTests.m */; };
 		78B104A8232F57C50051579F /* DarkModeUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 78B104A7232F57C50051579F /* DarkModeUITests.m */; };
 		78BDE04B248A6A74002ED386 /* SLUrlProtocolAddCookie.m in Sources */ = {isa = PBXBuildFile; fileRef = 78BDE04A248A6A74002ED386 /* SLUrlProtocolAddCookie.m */; };
+		78BDE04D248BFBD7002ED386 /* wsl.png in Resources */ = {isa = PBXBuildFile; fileRef = 78BDE04C248BFBD7002ED386 /* wsl.png */; };
 		78D30964239688EF00DC373A /* GLESUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 78D3095E239688EF00DC373A /* GLESUtils.m */; };
 		78D30965239688EF00DC373A /* GLESMath.c in Sources */ = {isa = PBXBuildFile; fileRef = 78D30960239688EF00DC373A /* GLESMath.c */; };
 		78DAA113235FF61E00A60F64 /* SLEditVideoClipping.m in Sources */ = {isa = PBXBuildFile; fileRef = 78DAA112235FF61E00A60F64 /* SLEditVideoClipping.m */; };
@@ -337,6 +338,7 @@
 		78B104A9232F57C50051579F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		78BDE049248A6A74002ED386 /* SLUrlProtocolAddCookie.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLUrlProtocolAddCookie.h; sourceTree = "<group>"; };
 		78BDE04A248A6A74002ED386 /* SLUrlProtocolAddCookie.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLUrlProtocolAddCookie.m; sourceTree = "<group>"; };
+		78BDE04C248BFBD7002ED386 /* wsl.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wsl.png; sourceTree = "<group>"; };
 		78D3095E239688EF00DC373A /* GLESUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLESUtils.m; sourceTree = "<group>"; };
 		78D3095F239688EF00DC373A /* Quaternion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Quaternion.h; sourceTree = "<group>"; };
 		78D30960239688EF00DC373A /* GLESMath.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = GLESMath.c; sourceTree = "<group>"; };
@@ -869,6 +871,7 @@
 		78E72D4E24766E1300751373 /* WKWebView */ = {
 			isa = PBXGroup;
 			children = (
+				78BDE04C248BFBD7002ED386 /* wsl.png */,
 				78E72D58247BA29600751373 /* WebTableView.html */,
 				78E72D71247E861300751373 /* SLWebViewListController.h */,
 				78E72D72247E861300751373 /* SLWebViewListController.m */,
@@ -1093,6 +1096,7 @@
 				782CFB38239E22AC001B5528 /* SplitScreen_9.vsh in Resources */,
 				782CFB53239E4587001B5528 /* SplitScreen_16.vsh in Resources */,
 				782CFB6E239E69F3001B5528 /* Scale.vsh in Resources */,
+				78BDE04D248BFBD7002ED386 /* wsl.png in Resources */,
 				782CFB37239E22AC001B5528 /* SplitScreen_9.fsh in Resources */,
 				782CFB76239E6A02001B5528 /* SoulOut.vsh in Resources */,
 				782CFB54239E4587001B5528 /* SplitScreen_16.fsh in Resources */,

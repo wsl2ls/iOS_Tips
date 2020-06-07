@@ -23,8 +23,8 @@
 
 @end
 
+static NSString *webUrl = @"https://www.jianshu.com/p/5cf0d241ae12";
 @implementation SLWebViewController
-
 #pragma mark - Override
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -57,7 +57,9 @@
     
     [self.view addSubview:self.webView];
     
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"https://www.jianshu.com/p/5cf0d241ae12"]];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:webUrl]];
+    //设置上一次的请求时间
+    [request setValue:[SLMethod userDefaultsObjectForKey:@"localLastModified"] forHTTPHeaderField:@"If-Modified-Since"];
     [_webView loadRequest:request];
 }
 
@@ -179,9 +181,29 @@
     NSLog(@" UserAgent: %@",allHTTPHeaderFields[@"User-Agent"]);
     decisionHandler(WKNavigationActionPolicyAllow);
 }
+// 根据客户端受到的服务器响应头以及response相关信息来决定是否可以跳转
+- (void)webView:(WKWebView *)webView decidePolicyForNavigationResponse:(WKNavigationResponse *)navigationResponse decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler{
+    if ([navigationResponse.response isKindOfClass:[NSHTTPURLResponse class]] && [navigationResponse.response.URL.absoluteString isEqualToString:webUrl]) {
+        NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)navigationResponse.response;
+        if (httpResponse.statusCode == 304) {
+            //自上次请求后，文件还没有修改变化
+            //可以加载本地缓存
+        }else if (httpResponse.statusCode == 200){
+            [SLMethod userDefaultsSetObject:httpResponse.allHeaderFields[@"Last-Modified"] forKey:@"localLastModified"];
+            NSLog(@" httpResponse：%@",httpResponse);
+        }
+    }
+    //允许跳转
+    decisionHandler(WKNavigationResponsePolicyAllow);
+}
 // 页面加载完成之后调用
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
     
+}
+//进程被终止时调用
+- (void)webViewWebContentProcessDidTerminate:(WKWebView *)webView{
+    //当 WKWebView 总体内存占用过大，页面即将白屏的时候，系统会调用此7u776回调函数，我们在该函数里执行[webView reload](这个时候 webView.URL 取值尚不为 nil）解决白屏问题。在一些高内存消耗的页面可能会频繁刷新当前页面，H5侧也要做相应的适配操作。
+    [webView reload];
 }
 @end
 
