@@ -157,7 +157,7 @@
 }
 
 #pragma mark - Cache Manage
-///写入缓存数据
+///写入缓存数据   内存和磁盘
 - (BOOL)writeCacheData:(NSCachedURLResponse *)cachedURLResponse withRequest:(NSURLRequest *)request {
     NSDate *date = [NSDate date];
     NSDictionary *info = @{@"time" : [NSString stringWithFormat:@"%f",[date timeIntervalSince1970]],
@@ -173,7 +173,7 @@
     
     return result1 & result2;
 }
-///加载缓存数据
+///加载缓存数据   内存 -> 磁盘 ->网络
 - (NSCachedURLResponse *)loadCachedResponeWithRequest:(NSURLRequest *)request {
     
     //加载内存cache
@@ -184,6 +184,7 @@
     
     NSDate *date = [NSDate date];
     if (!isMemory) {
+        //如果不在内存中
         NSString *filePath = [self filePathFromRequest:request isInfo:NO];
         NSString *otherInfoPath = [self filePathFromRequest:request isInfo:YES];
         NSFileManager *fm = [NSFileManager defaultManager];
@@ -191,6 +192,9 @@
             //加载磁盘cache
             otherInfo = [NSDictionary dictionaryWithContentsOfFile:otherInfoPath];
             data = [NSData dataWithContentsOfFile:filePath];
+            //写入内存
+            [self.memoryCache setObject:data forKey:[self cacheRequestFileName:request.URL.absoluteString]];
+            [self.memoryCache setObject:otherInfo forKey:[self cacheRequestOtherInfoFileName:request.URL.absoluteString]];
         }else {
             //磁盘里也没有cache
             return nil;
