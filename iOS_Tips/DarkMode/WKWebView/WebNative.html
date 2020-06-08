@@ -1,0 +1,96 @@
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>WKWebView + NativeView</title>
+        <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    </head>
+    
+    <!--   CSS语法-->
+    <style type='text/css'>
+        img {
+            max-width: 100%;
+<!--          background-color:#e6b500;-->
+        }
+    .image-package {
+        margin: 0 -15px 25px;
+        line-height: 1;
+        text-align: center;
+    }
+    .image-package .image-caption {
+        display: inline-block;
+        min-width: 20%;
+        max-width: 80%;
+        min-height: 20px;
+        border-bottom: 1px solid #d9d9d9;
+        margin: 0 auto;
+        padding: 10px;
+        font-size: 14px;
+        color: #999;
+        line-height: 150%;
+    }
+    </style>
+    
+    <body>
+        <div id="content" style="padding-top: 64px;">
+            
+            <h2 style="text-align:center">Welcome To You</h2>
+            <p style="text-align: center ;background-color: #e6b500">wsl ~且行且珍惜~ ls</p>
+            <p style="text-align:center"><img src="wsl.png" width="200" height="200"></p>
+                
+                <p style="text-align:center"> <a href="https://www.jianshu.com/u/e15d1f644bea">简书</a> </p>
+                <p style="text-align:center"> <a href="https://github.com/wsl2ls">Github</a></p>
+                <p style="text-align:center"> <a href="iOS2679114653">微信公众号：iOS2679114653</a></p>
+                <p style="text-align:center"> <a href="835303405">QQ群：835303405</a></p>
+                <p style="text-align:center"> <a href="https://weibo.com/5732733120/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1">微博@且行且珍惜_iOS</a></p>
+                <p style="text-align:center"> <a href="https://juejin.im/user/5c00d97b6fb9a049fb436288">掘金</a></p>
+                
+                <div class="image-package">
+                    <img id="image1" src="" width="320" height="240"><br><div class="image-caption">原生组件UIImageView</div>
+                        </div>
+                <div class="image-package">
+                    <img id="image2" src="" width="320" height="240" ><br><div class="image-caption">原生组件UIImageView</div>
+                        </div>
+                <div class="image-package">
+                    <img id="image3" src="" width="320" height="240"><br><div class="image-caption">原生组件UIImageView</div>
+                        </div>
+                <div class="image-package">
+                    <img id="image4" src="" width="320" height="240" ><br><div class="image-caption">原生组件UIImageView</div>
+                        </div>
+                <div class="image-package">
+                    <img id="image5" src="" width="320" height="240"><br><div class="image-caption">原生组件UIImageView</div>
+                        </div>
+                
+                <div class="image-package">
+                    <img id="image6" src="" width="320" height="240"><br><div class="image-caption">原生组件UIImageView</div>
+                        </div>
+                <div class="image-package">
+                    <img id="image7" src="" width="320" height="240"><br><div class="image-caption">原生组件UIImageView</div>
+                        </div>
+                <div class="image-package">
+                    <img id="image8" src="" width="320" height="240"><br><div class="image-caption">原生组件UIImageView</div>
+                        </div>
+                <div class="image-package">
+                <img id="video1" src="" width="320" height="240"><br><div class="image-caption">原生组件AVPlayer播放视频</div>
+                    </div>
+                
+                <p>以上图片来源于网络</p>
+                </div>
+        
+        <!--   JS语法-->
+        <script type="text/javascript" charset="utf-8">
+<!--        获取该元素的位置坐标    -->
+            function getElementFrame(imageId) {
+                var y = document.getElementById(imageId).offsetTop;
+                var x = document.getElementById(imageId).offsetLeft;
+                var width = document.getElementById(imageId).offsetWidth;
+                var height = document.getElementById(imageId).offsetHeight;
+                return {"x":x, "y":y, "width":width, "height":height}
+                <!--                alert(y);-->
+            }
+        </script>
+        
+    </body>
+    
+</html>
