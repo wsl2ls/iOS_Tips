@@ -1,6 +1,8 @@
 # iOS_Tips
 > iOS的一些示例，不定时更新~ 由于内容较多，文件会有点大，建议终端用git clone命令下载，这样以后只需git pull更新。
-简书地址：https://www.jianshu.com/p/a2a04cabb98d 
+简书地址：https://www.jianshu.com/p/a2a04cabb98d   
+GitHub：https://github.com/wsl2ls/iOS_Tips.git  
+掘金：https://juejin.im/user/5c00d97b6fb9a049fb436288
 
 ### 目录 
 > 1、暗黑模式  
@@ -84,7 +86,7 @@
 
 > [LeetCode算法练习集合(Swift版) ~ 每天一道算法题](https://github.com/wsl2ls/AlgorithmSet.git)  
 
-## 10、[键盘和UIMenuController的并存问题]()
+## 10、[键盘和UIMenuController的并存问题](https://www.jianshu.com/p/ed1b57c4ecea)
 
 | ![问题描述.gif](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/10、键盘和UIMenuController不能同时出现的问题描述.gif) | ![并存问题解决](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/10、键盘和UIMenuController并存问题解决.gif) |
 
@@ -92,7 +94,7 @@
 
 > NSArray/NSMutableArray、NSDictionary/NSMutableDictionary、NSString/NSMutableString、Unrecognized Selector、KVO、KVC 、野指针定位、内存泄漏/循环引用
 
-## 12、WKWebView相关 
+## 12、[WKWebView相关](https://juejin.im/post/5ed999fd51882542f9389949) 
 
 > WKWebView的使用、WKWebView+UITableView混排、UIScrollView实现原理、WKWebView离线缓存功能
 
