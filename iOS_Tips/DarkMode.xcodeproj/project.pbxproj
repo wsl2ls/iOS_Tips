@@ -113,6 +113,8 @@
 		78B104A8232F57C50051579F /* DarkModeUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 78B104A7232F57C50051579F /* DarkModeUITests.m */; };
 		78BDE04B248A6A74002ED386 /* SLUrlProtocolAddCookie.m in Sources */ = {isa = PBXBuildFile; fileRef = 78BDE04A248A6A74002ED386 /* SLUrlProtocolAddCookie.m */; };
 		78BDE04D248BFBD7002ED386 /* wsl.png in Resources */ = {isa = PBXBuildFile; fileRef = 78BDE04C248BFBD7002ED386 /* wsl.png */; };
+		78BDE050248E0AFB002ED386 /* SLWebNativeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78BDE04F248E0AFB002ED386 /* SLWebNativeViewController.m */; };
+		78BDE052248E0BEC002ED386 /* WebNative.html in Resources */ = {isa = PBXBuildFile; fileRef = 78BDE051248E0BEB002ED386 /* WebNative.html */; };
 		78D30964239688EF00DC373A /* GLESUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 78D3095E239688EF00DC373A /* GLESUtils.m */; };
 		78D30965239688EF00DC373A /* GLESMath.c in Sources */ = {isa = PBXBuildFile; fileRef = 78D30960239688EF00DC373A /* GLESMath.c */; };
 		78DAA113235FF61E00A60F64 /* SLEditVideoClipping.m in Sources */ = {isa = PBXBuildFile; fileRef = 78DAA112235FF61E00A60F64 /* SLEditVideoClipping.m */; };
@@ -339,6 +341,9 @@
 		78BDE049248A6A74002ED386 /* SLUrlProtocolAddCookie.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLUrlProtocolAddCookie.h; sourceTree = "<group>"; };
 		78BDE04A248A6A74002ED386 /* SLUrlProtocolAddCookie.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLUrlProtocolAddCookie.m; sourceTree = "<group>"; };
 		78BDE04C248BFBD7002ED386 /* wsl.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wsl.png; sourceTree = "<group>"; };
+		78BDE04E248E0AFB002ED386 /* SLWebNativeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLWebNativeViewController.h; sourceTree = "<group>"; };
+		78BDE04F248E0AFB002ED386 /* SLWebNativeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLWebNativeViewController.m; sourceTree = "<group>"; };
+		78BDE051248E0BEB002ED386 /* WebNative.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = WebNative.html; sourceTree = "<group>"; };
 		78D3095E239688EF00DC373A /* GLESUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLESUtils.m; sourceTree = "<group>"; };
 		78D3095F239688EF00DC373A /* Quaternion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Quaternion.h; sourceTree = "<group>"; };
 		78D30960239688EF00DC373A /* GLESMath.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = GLESMath.c; sourceTree = "<group>"; };
@@ -873,12 +878,15 @@
 			children = (
 				78BDE04C248BFBD7002ED386 /* wsl.png */,
 				78E72D58247BA29600751373 /* WebTableView.html */,
+				78BDE051248E0BEB002ED386 /* WebNative.html */,
 				78E72D71247E861300751373 /* SLWebViewListController.h */,
 				78E72D72247E861300751373 /* SLWebViewListController.m */,
 				78E72D4F24766E4B00751373 /* SLWebViewController.h */,
 				78E72D5024766E4B00751373 /* SLWebViewController.m */,
 				78BDE049248A6A74002ED386 /* SLUrlProtocolAddCookie.h */,
 				78BDE04A248A6A74002ED386 /* SLUrlProtocolAddCookie.m */,
+				78BDE04E248E0AFB002ED386 /* SLWebNativeViewController.h */,
+				78BDE04F248E0AFB002ED386 /* SLWebNativeViewController.m */,
 				78E72D8324822E7500751373 /* WebTableView */,
 				78E72D9324852C2F00751373 /* WebCache */,
 			);
@@ -1091,6 +1099,7 @@
 				7851CB372331CC87002295B5 /* SLDarkModeViewController.xib in Resources */,
 				78EF8B6124162B96008D0CD7 /* SLMenuViewController.xib in Resources */,
 				782CFB30239E04A2001B5528 /* SplitScreen_4.fsh in Resources */,
+				78BDE052248E0BEC002ED386 /* WebNative.html in Resources */,
 				782CFB63239E623D001B5528 /* Cirlce.fsh in Resources */,
 				782CFB23239DFD0F001B5528 /* SplitScreen_2.fsh in Resources */,
 				782CFB38239E22AC001B5528 /* SplitScreen_9.vsh in Resources */,
@@ -1195,6 +1204,7 @@
 				78A1998F2451C049005B2B4B /* SLButton.m in Sources */,
 				78B10488232F57C30051579F /* ViewController.m in Sources */,
 				78FA0FA02354141E003E456B /* SLAvEditExport.m in Sources */,
+				78BDE050248E0AFB002ED386 /* SLWebNativeViewController.m in Sources */,
 				78F42023237915730093497C /* SLGPUImageController.m in Sources */,
 				7860D791239922B4008C53EC /* SLGLKPyramidVC.m in Sources */,
 				787C7DC3245D74E4005DF7ED /* NSString+SLCrashProtector.m in Sources */,

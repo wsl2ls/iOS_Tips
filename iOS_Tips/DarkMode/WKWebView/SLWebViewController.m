@@ -23,7 +23,7 @@
 
 @end
 
-static NSString *webUrl = @"https://www.jianshu.com/p/5cf0d241ae12";
+static NSString *KwebUrl = @"https://www.jianshu.com/p/5cf0d241ae12";
 @implementation SLWebViewController
 #pragma mark - Override
 - (void)viewDidLoad {
@@ -57,7 +57,7 @@ static NSString *webUrl = @"https://www.jianshu.com/p/5cf0d241ae12";
     
     [self.view addSubview:self.webView];
     
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:webUrl]];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:KwebUrl]];
     //设置上一次的请求时间
     [request setValue:[SLMethod userDefaultsObjectForKey:@"localLastModified"] forHTTPHeaderField:@"If-Modified-Since"];
     [_webView loadRequest:request];
@@ -183,7 +183,7 @@ static NSString *webUrl = @"https://www.jianshu.com/p/5cf0d241ae12";
 }
 // 根据客户端受到的服务器响应头以及response相关信息来决定是否可以跳转
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationResponse:(WKNavigationResponse *)navigationResponse decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler{
-    if ([navigationResponse.response isKindOfClass:[NSHTTPURLResponse class]] && [navigationResponse.response.URL.absoluteString isEqualToString:webUrl]) {
+    if ([navigationResponse.response isKindOfClass:[NSHTTPURLResponse class]] && [navigationResponse.response.URL.absoluteString isEqualToString:KwebUrl]) {
         NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)navigationResponse.response;
         if (httpResponse.statusCode == 304) {
             //自上次请求后，文件还没有修改变化
