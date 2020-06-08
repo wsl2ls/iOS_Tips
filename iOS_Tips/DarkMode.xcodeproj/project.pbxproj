@@ -115,7 +115,7 @@
 		78BDE04D248BFBD7002ED386 /* wsl.png in Resources */ = {isa = PBXBuildFile; fileRef = 78BDE04C248BFBD7002ED386 /* wsl.png */; };
 		78BDE050248E0AFB002ED386 /* SLWebNativeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78BDE04F248E0AFB002ED386 /* SLWebNativeViewController.m */; };
 		78BDE052248E0BEC002ED386 /* WebNative.html in Resources */ = {isa = PBXBuildFile; fileRef = 78BDE051248E0BEB002ED386 /* WebNative.html */; };
-		78BDE056248E282E002ED386 /* placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 78BDE055248E282E002ED386 /* placeholder.png */; };
+		78BDE058248E541E002ED386 /* WebNativeJson.txt in Resources */ = {isa = PBXBuildFile; fileRef = 78BDE057248E541E002ED386 /* WebNativeJson.txt */; };
 		78D30964239688EF00DC373A /* GLESUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 78D3095E239688EF00DC373A /* GLESUtils.m */; };
 		78D30965239688EF00DC373A /* GLESMath.c in Sources */ = {isa = PBXBuildFile; fileRef = 78D30960239688EF00DC373A /* GLESMath.c */; };
 		78DAA113235FF61E00A60F64 /* SLEditVideoClipping.m in Sources */ = {isa = PBXBuildFile; fileRef = 78DAA112235FF61E00A60F64 /* SLEditVideoClipping.m */; };
@@ -345,7 +345,7 @@
 		78BDE04E248E0AFB002ED386 /* SLWebNativeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLWebNativeViewController.h; sourceTree = "<group>"; };
 		78BDE04F248E0AFB002ED386 /* SLWebNativeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLWebNativeViewController.m; sourceTree = "<group>"; };
 		78BDE051248E0BEB002ED386 /* WebNative.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = WebNative.html; sourceTree = "<group>"; };
-		78BDE055248E282E002ED386 /* placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = placeholder.png; sourceTree = "<group>"; };
+		78BDE057248E541E002ED386 /* WebNativeJson.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = WebNativeJson.txt; sourceTree = "<group>"; };
 		78D3095E239688EF00DC373A /* GLESUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLESUtils.m; sourceTree = "<group>"; };
 		78D3095F239688EF00DC373A /* Quaternion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Quaternion.h; sourceTree = "<group>"; };
 		78D30960239688EF00DC373A /* GLESMath.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = GLESMath.c; sourceTree = "<group>"; };
@@ -879,9 +879,9 @@
 			isa = PBXGroup;
 			children = (
 				78BDE04C248BFBD7002ED386 /* wsl.png */,
-				78BDE055248E282E002ED386 /* placeholder.png */,
 				78E72D58247BA29600751373 /* WebTableView.html */,
 				78BDE051248E0BEB002ED386 /* WebNative.html */,
+				78BDE057248E541E002ED386 /* WebNativeJson.txt */,
 				78E72D71247E861300751373 /* SLWebViewListController.h */,
 				78E72D72247E861300751373 /* SLWebViewListController.m */,
 				78E72D4F24766E4B00751373 /* SLWebViewController.h */,
@@ -1107,12 +1107,12 @@
 				782CFB23239DFD0F001B5528 /* SplitScreen_2.fsh in Resources */,
 				782CFB38239E22AC001B5528 /* SplitScreen_9.vsh in Resources */,
 				782CFB53239E4587001B5528 /* SplitScreen_16.vsh in Resources */,
-				78BDE056248E282E002ED386 /* placeholder.png in Resources */,
 				782CFB6E239E69F3001B5528 /* Scale.vsh in Resources */,
 				78BDE04D248BFBD7002ED386 /* wsl.png in Resources */,
 				782CFB37239E22AC001B5528 /* SplitScreen_9.fsh in Resources */,
 				782CFB76239E6A02001B5528 /* SoulOut.vsh in Resources */,
 				782CFB54239E4587001B5528 /* SplitScreen_16.fsh in Resources */,
+				78BDE058248E541E002ED386 /* WebNativeJson.txt in Resources */,
 				782CFB34239E04AD001B5528 /* SplitScreen_6.vsh in Resources */,
 				782CFB62239E623D001B5528 /* Cirlce.vsh in Resources */,
 				788ADB392441F48F00302CD9 /* SLCrashViewController.xib in Resources */,

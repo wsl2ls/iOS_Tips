@@ -8,7 +8,16 @@
 
 #import "SLWebNativeViewController.h"
 #import <WebKit/WebKit.h>
+#import <YYImage.h>
+#import <YYWebImage.h>
+#import "SLAvPlayer.h"
 
+/*
+ 
+ 
+ 
+ 
+ */
 @interface SLWebNativeViewController ()<WKNavigationDelegate, WKUIDelegate>
 @property (nonatomic, strong) WKWebView * webView;
 ///网页加载进度视图
@@ -17,6 +26,8 @@
 @property (nonatomic, assign) CGFloat webContentHeight;
 /// 原生组件所需的HTML中元素的数据
 @property (nonatomic, strong) NSMutableArray *dataSource;
+///视频播放
+@property (nonatomic, strong) SLAvPlayer *avPlayer;
 @end
 
 @implementation SLWebNativeViewController
@@ -24,6 +35,7 @@
 #pragma mark - Override
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self getData];
     [self setupUI];
     [self addKVO];
 }
@@ -38,7 +50,7 @@
 
 #pragma mark - UI
 - (void)setupUI {
-    
+    self.navigationItem.title = @"Html非文本元素替换为native组件展示";
     [self.view addSubview:self.webView];
     
     NSString *path = [[NSBundle mainBundle] pathForResource:@"WebNative.html" ofType:nil];
@@ -47,9 +59,11 @@
 }
 
 #pragma mark - Data
+/// 获取原生组件所需的HTML中元素的数据
 - (void)getData {
-
-    
+    NSData *contentData = [[NSFileManager defaultManager] contentsAtPath:[[NSBundle mainBundle] pathForResource:@"WebNativeJson" ofType:@"txt"]];
+    NSDictionary * dataDict = [NSJSONSerialization JSONObjectWithData:contentData options:kNilOptions error:nil];
+    [self.dataSource addObjectsFromArray:dataDict[@"dataList"]];
 }
 
 #pragma mark - Getter
@@ -79,6 +93,12 @@
         _dataSource = [NSMutableArray array];
     }
     return _dataSource;
+}
+- (SLAvPlayer *)avPlayer {
+    if (!_avPlayer) {
+        _avPlayer = [[SLAvPlayer alloc] init];
+    }
+    return _avPlayer;
 }
 
 #pragma mark - KVO
@@ -128,6 +148,11 @@
 }
 
 #pragma mark - Events Handle
+- (void)playVideoAction:(UIButton *)btn {
+    self.avPlayer.monitor = btn.superview;
+    [self.avPlayer play];
+    [btn removeFromSuperview];
+}
 
 #pragma mark - WKNavigationDelegate
 // 根据WebView对于即将跳转的HTTP请求头信息和相关信息来决定是否跳转
@@ -141,11 +166,42 @@
 }
 // 页面加载完成之后调用
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
-    //获取标签位置坐标
-    NSString *jsString = [NSString stringWithFormat:@"getElementFrame('%@')",@"image1"];
-    [_webView evaluateJavaScript:jsString completionHandler:^(id _Nullable data, NSError * _Nullable error) {
-        NSLog(@" %@",data)
-    }];
+    //根据服务器下发的标签相关的数据，用原生组件展示
+    for (NSDictionary *dataDict in self.dataSource) {
+        NSString *jsString = [NSString stringWithFormat:@"getElementFrame('%@')",dataDict[@"tagID"]];
+        [_webView evaluateJavaScript:jsString completionHandler:^(id _Nullable data, NSError * _Nullable error) {
+            //获取标签位置坐标
+            NSDictionary *frameDict = (NSDictionary *)data;
+            CGRect frame = CGRectMake(
+                                      [frameDict[@"x"] floatValue], [frameDict[@"y"] floatValue], [frameDict[@"width"] floatValue], [frameDict[@"height"] floatValue]);
+            if ([dataDict[@"type"] isEqualToString:@"image"]) {
+                //图片
+                YYAnimatedImageView *imageView = [[YYAnimatedImageView alloc] init];
+                imageView.frame = frame;
+                [imageView yy_setImageWithURL:[NSURL URLWithString:dataDict[@"imgUrl"] ] placeholder:nil];
+                [self.webView.scrollView addSubview:imageView];
+            }else if ([dataDict[@"type"] isEqualToString:@"video"]) {
+                //视频
+                YYAnimatedImageView *imageView = [[YYAnimatedImageView alloc] init];
+                imageView.frame = frame;
+                imageView.backgroundColor = [UIColor orangeColor];
+                [imageView yy_setImageWithURL:[NSURL URLWithString:dataDict[@"imgUrl"] ] placeholder:nil];
+                [self.webView.scrollView addSubview:imageView];
+                UIButton *playBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 80, 80)];
+                playBtn.center = CGPointMake(frame.size.width/2.0, frame.size.height/2.0);
+                [playBtn setImage:[UIImage imageNamed:@"play"] forState:UIControlStateNormal];
+                [playBtn addTarget:self action:@selector(playVideoAction:) forControlEvents:UIControlEventTouchUpInside];
+                imageView.userInteractionEnabled = YES;
+                [imageView addSubview:playBtn];
+                self.avPlayer.url = [NSURL URLWithString:dataDict[@"videoUrl"]];
+            }else if ([dataDict[@"type"] isEqualToString:@"audio"]) {
+                //音频
+                
+            }
+            //            NSLog(@" %@",data)
+        }];
+    }
+    
 }
 //进程被终止时调用
 - (void)webViewWebContentProcessDidTerminate:(WKWebView *)webView{
