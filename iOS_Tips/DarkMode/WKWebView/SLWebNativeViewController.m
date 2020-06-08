@@ -9,12 +9,14 @@
 #import "SLWebNativeViewController.h"
 #import <WebKit/WebKit.h>
 
-@interface SLWebNativeViewController ()<WKNavigationDelegate>
+@interface SLWebNativeViewController ()<WKNavigationDelegate, WKUIDelegate>
 @property (nonatomic, strong) WKWebView * webView;
 ///网页加载进度视图
 @property (nonatomic, strong) UIProgressView * progressView;
 /// WKWebView 内容的高度
 @property (nonatomic, assign) CGFloat webContentHeight;
+/// 原生组件所需的HTML中元素的数据
+@property (nonatomic, strong) NSMutableArray *dataSource;
 @end
 
 @implementation SLWebNativeViewController
@@ -44,6 +46,12 @@
     [_webView loadHTMLString:htmlString baseURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] bundlePath]]];
 }
 
+#pragma mark - Data
+- (void)getData {
+
+    
+}
+
 #pragma mark - Getter
 - (WKWebView *)webView {
     if(_webView == nil){
@@ -51,6 +59,7 @@
         WKWebViewConfiguration *config = [[WKWebViewConfiguration alloc] init];
         _webView = [[WKWebView alloc] initWithFrame:CGRectMake(0, 0, SL_kScreenWidth, SL_kScreenHeight) configuration:config];
         _webView.navigationDelegate = self;
+        _webView.UIDelegate = self;
     }
     return _webView;
 }
@@ -64,6 +73,12 @@
         [self.navigationController.navigationBar addSubview:_progressView];
     }
     return _progressView;
+}
+- (NSMutableArray *)dataSource {
+    if (!_dataSource) {
+        _dataSource = [NSMutableArray array];
+    }
+    return _dataSource;
 }
 
 #pragma mark - KVO
@@ -104,8 +119,11 @@
             });
         }
     }else if ([keyPath isEqualToString:NSStringFromSelector(@selector(contentSize))]
-              && object == _webView.scrollView && _webContentHeight != _webView.scrollView.contentSize.height) {
-        _webContentHeight = _webView.scrollView.contentSize.height;
+              && object == _webView.scrollView) {
+        if (_webContentHeight == _webView.scrollView.contentSize.height) {
+        }else {
+            _webContentHeight = _webView.scrollView.contentSize.height;
+        }
     }
 }
 
@@ -123,11 +141,31 @@
 }
 // 页面加载完成之后调用
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
-    
+    //获取标签位置坐标
+    NSString *jsString = [NSString stringWithFormat:@"getElementFrame('%@')",@"image1"];
+    [_webView evaluateJavaScript:jsString completionHandler:^(id _Nullable data, NSError * _Nullable error) {
+        NSLog(@" %@",data)
+    }];
 }
 //进程被终止时调用
 - (void)webViewWebContentProcessDidTerminate:(WKWebView *)webView{
+    
+}
 
+#pragma mark - WKUIDelegate
+/**
+ *  web界面中有弹出警告框时调用
+ *
+ *  @param webView           实现该代理的webview
+ *  @param message           警告框中的内容
+ *  @param completionHandler 警告框消失调用
+ */
+- (void)webView:(WKWebView *)webView runJavaScriptAlertPanelWithMessage:(NSString *)message initiatedByFrame:(WKFrameInfo *)frame completionHandler:(void (^)(void))completionHandler {
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"HTML的弹出框" message:message?:@"" preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addAction:([UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        completionHandler();
+    }])];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 @end

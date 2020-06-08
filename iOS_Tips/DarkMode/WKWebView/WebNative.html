@@ -11,6 +11,7 @@
     <style type='text/css'>
         img {
             max-width: 100%;
+<!--          background-color:#e6b500;-->
         }
     .image-package {
         margin: 0 -15px 25px;
@@ -46,41 +47,43 @@
                 <p style="text-align:center"> <a href="https://juejin.im/user/5c00d97b6fb9a049fb436288">掘金</a></p>
                 
                 <div class="image-package">
-                    <img src="jjjj"><br><div class="image-caption">努力敲代码中~</div>
+                    <img id="image1" src="" width="320" height="240"><br><div class="image-caption">努力敲代码中~</div>
                         </div>
                 <div class="image-package">
-                    <img src=""><br><div class="image-caption">路飞</div>
+                    <img id="image2" src="" width="320" height="240" ><br><div class="image-caption">路飞</div>
                         </div>
                 <div class="image-package">
-                    <img src=""><br><div class="image-caption">路飞的迷妹~</div>
+                    <img id="image3" src="" width="320" height="240"><br><div class="image-caption">路飞的迷妹~</div>
                         </div>
                 <div class="image-package">
-                    <img src=""><br><div class="image-caption">24号传奇</div>
+                    <img id="image4" src="" width="320" height="240" ><br><div class="image-caption">24号传奇</div>
                         </div>
                 <div class="image-package">
-                    <img src=""><br><div class="image-caption">美如画的投篮</div>
+                    <img id="image1" src="" width="320" height="240"><br><div class="image-caption">美如画的投篮</div>
                         </div>
                 
                 <div class="image-package">
-                    <img src=""><br><div class="image-caption">酷</div>
+                    <img id="image5" src="" width="320" height="240"><br><div class="image-caption">酷</div>
                         </div>
                 <div class="image-package">
-                    <img src=""><br><div class="image-caption">酷</div>
+                    <img id="image6" src="" width="320" height="240"><br><div class="image-caption">酷</div>
                         </div>
                 <div class="image-package">
-                    <img src=""><br><div class="image-caption">告别科比</div>
+                    <img id="image7" src="" width="320" height="240"><br><div class="image-caption">告别科比</div>
                         </div>
                 
                 <p>以上图片来源于网络</p>
                 </div>
         
-        
-        <!-- tableView占位标签  -->
-        <div id="placeholder"></div>
         <!--   JS语法-->
         <script type="text/javascript" charset="utf-8">
-            function changeHeight(h) {
-                document.getElementById("placeholder").style.height = h + "px";
+            function getElementFrame(imageId) {
+                var y = document.getElementById(imageId).offsetTop;
+                var x = document.getElementById(imageId).offsetLeft;
+                var width = document.getElementById(imageId).offsetWidth;
+                var height = document.getElementById(imageId).offsetHeight;
+                return {"x":x, "y":y, "width":width, "height":height}
+                <!--                alert(y);-->
             }
         </script>
         
