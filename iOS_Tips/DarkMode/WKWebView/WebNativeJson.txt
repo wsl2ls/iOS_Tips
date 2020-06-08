@@ -4,72 +4,72 @@
             "tagID": "image0",
             "type": "image",
             "imgUrl": "http://img.qikula.com/file/image/pic/4a2064160872n649283368c27.jpg",
-            "width": "340",
-            "height": "200"
+            "width": "320",
+            "height": "240"
         },
         {
             "tagID": "image1",
             "type": "image",
             "imgUrl": "http://b-ssl.duitang.com/uploads/item/201507/13/20150713182820_5mHce.jpeg",
-            "width": "340",
-            "height": "200"
+            "width": "320",
+            "height": "240"
         },
         {
             "tagID": "image2",
             "type": "image",
             "imgUrl": "http://b-ssl.duitang.com/uploads/blog/201401/08/20140108182739_kFHxN.thumb.224_0.gif",
-            "width": "340",
-            "height": "200"
+            "width": "320",
+            "height": "240"
         },
         {
             "tagID": "image3",
             "type": "image",
             "imgUrl": "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1590574073707&di=4c0752ac8777b9e30f85756189ce1c7b&imgtype=0&src=http%3A%2F%2F00imgmini.eastday.com%2Fmobile%2F20181228%2F20181228085224_897c56449dc204f4443d150207f1220f_3.jpeg",
-            "width": "340",
-            "height": "200"
+            "width": "320",
+            "height": "240"
         },
         {
             "tagID": "image4",
             "type": "image",
             "imgUrl": "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1590574213364&di=c04886803e0c0849be4bcfbb4fa5ea57&imgtype=0&src=http%3A%2F%2F5b0988e595225.cdn.sohucs.com%2Fimages%2F20180328%2F364a77badc2c4aed8ab382e62651110d.gif",
-            "width": "340",
-            "height": "200"
+            "width": "320",
+            "height": "240"
         },
         {
             "tagID": "image5",
             "type": "image",
             "imgUrl": "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1590574356101&di=29711fb3808a53a67ba9ee0139000ff3&imgtype=0&src=http%3A%2F%2F01.minipic.eastday.com%2F20170625%2F20170625040114_2a27ceccee9fe4e60757d1c22a9f10f4_4.jpeg",
-            "width": "340",
-            "height": "200"
+            "width": "320",
+            "height": "240"
         },
         {
             "tagID": "image6",
             "type": "image",
             "imgUrl": "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1590574444194&di=3f1d5730bc757a866ebba2aef6248367&imgtype=0&src=http%3A%2F%2Fhiphotos.baidu.com%2F_pennsylvania%2Fpic%2Fitem%2Ff939292bf63db47f1f3089ad.jpg",
-            "width": "340",
-            "height": "200"
+            "width": "320",
+            "height": "240"
         },
         {
             "tagID": "image7",
             "type": "image",
             "imgUrl": "http://b-ssl.duitang.com/uploads/item/201208/10/20120810150440_NSrXL.gif",
-            "width": "340",
-            "height": "200"
+            "width": "320",
+            "height": "240"
         },
         {
             "tagID": "image8",
             "type": "image",
             "imgUrl": "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1590574473190&di=a6d3a0e1cf189e5222d4fb8d21ee0475&imgtype=0&src=http%3A%2F%2Fupload.mnw.cn%2F2016%2F0414%2F1460606040792.jpg",
-            "width": "340",
-            "height": "200"
+            "width": "320",
+            "height": "240"
         },
         {
             "tagID": "video1",
             "type": "video",
             "imgUrl": "http://a.hiphotos.baidu.com/zhidao/pic/item/0d338744ebf81a4cd90f1d3ad72a6059252da600.jpg",
             "videoUrl":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=39183&editionType=normal&source=qcloud",
-            "width": "340",
-            "height": "200"
+            "width": "320",
+            "height": "240"
         }
     ]
 }
