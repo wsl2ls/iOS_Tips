@@ -1,6 +1,6 @@
 # iOS_Tips
 > iOS的一些示例，不定时更新~ 由于内容较多，文件会有点大，建议终端用git clone命令下载，这样以后只需git pull更新。
-简书地址：https://www.jianshu.com/p/a2a04cabb98d   
+简书：https://www.jianshu.com/p/a2a04cabb98d   
 GitHub：https://github.com/wsl2ls/iOS_Tips.git  
 掘金：https://juejin.im/user/5c00d97b6fb9a049fb436288
 
