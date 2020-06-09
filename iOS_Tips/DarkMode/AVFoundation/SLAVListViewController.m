@@ -12,6 +12,7 @@
 #import "SLFaceDetectController.h"
 #import "SLFilterViewController.h"
 #import "SLGPUImageController.h"
+#import "SLColorPickerViewController.h"
 
 @interface SLAVListViewController ()
 @property (nonatomic, strong) NSMutableArray *dataSource;
@@ -48,11 +49,15 @@
         @"AVFoundation 人脸检测",
         @"AVFoundation 实时滤镜拍摄和导出",
         @"GPUImage框架的使用",
-        @"VideoToolBox和AudioToolBox音视频编解码"]];
+        @"VideoToolBox和AudioToolBox音视频编解码",
+        @"AVFoundation 利用摄像头实时识别物体颜色(doing)",
+        @"AVFoundation 原生二维码扫描识别和生成"]];
     [self.classArray addObjectsFromArray:@[[SLShotViewController class],
                                            [SLFaceDetectController class],
                                            [SLFilterViewController class],
                                            [SLGPUImageController class],
+                                           [UIViewController class],
+                                           [SLColorPickerViewController class],
                                            [UIViewController class]]];
     [self.tableView reloadData];
 }
@@ -93,12 +98,19 @@
             [self presentViewController:nextVc animated:YES completion:nil];
         }
             break;
+        case 5:
+            [self.navigationController pushViewController:nextVc animated:YES];
+            break;
         case 4:
             [SLAlertView showAlertViewWithText:@"查看本仓库下的VideoEncoder&Decoder" delayHid:2];
             NSLog(@"查看本仓库下的VideoEncoder&Decoder");
             break;
+        case 6:
+            [SLAlertView showAlertViewWithText:@"AVFoundation 原生二维码扫描识别和生成：https://github.com/wsl2ls/ScanQRcode.git" delayHid:2];
+            NSLog(@"AVFoundation 原生二维码扫描识别和生成：https://github.com/wsl2ls/ScanQRcode.git");
+            break;
         default:
             break;
+        }
     }
-}
-@end
+    @end

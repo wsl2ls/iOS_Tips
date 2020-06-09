@@ -95,6 +95,7 @@
 		78804A7E237D5E3E0087E152 /* SLWaterMarkController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78804A7D237D5E3E0087E152 /* SLWaterMarkController.m */; };
 		78842454248F863500C2E505 /* SLTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78842453248F863500C2E505 /* SLTableViewController.m */; };
 		78842464248F964000C2E505 /* SLAVListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78842463248F964000C2E505 /* SLAVListViewController.m */; };
+		78842468248FAED100C2E505 /* SLColorPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78842467248FAED100C2E505 /* SLColorPickerViewController.m */; };
 		788ACD622390BFD400737EC2 /* SLLoadImageVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 788ACD612390BFD400737EC2 /* SLLoadImageVC.m */; };
 		788ACD652390EA3A00737EC2 /* SLCubeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 788ACD642390EA3A00737EC2 /* SLCubeViewController.m */; };
 		788ADB382441F48F00302CD9 /* SLCrashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 788ADB362441F48F00302CD9 /* SLCrashViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -309,6 +310,8 @@
 		78842453248F863500C2E505 /* SLTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLTableViewController.m; sourceTree = "<group>"; };
 		78842462248F964000C2E505 /* SLAVListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLAVListViewController.h; sourceTree = "<group>"; };
 		78842463248F964000C2E505 /* SLAVListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLAVListViewController.m; sourceTree = "<group>"; };
+		78842466248FAED100C2E505 /* SLColorPickerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLColorPickerViewController.h; sourceTree = "<group>"; };
+		78842467248FAED100C2E505 /* SLColorPickerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLColorPickerViewController.m; sourceTree = "<group>"; };
 		788ACD602390BFD400737EC2 /* SLLoadImageVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLLoadImageVC.h; sourceTree = "<group>"; };
 		788ACD612390BFD400737EC2 /* SLLoadImageVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLLoadImageVC.m; sourceTree = "<group>"; };
 		788ACD632390EA3A00737EC2 /* SLCubeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLCubeViewController.h; sourceTree = "<group>"; };
@@ -720,12 +723,22 @@
 			children = (
 				78842462248F964000C2E505 /* SLAVListViewController.h */,
 				78842463248F964000C2E505 /* SLAVListViewController.m */,
+				78842465248FAEA000C2E505 /* ColorPicker */,
 				7851CB392331CD0D002295B5 /* SmallVideo */,
 				782E3EB52373F892001E0DF9 /* Filter */,
 				78AA10F32371A1EF0044A6F8 /* FaceDetect */,
 				78F4201E237913C80093497C /* GPUImageDemo */,
 			);
 			path = AVFoundation;
+			sourceTree = "<group>";
+		};
+		78842465248FAEA000C2E505 /* ColorPicker */ = {
+			isa = PBXGroup;
+			children = (
+				78842466248FAED100C2E505 /* SLColorPickerViewController.h */,
+				78842467248FAED100C2E505 /* SLColorPickerViewController.m */,
+			);
+			path = ColorPicker;
 			sourceTree = "<group>";
 		};
 		788ADB342441F46500302CD9 /* Crash */ = {
@@ -1294,6 +1307,7 @@
 				78E72D73247E861300751373 /* SLWebViewListController.m in Sources */,
 				782CFB57239E5FE6001B5528 /* SLShaderFilterViewController.m in Sources */,
 				7822CCF8235B054200E70C29 /* SLPaddingLabel.m in Sources */,
+				78842468248FAED100C2E505 /* SLColorPickerViewController.m in Sources */,
 				787C7DCF2462B03D005DF7ED /* UINavigationController+SLMLeakFinder.m in Sources */,
 				788ACD622390BFD400737EC2 /* SLLoadImageVC.m in Sources */,
 				78E72D5C247BDDE700751373 /* SLWebTableViewController2.m in Sources */,
