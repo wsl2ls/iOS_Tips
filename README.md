@@ -119,7 +119,7 @@ indirect_symbol_bindings[i] = cur->rebindings[j].replacement： FBRetainCycleDet
 > * [CSDN](https://blog.csdn.net/wsl2ls)
 > * QQ交流群：835303405
 > * 微信公众号：iOS2679114653
-> * 微信号：w2679114653
+> * 微信号：w2679114653（备注来意）
 
 ![QQ交流群: 835303405](QQ交流群.jpeg)
 
