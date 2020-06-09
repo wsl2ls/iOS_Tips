@@ -7,4 +7,5 @@ pod 'MBProgressHUD'
 pod 'Masonry'
 pod 'YYImage'
 pod 'YYWebImage'
+pod 'YYModel'
 end

@@ -11,6 +11,19 @@
 #import <YYImage.h>
 #import <YYWebImage.h>
 #import "SLAvPlayer.h"
+#import <YYModel.h>
+
+
+@interface SLWebNativeModel : NSObject<YYModel>
+@property (nonatomic, copy) NSString *tagID;
+@property (nonatomic, copy) NSString *type;
+@property (nonatomic, copy) NSString *imgUrl;
+@property (nonatomic, copy) NSString *videoUrl;
+@property (nonatomic, assign) CGFloat width;
+@property (nonatomic, assign) CGFloat height;
+@end
+@implementation SLWebNativeModel
+@end
 
 /*
  
@@ -63,7 +76,10 @@
 - (void)getData {
     NSData *contentData = [[NSFileManager defaultManager] contentsAtPath:[[NSBundle mainBundle] pathForResource:@"WebNativeJson" ofType:@"txt"]];
     NSDictionary * dataDict = [NSJSONSerialization JSONObjectWithData:contentData options:kNilOptions error:nil];
-    [self.dataSource addObjectsFromArray:dataDict[@"dataList"]];
+    for (NSDictionary *dict in dataDict[@"dataList"]) {
+        SLWebNativeModel *model = [SLWebNativeModel yy_modelWithDictionary:dict];
+        [self.dataSource addObject:model];
+    }
 }
 
 #pragma mark - Getter
@@ -167,25 +183,25 @@
 // 页面加载完成之后调用
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
     //根据服务器下发的标签相关的数据，用原生组件展示
-    for (NSDictionary *dataDict in self.dataSource) {
-        NSString *jsString = [NSString stringWithFormat:@"getElementFrame('%@')",dataDict[@"tagID"]];
+    for (SLWebNativeModel *model in self.dataSource) {
+        NSString *jsString = [NSString stringWithFormat:@"getElementFrame('%@')",model.tagID];
         [_webView evaluateJavaScript:jsString completionHandler:^(id _Nullable data, NSError * _Nullable error) {
             //获取标签位置坐标
             NSDictionary *frameDict = (NSDictionary *)data;
             CGRect frame = CGRectMake(
                                       [frameDict[@"x"] floatValue], [frameDict[@"y"] floatValue], [frameDict[@"width"] floatValue], [frameDict[@"height"] floatValue]);
-            if ([dataDict[@"type"] isEqualToString:@"image"]) {
+            if ([model.type isEqualToString:@"image"]) {
                 //图片
                 YYAnimatedImageView *imageView = [[YYAnimatedImageView alloc] init];
                 imageView.frame = frame;
-                [imageView yy_setImageWithURL:[NSURL URLWithString:dataDict[@"imgUrl"] ] placeholder:nil];
+                [imageView yy_setImageWithURL:[NSURL URLWithString:model.imgUrl] placeholder:nil];
                 [self.webView.scrollView addSubview:imageView];
-            }else if ([dataDict[@"type"] isEqualToString:@"video"]) {
+            }else if ([model.type isEqualToString:@"video"]) {
                 //视频
                 YYAnimatedImageView *imageView = [[YYAnimatedImageView alloc] init];
                 imageView.frame = frame;
                 imageView.backgroundColor = [UIColor orangeColor];
-                [imageView yy_setImageWithURL:[NSURL URLWithString:dataDict[@"imgUrl"] ] placeholder:nil];
+                [imageView yy_setImageWithURL:[NSURL URLWithString:model.imgUrl ] placeholder:nil];
                 [self.webView.scrollView addSubview:imageView];
                 UIButton *playBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 80, 80)];
                 playBtn.center = CGPointMake(frame.size.width/2.0, frame.size.height/2.0);
@@ -193,8 +209,8 @@
                 [playBtn addTarget:self action:@selector(playVideoAction:) forControlEvents:UIControlEventTouchUpInside];
                 imageView.userInteractionEnabled = YES;
                 [imageView addSubview:playBtn];
-                self.avPlayer.url = [NSURL URLWithString:dataDict[@"videoUrl"]];
-            }else if ([dataDict[@"type"] isEqualToString:@"audio"]) {
+                self.avPlayer.url = [NSURL URLWithString:model.videoUrl];
+            }else if ([model.type isEqualToString:@"audio"]) {
                 //音频
                 
             }
