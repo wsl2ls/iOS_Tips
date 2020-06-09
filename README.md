@@ -1,22 +1,23 @@
 # iOS_Tips
-> iOS的一些示例，不定时更新~ 由于内容较多，文件会有点大，建议终端用git clone命令下载，这样以后只需git pull更新。
-简书：https://www.jianshu.com/p/a2a04cabb98d   
+> iOS的一些示例，不定时更新~ 由于内容较多，文件会有点大，建议终端用git clone命令下载，这样以后只需git pull更新。  
 GitHub：https://github.com/wsl2ls/iOS_Tips.git  
 掘金：https://juejin.im/user/5c00d97b6fb9a049fb436288
 
 ### 目录 
 > 1、暗黑模式  
 > 2、AppleID登录应用  
-> 3、AVFoundation 高仿微信相机拍摄和编辑   
-> 4、AVFoundation 人脸检测  
-> 5、AVFoundation 实时滤镜  
-> 6、GPUImage框架的使用  
-> 7、VideoToolBox和AudioToolBox音视频编解码  
-> 8、OpenGL ES学习   
-> 9、LeetCode算法练习  
-> 10、键盘和UIMenuController的并存问题  
-> 11、iOS Crash防护  
-> 12、WKWebView相关  
+> 3、AVFoundation相关
+>> 3.1、AVFoundation 高仿微信相机拍摄和编辑   
+>> 3.2、AVFoundation 人脸检测  
+>> 3.3、AVFoundation 实时滤镜  
+>> 3.4、GPUImage框架的使用  
+>> 3.5、VideoToolBox和AudioToolBox音视频编解码 
+>>
+> 4、OpenGL ES学习   
+> 5、LeetCode算法练习  
+> 6、键盘和UIMenuController的并存问题  
+> 7、iOS Crash防护  
+> 8、WKWebView相关  
 > 问题说明
  
  
@@ -28,7 +29,9 @@ GitHub：https://github.com/wsl2ls/iOS_Tips.git
 
 * 查看本仓库下的AddingTheSignInWithAppleFlowToYourApp
 
-## 3、[微信相机拍摄照片、小视频以及编辑功能](https://www.jianshu.com/p/a2a04cabb98d)  
+## 3、AVFoundation相关
+
+### 3.1、[微信相机拍摄照片、小视频以及编辑功能](https://www.jianshu.com/p/a2a04cabb98d)  
 > 效果描述：  
 > * 1、自定义相机 拍摄视频和照片
 > * 2、切换前后摄像头、调整焦距/设置聚焦点、横屏拍摄
@@ -48,17 +51,17 @@ GitHub：https://github.com/wsl2ls/iOS_Tips.git
 |![图片编辑](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/3、小视频7.gif)|![图片裁剪](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/3、小视频8.gif)|
 
 
-## 4、[人脸检测](https://www.jianshu.com/p/f236dc161a90) 
+### 3.2、[人脸检测](https://www.jianshu.com/p/f236dc161a90) 
 
 ![人脸识别](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/4、人脸识别.gif)
 
-## 5、[实时滤镜拍摄和导出](https://www.jianshu.com/p/f236dc161a90)
+### 3.3、[实时滤镜拍摄和导出](https://www.jianshu.com/p/f236dc161a90)
 
 >  主要类: 是由SLAvCaptureTool拆分的 SLAvCaptureSession（采集） + SLAvWriterInput（录制） 两个工具类，方便扩展，录制写入实现的方式也略有不同
 
 ![人脸识别](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/5、实时滤镜拍摄.gif)
 
-## 6、[GPUImage框架的使用](https://www.jianshu.com/p/97740cd381f7)
+### 3.4、[GPUImage框架的使用](https://www.jianshu.com/p/97740cd381f7)
 
 > 效果描述：实时拍摄添加水印和滤镜、本地视频添加水印、GIF图水印
 
@@ -66,13 +69,13 @@ GitHub：https://github.com/wsl2ls/iOS_Tips.git
 
 ![GPUImage框架的使用](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/6、GPUImage.gif)
 
-## 7、VideoToolBox和AudioToolBox音视频编解码
+### 3.5、VideoToolBox和AudioToolBox音视频编解码
 
 > 请查看本仓库下的 VideoEncoder&Decoder 文件
 
 ![音视频编码](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/7、音视频编码.gif)
 
-## 8、[OpenGL ES学习](https://www.jianshu.com/p/9259689cac06)
+## 4、[OpenGL ES学习](https://www.jianshu.com/p/9259689cac06)
 
 > 示例描述：
 > * 1、GLKit 绘制图片和正方体
@@ -82,19 +85,19 @@ GitHub：https://github.com/wsl2ls/iOS_Tips.git
 
 |![OpenGLES学习.gif](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/8、OpenGLES学习1.gif)|![OpenGLES学习](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/8、OpenGLES学习2.gif)|![OpenGLES学习](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/8、OpenGLES学习3.gif)|
 
-## 9、[LeetCode算法练习](https://github.com/wsl2ls/AlgorithmSet.git)
+## 5、[LeetCode算法练习](https://github.com/wsl2ls/AlgorithmSet.git)
 
 > [LeetCode算法练习集合(Swift版) ~ 每天一道算法题](https://github.com/wsl2ls/AlgorithmSet.git)  
 
-## 10、[键盘和UIMenuController的并存问题](https://www.jianshu.com/p/ed1b57c4ecea)
+## 6、[键盘和UIMenuController的并存问题](https://www.jianshu.com/p/ed1b57c4ecea)
 
 | ![问题描述.gif](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/10、键盘和UIMenuController不能同时出现的问题描述.gif) | ![并存问题解决](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/10、键盘和UIMenuController并存问题解决.gif) |
 
-## 11、iOS Crash防护 
+## 7、iOS Crash防护 
 
 > NSArray/NSMutableArray、NSDictionary/NSMutableDictionary、NSString/NSMutableString、Unrecognized Selector、KVO、KVC 、野指针定位、内存泄漏/循环引用
 
-## 12、[WKWebView相关](https://juejin.im/post/5ed999fd51882542f9389949) 
+## 8、[WKWebView相关](https://juejin.im/post/5ed999fd51882542f9389949) 
 
 > WKWebView的使用、WKWebView+UITableView混排、UIScrollView实现原理、WKWebView离线缓存功能
 
