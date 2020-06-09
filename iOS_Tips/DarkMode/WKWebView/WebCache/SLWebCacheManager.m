@@ -12,6 +12,7 @@
 #import "SLUrlProtocol.h"
 #import "WKWebView+SLExtension.h"
 
+//实现原理参考 戴明大神：https://github.com/ming1016/STMURLCache
 @interface SLWebCacheManager ()
 @property (nonatomic, strong) NSMutableDictionary *responseDic; //记录正在下载的任务、防止下载请求的循环调用
 ///内存缓存空间

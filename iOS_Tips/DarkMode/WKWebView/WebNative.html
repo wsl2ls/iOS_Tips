@@ -11,7 +11,7 @@
     <style type='text/css'>
         img video {
             max-width: 100%;
-<!--          background-color:#e6b500;-->
+            <!--          background-color:#e6b500;-->
         }
     .image-package {
         margin: 0 -15px 25px;
@@ -72,16 +72,19 @@
                     <img id="image8" src="" width="320" height="240"><br><div class="image-caption">原生组件UIImageView</div>
                         </div>
                 <div class="image-package">
-                <video id="video1" src="" width="320" height="240"></video><br><div class="image-caption">原生组件AVPlayer播放视频</div>
+                    <video id="video1" src="" width="320" height="240"></video><br><div class="image-caption">原生组件AVPlayer播放视频</div>
                 </div>
-                
+                <div class="image-package">
+<!--                 这块的img标签只是一个占位标签，实际我们在这里放音频元素   -->
+                    <img id="audio1" src="" width="100" height="100"><br><div class="image-caption">原生组件AVPlayer播放音频</div>
+                </div>
                 
                 <p>以上图片来源于网络</p>
                 </div>
         
         <!--   JS语法-->
         <script type="text/javascript" charset="utf-8">
-<!--        获取该元素的位置坐标    -->
+            <!--        获取该元素的位置坐标    -->
             function getElementFrame(imageId) {
                 var y = document.getElementById(imageId).offsetTop;
                 var x = document.getElementById(imageId).offsetLeft;
