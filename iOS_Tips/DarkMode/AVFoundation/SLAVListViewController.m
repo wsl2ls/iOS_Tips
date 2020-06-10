@@ -50,7 +50,7 @@
         @"AVFoundation 实时滤镜拍摄和导出",
         @"GPUImage框架的使用",
         @"VideoToolBox和AudioToolBox音视频编解码",
-        @"AVFoundation 利用摄像头实时识别物体颜色(doing)",
+        @"AVFoundation 利用摄像头实时识别物体颜色",
         @"AVFoundation 原生二维码扫描识别和生成"]];
     [self.classArray addObjectsFromArray:@[[SLShotViewController class],
                                            [SLFaceDetectController class],

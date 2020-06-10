@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-///利用摄像头实时识别颜色
+///拾色器  利用摄像头实时识别颜色 
 @interface SLColorPickerViewController : UIViewController
 
 @end
