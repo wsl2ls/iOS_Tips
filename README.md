@@ -11,7 +11,9 @@ GitHub：https://github.com/wsl2ls/iOS_Tips.git
 >> 3.2、AVFoundation 人脸检测  
 >> 3.3、AVFoundation 实时滤镜  
 >> 3.4、GPUImage框架的使用  
->> 3.5、VideoToolBox和AudioToolBox音视频编解码 
+>> 3.5、VideoToolBox和AudioToolBox音视频编解码  
+>> 3.6、AVFoundation 利用摄像头实时识别物体颜色  
+>> 3.7、AVFoundation 原生二维码扫描识别和生成
 >>
 > 4、OpenGL ES学习   
 > 5、LeetCode算法练习  
@@ -80,6 +82,14 @@ GitHub：https://github.com/wsl2ls/iOS_Tips.git
 > 请查看本仓库下的 VideoEncoder&Decoder 文件
 
 ![音视频编码](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/7、音视频编码.gif)
+
+### 3.6、AVFoundation 利用摄像头实时识别物体颜色 
+
+![音视频编码](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/3.6、拾色器.gif)
+
+### 3.7、[AVFoundation 原生二维码扫描识别和生成](https://juejin.im/post/5c0e1db651882539c60d0434)
+
+  > 该代码地址在：https://github.com/wsl2ls/ScanQRcode
 
 ## 4、[OpenGL ES学习](https://www.jianshu.com/p/9259689cac06)
 
