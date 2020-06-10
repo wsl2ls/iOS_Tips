@@ -36,7 +36,7 @@
 
 #pragma mark - UI
 - (void)setupUI {
-    self.navigationItem.title = @"iOS Tips";
+    self.navigationItem.title = @"AVFoundation 音视频";
     self.navigationController.navigationBar.translucent = YES;
     self.tableView.estimatedRowHeight = 1;
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"cellID"];
