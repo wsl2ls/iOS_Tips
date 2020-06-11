@@ -1,25 +1,20 @@
 //
-//  SLAVListTableViewController.m
+//  SLWorkIssuesViewController.m
 //  DarkMode
 //
-//  Created by wsl on 2020/6/9.
+//  Created by wsl on 2020/6/11.
 //  Copyright © 2020 https://github.com/wsl2ls   ----- . All rights reserved.
 //
 
-#import "SLAVListViewController.h"
+#import "SLWorkIssuesViewController.h"
+#import "SLMenuViewController.h"
 
-#import "SLShotViewController.h"
-#import "SLFaceDetectController.h"
-#import "SLFilterViewController.h"
-#import "SLGPUImageController.h"
-#import "SLColorPickerViewController.h"
-
-@interface SLAVListViewController ()
+@interface SLWorkIssuesViewController ()
 @property (nonatomic, strong) NSMutableArray *dataSource;
 @property (nonatomic, strong) NSMutableArray *classArray;
 @end
 
-@implementation SLAVListViewController
+@implementation SLWorkIssuesViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -36,7 +31,7 @@
 
 #pragma mark - UI
 - (void)setupUI {
-    self.navigationItem.title = @"AVFoundation 音视频";
+    self.navigationItem.title = @"工作中踩过的坑";
     self.navigationController.navigationBar.translucent = YES;
     self.tableView.estimatedRowHeight = 1;
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"cellID"];
@@ -45,19 +40,9 @@
 #pragma mark - Data
 - (void)getData {
     [self.dataSource addObjectsFromArray:@[
-        @"AVFoundation 高仿微信相机拍摄和编辑功能",
-        @"AVFoundation 人脸检测",
-        @"AVFoundation 实时滤镜拍摄和导出",
-        @"GPUImage框架的使用",
-        @"VideoToolBox和AudioToolBox音视频编解码",
-        @"AVFoundation 利用摄像头实时识别物体颜色",
-        @"AVFoundation 原生二维码扫描识别和生成"]];
-    [self.classArray addObjectsFromArray:@[[SLShotViewController class],
-                                           [SLFaceDetectController class],
-                                           [SLFilterViewController class],
-                                           [SLGPUImageController class],
-                                           [UIViewController class],
-                                           [SLColorPickerViewController class],
+        @"键盘和UIMenuController不能同时存在的问题",
+        @"全屏侧滑手势/UIScrollView/UISlider间滑动手势冲突"]];
+    [self.classArray addObjectsFromArray:@[[SLMenuViewController class],
                                            [UIViewController class]]];
     [self.tableView reloadData];
 }
@@ -90,24 +75,11 @@
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     UIViewController *nextVc = [[self.classArray[indexPath.row] alloc] init];
     switch (indexPath.row) {
-        case 0:
         case 1:
-        case 2:
-        case 3: {
-            nextVc.modalPresentationStyle = UIModalPresentationFullScreen;
-            [self presentViewController:nextVc animated:YES completion:nil];
-        }
-            break;
-        case 5:
-            [self.navigationController pushViewController:nextVc animated:YES];
-            break;
-        case 4:
-            [SLAlertView showAlertViewWithText:@"查看本仓库下的VideoEncoder&Decoder" delayHid:2];
-            break;
-        case 6:
-            [SLAlertView showAlertViewWithText:@"AVFoundation 原生二维码扫描识别和生成：https://github.com/wsl2ls/ScanQRcode.git" delayHid:2];
+            [SLAlertView showAlertViewWithText:@"全屏侧滑手势/UIScrollView/UISlider间滑动手势冲突： https://github.com/wsl2ls/WSLTransferAnimation" delayHid:2];
             break;
         default:
+            [self.navigationController pushViewController:nextVc animated:YES];
             break;
         }
     }

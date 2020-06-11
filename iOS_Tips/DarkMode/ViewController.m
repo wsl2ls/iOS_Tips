@@ -10,7 +10,7 @@
 #import "SLDarkModeViewController.h"
 #import "SLAVListViewController.h"
 #import "SLOpenGLController.h"
-#import "SLMenuViewController.h"
+#import "SLWorkIssuesViewController.h"
 #import "SLCrashViewController.h"
 #import "SLWebViewListController.h"
 
@@ -50,15 +50,15 @@
                                            @"AVFoundation音视频相关",
                                            @"OpenGL-ES学习",
                                            @"LeetCode算法练习集合",
-                                           @"键盘和UIMenuController不能同时存在的问题",
+                                           @"工作中踩过的坑",
                                            @"iOS Crash防护",
-                                           @"WKWebView相关（doing）"]];
+                                           @"WKWebView相关"]];
     [self.classArray addObjectsFromArray:@[[SLDarkModeViewController class],
                                            [UIViewController class],
                                            [SLAVListViewController class],
                                            [SLOpenGLController class],
                                            [UIViewController class],
-                                           [SLMenuViewController class],
+                                           [SLWorkIssuesViewController class],
                                            [SLCrashViewController class],
                                            [SLWebViewListController class]]];
     [self.tableView reloadData];
@@ -94,19 +94,12 @@
     switch (indexPath.row) {
         case 1: {
             [SLAlertView showAlertViewWithText:@"查看本仓库下的AddingTheSignInWithAppleFlowToYourApp" delayHid:2];
-            NSLog(@"查看本仓库下的AddingTheSignInWithAppleFlowToYourApp");
         }
             break;
         case 4: {
             [SLAlertView showAlertViewWithText:@"LeetCode算法练习集合地址：https://github.com/wsl2ls/AlgorithmSet.git" delayHid:2];
-            NSLog(@"LeetCode算法练习集合地址：https://github.com/wsl2ls/AlgorithmSet.git");
         }
             break;
-        case 0:
-        case 2:
-        case 3:
-        case 5:
-        case 6:
         default:
             [self.navigationController pushViewController:nextVc animated:YES];
             break;

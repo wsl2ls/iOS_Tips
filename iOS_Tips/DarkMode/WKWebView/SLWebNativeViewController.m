@@ -207,7 +207,7 @@
 }
 // 页面加载完成之后调用
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
-    //根据服务器下发的标签相关的数据，用原生组件展示
+    //根据服务器下发的标签相关的数据，用原生组件展示，这里原生组件的创建要注意按需加载和复用，类似于tableView，否则对内存还是有不小的消耗的。目前还没做处理
     int i = 0;
     for (SLWebNativeModel *model in self.dataSource) {
         NSString *jsString = [NSString stringWithFormat:@"getElementFrame('%@')",model.tagID];

@@ -15,6 +15,7 @@
 #import "SLScrollViewController.h"
 #import "SLWebCacheViewController.h"
 #import "SLWebNativeViewController.h"
+#import "SLTableViewController.h"
 
 @interface SLWebViewListController ()<UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, strong) UITableView *tableView;
@@ -52,25 +53,27 @@
                                        @" WKWebView + UITableView（方案2）",
                                        @" WKWebView + UITableView（方案3）(推荐)",
                                        @" WKWebView + UITableView（方案4）(推荐) ",
-                                       @" UIScrollView的实现原理",
                                        @" WKWebView离线缓存",
-                                       @" WKWebView渲染的部分HTML元素替换为用原生组件显示(doing)"]];
+                                       @" WKWebView渲染的部分HTML元素替换为用原生组件显示(doing)",
+                                       @" UIScrollView的实现原理",
+                                       @" UITableView的原理 (doing)"]];
     [self.subTitles addObjectsFromArray:@[@" WKWebView的使用、JS和OC的交互、网页内容加载进度条的实现、NSNSURLProtocol拦截、Cookies丢失、设置UserAgent",
                                           @" tableView.tableHeaderView = webView 撑开webView ",
                                           @" [webView.scrollView addSubview:tableView] + 占位Div ",
                                           @" tableView.tableHeaderView = webView 不撑开webView ",
                                           @" [UIScrollView addSubView: WKWebView & UITableView]",
-                                          @" SLScrollView继承于UIView，自定义实现UIScrollView的效果",
                                           @" NSURLProtocol 和 NSURLCache 两种缓存方案",
-                                          @" 图片、视频、音频等元素用原生组件显示"]];
+                                          @" 图片、视频、音频等元素用原生组件显示",
+                                          @"SLScrollView继承于UIView，自定义实现UIScrollView的效果",@" 用UIScrollView实现 类似UITableView的复用功能"]];
     [self.classArray addObjectsFromArray:@[[SLWebViewController class],
                                            [SLWebTableViewController class],
                                            [SLWebTableViewController2 class],
                                            [SLWebTableViewController3 class],
                                            [SLWebTableViewController4 class],
-                                           [SLScrollViewController class],
                                            [SLWebCacheViewController class],
-                                           [SLWebNativeViewController class]]];
+                                           [SLWebNativeViewController class],
+                                           [SLScrollViewController class],
+                                           [SLTableViewController class]]];
     [self.tableView reloadData];
 }
 #pragma mark - Getter
