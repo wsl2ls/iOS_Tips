@@ -31,6 +31,7 @@
   本示例 仅以用native组件替换HTML中的img、video、audio 内容来做展示，当然你也可以替换HTML中其它的标签元素。
   注意：1.用native组件替换时，我们也需要进行一些native组件复用、按需加载的优化处理，类似于tableView的机制。
        2.html界面调整时，要去重新调用JS方法获取原生标签的位置并更新native组件的位置。
+       3.如果仅需要处理HTML的图片元素，也可以不用原生组件imageView展示，原生下载处理图片，然后通过oc调用JS设置图片
  */
 @interface SLWebNativeViewController ()<WKNavigationDelegate, WKUIDelegate>
 @property (nonatomic, strong) WKWebView * webView;

@@ -93,6 +93,11 @@
                 return {"x":x, "y":y, "width":width, "height":height}
                 <!--                alert(y);-->
             }
+<!--        设置图片，原生仅自己处理图片下载流程，然后OC调用js设置图片            -->
+           function setPicture(id, path) {
+               var image = document.getElementById(id);
+               image.src = path;
+           }
         </script>
         
     </body>
