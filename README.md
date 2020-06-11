@@ -121,11 +121,11 @@ GitHub：https://github.com/wsl2ls/iOS_Tips.git
 
 ## 问题说明：
 
-> * 1、小视频拍摄录制失败，主要集中在plus和X系列手机上：可能是由于写入的视频宽高videoSize设置的问题，各位可以先试试这样设置
+> * 1、主工程就是iOS_Tips下的DarkMode，别怀疑🤣，历史遗留问题😁😀，大部分内容都在里面，run一下就明白了🤝
+> * 2、小视频拍摄录制失败，主要集中在plus和X系列手机上：可能是由于写入的视频宽高videoSize设置的问题，各位可以先试试这样设置
 avCaptureTool.videoSize = CGSizeMake(self.view.width * 0.8, self.view.height * 0.8);
-> * 2、iPhoneX/XR系列崩溃，错误代码是pods > pods > FBRetainCycleDetector > fishhook.c 第104行
+> * 3、iPhoneX/XR系列崩溃，错误代码是pods > pods > FBRetainCycleDetector > fishhook.c 第104行
 indirect_symbol_bindings[i] = cur->rebindings[j].replacement： FBRetainCycleDetector 这个是三方库里的，检测内存泄漏的，你可以把 MLeaksFinder 移除，这只是一个辅助调试工具。
-> * 3、
 
 
 
