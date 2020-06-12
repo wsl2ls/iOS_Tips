@@ -14,10 +14,13 @@ GitHub：https://github.com/wsl2ls/iOS_Tips.git
 >> 3.5、VideoToolBox和AudioToolBox音视频编解码  
 >> 3.6、AVFoundation 利用摄像头实时识别物体颜色  
 >> 3.7、AVFoundation 原生二维码扫描识别和生成
->>
+
 > 4、OpenGL ES学习   
 > 5、LeetCode算法练习  
-> 6、键盘和UIMenuController的并存问题  
+> 6、工作中踩过的坑
+>> 6.1、键盘和UIMenuController不能同时存在的问题  
+>> 6.2、全屏侧滑手势/UIScrollView/UISlider间滑动手势冲突
+
 > 7、iOS Crash防护  
 > 8、WKWebView相关  
 >> 8.1、WKWebView的使用  
@@ -105,9 +108,15 @@ GitHub：https://github.com/wsl2ls/iOS_Tips.git
 
 > [LeetCode算法练习集合(Swift版) ~ 每天一道算法题](https://github.com/wsl2ls/AlgorithmSet.git)  
 
-## 6、[键盘和UIMenuController的并存问题](https://www.jianshu.com/p/ed1b57c4ecea)
+## 6、工作中踩过的坑
+
+### 6.1、[键盘和UIMenuController的并存问题](https://www.jianshu.com/p/ed1b57c4ecea)  
 
 | ![问题描述.gif](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/10、键盘和UIMenuController不能同时出现的问题描述.gif) | ![并存问题解决](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/10、键盘和UIMenuController并存问题解决.gif) |
+
+### 6.2、[全屏侧滑手势/UIScrollView/UISlider间滑动手势冲突](https://juejin.im/post/5c0e1e73f265da616413d828)
+
+ > 该代码地址在：https://github.com/wsl2ls/WSLTransferAnimation
 
 ## 7、iOS Crash防护 
 
@@ -115,9 +124,9 @@ GitHub：https://github.com/wsl2ls/iOS_Tips.git
 
 ## 8、[WKWebView相关](https://juejin.im/post/5ed999fd51882542f9389949) 
 
-> WKWebView的使用、WKWebView+UITableView混排、UIScrollView实现原理、WKWebView离线缓存功能、Html非文本元素替换为原生组件展示 
+> [WKWebView的使用](https://juejin.im/post/5c0e1e2ae51d451d971743a1)、[WKWebView+UITableView混排](https://juejin.im/post/5ed999fd51882542f9389949)、UIScrollView实现原理、WKWebView离线缓存功能、Html非文本元素替换为原生组件展示 
 
-![音视频编码](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/12、WKWebView.gif)
+![WKWebView相关](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/12、WKWebView.gif)
 
 ## 问题说明：
 
