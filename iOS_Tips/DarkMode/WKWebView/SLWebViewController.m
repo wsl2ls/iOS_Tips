@@ -9,7 +9,6 @@
 #import "SLWebViewController.h"
 #import <WebKit/WebKit.h>
 #import "WKWebView+SLExtension.h"
-#import "SLUrlProtocol.h"
 #import "SLUrlProtocolAddCookie.h"
 
 ///关于WKWebView的其他更多使用可以看我之前的总结：  https://github.com/wsl2ls/WKWebView
@@ -38,7 +37,6 @@
     [self removeKVO];
     [WKWebView sl_unregisterSchemeForSupportHttpProtocol];
     [NSURLProtocol registerClass:[NSURLProtocol class]];
-    NSLog(@"%@释放了",NSStringFromClass(self.class));
 }
 
 #pragma mark - UI

@@ -97,8 +97,8 @@
         }
             break;
         case 4: {
-            [SLAlertView showAlertViewWithText:@"LeetCode算法练习集合地址：https://github.com/wsl2ls/AlgorithmSet.git" delayHid:2];
-        }
+                [SLAlertView showAlertViewWithText:@"LeetCode算法练习集合: https://github.com/wsl2ls/AlgorithmSet.git" delayHid:2];
+            }
             break;
         default:
             [self.navigationController pushViewController:nextVc animated:YES];

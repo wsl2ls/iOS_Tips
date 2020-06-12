@@ -38,7 +38,6 @@
 - (BOOL)prefersStatusBarHidden {
     return NO;
 }
-
 #pragma mark - UI
 - (void)setupUI {
     self.navigationItem.title = @"WKWebView";

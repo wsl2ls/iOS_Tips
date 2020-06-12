@@ -35,13 +35,13 @@
  */
 @interface SLWebNativeViewController ()<WKNavigationDelegate, WKUIDelegate>
 @property (nonatomic, strong) WKWebView * webView;
-///网页加载进度视图
+/// 网页加载进度视图
 @property (nonatomic, strong) UIProgressView * progressView;
 /// WKWebView 内容的高度
 @property (nonatomic, assign) CGFloat webContentHeight;
 /// 原生组件所需的HTML中元素的数据
 @property (nonatomic, strong) NSMutableArray *dataSource;
-///视频播放
+/// 音视频播放
 @property (nonatomic, strong) SLAvPlayer *avPlayer;
 @end
 
@@ -60,7 +60,6 @@
 }
 - (void)dealloc {
     [self removeKVO];
-    NSLog(@"%@释放了",NSStringFromClass(self.class));
 }
 
 #pragma mark - UI
@@ -193,8 +192,6 @@
     }];
 }
 
-
-
 #pragma mark - WKNavigationDelegate
 // 根据WebView对于即将跳转的HTTP请求头信息和相关信息来决定是否跳转
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {
@@ -262,21 +259,4 @@
 - (void)webViewWebContentProcessDidTerminate:(WKWebView *)webView{
     
 }
-
-#pragma mark - WKUIDelegate
-/**
- *  web界面中有弹出警告框时调用
- *
- *  @param webView           实现该代理的webview
- *  @param message           警告框中的内容
- *  @param completionHandler 警告框消失调用
- */
-- (void)webView:(WKWebView *)webView runJavaScriptAlertPanelWithMessage:(NSString *)message initiatedByFrame:(WKFrameInfo *)frame completionHandler:(void (^)(void))completionHandler {
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"HTML的弹出框" message:message?:@"" preferredStyle:UIAlertControllerStyleAlert];
-    [alertController addAction:([UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        completionHandler();
-    }])];
-    [self presentViewController:alertController animated:YES completion:nil];
-}
-
 @end

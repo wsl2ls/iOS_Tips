@@ -37,7 +37,6 @@
     [self removeKVO];
     //关闭缓存
     [[SLWebCacheManager shareInstance] closeCache];
-    NSLog(@"%@释放了",NSStringFromClass(self.class));
 }
 
 #pragma mark - UI

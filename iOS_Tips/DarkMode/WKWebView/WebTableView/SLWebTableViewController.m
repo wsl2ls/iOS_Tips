@@ -33,7 +33,6 @@
 }
 - (void)dealloc {
     [self removeKVO];
-    NSLog(@"%@释放了",NSStringFromClass(self.class));
 }
 
 #pragma mark - SetupUI
