@@ -16,6 +16,9 @@ NS_ASSUME_NONNULL_BEGIN
 ///关于WKWebView的使用可以看我之前的总结：  https://github.com/wsl2ls/WKWebView
 @interface SLWebViewController : UIViewController
 
+///打开的web地址    默认:https://www.jianshu.com/p/5cf0d241ae12
+@property (nonatomic, strong) NSString *urlString;
+
 @end
 
 NS_ASSUME_NONNULL_END

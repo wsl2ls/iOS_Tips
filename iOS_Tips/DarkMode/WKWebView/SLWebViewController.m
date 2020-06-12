@@ -23,7 +23,6 @@
 
 @end
 
-static NSString *KwebUrl = @"https://www.jianshu.com/p/5cf0d241ae12";
 @implementation SLWebViewController
 #pragma mark - Override
 - (void)viewDidLoad {
@@ -44,7 +43,6 @@ static NSString *KwebUrl = @"https://www.jianshu.com/p/5cf0d241ae12";
 
 #pragma mark - UI
 - (void)setupUI {
-    
     self.view.backgroundColor = UIColor.whiteColor;
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithTitle:@"上一步" style:UIBarButtonItemStyleDone target:self action:@selector(goBackAction:)];
     UIBarButtonItem *forwardItem = [[UIBarButtonItem alloc] initWithTitle:@"下一步" style:UIBarButtonItemStyleDone target:self action:@selector(goForwardAction:)];
@@ -57,7 +55,7 @@ static NSString *KwebUrl = @"https://www.jianshu.com/p/5cf0d241ae12";
     
     [self.view addSubview:self.webView];
     
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:KwebUrl]];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:self.urlString]];
     //设置上一次的请求时间
     [request setValue:[SLMethod userDefaultsObjectForKey:@"localLastModified"] forHTTPHeaderField:@"If-Modified-Since"];
     [_webView loadRequest:request];
@@ -83,6 +81,12 @@ static NSString *KwebUrl = @"https://www.jianshu.com/p/5cf0d241ae12";
         [self.navigationController.navigationBar addSubview:_progressView];
     }
     return _progressView;
+}
+- (NSString *)urlString {
+    if (!_urlString) {
+        _urlString = @"https://www.jianshu.com/p/5cf0d241ae12";
+    }
+    return _urlString;
 }
 
 #pragma mark -  Look Here
@@ -183,7 +187,7 @@ static NSString *KwebUrl = @"https://www.jianshu.com/p/5cf0d241ae12";
 }
 // 根据客户端受到的服务器响应头以及response相关信息来决定是否可以跳转
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationResponse:(WKNavigationResponse *)navigationResponse decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler{
-    if ([navigationResponse.response isKindOfClass:[NSHTTPURLResponse class]] && [navigationResponse.response.URL.absoluteString isEqualToString:KwebUrl]) {
+    if ([navigationResponse.response isKindOfClass:[NSHTTPURLResponse class]] && [navigationResponse.response.URL.absoluteString isEqualToString:self.urlString]) {
         NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)navigationResponse.response;
         if (httpResponse.statusCode == 304) {
             //自上次请求后，文件还没有修改变化
