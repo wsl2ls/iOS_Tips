@@ -216,6 +216,12 @@
 - (void)dynamicAnimatorDidPause:(UIDynamicAnimator *)animator {
     
 }
+#pragma mark - UIGestureRecognizerDelegate
+// 避免影响横滑手势
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
+    CGPoint velocity = [(UIPanGestureRecognizer *)gestureRecognizer velocityInView:self];
+    return fabs(velocity.y) > fabs(velocity.x);
+}
 @end
 
 
