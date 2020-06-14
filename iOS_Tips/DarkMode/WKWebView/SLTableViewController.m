@@ -33,6 +33,8 @@
 @interface SLTableView : UIScrollView
 ///复用池
 @property (nonatomic, strong) NSMutableDictionary<NSString *, NSHashTable<UIView *> *> *reusablePool;
+///注册的类
+@property (nonatomic, strong) NSMutableDictionary *registerClasses;
 /// 每一行的坐标位置
 @property (nonatomic, strong) NSMutableArray <NSValue *>*frameArray;
 /// 当前可见的cells
@@ -71,6 +73,12 @@
         _reusablePool = [NSMutableDictionary dictionary];
     }
     return _reusablePool;;
+}
+- (NSMutableDictionary *)registerClasses {
+    if (!_registerClasses) {
+        _registerClasses = [NSMutableDictionary dictionary];
+    }
+    return _registerClasses;
 }
 - (NSMutableArray *)frameArray {
     if (!_frameArray) {
@@ -154,6 +162,27 @@
         }
     }
 }
+///根据cellID从复用池reusablePool取可重用的view，如果没有，重新创建一个新对象返回
+- (SLTableViewCell *)dequeueReusableCellWithIdentifier:(nonnull NSString *)cellID index:(NSInteger)index{
+    NSHashTable *hashTable = self.reusablePool[cellID];
+    SLTableViewCell *cell = hashTable.allObjects.firstObject;
+    if (cell == nil) {
+        //复用池reusablePool没有可重用的，就重新创建一个新对象返回
+        cell = [[self.registerClasses[cellID]  alloc] init];
+        [cell addTarget:self action:@selector(didSelectedAction:) forControlEvents:UIControlEventTouchUpInside];
+        cell.cellID = cellID;
+    }else {
+        //从缓冲池中取出可重用的cell
+        [hashTable removeObject:cell];
+    }
+    cell.index = index;
+    return cell;
+}
+///注册样式
+- (void)registerClass:(Class)class forCellReuseIdentifier:(NSString *)cellID {
+    self.reusablePool[cellID] = [NSHashTable weakObjectsHashTable];
+    self.registerClasses[cellID] = class;
+}
 ///当前可见cell的索引 其实绘制cell的时候就可以先保存可见的索引，不用每次遍历查询
 - (NSArray *)indexForVisibleRows {
     NSMutableArray *indexs = [NSMutableArray array];
@@ -178,7 +207,7 @@
         }
     }else {
         NSInteger count = [self.dataSource numberOfRowsInTableView:self];
-        if (_willDisplayIndexBottom == count) return;
+        if (_willDisplayIndexBottom >= count) return;
         CGRect rect = [self.frameArray[self.willDisplayIndexBottom] CGRectValue];
         //按需加载 只加载坐标位置是在当前窗口显示的视图
         if (rect.origin.y + rect.size.height >= self.contentOffset.y && rect.origin.y <= self.contentOffset.y + self.sl_height) {
@@ -194,6 +223,7 @@
 //即将消失的cell，在消失时放入缓冲池里   top:YES上/NO下
 - (void)willDisappearCellWithDirection:(BOOL)top {
     if(top) {
+        if (self.willDisplayIndexTop+1 >= self.frameArray.count) return;
         CGRect rect = [self.frameArray[self.willDisplayIndexTop+1] CGRectValue];
         if (rect.origin.y + rect.size.height < self.contentOffset.y) {
             self.willDisplayIndexTop = self.willDisplayIndexTop+1;
@@ -204,6 +234,7 @@
             [self.visibleCells removeObjectAtIndex:0];
         }
     }else {
+        if (self.willDisplayIndexBottom-1 < 0) return;
         CGRect rect = [self.frameArray[self.willDisplayIndexBottom-1] CGRectValue];
         if (rect.origin.y > self.contentOffset.y + self.sl_height) {
             self.willDisplayIndexBottom = self.willDisplayIndexBottom-1;
@@ -214,26 +245,6 @@
             [self.visibleCells removeLastObject];
         }
     }
-}
-///根据cellID从复用池reusablePool取可重用的view，如果没有，重新创建一个新对象返回
-- (SLTableViewCell *)dequeueReusableCellWithIdentifier:(nonnull NSString *)cellID index:(NSInteger)index{
-    NSHashTable *hashTable = self.reusablePool[cellID];
-    SLTableViewCell *cell = hashTable.allObjects.firstObject;
-    if (cell == nil) {
-        //复用池reusablePool没有可重用的，就重新创建一个新对象返回
-        cell = [[SLTableViewCell alloc] init];
-        [cell addTarget:self action:@selector(didSelectedAction:) forControlEvents:UIControlEventTouchUpInside];
-        cell.cellID = cellID;
-    }else {
-        //从缓冲池中取出可重用的cell
-        [hashTable removeObject:cell];
-    }
-    cell.index = index;
-    return cell;
-}
-///注册样式
-- (void)registerClass:(Class)class forCellReuseIdentifier:(NSString *)cellID {
-    self.reusablePool[cellID] = [NSHashTable weakObjectsHashTable];
 }
 
 #pragma mark - Events Handle

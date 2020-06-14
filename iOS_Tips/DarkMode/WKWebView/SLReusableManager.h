@@ -25,11 +25,24 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 @protocol SLReusableDelegate <NSObject, UIScrollViewDelegate>
 ///选中行
-- (void)tableView:(SLReusableManager *)reusableManager didSelectRowAtIndex:(NSInteger)index;
+- (void)reusableManager:(SLReusableManager *)reusableManager didSelectRowAtIndex:(NSInteger)index;
 @end
 
 @interface SLReusableManager : NSObject
+///数据源代理
+@property (nonatomic, weak) id<SLReusableDelegate>delegate;
+///数据源代理
+@property (nonatomic, weak) id<SLReusableDataSource>dataSource;
+/// 父视图
 @property (nonatomic, weak) UIScrollView *scrollView;
+
+///刷新数据
+- (void)reloadData;
+///注册样式
+- (void)registerClass:(Class)class forCellReuseIdentifier:(NSString *)cellID;
+///根据cellID从复用池reusablePool取可重用的view，如果没有，重新创建一个新对象返回
+- (SLReusableCell *)dequeueReusableCellWithIdentifier:(nonnull NSString *)cellID index:(NSInteger)index;
+
 @end
 
 NS_ASSUME_NONNULL_END

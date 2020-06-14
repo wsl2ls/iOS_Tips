@@ -20,6 +20,8 @@
 
 ///复用池
 @property (nonatomic, strong) NSMutableDictionary<NSString *, NSHashTable<UIView *> *> *reusablePool;
+///注册的类
+@property (nonatomic, strong) NSMutableDictionary *registerClasses;
 /// 每一行的坐标位置
 @property (nonatomic, strong) NSMutableArray <NSValue *>*frameArray;
 /// 当前可见的cells
@@ -30,19 +32,11 @@
 @property (nonatomic, assign) NSInteger willDisplayIndexTop;
 ///底部即将展示的索引
 @property (nonatomic, assign) NSInteger willDisplayIndexBottom;
-///数据源代理
-@property (nonatomic, weak) id<SLReusableDelegate>delegate;
-///数据源代理
-@property (nonatomic, weak) id<SLReusableDataSource>dataSource;
+
 @end
 @implementation SLReusableManager
 
 #pragma mark - Override
-- (void)willMoveToSuperview:(UIView *)newSuperview {
-    if (newSuperview) {
-        [self addKVO];
-    }
-}
 - (void)dealloc {
     [self removeKVO];
 }
@@ -52,6 +46,12 @@
         _reusablePool = [NSMutableDictionary dictionary];
     }
     return _reusablePool;;
+}
+- (NSMutableDictionary *)registerClasses {
+    if (!_registerClasses) {
+        _registerClasses = [NSMutableDictionary dictionary];
+    }
+    return _registerClasses;
 }
 - (NSMutableArray *)frameArray {
     if (!_frameArray) {
@@ -64,6 +64,12 @@
         _visibleCells = [NSMutableArray array];
     }
     return _visibleCells;;
+}
+
+#pragma mark - Setter
+- (void)setScrollView:(UIScrollView *)scrollView {
+    _scrollView =scrollView;
+    [self addKVO];
 }
 
 #pragma mark - KVO
@@ -89,7 +95,7 @@
     }
 }
 
-#pragma mark - Help Methods
+#pragma mark - Public
 ///刷新数据
 - (void)reloadData {
     //清空布局信息
@@ -130,6 +136,33 @@
         }
     }
 }
+///根据cellID从复用池reusablePool取可重用的view，如果没有，重新创建一个新对象返回
+- (SLReusableCell *)dequeueReusableCellWithIdentifier:(nonnull NSString *)cellID index:(NSInteger)index{
+    NSHashTable *hashTable = self.reusablePool[cellID];
+    SLReusableCell *cell = hashTable.allObjects.firstObject;
+    if (cell == nil) {
+        //复用池reusablePool没有可重用的，就重新创建一个新对象返回
+        cell = [[self.registerClasses[cellID] alloc] init];
+        cell.cellID = cellID;
+        CGRect rect = [self.dataSource reusableManager:self frameForRowAtIndex:index];
+        cell.frame = rect;
+        cell.userInteractionEnabled = YES;
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didSelectedAction:)];
+        [cell addGestureRecognizer:tap];
+    }else {
+        //从缓冲池中取出可重用的cell
+        [hashTable removeObject:cell];
+    }
+    cell.index = index;
+    return cell;
+}
+///注册样式
+- (void)registerClass:(Class)class forCellReuseIdentifier:(NSString *)cellID {
+    self.reusablePool[cellID] = [NSHashTable weakObjectsHashTable];
+    self.registerClasses[cellID] = class;
+}
+
+#pragma mark - Help Methods
 ///当前可见cell的索引 其实绘制cell的时候就可以先保存可见的索引，不用每次遍历查询
 - (NSArray *)indexForVisibleRows {
     NSMutableArray *indexs = [NSMutableArray array];
@@ -154,7 +187,7 @@
         }
     }else {
         NSInteger count = [self.dataSource numberOfRowsInReusableManager:self];
-        if (_willDisplayIndexBottom == count) return;
+        if (_willDisplayIndexBottom >= count) return;
         CGRect rect = [self.frameArray[self.willDisplayIndexBottom] CGRectValue];
         //按需加载 只加载坐标位置是在当前窗口显示的视图
         if (rect.origin.y + rect.size.height >= self.scrollView.contentOffset.y && rect.origin.y <= self.scrollView.contentOffset.y + self.scrollView.sl_height) {
@@ -170,6 +203,7 @@
 //即将消失的cell，在消失时放入缓冲池里   top:YES上/NO下
 - (void)willDisappearCellWithDirection:(BOOL)top {
     if(top) {
+        if (self.willDisplayIndexTop+1 >= self.frameArray.count) return;
         CGRect rect = [self.frameArray[self.willDisplayIndexTop+1] CGRectValue];
         if (rect.origin.y + rect.size.height < self.scrollView.contentOffset.y) {
             self.willDisplayIndexTop = self.willDisplayIndexTop+1;
@@ -180,6 +214,7 @@
             [self.visibleCells removeObjectAtIndex:0];
         }
     }else {
+         if (self.willDisplayIndexBottom-1 < 0) return;
         CGRect rect = [self.frameArray[self.willDisplayIndexBottom-1] CGRectValue];
         if (rect.origin.y > self.scrollView.contentOffset.y + self.scrollView.sl_height) {
             self.willDisplayIndexBottom = self.willDisplayIndexBottom-1;
@@ -191,31 +226,11 @@
         }
     }
 }
-///根据cellID从复用池reusablePool取可重用的view，如果没有，重新创建一个新对象返回
-- (SLReusableCell *)dequeueReusableCellWithIdentifier:(nonnull NSString *)cellID index:(NSInteger)index{
-    NSHashTable *hashTable = self.reusablePool[cellID];
-    SLReusableCell *cell = hashTable.allObjects.firstObject;
-    if (cell == nil) {
-        //复用池reusablePool没有可重用的，就重新创建一个新对象返回
-        cell = [[SLReusableCell alloc] init];
-        cell.cellID = cellID;
-        CGRect rect = [self.dataSource reusableManager:self frameForRowAtIndex:index];
-        cell.frame = rect;
-    }else {
-        //从缓冲池中取出可重用的cell
-        [hashTable removeObject:cell];
-    }
-    cell.index = index;
-    return cell;
-}
-///注册样式
-- (void)registerClass:(Class)class forCellReuseIdentifier:(NSString *)cellID {
-    self.reusablePool[cellID] = [NSHashTable weakObjectsHashTable];
-}
 
 #pragma mark - Events Handle
-- (void)didSelectedAction:(SLReusableCell *)cell {
-    [self.delegate tableView:self didSelectRowAtIndex:cell.index];
+- (void)didSelectedAction:(UITapGestureRecognizer *)tap {
+    SLReusableCell *cell = (SLReusableCell *)tap.view;
+    [self.delegate reusableManager:self didSelectRowAtIndex:cell.index];
 }
 @end
 

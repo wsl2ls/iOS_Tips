@@ -12,7 +12,7 @@
 #import <YYWebImage.h>
 #import "SLAvPlayer.h"
 #import <YYModel.h>
-
+#import "SLReusableManager.h"
 
 @interface SLWebNativeModel : NSObject<YYModel>
 @property (nonatomic, copy) NSString *tagID; //标签ID
@@ -26,23 +26,61 @@
 @implementation SLWebNativeModel
 @end
 
+
+@interface SLWebNativeCell : SLReusableCell
+@property (nonatomic, strong) YYAnimatedImageView *imageView;
+@end
+@implementation SLWebNativeCell
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        [self setupUI];
+    }
+    return self;
+}
+
+- (void)setupUI {
+    _imageView = [[YYAnimatedImageView alloc] init];
+    [self addSubview:_imageView];
+    [_imageView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.right.bottom.mas_equalTo(0);
+    }];
+}
+
+- (void)updateDataWith:(SLWebNativeModel *)model {
+    //    if ([model.type isEqualToString:@"image"]) {
+    //图片
+    [_imageView yy_setImageWithURL:[NSURL URLWithString:model.imgUrl] placeholder:nil];
+    //    }
+    
+}
+@end
+
 /*
-  HTML中部分非文本元素，替换为用native组件来实现展示，来达到个性化自定义、灵活、提高渲染效率、简化web和OC交互的处理流程。
-  本示例 仅以用native组件替换HTML中的img、video、audio 内容来做展示，当然你也可以替换HTML中其它的标签元素。
-  注意：1.用native组件替换时，我们也需要进行一些native组件复用、按需加载的优化处理，类似于tableView的机制。
-       2.html界面调整时，要去重新调用JS方法获取原生标签的位置并更新native组件的位置。
-       3.如果仅需要处理HTML的图片元素，也可以不用原生组件imageView展示，原生下载处理图片，然后通过oc调用JS设置图片
+ HTML中部分非文本元素，替换为用native组件来实现展示，来达到个性化自定义、灵活、提高渲染效率、简化web和OC交互的处理流程。
+ 本示例 仅以用native组件替换HTML中的img、video、audio 内容来做展示，当然你也可以替换HTML中其它的标签元素。
+ 注意：1.用native组件替换时，我们也需要进行一些native组件复用、按需加载的优化处理，类似于tableView的机制。
+ 2.html界面调整时，要去重新调用JS方法获取原生标签的位置并更新native组件的位置。
+ 3.如果仅需要处理HTML的图片元素，也可以不用原生组件imageView展示，原生下载处理图片，然后通过oc调用JS设置图片
  */
-@interface SLWebNativeViewController ()<WKNavigationDelegate, WKUIDelegate>
+@interface SLWebNativeViewController ()<WKNavigationDelegate, WKUIDelegate, SLReusableDataSource, SLReusableDelegate>
+
+@property (nonatomic, strong) dispatch_semaphore_t semaphore;
 @property (nonatomic, strong) WKWebView * webView;
 /// 网页加载进度视图
 @property (nonatomic, strong) UIProgressView * progressView;
 /// WKWebView 内容的高度
 @property (nonatomic, assign) CGFloat webContentHeight;
 /// 原生组件所需的HTML中元素的数据
-@property (nonatomic, strong) NSMutableArray *dataSource;
+@property (nonatomic, strong) NSMutableArray <SLWebNativeModel *>*dataSource;
 /// 音视频播放
 @property (nonatomic, strong) SLAvPlayer *avPlayer;
+
+///复用管理
+@property (nonatomic, strong) SLReusableManager *reusableManager;
+/// 每一行的坐标位置
+@property (nonatomic, strong) NSMutableArray <NSValue *>*frameArray;
+
 @end
 
 @implementation SLWebNativeViewController
@@ -67,6 +105,7 @@
     self.navigationItem.title = @"Html非文本元素替换为native组件展示";
     [self.view addSubview:self.webView];
     
+    _semaphore = dispatch_semaphore_create(1);
     NSString *path = [[NSBundle mainBundle] pathForResource:@"WebNative.html" ofType:nil];
     NSString *htmlString = [[NSString alloc]initWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
     [_webView loadHTMLString:htmlString baseURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] bundlePath]]];
@@ -116,6 +155,22 @@
         _avPlayer = [[SLAvPlayer alloc] init];
     }
     return _avPlayer;
+}
+- (SLReusableManager *)reusableManager {
+    if (!_reusableManager) {
+        _reusableManager = [[SLReusableManager alloc] init];
+        _reusableManager.delegate = self;
+        _reusableManager.dataSource = self;
+        _reusableManager.scrollView = self.webView.scrollView;
+        [_reusableManager registerClass:[SLWebNativeCell class] forCellReuseIdentifier:@"cellID"];
+    }
+    return _reusableManager;
+}
+- (NSMutableArray *)frameArray {
+    if (!_frameArray) {
+        _frameArray = [NSMutableArray array];
+    }
+    return _frameArray;
 }
 
 #pragma mark - KVO
@@ -193,70 +248,99 @@
 }
 
 #pragma mark - WKNavigationDelegate
-// 根据WebView对于即将跳转的HTTP请求头信息和相关信息来决定是否跳转
-- (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {
-    decisionHandler(WKNavigationActionPolicyAllow);
-}
-// 根据客户端收到的服务器响应头以及response相关信息来决定是否可以继续响应
-- (void)webView:(WKWebView *)webView decidePolicyForNavigationResponse:(WKNavigationResponse *)navigationResponse decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler{
-    //允许跳转
-    decisionHandler(WKNavigationResponsePolicyAllow);
-}
 // 页面加载完成之后调用
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
     //根据服务器下发的标签相关的数据，用原生组件展示，这里原生组件的创建要注意按需加载和复用，类似于tableView，否则对内存还是有不小的消耗的。目前还没做处理
     int i = 0;
+    SL_WeakSelf;
     for (SLWebNativeModel *model in self.dataSource) {
         NSString *jsString = [NSString stringWithFormat:@"getElementFrame('%@')",model.tagID];
         [_webView evaluateJavaScript:jsString completionHandler:^(id _Nullable data, NSError * _Nullable error) {
+            dispatch_semaphore_wait(self.semaphore, DISPATCH_TIME_FOREVER);
             //获取标签位置坐标
             NSDictionary *frameDict = (NSDictionary *)data;
             CGRect frame = CGRectMake(
                                       [frameDict[@"x"] floatValue], [frameDict[@"y"] floatValue], [frameDict[@"width"] floatValue], [frameDict[@"height"] floatValue]);
-            if ([model.type isEqualToString:@"image"]) {
-                //图片
-                YYAnimatedImageView *imageView = [[YYAnimatedImageView alloc] init];
-                imageView.frame = frame;
-                imageView.tag = i;
-                [imageView yy_setImageWithURL:[NSURL URLWithString:model.imgUrl] placeholder:nil];
-                [self.webView.scrollView addSubview:imageView];
-            }else if ([model.type isEqualToString:@"video"]) {
-                //视频
-                YYAnimatedImageView *imageView = [[YYAnimatedImageView alloc] init];
-                imageView.frame = frame;
-                [imageView yy_setImageWithURL:[NSURL URLWithString:model.imgUrl ] placeholder:nil];
-                [self.webView.scrollView addSubview:imageView];
-                UIButton *playBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 80, 80)];
-                playBtn.center = CGPointMake(frame.size.width/2.0, frame.size.height/2.0);
-                [playBtn setImage:[UIImage imageNamed:@"play"] forState:UIControlStateNormal];
-                [playBtn addTarget:self action:@selector(playVideoAction:) forControlEvents:UIControlEventTouchUpInside];
-                playBtn.tag = i;
-                imageView.userInteractionEnabled = YES;
-                [imageView addSubview:playBtn];
-            }else if ([model.type isEqualToString:@"audio"]) {
-                //音频
-                YYAnimatedImageView *imageView = [[YYAnimatedImageView alloc] init];
-                imageView.frame = frame;
-                imageView.layer.cornerRadius = frame.size.height/2.0;
-                imageView.layer.masksToBounds = YES;
-                [imageView yy_setImageWithURL:[NSURL URLWithString:model.imgUrl ] placeholder:nil];
-                [self.webView.scrollView addSubview:imageView];
-                UIButton *playBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
-                playBtn.center = CGPointMake(frame.size.width/2.0, frame.size.height/2.0);
-                [playBtn setImage:[UIImage imageNamed:@"play"] forState:UIControlStateNormal];
-                [playBtn addTarget:self action:@selector(playAudioAction:) forControlEvents:UIControlEventTouchUpInside];
-                playBtn.tag = i;
-                imageView.userInteractionEnabled = YES;
-                [imageView addSubview:playBtn];
+            [weakSelf.frameArray addObject:[NSValue valueWithCGRect:frame]];
+            dispatch_semaphore_signal(weakSelf.semaphore);
+            if (i == weakSelf.dataSource.count - 1) {
+                [weakSelf.reusableManager reloadData];
             }
-            //            NSLog(@" %@",data)
         }];
         i++;
     }
-    
 }
-//进程被终止时调用
-- (void)webViewWebContentProcessDidTerminate:(WKWebView *)webView{
-    
+
+#pragma mark - SLReusableDataSource
+- (NSInteger)numberOfRowsInReusableManager:(SLReusableManager *)reusableManager {
+    return self.frameArray.count;
 }
+- (CGRect)reusableManager:(SLReusableManager *)reusableManager frameForRowAtIndex:(NSInteger)index {
+    CGRect rect = [self.frameArray[index] CGRectValue];
+    return rect;
+}
+- (SLReusableCell *)reusableManager:(SLReusableManager *)reusableManager cellForRowAtIndex:(NSInteger)index {
+    SLWebNativeCell *cell = (SLWebNativeCell *)[reusableManager dequeueReusableCellWithIdentifier:@"cellID" index:index];
+    SLWebNativeModel *model = self.dataSource[index];
+    [cell updateDataWith:model];
+    return cell;
+}
+
+#pragma mark - SLReusableDelegate
+- (void)reusableManager:(SLReusableManager *)reusableManager didSelectRowAtIndex:(NSInteger)index {
+    NSLog(@"点击了 %ld", index);
+    SLWebNativeModel *model = self.dataSource[index];
+    if ([model.type isEqualToString:@"image"]) {
+        //图片
+        
+    }else if ([model.type isEqualToString:@"video"]) {
+        //视频
+        
+    }else if ([model.type isEqualToString:@"audio"]) {
+        //音频
+        
+    }
+}
+
+
+/*
+ if ([model.type isEqualToString:@"image"]) {
+ //图片
+ YYAnimatedImageView *imageView = [[YYAnimatedImageView alloc] init];
+ imageView.frame = frame;
+ imageView.tag = i;
+ [imageView yy_setImageWithURL:[NSURL URLWithString:model.imgUrl] placeholder:nil];
+ [self.webView.scrollView addSubview:imageView];
+ }else if ([model.type isEqualToString:@"video"]) {
+ //视频
+ YYAnimatedImageView *imageView = [[YYAnimatedImageView alloc] init];
+ imageView.frame = frame;
+ [imageView yy_setImageWithURL:[NSURL URLWithString:model.imgUrl ] placeholder:nil];
+ [self.webView.scrollView addSubview:imageView];
+ UIButton *playBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 80, 80)];
+ playBtn.center = CGPointMake(frame.size.width/2.0, frame.size.height/2.0);
+ [playBtn setImage:[UIImage imageNamed:@"play"] forState:UIControlStateNormal];
+ [playBtn addTarget:self action:@selector(playVideoAction:) forControlEvents:UIControlEventTouchUpInside];
+ playBtn.tag = i;
+ imageView.userInteractionEnabled = YES;
+ [imageView addSubview:playBtn];
+ }else if ([model.type isEqualToString:@"audio"]) {
+ //音频
+ YYAnimatedImageView *imageView = [[YYAnimatedImageView alloc] init];
+ imageView.frame = frame;
+ imageView.layer.cornerRadius = frame.size.height/2.0;
+ imageView.layer.masksToBounds = YES;
+ [imageView yy_setImageWithURL:[NSURL URLWithString:model.imgUrl ] placeholder:nil];
+ [self.webView.scrollView addSubview:imageView];
+ UIButton *playBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
+ playBtn.center = CGPointMake(frame.size.width/2.0, frame.size.height/2.0);
+ [playBtn setImage:[UIImage imageNamed:@"play"] forState:UIControlStateNormal];
+ [playBtn addTarget:self action:@selector(playAudioAction:) forControlEvents:UIControlEventTouchUpInside];
+ playBtn.tag = i;
+ imageView.userInteractionEnabled = YES;
+ [imageView addSubview:playBtn];
+ }
+ */
+
+
 @end
