@@ -29,6 +29,7 @@
 
 @interface SLWebNativeCell : SLReusableCell
 @property (nonatomic, strong) YYAnimatedImageView *imageView;
+@property (nonatomic, strong) UIImageView *playIcon;
 @end
 @implementation SLWebNativeCell
 - (instancetype)init {
@@ -38,21 +39,42 @@
     }
     return self;
 }
-
 - (void)setupUI {
     _imageView = [[YYAnimatedImageView alloc] init];
     [self addSubview:_imageView];
     [_imageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.right.bottom.mas_equalTo(0);
     }];
+    
+    _playIcon = [[UIImageView alloc] init];
+    _playIcon.image = [UIImage imageNamed:@"play"];
+    _playIcon.hidden = YES;
+    [_imageView addSubview:_playIcon];
+    [_playIcon mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.size.mas_equalTo(CGSizeMake(80, 80));
+        make.centerX.mas_equalTo(_imageView.mas_centerX);
+        make.centerY.mas_equalTo(_imageView.mas_centerY);
+    }];
 }
 
 - (void)updateDataWith:(SLWebNativeModel *)model {
-    //    if ([model.type isEqualToString:@"image"]) {
-    //图片
     [_imageView yy_setImageWithURL:[NSURL URLWithString:model.imgUrl] placeholder:nil];
-    //    }
-    
+    if ([model.type isEqualToString:@"image"]) {
+        //图片
+        _playIcon.hidden = YES;
+    }else if ([model.type isEqualToString:@"video"]) {
+        //视频
+        _playIcon.hidden = NO;
+        [_playIcon mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.size.mas_equalTo(CGSizeMake(60, 60));
+        }];
+    }else if ([model.type isEqualToString:@"audio"]) {
+        //音频
+        _playIcon.hidden = NO;
+        [_playIcon mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.size.mas_equalTo(CGSizeMake(40, 40));
+        }];
+    }
 }
 @end
 
@@ -73,8 +95,6 @@
 @property (nonatomic, assign) CGFloat webContentHeight;
 /// 原生组件所需的HTML中元素的数据
 @property (nonatomic, strong) NSMutableArray <SLWebNativeModel *>*dataSource;
-/// 音视频播放
-@property (nonatomic, strong) SLAvPlayer *avPlayer;
 
 ///复用管理
 @property (nonatomic, strong) SLReusableManager *reusableManager;
@@ -150,12 +170,6 @@
     }
     return _dataSource;
 }
-- (SLAvPlayer *)avPlayer {
-    if (!_avPlayer) {
-        _avPlayer = [[SLAvPlayer alloc] init];
-    }
-    return _avPlayer;
-}
 - (SLReusableManager *)reusableManager {
     if (!_reusableManager) {
         _reusableManager = [[SLReusableManager alloc] init];
@@ -219,34 +233,6 @@
     }
 }
 
-#pragma mark - Events Handle
-- (void)playVideoAction:(UIButton *)btn {
-    SLWebNativeModel *model = self.dataSource[btn.tag];
-    self.avPlayer.url = [NSURL URLWithString:model.videoUrl];
-    self.avPlayer.monitor = btn.superview;
-    [self.avPlayer play];
-    [btn removeFromSuperview];
-}
-- (void)playAudioAction:(UIButton *)btn {
-    NSString *myBundlePath = [[NSBundle mainBundle] pathForResource:@"Resources" ofType:@"bundle"];
-    NSBundle *myBundle = [NSBundle bundleWithPath:myBundlePath];
-    NSString *audioPath = [myBundle pathForResource:@"The love of one's life" ofType:@"mp3" inDirectory:@"Audio"];
-    NSURL *bgsoundUrl = [NSURL fileURLWithPath:audioPath];
-    self.avPlayer.url = bgsoundUrl;
-    self.avPlayer.monitor = nil;
-    [self.avPlayer play];
-    [self rotateAnimate:btn.superview];
-    [btn removeFromSuperview];
-}
--(void)rotateAnimate:(UIView *)view{
-    //0.5秒旋转50度
-    [UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationOptionCurveLinear animations:^{
-        view.transform = CGAffineTransformRotate(view.transform, 50);
-    } completion:^(BOOL finished) {
-        [self rotateAnimate:view];
-    }];
-}
-
 #pragma mark - WKNavigationDelegate
 // 页面加载完成之后调用
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
@@ -254,7 +240,7 @@
     int i = 0;
     SL_WeakSelf;
     for (SLWebNativeModel *model in self.dataSource) {
-        NSString *jsString = [NSString stringWithFormat:@"getElementFrame('%@')",model.tagID];
+        NSString *jsString = [NSString stringWithFormat:@"getElementFrame('%@',%f, %f)",model.tagID,model.width,model.height];
         [_webView evaluateJavaScript:jsString completionHandler:^(id _Nullable data, NSError * _Nullable error) {
             dispatch_semaphore_wait(self.semaphore, DISPATCH_TIME_FOREVER);
             //获取标签位置坐标
@@ -288,59 +274,17 @@
 
 #pragma mark - SLReusableDelegate
 - (void)reusableManager:(SLReusableManager *)reusableManager didSelectRowAtIndex:(NSInteger)index {
-    NSLog(@"点击了 %ld", index);
     SLWebNativeModel *model = self.dataSource[index];
     if ([model.type isEqualToString:@"image"]) {
         //图片
-        
+        NSLog(@"点击了 %ld 图片", index);
     }else if ([model.type isEqualToString:@"video"]) {
         //视频
-        
+        NSLog(@"点击了 %ld 视频", index);
     }else if ([model.type isEqualToString:@"audio"]) {
         //音频
-        
+        NSLog(@"点击了 %ld 音频", index);
     }
 }
-
-
-/*
- if ([model.type isEqualToString:@"image"]) {
- //图片
- YYAnimatedImageView *imageView = [[YYAnimatedImageView alloc] init];
- imageView.frame = frame;
- imageView.tag = i;
- [imageView yy_setImageWithURL:[NSURL URLWithString:model.imgUrl] placeholder:nil];
- [self.webView.scrollView addSubview:imageView];
- }else if ([model.type isEqualToString:@"video"]) {
- //视频
- YYAnimatedImageView *imageView = [[YYAnimatedImageView alloc] init];
- imageView.frame = frame;
- [imageView yy_setImageWithURL:[NSURL URLWithString:model.imgUrl ] placeholder:nil];
- [self.webView.scrollView addSubview:imageView];
- UIButton *playBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 80, 80)];
- playBtn.center = CGPointMake(frame.size.width/2.0, frame.size.height/2.0);
- [playBtn setImage:[UIImage imageNamed:@"play"] forState:UIControlStateNormal];
- [playBtn addTarget:self action:@selector(playVideoAction:) forControlEvents:UIControlEventTouchUpInside];
- playBtn.tag = i;
- imageView.userInteractionEnabled = YES;
- [imageView addSubview:playBtn];
- }else if ([model.type isEqualToString:@"audio"]) {
- //音频
- YYAnimatedImageView *imageView = [[YYAnimatedImageView alloc] init];
- imageView.frame = frame;
- imageView.layer.cornerRadius = frame.size.height/2.0;
- imageView.layer.masksToBounds = YES;
- [imageView yy_setImageWithURL:[NSURL URLWithString:model.imgUrl ] placeholder:nil];
- [self.webView.scrollView addSubview:imageView];
- UIButton *playBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
- playBtn.center = CGPointMake(frame.size.width/2.0, frame.size.height/2.0);
- [playBtn setImage:[UIImage imageNamed:@"play"] forState:UIControlStateNormal];
- [playBtn addTarget:self action:@selector(playAudioAction:) forControlEvents:UIControlEventTouchUpInside];
- playBtn.tag = i;
- imageView.userInteractionEnabled = YES;
- [imageView addSubview:playBtn];
- }
- */
-
 
 @end

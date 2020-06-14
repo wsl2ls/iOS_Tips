@@ -47,37 +47,49 @@
                 <p style="text-align:center"> <a href="https://juejin.im/user/5c00d97b6fb9a049fb436288">掘金</a></p>
                 
                 <div class="image-package">
-                    <img id="image1" src="" width="320" height="240"><br><div class="image-caption">原生组件UIImageView</div>
+                    <img id="image1" src=""><br><div class="image-caption">原生组件UIImageView</div>
                         </div>
                 <div class="image-package">
-                    <img id="image2" src="" width="320" height="240" ><br><div class="image-caption">原生组件UIImageView</div>
+                    <img id="image2" src="" ><br><div class="image-caption">原生组件UIImageView</div>
                         </div>
                 <div class="image-package">
-                    <img id="image3" src="" width="320" height="240"><br><div class="image-caption">原生组件UIImageView</div>
+                    <img id="image3" src=""><br><div class="image-caption">原生组件UIImageView</div>
                         </div>
                 <div class="image-package">
-                    <img id="image4" src="" width="320" height="240" ><br><div class="image-caption">原生组件UIImageView</div>
+                    <img id="image4" src="" ><br><div class="image-caption">原生组件UIImageView</div>
                         </div>
                 <div class="image-package">
-                    <img id="image5" src="" width="320" height="240"><br><div class="image-caption">原生组件UIImageView</div>
+                    <img id="image5" src="" ><br><div class="image-caption">原生组件UIImageView</div>
                         </div>
                 
                 <div class="image-package">
-                    <img id="image6" src="" width="320" height="240"><br><div class="image-caption">原生组件UIImageView</div>
+                    <img id="image6" src="" ><br><div class="image-caption">原生组件UIImageView</div>
                         </div>
                 <div class="image-package">
-                    <img id="image7" src="" width="320" height="240"><br><div class="image-caption">原生组件UIImageView</div>
+                    <img id="image7" src="" ><br><div class="image-caption">原生组件UIImageView</div>
                         </div>
                 <div class="image-package">
-                    <img id="image8" src="" width="320" height="240"><br><div class="image-caption">原生组件UIImageView</div>
+                    <img id="image8" src=""><br><div class="image-caption">原生组件UIImageView</div>
                         </div>
                 <div class="image-package">
-                    <video id="video1" src="" width="320" height="240"></video><br><div class="image-caption">原生组件AVPlayer播放视频</div>
+                    <img id="image9" src=""><br><div class="image-caption">原生组件UIImageView</div>
+                        </div>
+                <div class="image-package">
+                    <img id="image10" src=""><br><div class="image-caption">原生组件UIImageView</div>
+                        </div>
+                <div class="image-package">
+                    <img id="image11" src=""><br><div class="image-caption">原生组件UIImageView</div>
+                        </div>
+                <div class="image-package">
+                    <img id="image12" src=""><br><div class="image-caption">原生组件UIImageView</div>
+                        </div>
+                <div class="image-package">
+                    <video id="video1" src="" ></video><br><div class="image-caption">原生组件AVPlayer播放视频</div>
                 </div>
                 <div class="image-package">
-<!--                 这块的img标签只是一个占位标签，实际我们在这里放音频元素   -->
-                    <img id="audio1" src="" width="100" height="100"><br><div class="image-caption">原生组件AVPlayer播放音频</div>
-                </div>
+                    <!--                 这块的img标签只是一个占位标签，实际我们在这里放音频元素   -->
+                    <img id="audio1" src=""><br><div class="image-caption">原生组件AVPlayer播放音频</div>
+                        </div>
                 
                 <p>以上图片来源于网络</p>
                 </div>
@@ -85,19 +97,19 @@
         <!--   JS语法-->
         <script type="text/javascript" charset="utf-8">
             <!--        获取该元素的位置坐标    -->
-            function getElementFrame(imageId) {
+            function getElementFrame(imageId, width, height) {
+                document.getElementById(imageId).width = width;
+                document.getElementById(imageId).height = height;
                 var y = document.getElementById(imageId).offsetTop;
                 var x = document.getElementById(imageId).offsetLeft;
-                var width = document.getElementById(imageId).offsetWidth;
-                var height = document.getElementById(imageId).offsetHeight;
                 return {"x":x, "y":y, "width":width, "height":height}
                 <!--                alert(y);-->
             }
-<!--        设置图片，原生仅自己处理图片下载流程，然后OC调用js设置图片            -->
-           function setPicture(id, path) {
-               var image = document.getElementById(id);
-               image.src = path;
-           }
+        <!--        设置图片，可以原生oc仅处理图片下载流程，然后OC调用js设置图片            -->
+        function setPicture(id, path) {
+            var image = document.getElementById(id);
+            image.src = path;
+        }
         </script>
         
     </body>
