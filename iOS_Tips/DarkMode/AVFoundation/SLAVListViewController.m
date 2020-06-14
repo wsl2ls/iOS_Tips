@@ -13,6 +13,7 @@
 #import "SLFilterViewController.h"
 #import "SLGPUImageController.h"
 #import "SLColorPickerViewController.h"
+#import "SLWebViewController.h"
 
 @interface SLAVListViewController ()
 @property (nonatomic, strong) NSMutableArray *dataSource;
@@ -58,7 +59,7 @@
                                            [SLGPUImageController class],
                                            [UIViewController class],
                                            [SLColorPickerViewController class],
-                                           [UIViewController class]]];
+                                           [SLWebViewController class]]];
     [self.tableView reloadData];
 }
 
@@ -83,7 +84,7 @@
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"cellID" forIndexPath:indexPath];
     cell.textLabel.numberOfLines = 0;
-    cell.textLabel.text =  [NSString stringWithFormat:@"%ld、%@",(long)indexPath.row + 1,self.dataSource[indexPath.row]];
+    cell.textLabel.text =  [NSString stringWithFormat:@"%ld、%@",(long)indexPath.row ,self.dataSource[indexPath.row]];
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -98,16 +99,13 @@
             [self presentViewController:nextVc animated:YES completion:nil];
         }
             break;
-        case 5:
-            [self.navigationController pushViewController:nextVc animated:YES];
-            break;
         case 4:
             [SLAlertView showAlertViewWithText:@"查看本仓库下的VideoEncoder&Decoder" delayHid:2];
             break;
         case 6:
-            [SLAlertView showAlertViewWithText:@"AVFoundation 原生二维码扫描识别和生成：https://github.com/wsl2ls/ScanQRcode.git" delayHid:2];
-            break;
+             ((SLWebViewController *)nextVc).urlString = @"https://juejin.im/post/5c0e1db651882539c60d0434";
         default:
+            [self.navigationController pushViewController:nextVc animated:YES];
             break;
         }
     }

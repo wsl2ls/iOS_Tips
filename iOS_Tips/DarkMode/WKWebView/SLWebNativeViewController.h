@@ -11,7 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /// WKWebView渲染的部分HTML元素替换为用原生组件显示
-@interface SLWebNativeViewController : UIViewController
+@interface SLWebNativeViewController : SLViewController
 
 @end
 

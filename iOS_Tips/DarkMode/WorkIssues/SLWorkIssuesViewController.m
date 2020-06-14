@@ -8,6 +8,7 @@
 
 #import "SLWorkIssuesViewController.h"
 #import "SLMenuViewController.h"
+#import "SLWebViewController.h"
 
 @interface SLWorkIssuesViewController ()
 @property (nonatomic, strong) NSMutableArray *dataSource;
@@ -43,7 +44,7 @@
         @"键盘和UIMenuController不能同时存在的问题",
         @"全屏侧滑手势/UIScrollView/UISlider间滑动手势冲突"]];
     [self.classArray addObjectsFromArray:@[[SLMenuViewController class],
-                                           [UIViewController class]]];
+                                           [SLWebViewController class]]];
     [self.tableView reloadData];
 }
 
@@ -76,8 +77,7 @@
     UIViewController *nextVc = [[self.classArray[indexPath.row] alloc] init];
     switch (indexPath.row) {
         case 1:
-            [SLAlertView showAlertViewWithText:@"全屏侧滑手势/UIScrollView/UISlider间滑动手势冲突： https://github.com/wsl2ls/WSLTransferAnimation" delayHid:2];
-            break;
+            ((SLWebViewController *)nextVc).urlString = @"https://juejin.im/post/5c0e1e73f265da616413d828";
         default:
             [self.navigationController pushViewController:nextVc animated:YES];
             break;

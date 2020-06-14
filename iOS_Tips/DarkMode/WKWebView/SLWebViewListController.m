@@ -38,7 +38,6 @@
 - (BOOL)prefersStatusBarHidden {
     return NO;
 }
-
 #pragma mark - UI
 - (void)setupUI {
     self.navigationItem.title = @"WKWebView";
@@ -54,9 +53,9 @@
                                        @" WKWebView + UITableView（方案3）(推荐)",
                                        @" WKWebView + UITableView（方案4）(推荐) ",
                                        @" WKWebView离线缓存",
-                                       @" WKWebView渲染的部分HTML元素替换为用原生组件显示(doing)",
+                                       @" WKWebView渲染的部分HTML元素替换为用原生组件显示",
                                        @" UIScrollView的实现原理",
-                                       @" UITableView的原理 (doing)"]];
+                                       @" UITableView的原理"]];
     [self.subTitles addObjectsFromArray:@[@" WKWebView的使用、JS和OC的交互、网页内容加载进度条的实现、NSNSURLProtocol拦截、Cookies丢失、设置UserAgent",
                                           @" tableView.tableHeaderView = webView 撑开webView ",
                                           @" [webView.scrollView addSubview:tableView] + 占位Div ",

@@ -99,6 +99,8 @@
 		7884246B249070D900C2E505 /* UIColor+SLCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 7884246A249070D900C2E505 /* UIColor+SLCommon.m */; };
 		7884247F2492102900C2E505 /* SLWorkIssuesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7884247E2492102900C2E505 /* SLWorkIssuesViewController.m */; };
 		788424822492159F00C2E505 /* SLNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 788424812492159F00C2E505 /* SLNavigationController.m */; };
+		7884248B2493851B00C2E505 /* SLViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7884248A2493851B00C2E505 /* SLViewController.m */; };
+		7884248E24963FD200C2E505 /* SLReusableManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7884248D24963FD200C2E505 /* SLReusableManager.m */; };
 		788ACD622390BFD400737EC2 /* SLLoadImageVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 788ACD612390BFD400737EC2 /* SLLoadImageVC.m */; };
 		788ACD652390EA3A00737EC2 /* SLCubeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 788ACD642390EA3A00737EC2 /* SLCubeViewController.m */; };
 		788ADB382441F48F00302CD9 /* SLCrashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 788ADB362441F48F00302CD9 /* SLCrashViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -321,6 +323,10 @@
 		7884247E2492102900C2E505 /* SLWorkIssuesViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLWorkIssuesViewController.m; sourceTree = "<group>"; };
 		788424802492159F00C2E505 /* SLNavigationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLNavigationController.h; sourceTree = "<group>"; };
 		788424812492159F00C2E505 /* SLNavigationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLNavigationController.m; sourceTree = "<group>"; };
+		788424892493851B00C2E505 /* SLViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLViewController.h; sourceTree = "<group>"; };
+		7884248A2493851B00C2E505 /* SLViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLViewController.m; sourceTree = "<group>"; };
+		7884248C24963FD200C2E505 /* SLReusableManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLReusableManager.h; sourceTree = "<group>"; };
+		7884248D24963FD200C2E505 /* SLReusableManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLReusableManager.m; sourceTree = "<group>"; };
 		788ACD602390BFD400737EC2 /* SLLoadImageVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLLoadImageVC.h; sourceTree = "<group>"; };
 		788ACD612390BFD400737EC2 /* SLLoadImageVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLLoadImageVC.m; sourceTree = "<group>"; };
 		788ACD632390EA3A00737EC2 /* SLCubeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLCubeViewController.h; sourceTree = "<group>"; };
@@ -695,6 +701,8 @@
 				783504632452C20B0071283E /* SLMethod.m */,
 				788424802492159F00C2E505 /* SLNavigationController.h */,
 				788424812492159F00C2E505 /* SLNavigationController.m */,
+				788424892493851B00C2E505 /* SLViewController.h */,
+				7884248A2493851B00C2E505 /* SLViewController.m */,
 			);
 			path = Tool;
 			sourceTree = "<group>";
@@ -942,6 +950,8 @@
 				78BDE04A248A6A74002ED386 /* SLUrlProtocolAddCookie.m */,
 				78BDE04E248E0AFB002ED386 /* SLWebNativeViewController.h */,
 				78BDE04F248E0AFB002ED386 /* SLWebNativeViewController.m */,
+				7884248C24963FD200C2E505 /* SLReusableManager.h */,
+				7884248D24963FD200C2E505 /* SLReusableManager.m */,
 				78842452248F863500C2E505 /* SLTableViewController.h */,
 				78842453248F863500C2E505 /* SLTableViewController.m */,
 				78E72D8324822E7500751373 /* WebTableView */,
@@ -1284,6 +1294,7 @@
 				7851CB362331CC87002295B5 /* SLDarkModeViewController.m in Sources */,
 				78D30965239688EF00DC373A /* GLESMath.c in Sources */,
 				788ACD652390EA3A00737EC2 /* SLCubeViewController.m in Sources */,
+				7884248E24963FD200C2E505 /* SLReusableManager.m in Sources */,
 				7857FD4B24729E8500D3D986 /* BSBacktraceLogger.m in Sources */,
 				78E72D8224811F6600751373 /* SLWebCacheViewController.m in Sources */,
 				78E72D8F2483DC2600751373 /* SLWebCacheManager.m in Sources */,
@@ -1318,6 +1329,7 @@
 				787F01A3236AD8A5002AC1A9 /* SLEditImageController.m in Sources */,
 				780F5306236D8570000D0EA8 /* SLImageClipController.m in Sources */,
 				782CFB6A239E68D5001B5528 /* SLSpecialEffectsViewController.m in Sources */,
+				7884248B2493851B00C2E505 /* SLViewController.m in Sources */,
 				78E72D5124766E4B00751373 /* SLWebViewController.m in Sources */,
 				78B10493232F57C50051579F /* main.m in Sources */,
 				78E179372351A40D0007E4BB /* SLShotFocusView.m in Sources */,

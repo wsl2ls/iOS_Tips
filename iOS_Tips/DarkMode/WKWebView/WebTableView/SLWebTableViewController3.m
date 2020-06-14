@@ -51,7 +51,6 @@
 }
 - (void)dealloc {
     [self removeKVO];
-    NSLog(@"%@释放了",NSStringFromClass(self.class));
 }
 // 滚动中单击可以停止滚动
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {

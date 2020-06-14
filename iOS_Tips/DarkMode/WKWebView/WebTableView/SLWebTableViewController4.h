@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
   WKWebView + UITableView
   方案4：(推荐)[UIScrollView addSubView: WKWebView & UITableView];  UIScrollView.contenSize = WKWebView.contenSize + UITableView.contenSize; WKWebView和UITableView的最大高度为一屏高，并禁用scrollEnabled=NO，然后根据UIScrollView的滑动偏移量调整WKWebView和UITableView的展示区域contenOffset
 */
-@interface SLWebTableViewController4 : UIViewController
+@interface SLWebTableViewController4 : SLViewController
 
 @end
 
