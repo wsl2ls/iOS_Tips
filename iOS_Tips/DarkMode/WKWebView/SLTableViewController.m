@@ -8,65 +8,64 @@
 
 #import "SLTableViewController.h"
 
-@interface SLScrollViewCell : UILabel
+@interface SLTableViewCell : UIButton
 @property (nonatomic, copy) NSString *cellID;
+@property (nonatomic, assign) NSInteger index;
 @end
-@implementation SLScrollViewCell
+@implementation SLTableViewCell
 @end
 
-@interface SLTableViewController ()<UIScrollViewDelegate>
-{
-    UITableView *tableView;
-}
+@class SLTableView;
+@protocol SLTableViewDataSource <NSObject>
+@required
+///行数
+- (NSInteger)numberOfRowsInTableView:(SLTableView *)tableView;
+///行高
+- (CGFloat)tableView:(SLTableView *)tableView heightForRowAtIndex:(NSInteger)index;
+///行内容
+- (SLTableViewCell *)tableView:(SLTableView *)tableView cellForRowAtIndex:(NSInteger)index;
+@end
+@protocol SLTableViewDelegate <NSObject, UIScrollViewDelegate>
+///选中行
+- (void)tableView:(SLTableView *)tableView didSelectRowAtIndex:(NSInteger)index;
+@end
 
-@property (nonatomic, strong) UIScrollView *scrollView;
+@interface SLTableView : UIScrollView
 ///复用池
 @property (nonatomic, strong) NSMutableDictionary<NSString *, NSHashTable<UIView *> *> *reusablePool;
 /// 每一行的坐标位置
 @property (nonatomic, strong) NSMutableArray <NSValue *>*frameArray;
 /// 当前可见的cells
-@property (nonatomic, strong) NSMutableArray <SLScrollViewCell *>*visibleCells;
-
+@property (nonatomic, strong) NSMutableArray <SLTableViewCell *>*visibleCells;
 ///记录最后一次的偏移量，用来判断滑动方向
 @property (nonatomic, assign) CGFloat lastContentOffsetY;
 ///顶部即将展示的索引
 @property (nonatomic, assign) NSInteger willDisplayIndexTop;
 ///底部即将展示的索引
 @property (nonatomic, assign) NSInteger willDisplayIndexBottom;
-
+///数据源代理
+@property (nonatomic, weak) id<SLTableViewDelegate>delegate;
+///数据源代理
+@property (nonatomic, weak) id<SLTableViewDataSource>dataSource;
 @end
 
-@implementation SLTableViewController
-
+@implementation SLTableView
+@dynamic delegate;
 #pragma mark - Override
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    [self setupUI];
-}
-
-#pragma mark - UI
-- (void)setupUI {
-    self.view.backgroundColor = [UIColor whiteColor];
-    [self.view addSubview:self.scrollView];
-    [self registerClass:[SLScrollViewCell class] forCellReuseIdentifier:@"cellID"];
-    [self reloadData];
-}
-
-#pragma mark - Data
-
-#pragma mark - Getter
-- (UIScrollView *)scrollView {
-    if (!_scrollView) {
-        _scrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
-        _scrollView.delegate = self;
-        if (@available(iOS 11.0, *)) {
-            _scrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
-        } else {
-            self.automaticallyAdjustsScrollViewInsets = NO;
-        }
+- (void)willMoveToSuperview:(UIView *)newSuperview {
+    if (newSuperview) {
+        [self addKVO];
     }
-    return _scrollView;
 }
+- (void)dealloc {
+    [self removeKVO];
+}
+
+#pragma mark - Setter
+- (void)setDelegate:(id<SLTableViewDelegate>)delegate{
+    [super setDelegate:delegate];
+}
+#pragma mark - Getter
 - (NSMutableDictionary *)reusablePool {
     if (!_reusablePool) {
         _reusablePool = [NSMutableDictionary dictionary];
@@ -85,14 +84,32 @@
     }
     return _visibleCells;;
 }
-
-#pragma mark - Setter
-- (void)setwillDisplayIndexTop:(NSInteger)willDisplayIndexTop{
-    _willDisplayIndexTop = willDisplayIndexTop >= 0 ? willDisplayIndexTop : -1;
+- (id<SLTableViewDelegate>)delegate{
+    id curDelegate = [super delegate];
+    return curDelegate;
 }
-- (void)setwillDisplayIndexBottom:(NSInteger)willDisplayIndexBottom {
-    NSInteger count = [self numberOfRowsInScrollView:self.scrollView];
-    _willDisplayIndexBottom = willDisplayIndexBottom < count ? willDisplayIndexBottom : count;
+
+#pragma mark - KVO
+- (void)addKVO {
+    [self addObserver:self
+           forKeyPath:@"contentOffset"
+              options:NSKeyValueObservingOptionNew
+              context:nil];
+}
+- (void)removeKVO{
+    [self removeObserver:self forKeyPath:@"contentOffset"];
+}
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context{
+    if(object == self && [keyPath isEqualToString:@"contentOffset"]) {
+        if(self.contentOffset.y > self.lastContentOffsetY) {
+            [self willDisplayCellWithDirection:NO];
+            [self willDisappearCellWithDirection:YES];
+        }else {
+            [self willDisplayCellWithDirection:YES];
+            [self willDisappearCellWithDirection:NO];
+        }
+        self.lastContentOffsetY = self.contentOffset.y;
+    }
 }
 
 #pragma mark - Help Methods
@@ -102,29 +119,29 @@
     [self.frameArray removeAllObjects];
     self.willDisplayIndexTop = -1;
     //数据源个数
-    NSInteger count = [self numberOfRowsInScrollView:self.scrollView];
+    NSInteger count = [self.dataSource numberOfRowsInTableView:self];
     self.willDisplayIndexBottom = count;
     
     CGFloat y = 0;
     //获取每一行的布局信息
     for (int i = 0; i < count; i++) {
-        CGFloat cellHeight = [self scrollView:self.scrollView heightForRowAtIndex:i];
-        CGRect rect = CGRectMake(0, y, self.scrollView.sl_width, cellHeight);
+        CGFloat cellHeight = [self.dataSource tableView:self heightForRowAtIndex:i];
+        CGRect rect = CGRectMake(0, y, self.sl_width, cellHeight);
         [self.frameArray addObject:[NSValue valueWithCGRect:rect]];
         
-        if (rect.origin.y + rect.size.height < self.scrollView.contentOffset.y) {
+        if (rect.origin.y + rect.size.height < self.contentOffset.y) {
             self.willDisplayIndexTop = i;
         }
         
         //按需加载 只加载坐标位置是在当前窗口显示的视图
-        if (rect.origin.y + rect.size.height >= self.scrollView.contentOffset.y && rect.origin.y <= self.scrollView.contentOffset.y + self.scrollView.sl_height) {
-            SLScrollViewCell *cell = [self scrollView:self.scrollView cellForRowAtIndex:i];
+        if (rect.origin.y + rect.size.height >= self.contentOffset.y && rect.origin.y <= self.contentOffset.y + self.sl_height) {
+            SLTableViewCell *cell = [self.dataSource tableView:self cellForRowAtIndex:i];
             cell.frame = rect;
-            [self.scrollView addSubview:cell];
+            [self addSubview:cell];
             [self.visibleCells addObject:cell];
         }
         
-        if (rect.origin.y > self.scrollView.contentOffset.y + self.scrollView.sl_height && self.willDisplayIndexBottom == count) {
+        if (rect.origin.y > self.contentOffset.y + self.sl_height && self.willDisplayIndexBottom == count) {
             self.willDisplayIndexBottom = i;
         }
         
@@ -133,11 +150,11 @@
         
         //最后 确定了内容大小contentSize
         if (i == count - 1) {
-            self.scrollView.contentSize = CGSizeMake(self.scrollView.sl_width, y);
+            self.contentSize = CGSizeMake(self.sl_width, y);
         }
     }
 }
-//当前可见cell的索引 其实绘制cell的时候就可以先保存可见的索引，不用每次遍历查询
+///当前可见cell的索引 其实绘制cell的时候就可以先保存可见的索引，不用每次遍历查询
 - (NSArray *)indexForVisibleRows {
     NSMutableArray *indexs = [NSMutableArray array];
     for (NSInteger i = self.willDisplayIndexTop+1; i < self.willDisplayIndexBottom; i++) {
@@ -145,30 +162,30 @@
     }
     return indexs;
 }
-//即将显示的cell，显示时创建或从缓存池中取出调整坐标位置 top:YES上/NO下
+///即将显示的cell，显示时创建或从缓存池中取出调整坐标位置 top:YES上/NO下
 - (void)willDisplayCellWithDirection:(BOOL)top {
     if(top) {
         if (_willDisplayIndexTop < 0) return;
-        NSLog(@"上");
         CGRect rect = [self.frameArray[self.willDisplayIndexTop] CGRectValue];
         //按需加载 只加载坐标位置是在当前窗口显示的视图
-        if (rect.origin.y + rect.size.height >= self.scrollView.contentOffset.y && rect.origin.y <= self.scrollView.contentOffset.y + self.scrollView.sl_height) {
-            SLScrollViewCell *cell = [self scrollView:self.scrollView cellForRowAtIndex:self.willDisplayIndexTop];
+        if (rect.origin.y + rect.size.height >= self.contentOffset.y && rect.origin.y <= self.contentOffset.y + self.sl_height) {
+            NSLog(@"上 第 %ld 个cell显示",self.willDisplayIndexTop);
+            SLTableViewCell *cell = [self.dataSource tableView:self cellForRowAtIndex:self.willDisplayIndexTop];
             cell.frame = rect;
-            [self.scrollView addSubview:cell];
+            [self addSubview:cell];
             self.willDisplayIndexTop -=1;
             [self.visibleCells insertObject:cell atIndex:0];
         }
     }else {
-        NSInteger count = [self numberOfRowsInScrollView:self.scrollView];
+        NSInteger count = [self.dataSource numberOfRowsInTableView:self];
         if (_willDisplayIndexBottom == count) return;
-        NSLog(@"下");
         CGRect rect = [self.frameArray[self.willDisplayIndexBottom] CGRectValue];
         //按需加载 只加载坐标位置是在当前窗口显示的视图
-        if (rect.origin.y + rect.size.height >= self.scrollView.contentOffset.y && rect.origin.y <= self.scrollView.contentOffset.y + self.scrollView.sl_height) {
-            SLScrollViewCell *cell = [self scrollView:self.scrollView cellForRowAtIndex:self.willDisplayIndexBottom];
+        if (rect.origin.y + rect.size.height >= self.contentOffset.y && rect.origin.y <= self.contentOffset.y + self.sl_height) {
+            NSLog(@"下 第 %ld 个cell显示",self.willDisplayIndexBottom);
+            SLTableViewCell *cell = [self.dataSource tableView:self cellForRowAtIndex:self.willDisplayIndexBottom];
             cell.frame = rect;
-            [self.scrollView addSubview:cell];
+            [self addSubview:cell];
             self.willDisplayIndexBottom +=1;
             [self.visibleCells addObject:cell];
         }
@@ -178,70 +195,110 @@
 - (void)willDisappearCellWithDirection:(BOOL)top {
     if(top) {
         CGRect rect = [self.frameArray[self.willDisplayIndexTop+1] CGRectValue];
-        if (rect.origin.y + rect.size.height < self.scrollView.contentOffset.y) {
+        if (rect.origin.y + rect.size.height < self.contentOffset.y) {
             self.willDisplayIndexTop = self.willDisplayIndexTop+1;
-            SLScrollViewCell *cell = self.visibleCells.firstObject;
+            NSLog(@"上 第 %ld 个cell消失",self.willDisplayIndexTop);
+            SLTableViewCell *cell = self.visibleCells.firstObject;
             NSHashTable * hashTable= self.reusablePool[cell.cellID];
             [hashTable addObject:cell];
             [self.visibleCells removeObjectAtIndex:0];
         }
     }else {
         CGRect rect = [self.frameArray[self.willDisplayIndexBottom-1] CGRectValue];
-        if (rect.origin.y > self.scrollView.contentOffset.y + self.scrollView.sl_height) {
+        if (rect.origin.y > self.contentOffset.y + self.sl_height) {
             self.willDisplayIndexBottom = self.willDisplayIndexBottom-1;
-            SLScrollViewCell *cell = self.visibleCells.lastObject;
+            NSLog(@"下 第 %ld 个cell消失",self.willDisplayIndexBottom);
+            SLTableViewCell *cell = self.visibleCells.lastObject;
             NSHashTable * hashTable= self.reusablePool[cell.cellID];
             [hashTable addObject:cell];
             [self.visibleCells removeLastObject];
         }
     }
 }
-
-///根据cellID去复用池reusablePool取可重用的view，如果没有，重新创建一个新对象返回
-- (SLScrollViewCell *)dequeueReusableCellWithIdentifier:(nonnull NSString *)cellID{
+///根据cellID从复用池reusablePool取可重用的view，如果没有，重新创建一个新对象返回
+- (SLTableViewCell *)dequeueReusableCellWithIdentifier:(nonnull NSString *)cellID index:(NSInteger)index{
     NSHashTable *hashTable = self.reusablePool[cellID];
-    SLScrollViewCell *cell = hashTable.allObjects.firstObject;
+    SLTableViewCell *cell = hashTable.allObjects.firstObject;
     if (cell == nil) {
-        cell = [[SLScrollViewCell alloc] init];
+        //复用池reusablePool没有可重用的，就重新创建一个新对象返回
+        cell = [[SLTableViewCell alloc] init];
+        [cell addTarget:self action:@selector(didSelectedAction:) forControlEvents:UIControlEventTouchUpInside];
         cell.cellID = cellID;
+    }else {
+        //从缓冲池中取出可重用的cell
+        [hashTable removeObject:cell];
     }
+    cell.index = index;
     return cell;
 }
 ///注册样式
 - (void)registerClass:(Class)class forCellReuseIdentifier:(NSString *)cellID {
     self.reusablePool[cellID] = [NSHashTable weakObjectsHashTable];
 }
+
+#pragma mark -
+- (void)didSelectedAction:(SLTableViewCell *)cell {
+    [self.delegate tableView:self didSelectRowAtIndex:cell.index];
+}
+@end
+
+@interface SLTableViewController ()<SLTableViewDataSource, SLTableViewDelegate>
+@property (nonatomic, strong) SLTableView *tableView;
+@end
+
+@implementation SLTableViewController
+#pragma mark - Override
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    [self setupUI];
+}
+
+#pragma mark - UI
+- (void)setupUI {
+    self.view.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:self.tableView];
+    [self.tableView reloadData];
+}
+
+#pragma mark - Getter
+- (SLTableView *)tableView {
+    if (!_tableView) {
+        _tableView = [[SLTableView alloc] initWithFrame:self.view.bounds];
+        _tableView.dataSource = self;
+        _tableView.delegate = self;
+        if (@available(iOS 11.0, *)) {
+            _tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+        } else {
+            self.automaticallyAdjustsScrollViewInsets = NO;
+        }
+        [_tableView registerClass:[SLTableViewCell class] forCellReuseIdentifier:@"cellID"];
+    }
+    return _tableView;
+}
+
+#pragma mark - SLTableViewDataSource
 ///行数
-- (NSInteger)numberOfRowsInScrollView:(UIScrollView *)scrollView {
-    return 30;
+- (NSInteger)numberOfRowsInTableView:(SLTableView *)tableView {
+    return 40;
 }
 ///行高
-- (CGFloat)scrollView:(UIScrollView *)scrollView heightForRowAtIndex:(NSInteger)index {
+- (CGFloat)tableView:(SLTableView *)tableView heightForRowAtIndex:(NSInteger)index {
     return 100;
 }
 ///行内容
-- (SLScrollViewCell *)scrollView:(UIScrollView *)scrollView cellForRowAtIndex:(NSInteger)index{
-    SLScrollViewCell *cell = [self dequeueReusableCellWithIdentifier:@"cellID"];
+- (SLTableViewCell *)tableView:(SLTableView *)tableView cellForRowAtIndex:(NSInteger)index {
+    SLTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cellID" index:index];
     cell.layer.borderWidth = 3;
-    cell.text = [NSString stringWithFormat:@"第 %ld 个",(long)index];
-    cell.textAlignment = NSTextAlignmentCenter;
+    [cell setTitle:[NSString stringWithFormat:@"第 %ld 个",(long)index] forState:UIControlStateNormal];
+    [cell setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    cell.titleLabel.textAlignment = NSTextAlignmentCenter;
     return cell;
 }
-///点击行
-- (void)scrollView:(UIScrollView *)scrollView didSelectRowAtIndex:(NSInteger)index {
-    
-}
 
-#pragma mark - UIScrollViewDelegate
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    if(scrollView.contentOffset.y > self.lastContentOffsetY) {
-        [self willDisplayCellWithDirection:NO];
-        [self willDisappearCellWithDirection:YES];
-    }else {
-        [self willDisplayCellWithDirection:YES];
-        [self willDisappearCellWithDirection:NO];
-    }
-    self.lastContentOffsetY = scrollView.contentOffset.y;
+#pragma mark - SLTableViewDelegate
+///选中行
+- (void)tableView:(SLTableView *)tableView didSelectRowAtIndex:(NSInteger)index {
+    NSLog(@"选中 %ld",(long)index);
 }
 
 @end
