@@ -101,6 +101,7 @@
 		788424822492159F00C2E505 /* SLNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 788424812492159F00C2E505 /* SLNavigationController.m */; };
 		7884248B2493851B00C2E505 /* SLViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7884248A2493851B00C2E505 /* SLViewController.m */; };
 		7884248E24963FD200C2E505 /* SLReusableManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7884248D24963FD200C2E505 /* SLReusableManager.m */; };
+		788424C724978E9200C2E505 /* SLKeyChain.m in Sources */ = {isa = PBXBuildFile; fileRef = 788424C624978E9200C2E505 /* SLKeyChain.m */; };
 		788ACD622390BFD400737EC2 /* SLLoadImageVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 788ACD612390BFD400737EC2 /* SLLoadImageVC.m */; };
 		788ACD652390EA3A00737EC2 /* SLCubeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 788ACD642390EA3A00737EC2 /* SLCubeViewController.m */; };
 		788ADB382441F48F00302CD9 /* SLCrashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 788ADB362441F48F00302CD9 /* SLCrashViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -327,6 +328,8 @@
 		7884248A2493851B00C2E505 /* SLViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLViewController.m; sourceTree = "<group>"; };
 		7884248C24963FD200C2E505 /* SLReusableManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLReusableManager.h; sourceTree = "<group>"; };
 		7884248D24963FD200C2E505 /* SLReusableManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLReusableManager.m; sourceTree = "<group>"; };
+		788424C524978E9200C2E505 /* SLKeyChain.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLKeyChain.h; sourceTree = "<group>"; };
+		788424C624978E9200C2E505 /* SLKeyChain.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLKeyChain.m; sourceTree = "<group>"; };
 		788ACD602390BFD400737EC2 /* SLLoadImageVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLLoadImageVC.h; sourceTree = "<group>"; };
 		788ACD612390BFD400737EC2 /* SLLoadImageVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLLoadImageVC.m; sourceTree = "<group>"; };
 		788ACD632390EA3A00737EC2 /* SLCubeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLCubeViewController.h; sourceTree = "<group>"; };
@@ -703,6 +706,8 @@
 				788424812492159F00C2E505 /* SLNavigationController.m */,
 				788424892493851B00C2E505 /* SLViewController.h */,
 				7884248A2493851B00C2E505 /* SLViewController.m */,
+				788424C524978E9200C2E505 /* SLKeyChain.h */,
+				788424C624978E9200C2E505 /* SLKeyChain.m */,
 			);
 			path = Tool;
 			sourceTree = "<group>";
@@ -1332,6 +1337,7 @@
 				7884248B2493851B00C2E505 /* SLViewController.m in Sources */,
 				78E72D5124766E4B00751373 /* SLWebViewController.m in Sources */,
 				78B10493232F57C50051579F /* main.m in Sources */,
+				788424C724978E9200C2E505 /* SLKeyChain.m in Sources */,
 				78E179372351A40D0007E4BB /* SLShotFocusView.m in Sources */,
 				787C7DC8245D77D9005DF7ED /* SLZombieCatcher.m in Sources */,
 				78A4BD45236C5DF20021AE32 /* SLEditVideoController.m in Sources */,

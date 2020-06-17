@@ -134,6 +134,7 @@
 #pragma mark - Data
 /// 获取原生组件所需的HTML中元素的数据
 - (void)getData {
+    [self.dataSource removeAllObjects];
     NSData *contentData = [[NSFileManager defaultManager] contentsAtPath:[[NSBundle mainBundle] pathForResource:@"WebNativeJson" ofType:@"txt"]];
     NSDictionary * dataDict = [NSJSONSerialization JSONObjectWithData:contentData options:kNilOptions error:nil];
     for (NSDictionary *dict in dataDict[@"dataList"]) {
@@ -236,6 +237,7 @@
 #pragma mark - WKNavigationDelegate
 // 页面加载完成之后调用
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
+    [self.frameArray removeAllObjects];
     //根据服务器下发的标签相关的数据，用原生组件展示，这里原生组件的创建要注意按需加载和复用，类似于tableView，否则对内存还是有不小的消耗的。目前还没做处理
     int i = 0;
     SL_WeakSelf;
@@ -247,7 +249,9 @@
             NSDictionary *frameDict = (NSDictionary *)data;
             CGRect frame = CGRectMake(
                                       [frameDict[@"x"] floatValue], [frameDict[@"y"] floatValue], [frameDict[@"width"] floatValue], [frameDict[@"height"] floatValue]);
-            [weakSelf.frameArray addObject:[NSValue valueWithCGRect:frame]];
+            if(!CGRectEqualToRect(frame, CGRectZero)) {
+                 [weakSelf.frameArray addObject:[NSValue valueWithCGRect:frame]];
+            }
             dispatch_semaphore_signal(weakSelf.semaphore);
             if (i == weakSelf.dataSource.count - 1) {
                 [weakSelf.reusableManager reloadData];

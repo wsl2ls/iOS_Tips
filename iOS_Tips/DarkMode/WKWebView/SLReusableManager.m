@@ -100,6 +100,13 @@
 - (void)reloadData {
     //清空布局信息
     [self.frameArray removeAllObjects];
+    for (UIView *subView in self.scrollView.subviews) {
+        if ([subView isKindOfClass:[SLReusableCell class]]) {
+            [subView removeFromSuperview];
+        }
+    }
+    [self.visibleCells removeAllObjects];
+    
     self.willDisplayIndexTop = -1;
     //数据源个数
     NSInteger count = [self.dataSource numberOfRowsInReusableManager:self];
