@@ -106,6 +106,7 @@
 		788ACD652390EA3A00737EC2 /* SLCubeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 788ACD642390EA3A00737EC2 /* SLCubeViewController.m */; };
 		788ADB382441F48F00302CD9 /* SLCrashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 788ADB362441F48F00302CD9 /* SLCrashViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		788ADB392441F48F00302CD9 /* SLCrashViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 788ADB372441F48F00302CD9 /* SLCrashViewController.xib */; };
+		78A179A8249B0AA8006F52E3 /* NSDictionary+SLExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 78A179A6249B0AA8006F52E3 /* NSDictionary+SLExtension.m */; };
 		78A1998C2451BEE7005B2B4B /* UIButton+SLTitleImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 78A1998B2451BEE7005B2B4B /* UIButton+SLTitleImage.m */; };
 		78A1998F2451C049005B2B4B /* SLButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 78A1998E2451C049005B2B4B /* SLButton.m */; };
 		78A35B1C23978A5D004BCCB7 /* SLShaderCubeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78A35B1B23978A5D004BCCB7 /* SLShaderCubeViewController.m */; };
@@ -337,6 +338,8 @@
 		788ADB352441F48F00302CD9 /* SLCrashViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLCrashViewController.h; sourceTree = "<group>"; };
 		788ADB362441F48F00302CD9 /* SLCrashViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLCrashViewController.m; sourceTree = "<group>"; };
 		788ADB372441F48F00302CD9 /* SLCrashViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SLCrashViewController.xib; sourceTree = "<group>"; };
+		78A179A6249B0AA8006F52E3 /* NSDictionary+SLExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+SLExtension.m"; sourceTree = "<group>"; };
+		78A179A7249B0AA8006F52E3 /* NSDictionary+SLExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+SLExtension.h"; sourceTree = "<group>"; };
 		78A1998A2451BEE7005B2B4B /* UIButton+SLTitleImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+SLTitleImage.h"; sourceTree = "<group>"; };
 		78A1998B2451BEE7005B2B4B /* UIButton+SLTitleImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+SLTitleImage.m"; sourceTree = "<group>"; };
 		78A1998D2451C049005B2B4B /* SLButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLButton.h; sourceTree = "<group>"; };
@@ -585,6 +588,8 @@
 				7851CB41233222E2002295B5 /* UIView+SLFrame.m */,
 				7830A5A22358904600BC79BA /* UIView+SLImage.h */,
 				7830A5A32358904600BC79BA /* UIView+SLImage.m */,
+				78A179A7249B0AA8006F52E3 /* NSDictionary+SLExtension.h */,
+				78A179A6249B0AA8006F52E3 /* NSDictionary+SLExtension.m */,
 				786147F823630C4D00C5424C /* UIImage+SLCommon.h */,
 				786147F923630C4D00C5424C /* UIImage+SLCommon.m */,
 				78A1998A2451BEE7005B2B4B /* UIButton+SLTitleImage.h */,
@@ -1277,6 +1282,7 @@
 				78A1998F2451C049005B2B4B /* SLButton.m in Sources */,
 				78B10488232F57C30051579F /* ViewController.m in Sources */,
 				78FA0FA02354141E003E456B /* SLAvEditExport.m in Sources */,
+				78A179A8249B0AA8006F52E3 /* NSDictionary+SLExtension.m in Sources */,
 				78BDE050248E0AFB002ED386 /* SLWebNativeViewController.m in Sources */,
 				78F42023237915730093497C /* SLGPUImageController.m in Sources */,
 				7860D791239922B4008C53EC /* SLGLKPyramidVC.m in Sources */,
