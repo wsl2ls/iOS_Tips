@@ -11,7 +11,7 @@
 @implementation NSDictionary (SLExtension)
 
 ///value 为NSString
-- (NSString *)decodeStringFormDictWithKey:(NSString *)key {
+- (NSString *)sl_decodeStringFormDictWithKey:(NSString *)key {
     NSString *string = @"";
     if (self && [self isKindOfClass:[NSDictionary class]]) {
         NSDictionary *dict = (NSDictionary *)self;
@@ -25,7 +25,7 @@
     return string;
 }
 ///value 为NSArray
-- (NSArray *)decodeArrayFormDictWithKey:(NSString *)key {
+- (NSArray *)sl_decodeArrayFormDictWithKey:(NSString *)key {
     
     NSArray *array = [NSArray array];
     if (self && [self isKindOfClass:[NSDictionary class]]) {
@@ -37,7 +37,7 @@
     return array;
 }
 ///容错处理 value 为NSDictionary
-- (NSDictionary *)decodeDictionaryFormDictWithKey:(NSString *)key {
+- (NSDictionary *)sl_decodeDictionaryFormDictWithKey:(NSString *)key {
     NSDictionary *dictionary = [NSDictionary dictionary];
     if (self && [self isKindOfClass:[NSDictionary class]]) {
         NSDictionary *dict = (NSDictionary *)self;
