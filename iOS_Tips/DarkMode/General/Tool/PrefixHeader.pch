@@ -110,12 +110,6 @@
 #define SL_IS_EMPTY_STRING(x)            (SL_IS_NULL(x) || [x isEqual:@""] || [x isEqual:@"(null)"])
 #define SL_DEFUSE_EMPTY_STRING(x)        (!SL_IS_EMPTY_STRING(x) ? x : @"")
 
-// 字典Value值类型容错机制
-#define SL_IntegerFormDict(dict,key)     [[dict decodeStringFormDictWithKey:key] integerValue]
-#define SL_StringFormDict(dict,key)      [dict decodeStringFormDictWithKey:key]
-#define SL_ArrayFormDict(dict,key)       [dict decodeArrayFormDictWithKey:key]
-#define SL_DictionaryFormDict(dict,key)  [dict decodeDictionaryFormDictWithKey:key]
-
 //---------------------- About Color 颜色 ----------------------------
 /// 随机颜色
 #define SL_UIColorFromRandomColor [UIColor colorWithRed:arc4random()%255/255.0 green:arc4random()%255/255.0 blue:arc4random()%255/255.0 alpha:1.0]

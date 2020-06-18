@@ -13,11 +13,11 @@ NS_ASSUME_NONNULL_BEGIN
 @interface NSDictionary (SLExtension)
 
 ///容错处理 value 应为NSString
-- (NSString *)decodeStringFormDictWithKey:(NSString *)key;
+- (NSString *)sl_decodeStringFormDictWithKey:(NSString *)key;
 ///容错处理 value 为NSArray
-- (NSArray *)decodeArrayFormDictWithKey:(NSString *)key;
+- (NSArray *)sl_decodeArrayFormDictWithKey:(NSString *)key;
 ///容错处理 value 为NSDictionary
-- (NSDictionary *)decodeDictionaryFormDictWithKey:(NSString *)key;
+- (NSDictionary *)sl_decodeDictionaryFormDictWithKey:(NSString *)key;
 
 @end
 
