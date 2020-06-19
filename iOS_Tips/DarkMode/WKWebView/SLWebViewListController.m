@@ -75,6 +75,7 @@
                                            [SLTableViewController class]]];
     [self.tableView reloadData];
 }
+
 #pragma mark - Getter
 - (UITableView *)tableView {
     if (_tableView == nil) {
@@ -85,8 +86,6 @@
     }
     return _tableView;
 }
-
-#pragma mark - Getter
 - (NSMutableArray *)titles {
     if (_titles == nil) {
         _titles = [NSMutableArray array];

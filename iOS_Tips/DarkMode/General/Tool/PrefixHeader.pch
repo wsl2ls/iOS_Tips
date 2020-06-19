@@ -105,6 +105,11 @@
 #define TICK NSDate *startTime = [NSDate date];
 #define TOCK NSLog(@"Time:%f", -[startTime timeIntervalSinceNow]);
 
+// STRING容错机制
+#define SL_IS_NULL(x)                    (!x || [x isKindOfClass:[NSNull class]])
+#define SL_IS_EMPTY_STRING(x)            (SL_IS_NULL(x) || [x isEqual:@""] || [x isEqual:@"(null)"])
+#define SL_DEFUSE_EMPTY_STRING(x)        (!SL_IS_EMPTY_STRING(x) ? x : @"")
+
 //---------------------- About Color 颜色 ----------------------------
 /// 随机颜色
 #define SL_UIColorFromRandomColor [UIColor colorWithRed:arc4random()%255/255.0 green:arc4random()%255/255.0 blue:arc4random()%255/255.0 alpha:1.0]

@@ -11,7 +11,8 @@
 #import "SLWebViewController.h"
 
 @interface SLWorkIssuesViewController ()
-@property (nonatomic, strong) NSMutableArray *dataSource;
+@property (nonatomic, strong) NSMutableArray *titlesArray;
+@property (nonatomic, strong) NSMutableArray *urlArray;
 @property (nonatomic, strong) NSMutableArray *classArray;
 @end
 
@@ -40,20 +41,37 @@
 
 #pragma mark - Data
 - (void)getData {
-    [self.dataSource addObjectsFromArray:@[
+    [self.titlesArray addObjectsFromArray:@[
         @"键盘和UIMenuController不能同时存在的问题",
-        @"全屏侧滑手势/UIScrollView/UISlider间滑动手势冲突"]];
+        @"全屏侧滑手势/UIScrollView/UISlider间滑动手势冲突",
+        @"UITableView/UICollectionView获取特定位置的cell",
+        @"UIScrollView视觉差动画",
+        @"iOS 传感器集锦"]];
+    [self.urlArray addObjectsFromArray:@[@"",
+                                          @"https://juejin.im/post/5c0e1e73f265da616413d828",
+                                          @"https://juejin.im/post/5c0e1df95188250d2722a3bc",
+                                          @"https://juejin.im/post/5c088b45f265da610e7fe156",
+                                          @"https://juejin.im/post/5c088a1051882517165dd15d"]];
     [self.classArray addObjectsFromArray:@[[SLMenuViewController class],
+                                           [SLWebViewController class],
+                                           [SLWebViewController class],
+                                           [SLWebViewController class],
                                            [SLWebViewController class]]];
     [self.tableView reloadData];
 }
 
 #pragma mark - Getter
-- (NSMutableArray *)dataSource {
-    if (_dataSource == nil) {
-        _dataSource = [NSMutableArray array];
+- (NSMutableArray *)titlesArray {
+    if (_titlesArray == nil) {
+        _titlesArray = [NSMutableArray array];
     }
-    return _dataSource;
+    return _titlesArray;
+}
+- (NSMutableArray *)urlArray {
+    if (!_urlArray) {
+        _urlArray = [NSMutableArray array];
+    }
+    return _urlArray;;
 }
 - (NSMutableArray *)classArray {
     if (_classArray == nil) {
@@ -64,21 +82,23 @@
 
 #pragma mark - UITableViewDelegate, UITableViewDataSource
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.dataSource.count;
+    return self.titlesArray.count;
 }
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"cellID" forIndexPath:indexPath];
     cell.textLabel.numberOfLines = 0;
-    cell.textLabel.text =  [NSString stringWithFormat:@"%ld、%@",(long)indexPath.row + 1,self.dataSource[indexPath.row]];
+    cell.textLabel.text =  [NSString stringWithFormat:@"%ld、%@",(long)indexPath.row,self.titlesArray[indexPath.row]];
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     UIViewController *nextVc = [[self.classArray[indexPath.row] alloc] init];
+    NSString *urlString = self.urlArray[indexPath.row];
     switch (indexPath.row) {
-        case 1:
-            ((SLWebViewController *)nextVc).urlString = @"https://juejin.im/post/5c0e1e73f265da616413d828";
         default:
+            if (urlString.length > 0) {
+                ((SLWebViewController *)nextVc).urlString = urlString;
+            }
             [self.navigationController pushViewController:nextVc animated:YES];
             break;
         }
