@@ -54,6 +54,7 @@ static NSString * const SLUserDefaultsKey = @"SLUserDefaultsKey";
  @return 返回属性字符串的size
  */
 + (CGSize)sizeFromAttributedText:(NSAttributedString *)attributedText maxSize:(CGSize)maxSize;
+
 /// 切四个不同半径圆角的函数
 /// @param bounds 区域
 /// @param cornerRadii 四个圆角的半径

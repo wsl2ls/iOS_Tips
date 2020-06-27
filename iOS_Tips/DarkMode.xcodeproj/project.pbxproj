@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2CEBE85D24A6E65600BA21F3 /* SLTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CEBE85B24A6E65600BA21F3 /* SLTimer.m */; };
 		780F5303236D8462000D0EA8 /* SLGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = 780F5302236D8462000D0EA8 /* SLGridView.m */; };
 		780F5306236D8570000D0EA8 /* SLImageClipController.m in Sources */ = {isa = PBXBuildFile; fileRef = 780F5305236D8570000D0EA8 /* SLImageClipController.m */; };
 		7822CCF8235B054200E70C29 /* SLPaddingLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7822CCF7235B054200E70C29 /* SLPaddingLabel.m */; };
@@ -179,6 +180,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2CEBE85B24A6E65600BA21F3 /* SLTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLTimer.m; sourceTree = "<group>"; };
+		2CEBE85C24A6E65600BA21F3 /* SLTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLTimer.h; sourceTree = "<group>"; };
 		780F5301236D845B000D0EA8 /* SLGridView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLGridView.h; sourceTree = "<group>"; };
 		780F5302236D8462000D0EA8 /* SLGridView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLGridView.m; sourceTree = "<group>"; };
 		780F5304236D8570000D0EA8 /* SLImageClipController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLImageClipController.h; sourceTree = "<group>"; };
@@ -711,6 +714,8 @@
 				7884248A2493851B00C2E505 /* SLViewController.m */,
 				788424C524978E9200C2E505 /* SLKeyChain.h */,
 				788424C624978E9200C2E505 /* SLKeyChain.m */,
+				2CEBE85C24A6E65600BA21F3 /* SLTimer.h */,
+				2CEBE85B24A6E65600BA21F3 /* SLTimer.m */,
 			);
 			path = Tool;
 			sourceTree = "<group>";
@@ -1323,6 +1328,7 @@
 				78E72D8C2482958300751373 /* WKWebView+SLExtension.m in Sources */,
 				7884247F2492102900C2E505 /* SLWorkIssuesViewController.m in Sources */,
 				78E72D542477A4E700751373 /* SLWebTableViewController.m in Sources */,
+				2CEBE85D24A6E65600BA21F3 /* SLTimer.m in Sources */,
 				783504642452C20B0071283E /* SLMethod.m in Sources */,
 				787C7E4524656524005DF7ED /* UIView+SLMLeakFinder.m in Sources */,
 				7862533F24599D420017F8F1 /* NSObject+SLCrashProtector.m in Sources */,
