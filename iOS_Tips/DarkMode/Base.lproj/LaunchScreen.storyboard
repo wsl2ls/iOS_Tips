@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
     <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -20,7 +20,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="iOS Tips" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bWr-Lr-Tow">
-                                <rect key="frame" x="0.0" y="353" width="375" height="106"/>
+                                <rect key="frame" x="0.0" y="88" width="375" height="106"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="106" id="2ky-QN-jT5"/>
                                 </constraints>
@@ -37,21 +37,34 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="wsl.png" translatesAutoresizingMaskIntoConstraints="NO" id="v3q-rf-R8W">
+                                <rect key="frame" x="0.0" y="223" width="375" height="366"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="366" id="UYm-eu-vit"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="INU-Cv-9SE" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="0aU-9I-evL"/>
+                            <constraint firstAttribute="trailing" secondItem="v3q-rf-R8W" secondAttribute="trailing" id="3Cw-RO-dLy"/>
                             <constraint firstItem="bWr-Lr-Tow" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="5Hi-km-3LX"/>
                             <constraint firstItem="Aqu-re-s5w" firstAttribute="top" secondItem="INU-Cv-9SE" secondAttribute="bottom" constant="50" id="8ZV-W1-3Tl"/>
                             <constraint firstItem="INU-Cv-9SE" firstAttribute="trailing" secondItem="Ze5-6b-2t3" secondAttribute="trailing" id="Dpu-ar-cKN"/>
+                            <constraint firstItem="v3q-rf-R8W" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="FR6-wX-N9I"/>
                             <constraint firstItem="bWr-Lr-Tow" firstAttribute="trailing" secondItem="Ze5-6b-2t3" secondAttribute="trailing" id="QGL-V3-Obt"/>
-                            <constraint firstItem="bWr-Lr-Tow" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="Whj-WZ-2j0"/>
+                            <constraint firstItem="bWr-Lr-Tow" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" constant="-265" id="Whj-WZ-2j0"/>
+                            <constraint firstItem="v3q-rf-R8W" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="a6X-B5-CJd"/>
+                            <constraint firstItem="v3q-rf-R8W" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="nGp-S0-ZPU"/>
                         </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="52.173913043478265" y="375"/>
+            <point key="canvasLocation" x="52" y="374.6305418719212"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="wsl.png" width="264" height="261"/>
+    </resources>
 </document>
