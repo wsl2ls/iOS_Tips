@@ -28,13 +28,11 @@
     [super viewDidLoad];
     [self setupUI];
 }
-- (void)dealloc {
-    NSLog(@"SLCrashViewController 释放");
-}
 
 #pragma mark - UI
 - (void)setupUI {
     self.navigationItem.title = @"iOS Crash防护";
+    self.view.backgroundColor = [UIColor whiteColor];
     [SLCrashHandler defaultCrashHandler].crashHandlerBlock = ^(SLCrashError * _Nonnull crashError) {
 //        NSLog(@"%@/%@" ,crashError.errorDesc, [BSBacktraceLogger bs_backtraceOfCurrentThread]);
     };

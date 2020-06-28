@@ -11,7 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 //iOS Crash防护 
-@interface SLCrashViewController : UIViewController
+@interface SLCrashViewController : SLViewController
 
 @end
 
