@@ -77,6 +77,8 @@
 		78665C70246D4B9F0001B749 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 78665C6F246D4B9F0001B749 /* SystemConfiguration.framework */; };
 		78665C72246D4BB10001B749 /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 78665C71246D4BB10001B749 /* libicucore.tbd */; };
 		78665C74246D4BBB0001B749 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 78665C73246D4BBB0001B749 /* libsqlite3.tbd */; };
+		7869C72224A8B6D200527546 /* SLPictureBrowseController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7869C71E24A8B6D100527546 /* SLPictureBrowseController.m */; };
+		7869C72324A8B6D200527546 /* SLPictureTransitionAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 7869C72124A8B6D200527546 /* SLPictureTransitionAnimation.m */; };
 		78777CE0238FEA48006FA671 /* SLOpenGLController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78777CDF238FEA48006FA671 /* SLOpenGLController.m */; };
 		78777CE6238FF65C006FA671 /* SLDelayPerform.m in Sources */ = {isa = PBXBuildFile; fileRef = 78777CE5238FF65C006FA671 /* SLDelayPerform.m */; };
 		787C7DBE245D74E4005DF7ED /* NSMutableArray+SLCrashProtector.m in Sources */ = {isa = PBXBuildFile; fileRef = 787C7DB2245D74E3005DF7ED /* NSMutableArray+SLCrashProtector.m */; };
@@ -281,6 +283,10 @@
 		78665C6F246D4B9F0001B749 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		78665C71246D4BB10001B749 /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
 		78665C73246D4BBB0001B749 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
+		7869C71E24A8B6D100527546 /* SLPictureBrowseController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLPictureBrowseController.m; sourceTree = "<group>"; };
+		7869C71F24A8B6D100527546 /* SLPictureBrowseController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLPictureBrowseController.h; sourceTree = "<group>"; };
+		7869C72024A8B6D200527546 /* SLPictureTransitionAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLPictureTransitionAnimation.h; sourceTree = "<group>"; };
+		7869C72124A8B6D200527546 /* SLPictureTransitionAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLPictureTransitionAnimation.m; sourceTree = "<group>"; };
 		78777CDE238FEA48006FA671 /* SLOpenGLController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLOpenGLController.h; sourceTree = "<group>"; };
 		78777CDF238FEA48006FA671 /* SLOpenGLController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLOpenGLController.m; sourceTree = "<group>"; };
 		78777CE4238FF65C006FA671 /* SLDelayPerform.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLDelayPerform.h; sourceTree = "<group>"; };
@@ -654,6 +660,23 @@
 			path = SLCrashProtector;
 			sourceTree = "<group>";
 		};
+		7869C71D24A8B5CA00527546 /* WebNative */ = {
+			isa = PBXGroup;
+			children = (
+				78BDE051248E0BEB002ED386 /* WebNative.html */,
+				78BDE057248E541E002ED386 /* WebNativeJson.txt */,
+				78BDE04E248E0AFB002ED386 /* SLWebNativeViewController.h */,
+				78BDE04F248E0AFB002ED386 /* SLWebNativeViewController.m */,
+				7884248C24963FD200C2E505 /* SLReusableManager.h */,
+				7884248D24963FD200C2E505 /* SLReusableManager.m */,
+				7869C71F24A8B6D100527546 /* SLPictureBrowseController.h */,
+				7869C71E24A8B6D100527546 /* SLPictureBrowseController.m */,
+				7869C72024A8B6D200527546 /* SLPictureTransitionAnimation.h */,
+				7869C72124A8B6D200527546 /* SLPictureTransitionAnimation.m */,
+			);
+			path = WebNative;
+			sourceTree = "<group>";
+		};
 		78777CDB238FEA15006FA671 /* OpenGL */ = {
 			isa = PBXGroup;
 			children = (
@@ -952,20 +975,15 @@
 			children = (
 				78BDE04C248BFBD7002ED386 /* wsl.png */,
 				78E72D58247BA29600751373 /* WebTableView.html */,
-				78BDE051248E0BEB002ED386 /* WebNative.html */,
-				78BDE057248E541E002ED386 /* WebNativeJson.txt */,
 				78E72D71247E861300751373 /* SLWebViewListController.h */,
 				78E72D72247E861300751373 /* SLWebViewListController.m */,
 				78E72D4F24766E4B00751373 /* SLWebViewController.h */,
 				78E72D5024766E4B00751373 /* SLWebViewController.m */,
 				78BDE049248A6A74002ED386 /* SLUrlProtocolAddCookie.h */,
 				78BDE04A248A6A74002ED386 /* SLUrlProtocolAddCookie.m */,
-				78BDE04E248E0AFB002ED386 /* SLWebNativeViewController.h */,
-				78BDE04F248E0AFB002ED386 /* SLWebNativeViewController.m */,
-				7884248C24963FD200C2E505 /* SLReusableManager.h */,
-				7884248D24963FD200C2E505 /* SLReusableManager.m */,
 				78842452248F863500C2E505 /* SLTableViewController.h */,
 				78842453248F863500C2E505 /* SLTableViewController.m */,
+				7869C71D24A8B5CA00527546 /* WebNative */,
 				78E72D8324822E7500751373 /* WebTableView */,
 				78E72D9324852C2F00751373 /* WebCache */,
 			);
@@ -1293,6 +1311,7 @@
 				782E3EB42373D8C7001E0DF9 /* SLAvWriterInput.m in Sources */,
 				78804A7E237D5E3E0087E152 /* SLWaterMarkController.m in Sources */,
 				78EF8B6024162B96008D0CD7 /* SLMenuViewController.m in Sources */,
+				7869C72224A8B6D200527546 /* SLPictureBrowseController.m in Sources */,
 				78D30964239688EF00DC373A /* GLESUtils.m in Sources */,
 				784B720923348241006AEE47 /* SLAvCaptureTool.m in Sources */,
 				786147F42362D79000C5424C /* SLMosaicView.m in Sources */,
@@ -1346,6 +1365,7 @@
 				78E72D5124766E4B00751373 /* SLWebViewController.m in Sources */,
 				78B10493232F57C50051579F /* main.m in Sources */,
 				788424C724978E9200C2E505 /* SLKeyChain.m in Sources */,
+				7869C72324A8B6D200527546 /* SLPictureTransitionAnimation.m in Sources */,
 				78E179372351A40D0007E4BB /* SLShotFocusView.m in Sources */,
 				787C7DC8245D77D9005DF7ED /* SLZombieCatcher.m in Sources */,
 				78A4BD45236C5DF20021AE32 /* SLEditVideoController.m in Sources */,

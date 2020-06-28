@@ -75,9 +75,9 @@
 #pragma mark - KVO
 - (void)addKVO {
     [self.scrollView addObserver:self
-           forKeyPath:@"contentOffset"
-              options:NSKeyValueObservingOptionNew
-              context:nil];
+                      forKeyPath:@"contentOffset"
+                         options:NSKeyValueObservingOptionNew
+                         context:nil];
 }
 - (void)removeKVO{
     [self.scrollView removeObserver:self forKeyPath:@"contentOffset"];
@@ -143,6 +143,11 @@
         }
     }
 }
+///注册样式
+- (void)registerClass:(Class)class forCellReuseIdentifier:(NSString *)cellID {
+    self.reusablePool[cellID] = [NSHashTable weakObjectsHashTable];
+    self.registerClasses[cellID] = class;
+}
 ///根据cellID从复用池reusablePool取可重用的view，如果没有，重新创建一个新对象返回
 - (SLReusableCell *)dequeueReusableCellWithIdentifier:(nonnull NSString *)cellID index:(NSInteger)index{
     NSHashTable *hashTable = self.reusablePool[cellID];
@@ -163,10 +168,14 @@
     cell.index = index;
     return cell;
 }
-///注册样式
-- (void)registerClass:(Class)class forCellReuseIdentifier:(NSString *)cellID {
-    self.reusablePool[cellID] = [NSHashTable weakObjectsHashTable];
-    self.registerClasses[cellID] = class;
+///获取索引为index的cell，如果第index的cell不在可见范围内，返回nil
+- (SLReusableCell *)cellForRowAtIndex:(NSInteger)index {
+    for (SLReusableCell *cell in self.visibleCells) {
+        if (cell.index == index) {
+            return cell;
+        }
+    }
+    return nil;
 }
 
 #pragma mark - Help Methods
@@ -221,7 +230,7 @@
             [self.visibleCells removeObjectAtIndex:0];
         }
     }else {
-         if (self.willDisplayIndexBottom-1 < 0) return;
+        if (self.willDisplayIndexBottom-1 < 0) return;
         CGRect rect = [self.frameArray[self.willDisplayIndexBottom-1] CGRectValue];
         if (rect.origin.y > self.scrollView.contentOffset.y + self.scrollView.sl_height) {
             self.willDisplayIndexBottom = self.willDisplayIndexBottom-1;

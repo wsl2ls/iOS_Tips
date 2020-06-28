@@ -13,6 +13,7 @@
 #import "SLAvPlayer.h"
 #import <YYModel.h>
 #import "SLReusableManager.h"
+#import "SLPictureBrowseController.h"
 
 @interface SLWebNativeModel : NSObject<YYModel>
 @property (nonatomic, copy) NSString *tagID; //标签ID
@@ -85,7 +86,7 @@
  2.html界面调整时，要去重新调用JS方法获取原生标签的位置并更新native组件的位置。
  3.如果仅需要处理HTML的图片元素，也可以不用原生组件imageView展示，原生下载处理图片，然后通过oc调用JS设置图片
  */
-@interface SLWebNativeViewController ()<WKNavigationDelegate, WKUIDelegate, SLReusableDataSource, SLReusableDelegate>
+@interface SLWebNativeViewController ()<WKNavigationDelegate, WKUIDelegate, SLReusableDataSource, SLReusableDelegate, SLPictureAnimationViewDelegate>
 
 @property (nonatomic, strong) dispatch_semaphore_t semaphore;
 @property (nonatomic, strong) WKWebView * webView;
@@ -250,7 +251,7 @@
             CGRect frame = CGRectMake(
                                       [frameDict[@"x"] floatValue], [frameDict[@"y"] floatValue], [frameDict[@"width"] floatValue], [frameDict[@"height"] floatValue]);
             if(!CGRectEqualToRect(frame, CGRectZero)) {
-                 [weakSelf.frameArray addObject:[NSValue valueWithCGRect:frame]];
+                [weakSelf.frameArray addObject:[NSValue valueWithCGRect:frame]];
             }
             dispatch_semaphore_signal(weakSelf.semaphore);
             if (i == weakSelf.dataSource.count - 1) {
@@ -282,6 +283,11 @@
     if ([model.type isEqualToString:@"image"]) {
         //图片
         NSLog(@"点击了 %ld 图片", index);
+        SLPictureBrowseController *pictureBrowseController = [[SLPictureBrowseController alloc] init];
+        pictureBrowseController.imagesArray = [NSMutableArray arrayWithArray:@[[NSURL URLWithString:model.imgUrl]]];
+        pictureBrowseController.indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+        [self presentViewController:pictureBrowseController animated:YES completion:nil];
+        
     }else if ([model.type isEqualToString:@"video"]) {
         //视频
         NSLog(@"点击了 %ld 视频", index);
@@ -289,6 +295,17 @@
         //音频
         NSLog(@"点击了 %ld 音频", index);
     }
+}
+
+#pragma mark - SLPictureAnimationViewDelegate
+//用于转场的动画视图
+- (UIView *)animationViewOfPictureTransition:(NSIndexPath *)indexPath {
+    SLWebNativeCell *imageCell = (SLWebNativeCell *)[self.reusableManager  cellForRowAtIndex:indexPath.row];
+    UIImageView *tempView = [UIImageView new];
+    tempView.image = imageCell.imageView.image;
+    tempView.layer.contentsRect = imageCell.imageView.layer.contentsRect;
+    tempView.frame = [imageCell.imageView convertRect:imageCell.imageView.bounds toView:self.view];
+    return imageCell;
 }
 
 @end

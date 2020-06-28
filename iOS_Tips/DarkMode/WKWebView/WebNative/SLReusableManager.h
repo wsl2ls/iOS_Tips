@@ -29,7 +29,7 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 @interface SLReusableManager : NSObject
-///数据源代理
+///事件代理
 @property (nonatomic, weak) id<SLReusableDelegate>delegate;
 ///数据源代理
 @property (nonatomic, weak) id<SLReusableDataSource>dataSource;
@@ -42,6 +42,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)registerClass:(Class)class forCellReuseIdentifier:(NSString *)cellID;
 ///根据cellID从复用池reusablePool取可重用的view，如果没有，重新创建一个新对象返回
 - (SLReusableCell *)dequeueReusableCellWithIdentifier:(nonnull NSString *)cellID index:(NSInteger)index;
+///获取索引为index的cell，如果第index的cell不在可见范围内，返回nil
+- (SLReusableCell *)cellForRowAtIndex:(NSInteger)index;
 
 @end
 
