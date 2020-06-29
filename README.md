@@ -120,10 +120,7 @@ GitHub：https://github.com/wsl2ls/iOS_Tips.git
 | ![问题描述.gif](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/10、键盘和UIMenuController不能同时出现的问题描述.gif) | ![并存问题解决](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/10、键盘和UIMenuController并存问题解决.gif) |
 
 #### 6.2、[全屏侧滑手势/UIScrollView/UISlider间滑动手势冲突](https://juejin.im/post/5c0e1e73f265da616413d828)
-
- > 该代码地址在：https://github.com/wsl2ls/WSLTransferAnimation
- 
- #### 6.3、[UITableView/UICollectionView获取特定位置的cell](https://juejin.im/post/5c0e1df95188250d2722a3bc)
+#### 6.3、[UITableView/UICollectionView获取特定位置的cell](https://juejin.im/post/5c0e1df95188250d2722a3bc)
 #### 6.4、[UIScrollView视觉差动画](https://juejin.im/post/5c088b45f265da610e7fe156)  
 #### 6.5、[iOS 传感器集锦](https://juejin.im/post/5c088a1051882517165dd15d)  
 #### 6.6、[iOS 自定义转场动画](https://juejin.im/post/5c088ba36fb9a049fb43737b)
