@@ -19,7 +19,11 @@ GitHub：https://github.com/wsl2ls/iOS_Tips.git
 > 5、LeetCode算法练习  
 > 6、工作中踩过的坑
 >> 6.1、键盘和UIMenuController不能同时存在的问题  
->> 6.2、全屏侧滑手势/UIScrollView/UISlider间滑动手势冲突
+>> 6.2、全屏侧滑手势/UIScrollView/UISlider间滑动手势冲突  
+>> 6.3、UITableView/UICollectionView获取特定位置的cell  
+>> 6.4、UIScrollView视觉差动画  
+>> 6.5、iOS 传感器集锦  
+>> 6.6、iOS 自定义转场动画
 
 > 7、iOS Crash防护  
 > 8、WKWebView相关  
@@ -43,7 +47,7 @@ GitHub：https://github.com/wsl2ls/iOS_Tips.git
 
 ## 3、AVFoundation相关
 
-### 3.1、[微信相机拍摄照片、小视频以及编辑功能](https://www.jianshu.com/p/a2a04cabb98d)  
+#### 3.1、[微信相机拍摄照片、小视频以及编辑功能](https://www.jianshu.com/p/a2a04cabb98d)  
 > 效果描述：  
 > * 1、自定义相机 拍摄视频和照片
 > * 2、切换前后摄像头、调整焦距/设置聚焦点、横屏拍摄
@@ -63,17 +67,17 @@ GitHub：https://github.com/wsl2ls/iOS_Tips.git
 |![图片编辑](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/3、小视频7.gif)|![图片裁剪](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/3、小视频8.gif)|
 
 
-### 3.2、[人脸检测](https://www.jianshu.com/p/f236dc161a90) 
+#### 3.2、[人脸检测](https://www.jianshu.com/p/f236dc161a90) 
 
 ![人脸识别](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/4、人脸识别.gif)
 
-### 3.3、[实时滤镜拍摄和导出](https://www.jianshu.com/p/f236dc161a90)
+#### 3.3、[实时滤镜拍摄和导出](https://www.jianshu.com/p/f236dc161a90)
 
 >  主要类: 是由SLAvCaptureTool拆分的 SLAvCaptureSession（采集） + SLAvWriterInput（录制） 两个工具类，方便扩展，录制写入实现的方式也略有不同
 
 ![人脸识别](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/5、实时滤镜拍摄.gif)
 
-### 3.4、[GPUImage框架的使用](https://www.jianshu.com/p/97740cd381f7)
+#### 3.4、[GPUImage框架的使用](https://www.jianshu.com/p/97740cd381f7)
 
 > 效果描述：实时拍摄添加水印和滤镜、本地视频添加水印、GIF图水印
 
@@ -81,17 +85,17 @@ GitHub：https://github.com/wsl2ls/iOS_Tips.git
 
 ![GPUImage框架的使用](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/6、GPUImage.gif)
 
-### 3.5、VideoToolBox和AudioToolBox音视频编解码
+#### 3.5、VideoToolBox和AudioToolBox音视频编解码
 
 > 请查看本仓库下的 VideoEncoder&Decoder 文件
 
 ![音视频编码](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/7、音视频编码.gif)
 
-### 3.6、AVFoundation 利用摄像头实时识别物体颜色 
+#### 3.6、AVFoundation 利用摄像头实时识别物体颜色 
 
 ![音视频编码](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/3.6、拾色器.gif)
 
-### 3.7、[AVFoundation 原生二维码扫描识别和生成](https://juejin.im/post/5c0e1db651882539c60d0434)
+#### 3.7、[AVFoundation 原生二维码扫描识别和生成](https://juejin.im/post/5c0e1db651882539c60d0434)
 
   > 该代码地址在：https://github.com/wsl2ls/ScanQRcode
 
@@ -111,13 +115,18 @@ GitHub：https://github.com/wsl2ls/iOS_Tips.git
 
 ## 6、工作中踩过的坑
 
-### 6.1、[键盘和UIMenuController的并存问题](https://www.jianshu.com/p/ed1b57c4ecea)  
+#### 6.1、[键盘和UIMenuController的并存问题](https://www.jianshu.com/p/ed1b57c4ecea)  
 
 | ![问题描述.gif](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/10、键盘和UIMenuController不能同时出现的问题描述.gif) | ![并存问题解决](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/10、键盘和UIMenuController并存问题解决.gif) |
 
-### 6.2、[全屏侧滑手势/UIScrollView/UISlider间滑动手势冲突](https://juejin.im/post/5c0e1e73f265da616413d828)
+#### 6.2、[全屏侧滑手势/UIScrollView/UISlider间滑动手势冲突](https://juejin.im/post/5c0e1e73f265da616413d828)
 
  > 该代码地址在：https://github.com/wsl2ls/WSLTransferAnimation
+ 
+ #### 6.3、[UITableView/UICollectionView获取特定位置的cell](https://juejin.im/post/5c0e1df95188250d2722a3bc)
+#### 6.4、[UIScrollView视觉差动画](https://juejin.im/post/5c088b45f265da610e7fe156)  
+#### 6.5、[iOS 传感器集锦](https://juejin.im/post/5c088a1051882517165dd15d)  
+#### 6.6、[iOS 自定义转场动画](https://juejin.im/post/5c088ba36fb9a049fb43737b)
 
 ## 7、iOS Crash防护 
 
