@@ -11,7 +11,7 @@
 
 /// 图片缩放视图
 @interface SLPictureZoomView : UIScrollView<UIScrollViewDelegate>
-@property (nonatomic, strong) UIImageView *imageView;
+@property (nonatomic, strong) YYAnimatedImageView *imageView;
 @property (nonatomic, strong) UIActivityIndicatorView *indicatorView; //下载指示器
 @property (nonatomic, assign) CGSize imageNormalSize; //图片原尺寸
 @end
@@ -40,9 +40,9 @@
 }
 
 #pragma mark - Getter
-- (UIImageView *)imageView {
+- (YYAnimatedImageView *)imageView {
     if (!_imageView) {
-        _imageView = [[UIImageView alloc] init];
+        _imageView = [[YYAnimatedImageView alloc] init];
         _imageView.userInteractionEnabled = YES;
     }
     return _imageView;

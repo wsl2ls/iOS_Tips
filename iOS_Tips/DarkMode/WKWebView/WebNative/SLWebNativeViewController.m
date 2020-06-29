@@ -30,6 +30,7 @@
 
 @interface SLWebNativeCell : SLReusableCell
 @property (nonatomic, strong) YYAnimatedImageView *imageView;
+@property (nonatomic, assign) CGSize imageViewSize;
 @property (nonatomic, strong) UIImageView *playIcon;
 @end
 @implementation SLWebNativeCell
@@ -59,7 +60,27 @@
 }
 
 - (void)updateDataWith:(SLWebNativeModel *)model {
-    [_imageView yy_setImageWithURL:[NSURL URLWithString:model.imgUrl] placeholder:nil];
+    _imageView.layer.contentsRect = CGRectMake(0, 0, 1, 1);
+    __weak typeof(self) weakSelf = self;
+    [self.imageView yy_setImageWithURL:[NSURL URLWithString:model.imgUrl] placeholder:nil options:YYWebImageOptionShowNetworkActivity completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
+        if(error) return ;
+        if (image.size.width > image.size.height) {
+            //宽图
+            CGFloat width = weakSelf.imageViewSize.height*image.size.width/image.size.height;
+            if (width > weakSelf.imageViewSize.width) {
+                CGFloat proportion = weakSelf.imageViewSize.width/width;
+                weakSelf.imageView.layer.contentsRect = CGRectMake((1 - proportion)/2, 0, proportion, 1);
+            }
+        }else if (image.size.width < image.size.height) {
+            //长图
+            CGFloat height = weakSelf.imageViewSize.width*image.size.height/image.size.width;
+            if (height > weakSelf.imageViewSize.height) {
+                CGFloat proportion = weakSelf.imageViewSize.height/height;
+                weakSelf.imageView.layer.contentsRect = CGRectMake(0,(1 - proportion)/2, 1, proportion);
+            }
+        }
+    }];
+    
     if ([model.type isEqualToString:@"image"]) {
         //图片
         _playIcon.hidden = YES;
@@ -273,6 +294,7 @@
 - (SLReusableCell *)reusableManager:(SLReusableManager *)reusableManager cellForRowAtIndex:(NSInteger)index {
     SLWebNativeCell *cell = (SLWebNativeCell *)[reusableManager dequeueReusableCellWithIdentifier:@"cellID" index:index];
     SLWebNativeModel *model = self.dataSource[index];
+    cell.imageViewSize = [self.frameArray[index] CGRectValue].size;
     [cell updateDataWith:model];
     return cell;
 }
@@ -305,7 +327,7 @@
     tempView.image = imageCell.imageView.image;
     tempView.layer.contentsRect = imageCell.imageView.layer.contentsRect;
     tempView.frame = [imageCell.imageView convertRect:imageCell.imageView.bounds toView:self.view];
-    return imageCell;
+    return tempView;
 }
 
 @end
