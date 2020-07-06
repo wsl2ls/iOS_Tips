@@ -10,6 +10,11 @@
 		2CEBE85D24A6E65600BA21F3 /* SLTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CEBE85B24A6E65600BA21F3 /* SLTimer.m */; };
 		780F5303236D8462000D0EA8 /* SLGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = 780F5302236D8462000D0EA8 /* SLGridView.m */; };
 		780F5306236D8570000D0EA8 /* SLImageClipController.m in Sources */ = {isa = PBXBuildFile; fileRef = 780F5305236D8570000D0EA8 /* SLImageClipController.m */; };
+		7811F76F24B2C791000AA044 /* SLBinaryResetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7811F76E24B2C791000AA044 /* SLBinaryResetViewController.m */; };
+		7811F77124B2C818000AA044 /* wsl.order in Resources */ = {isa = PBXBuildFile; fileRef = 7811F77024B2C818000AA044 /* wsl.order */; };
+		7811F7AD24B32A1E000AA044 /* Write Link Map File.png in Resources */ = {isa = PBXBuildFile; fileRef = 7811F7AA24B32A1E000AA044 /* Write Link Map File.png */; };
+		7811F7AE24B32A1E000AA044 /* Other c Flags.png in Resources */ = {isa = PBXBuildFile; fileRef = 7811F7AB24B32A1E000AA044 /* Other c Flags.png */; };
+		7811F7AF24B32A1E000AA044 /* Order File.png in Resources */ = {isa = PBXBuildFile; fileRef = 7811F7AC24B32A1E000AA044 /* Order File.png */; };
 		7822CCF8235B054200E70C29 /* SLPaddingLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7822CCF7235B054200E70C29 /* SLPaddingLabel.m */; };
 		782CFB1D239DDE95001B5528 /* SLSplitScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 782CFB1C239DDE95001B5528 /* SLSplitScreenViewController.m */; };
 		782CFB20239DEA05001B5528 /* SLSplitScreenCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 782CFB1F239DEA05001B5528 /* SLSplitScreenCell.m */; };
@@ -188,6 +193,12 @@
 		780F5302236D8462000D0EA8 /* SLGridView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLGridView.m; sourceTree = "<group>"; };
 		780F5304236D8570000D0EA8 /* SLImageClipController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLImageClipController.h; sourceTree = "<group>"; };
 		780F5305236D8570000D0EA8 /* SLImageClipController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLImageClipController.m; sourceTree = "<group>"; };
+		7811F76D24B2C791000AA044 /* SLBinaryResetViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLBinaryResetViewController.h; sourceTree = "<group>"; };
+		7811F76E24B2C791000AA044 /* SLBinaryResetViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLBinaryResetViewController.m; sourceTree = "<group>"; };
+		7811F77024B2C818000AA044 /* wsl.order */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = wsl.order; sourceTree = "<group>"; };
+		7811F7AA24B32A1E000AA044 /* Write Link Map File.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Write Link Map File.png"; sourceTree = "<group>"; };
+		7811F7AB24B32A1E000AA044 /* Other c Flags.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Other c Flags.png"; sourceTree = "<group>"; };
+		7811F7AC24B32A1E000AA044 /* Order File.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Order File.png"; sourceTree = "<group>"; };
 		7822CCF6235B054200E70C29 /* SLPaddingLabel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLPaddingLabel.h; sourceTree = "<group>"; };
 		7822CCF7235B054200E70C29 /* SLPaddingLabel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLPaddingLabel.m; sourceTree = "<group>"; };
 		782CFB1B239DDE95001B5528 /* SLSplitScreenViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLSplitScreenViewController.h; sourceTree = "<group>"; };
@@ -500,6 +511,19 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		7811F76C24B2C70D000AA044 /* 二进制重排 */ = {
+			isa = PBXGroup;
+			children = (
+				7811F7AC24B32A1E000AA044 /* Order File.png */,
+				7811F7AB24B32A1E000AA044 /* Other c Flags.png */,
+				7811F7AA24B32A1E000AA044 /* Write Link Map File.png */,
+				7811F77024B2C818000AA044 /* wsl.order */,
+				7811F76D24B2C791000AA044 /* SLBinaryResetViewController.h */,
+				7811F76E24B2C791000AA044 /* SLBinaryResetViewController.m */,
+			);
+			path = "二进制重排";
+			sourceTree = "<group>";
+		};
 		782E3EB52373F892001E0DF9 /* Filter */ = {
 			isa = PBXGroup;
 			children = (
@@ -803,6 +827,7 @@
 			children = (
 				7884247D2492102900C2E505 /* SLWorkIssuesViewController.h */,
 				7884247E2492102900C2E505 /* SLWorkIssuesViewController.m */,
+				7811F76C24B2C70D000AA044 /* 二进制重排 */,
 				78EF8B5C24162B07008D0CD7 /* UIMenuController */,
 			);
 			path = WorkIssues;
@@ -1200,10 +1225,12 @@
 				782CFB63239E623D001B5528 /* Cirlce.fsh in Resources */,
 				782CFB23239DFD0F001B5528 /* SplitScreen_2.fsh in Resources */,
 				782CFB38239E22AC001B5528 /* SplitScreen_9.vsh in Resources */,
+				7811F7AE24B32A1E000AA044 /* Other c Flags.png in Resources */,
 				782CFB53239E4587001B5528 /* SplitScreen_16.vsh in Resources */,
 				782CFB6E239E69F3001B5528 /* Scale.vsh in Resources */,
 				78BDE04D248BFBD7002ED386 /* wsl.png in Resources */,
 				782CFB37239E22AC001B5528 /* SplitScreen_9.fsh in Resources */,
+				7811F7AF24B32A1E000AA044 /* Order File.png in Resources */,
 				782CFB76239E6A02001B5528 /* SoulOut.vsh in Resources */,
 				782CFB54239E4587001B5528 /* SplitScreen_16.fsh in Resources */,
 				78BDE058248E541E002ED386 /* WebNativeJson.txt in Resources */,
@@ -1215,11 +1242,13 @@
 				78B1048B232F57C30051579F /* Main.storyboard in Resources */,
 				782CFB27239DFD89001B5528 /* SplitScreen_1.fsh in Resources */,
 				783FB4612394A76B0039AEFD /* shaderf.fsh in Resources */,
+				7811F7AD24B32A1E000AA044 /* Write Link Map File.png in Resources */,
 				782CFB2F239E04A2001B5528 /* SplitScreen_4.vsh in Resources */,
 				782CFB67239E6651001B5528 /* HexagonMosaic.vsh in Resources */,
 				782CFB2B239E0479001B5528 /* SplitScreen_3.vsh in Resources */,
 				782CFB5B239E6227001B5528 /* Gray.vsh in Resources */,
 				782CFB5E239E622E001B5528 /* Mosaic.vsh in Resources */,
+				7811F77124B2C818000AA044 /* wsl.order in Resources */,
 				78E72D59247BA29600751373 /* WebTableView.html in Resources */,
 				782CFB7A239E6A11001B5528 /* Glitch.vsh in Resources */,
 				782CFB5A239E6227001B5528 /* Gray.fsh in Resources */,
@@ -1324,6 +1353,7 @@
 				78777CE0238FEA48006FA671 /* SLOpenGLController.m in Sources */,
 				7851CB362331CC87002295B5 /* SLDarkModeViewController.m in Sources */,
 				78D30965239688EF00DC373A /* GLESMath.c in Sources */,
+				7811F76F24B2C791000AA044 /* SLBinaryResetViewController.m in Sources */,
 				788ACD652390EA3A00737EC2 /* SLCubeViewController.m in Sources */,
 				7884248E24963FD200C2E505 /* SLReusableManager.m in Sources */,
 				7857FD4B24729E8500D3D986 /* BSBacktraceLogger.m in Sources */,
@@ -1577,11 +1607,14 @@
 				GCC_PREFIX_HEADER = "$(SRCROOT)/DarkMode/General/Tool/PrefixHeader.pch";
 				INFOPLIST_FILE = DarkMode/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_GENERATE_MAP_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				NEW_SETTING = "";
+				ORDER_FILE = "$(SRCROOT)/DarkMode/WorkIssues/二进制重排/wsl.order";
+				OTHER_CFLAGS = "-fsanitize-coverage=func,trace-pc-guard";
 				PRODUCT_BUNDLE_IDENTIFIER = com.wsl2ls.tip;
 				PRODUCT_NAME = SLTips;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1605,11 +1638,14 @@
 				GCC_PREFIX_HEADER = "$(SRCROOT)/DarkMode/General/Tool/PrefixHeader.pch";
 				INFOPLIST_FILE = DarkMode/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_GENERATE_MAP_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				NEW_SETTING = "";
+				ORDER_FILE = "$(SRCROOT)/DarkMode/WorkIssues/二进制重排/wsl.order";
+				OTHER_CFLAGS = "-fsanitize-coverage=func,trace-pc-guard";
 				PRODUCT_BUNDLE_IDENTIFIER = com.wsl2ls.tip;
 				PRODUCT_NAME = SLTips;
 				PROVISIONING_PROFILE_SPECIFIER = "";

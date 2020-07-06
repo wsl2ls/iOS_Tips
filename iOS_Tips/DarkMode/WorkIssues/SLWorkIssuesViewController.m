@@ -9,6 +9,7 @@
 #import "SLWorkIssuesViewController.h"
 #import "SLMenuViewController.h"
 #import "SLWebViewController.h"
+#import "SLBinaryResetViewController.h"
 
 @interface SLWorkIssuesViewController ()
 @property (nonatomic, strong) NSMutableArray *titlesArray;
@@ -46,19 +47,23 @@
         @"全屏侧滑手势/UIScrollView/UISlider间滑动手势冲突",
         @"UITableView/UICollectionView获取特定位置的cell",
         @"UIScrollView视觉差动画",
-        @"iOS 传感器集锦", @"iOS 自定义转场动画"]];
+        @"iOS 传感器集锦",
+        @"iOS 自定义转场动画",
+        @"二进制重排优化启动时间"]];
     [self.urlArray addObjectsFromArray:@[@"",
                                           @"https://juejin.im/post/5c0e1e73f265da616413d828",
                                           @"https://juejin.im/post/5c0e1df95188250d2722a3bc",
                                           @"https://juejin.im/post/5c088b45f265da610e7fe156",
                                           @"https://juejin.im/post/5c088a1051882517165dd15d",
-                                          @"https://juejin.im/post/5c088ba36fb9a049fb43737b"]];
+                                          @"https://juejin.im/post/5c088ba36fb9a049fb43737b",
+                                          @""]];
     [self.classArray addObjectsFromArray:@[[SLMenuViewController class],
                                            [SLWebViewController class],
                                            [SLWebViewController class],
                                            [SLWebViewController class],
                                            [SLWebViewController class],
-                                           [SLWebViewController class]]];
+                                           [SLWebViewController class],
+                                           [SLBinaryResetViewController class]]];
     [self.tableView reloadData];
 }
 
