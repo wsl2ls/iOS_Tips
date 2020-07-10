@@ -25,7 +25,8 @@
     self.textView.editable = NO;
     [self.view addSubview:self.textView];
 }
-///获取启动加载时执行的所有函数符号
+
+///获取启动加载时执行的所有函数符号按顺序写入wsl.order文件中
 - (void)getOrderFile{
     NSMutableArray <NSString *> * symbolNames = [NSMutableArray array];
     while (YES) {
@@ -71,14 +72,6 @@
     self.textView.text = funcStr;
 }
 
-void __sanitizer_cov_trace_pc_guard_init(uint32_t *start,
-                                         uint32_t *stop) {
-    static uint64_t N;  // Counter for the guards.
-    if (start == stop || *start) return;  // Initialize only once.
-    //  printf("INIT: %p %p\n", start, stop);
-    for (uint32_t *x = start; x < stop; x++)
-        *x = ++N;  // Guards should start from 1.
-}
 
 //原子队列 存储启动时加载的所有函数方法
 static  OSQueueHead symbolList = OS_ATOMIC_QUEUE_INIT;
@@ -87,8 +80,18 @@ typedef struct {
     void *pc;
     void *next;
 }SLSymbolNode;
-
-//应用启动时执行，把启动过程中执行的函数地址存储在symbolList中
+void __sanitizer_cov_trace_pc_guard_init(uint32_t *start,
+                                         uint32_t *stop) {
+    static uint64_t N;  // Counter for the guards.
+    if (start == stop || *start) return;  // Initialize only once.
+    //  printf("INIT: %p %p\n", start, stop);
+    for (uint32_t *x = start; x < stop; x++)
+        *x = ++N;  // Guards should start from 1.
+}
+/*
+ 静态插桩，相当于此函数在编译时插在了每一个函数体里，这个函数会捕获到所有程序运行过程中执行的方法。
+ 我们只需要捕获应用启动时执行的方法就行，把启动过程中执行的函数地址存储在symbolList中。
+ */
 void __sanitizer_cov_trace_pc_guard(uint32_t *guard) {
     //    if (!*guard) return;  // Duplicate the guard check.
     /*  精确定位 哪里开始 到哪里结束!  在这里面做判断写条件!*/
