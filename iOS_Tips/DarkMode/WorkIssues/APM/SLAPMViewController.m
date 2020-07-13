@@ -7,6 +7,7 @@
 //
 
 #import "SLAPMViewController.h"
+#import "SLAPMManager.h"
 
 @interface SLAPMViewController ()
 
@@ -14,13 +15,29 @@
 
 @implementation SLAPMViewController
 
+#pragma mark - Override
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    
-    
+    self.navigationItem.title = @"APM监控";
+    [self setupNavigationBar];
 }
 
 
+#pragma mark - UI
+- (void)setupNavigationBar {
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:([SLAPMManager sharedInstance].isMonitoring ? @"停止":@"开始") style:UIBarButtonItemStyleDone target:self action:@selector(changeMonitorState)];
+}
+
+#pragma mark - Events Handle
+///改变监听状态
+- (void)changeMonitorState{
+    if ([SLAPMManager sharedInstance].isMonitoring) {
+        [[SLAPMManager sharedInstance] stopMonitoring];
+    }else {
+        [[SLAPMManager sharedInstance] startMonitoring];
+    }
+    [self setupNavigationBar];
+}
 
 @end
