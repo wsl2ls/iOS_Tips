@@ -10,6 +10,7 @@
 #import "SLMenuViewController.h"
 #import "SLWebViewController.h"
 #import "SLBinaryResetViewController.h"
+#import "SLAPMViewController.h"
 
 @interface SLWorkIssuesViewController ()
 @property (nonatomic, strong) NSMutableArray *titlesArray;
@@ -49,7 +50,8 @@
         @"UIScrollView视觉差动画",
         @"iOS 传感器集锦",
         @"iOS 自定义转场动画",
-        @"二进制重排优化启动时间"]];
+        @"二进制重排优化启动时间",
+        @"iOS APM应用性能监控管理(doing)"]];
     [self.urlArray addObjectsFromArray:@[@"",
                                           @"https://juejin.im/post/5c0e1e73f265da616413d828",
                                           @"https://juejin.im/post/5c0e1df95188250d2722a3bc",
