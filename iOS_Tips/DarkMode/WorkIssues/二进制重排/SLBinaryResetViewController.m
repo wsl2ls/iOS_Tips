@@ -42,7 +42,7 @@
         BOOL  isObjc = [name hasPrefix:@"+["] || [name hasPrefix:@"-["];
         NSString * symbolName = isObjc ? name: [@"_" stringByAppendingString:name];
         [symbolNames addObject:symbolName];
-        NSLog(@"%@",symbolName);
+//        NSLog(@"%@",symbolName);
     }
     //取反
     NSEnumerator * emt = [symbolNames reverseObjectEnumerator];
@@ -114,7 +114,7 @@ void __sanitizer_cov_trace_pc_guard(uint32_t *guard) {
     dladdr(node->pc, &info);
     NSString * name = @(info.dli_sname);
     //这个方法会导致循环引用，故在此过滤
-    if ([name isEqualToString:@"-[NSMutableArray(SLCrashProtector) sl_insertObject:atIndex:]"]) {
+    if ([name isEqualToString:@"-[NSMutableArray(SLCrashProtector) sl_insertObject:atIndex:]"] || [name isEqualToString:@"-[NSObject(SLCrashProtector) sl_KVODealloc]"]) {
         return;
     }
     //入队
