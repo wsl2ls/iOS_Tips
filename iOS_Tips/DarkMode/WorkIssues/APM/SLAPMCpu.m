@@ -1,21 +1,32 @@
 //
-//  SLAPMGpu.m
+//  SLAPMCpu.m
 //  DarkMode
 //
 //  Created by wsl on 2020/7/13.
 //  Copyright © 2020 https://github.com/wsl2ls   ----- . All rights reserved.
 //
 
-#import "SLAPMGpu.h"
+#import "SLAPMCpu.h"
 #import <mach/task.h>
 #import <mach/vm_map.h>
 #import <mach/mach_init.h>
 #import <mach/thread_act.h>
 #import <mach/thread_info.h>
 
+#import "BSBacktraceLogger.h"
 
-@implementation SLAPMGpu
+@implementation SLAPMCpu
 
+//struct thread_basic_info {
+//    time_value_t    user_time;      /* user run time（用户运行时长） */
+//    time_value_t    system_time;    /* system run time（系统运行时长） */
+//    integer_t       cpu_usage;      /* scaled cpu usage percentage（CPU使用率，上限1000） */
+//    policy_t        policy;         /* scheduling policy in effect（有效调度策略） */
+//    integer_t       run_state;      /* run state (运行状态，见下) */
+//    integer_t       flags;          /* various flags (各种各样的标记) */
+//    integer_t       suspend_count;  /* suspend count for thread（线程挂起次数） */
+//    integer_t       sleep_time;     /* number of seconds that thread has been sleeping（休眠时间） */
+//};
 #pragma mark - CPU占有率
 + (double)getCpuUsage {
     kern_return_t           kr;
@@ -51,8 +62,22 @@
     // 回收内存，防止内存泄漏
     vm_deallocate(mach_task_self(), (vm_offset_t)threadList, threadCount * sizeof(thread_t));
     
-    NSLog(@"GPU使用率：%.2f%%",cpuUsage / (double)TH_USAGE_SCALE * 100.0);
-    return cpuUsage / (double)TH_USAGE_SCALE * 100.0;
+    float cpu = cpuUsage / (double)TH_USAGE_SCALE * 100.0;
+    NSLog(@" CPU使用率：%.2f%%",cpu);
+    return cpu;
+}
+
+///  返回GPU使用情况 占有率
+/// @param max  设定GPU使用率最大边界值
+/// @param callback 超出边界后的回调方法  返回此时的堆栈信息
++ (double)getCpuUsageWithMax:(float)max outOfBoundsCallback:(void(^)(NSString *string))callback {
+    float cpu= [SLAPMCpu getCpuUsage];
+    
+    if (cpu/100.0 >= max) {
+        NSString *callbackString =  [BSBacktraceLogger bs_backtraceOfAllThread];
+        callback(callbackString);
+    }
+    return cpu;
 }
 
 

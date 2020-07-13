@@ -9,9 +9,10 @@
 #import "SLAPMManager.h"
 #import "SLTimer.h"
 
-#import "SLAPMGpu.h"
+#import "SLAPMCpu.h"
 
 @interface SLAPMManager ()<NSCopying>
+///任务名称
 @property (nonatomic, copy) NSString *taskName;
 @end
 
@@ -53,7 +54,9 @@
 ///监控中
 - (void)monitoring {
     
-    [SLAPMGpu getCpuUsage];
+    [SLAPMCpu getCpuUsageWithMax:0.8 outOfBoundsCallback:^(NSString * _Nonnull string) {
+//        NSLog(@" %@",string);
+    }];
     
 }
 
