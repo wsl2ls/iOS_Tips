@@ -58,14 +58,16 @@
                                           @"https://juejin.im/post/5c088b45f265da610e7fe156",
                                           @"https://juejin.im/post/5c088a1051882517165dd15d",
                                           @"https://juejin.im/post/5c088ba36fb9a049fb43737b",
-                                          @""]];
+                                          @"二进制重排",
+                                          @"APM"]];
     [self.classArray addObjectsFromArray:@[[SLMenuViewController class],
                                            [SLWebViewController class],
                                            [SLWebViewController class],
                                            [SLWebViewController class],
                                            [SLWebViewController class],
                                            [SLWebViewController class],
-                                           [SLBinaryResetViewController class]]];
+                                           [SLBinaryResetViewController class],
+                                           [SLAPMViewController class]]];
     [self.tableView reloadData];
 }
 
@@ -105,7 +107,7 @@
     NSString *urlString = self.urlArray[indexPath.row];
     switch (indexPath.row) {
         default:
-            if (urlString.length > 0) {
+            if (urlString.length > 0 && [urlString hasPrefix:@"http"]) {
                 ((SLWebViewController *)nextVc).urlString = urlString;
             }
             [self.navigationController pushViewController:nextVc animated:YES];
