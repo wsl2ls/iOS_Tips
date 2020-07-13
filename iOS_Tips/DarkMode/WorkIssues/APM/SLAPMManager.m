@@ -54,9 +54,7 @@
 ///监控中
 - (void)monitoring {
     
-    [SLAPMCpu getCpuUsageWithMax:0.8 outOfBoundsCallback:^(NSString * _Nonnull string) {
-//        NSLog(@" %@",string);
-    }];
+    [SLAPMCpu getCpuUsage];
     
 }
 
