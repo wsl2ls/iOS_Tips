@@ -24,7 +24,8 @@ GitHub：https://github.com/wsl2ls/iOS_Tips.git
 >> 6.4、UIScrollView视觉差动画  
 >> 6.5、iOS 传感器集锦  
 >> 6.6、iOS 自定义转场动画  
->> 6.7、二进制重排优化启动速度
+>> 6.7、二进制重排优化启动速度  
+>> 6.8、iOS APM应用性能监控管理(doing)
 
 > 7、iOS Crash防护  
 > 8、WKWebView相关  
@@ -126,6 +127,7 @@ GitHub：https://github.com/wsl2ls/iOS_Tips.git
 #### 6.5、[iOS 传感器集锦](https://juejin.im/post/5c088a1051882517165dd15d)  
 #### 6.6、[iOS 自定义转场动画](https://juejin.im/post/5c088ba36fb9a049fb43737b)
 #### 6.7、[二进制重排优化启动速度](https://juejin.im/post/5ea79839f265da7bba509590)
+#### 6.8、[iOS APM应用性能监控管理(doing)]()
 
 ## 7、iOS Crash防护 
 
