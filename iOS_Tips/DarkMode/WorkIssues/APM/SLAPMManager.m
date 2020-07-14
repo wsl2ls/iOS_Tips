@@ -13,10 +13,10 @@
 
 #include <mach/mach.h>
 
-
 @interface SLAPMManager ()<NSCopying>
 ///任务名称
 @property (nonatomic, copy) NSString *taskName;
+
 @end
 
 @implementation SLAPMManager
@@ -66,20 +66,11 @@
         double totalMemory = [SLAPMManager getTotalMemory];
         NSLog(@" Memory占用：%.1fM  空闲：%.1fM 总共：%.1fM",useMemory, freeMemory, totalMemory);
         
-//        double useDisk= [SLAPMManager getUsageDisk:@""];
-//        double freeDisk = [SLAPMManager getFreeDisk];
-//        double totalDisk = [SLAPMManager getTotalDisk];
-//        NSLog(@" Disk占用：%.1fM  空闲：%.1fG 总共：%.1fG",useDisk, freeDisk, totalDisk);
-        
-        
-        
-        
-        
     }
 }
 
 
-#pragma mark - Memory/Disk
+#pragma mark - Memory / Disk
 ///当前应用的内存占用情况，和Xcode数值相近 单位MB
 + (double)getUsageMemory {
     task_vm_info_data_t vmInfo;
@@ -114,15 +105,22 @@
 ///filePath目录下的文件 占用的磁盘大小  单位MB  默认沙盒Caches目录
 + (double)getUsageDisk:(NSString *)filePath {
     if (filePath.length == 0)  filePath = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES).lastObject;
-    NSArray *filesArray = [[NSFileManager defaultManager] subpathsOfDirectoryAtPath:filePath error:nil];
+    ///定时执行时，此句代码会导致内存不断增长？0.1M
+    NSArray *filesArray = [[NSFileManager defaultManager] subpathsOfDirectoryAtPath:filePath error:nil] ;
     NSEnumerator *filesEnumerator = [filesArray objectEnumerator];
+    filesArray = nil;
+    
     NSString *fileName;
     unsigned long long int fileSize = 0;
     while (fileName = [filesEnumerator nextObject]) {
-        NSDictionary *fileDic = [[NSFileManager defaultManager] attributesOfItemAtPath:[filePath stringByAppendingPathComponent:fileName] error:nil];
-        fileSize += [fileDic fileSize];
+        @autoreleasepool {
+            //单个文件大小
+            NSDictionary *fileDic = [[NSFileManager defaultManager] attributesOfItemAtPath:[filePath stringByAppendingPathComponent:fileName] error:nil];
+            fileSize += [fileDic fileSize];
+        }
     }
-    return fileSize / (1024 * 1024);
+    filesEnumerator = nil;
+    return fileSize / (1024*1024);
 }
 ///剩余空闲的磁盘容量  单位G
 + (double)getFreeDisk {
