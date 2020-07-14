@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) NSUInteger cacheTime;
 /// 磁盘路径 默认 NSCachesDirectory
 @property (nonatomic, copy) NSString *diskPath;
-/// 缓存文件夹 默认 @"Url"
+/// 缓存文件夹 默认 @"com.wsl2ls.webCache"
 @property (nonatomic, copy) NSString *cacheFolder;
 /// 子路径 默认 @"UrlCacheDownload"
 @property (nonatomic, copy) NSString *subDirectory;

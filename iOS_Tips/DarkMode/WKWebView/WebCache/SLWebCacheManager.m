@@ -300,7 +300,7 @@
 }
 - (NSString *)cacheFolder {
     if (!_cacheFolder) {
-        _cacheFolder = @"Url";
+        _cacheFolder = @"com.wsl2ls.webCache";
     }
     return _cacheFolder;
 }
