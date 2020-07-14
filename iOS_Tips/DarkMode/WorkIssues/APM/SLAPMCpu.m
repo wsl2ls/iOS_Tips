@@ -7,11 +7,8 @@
 //
 
 #import "SLAPMCpu.h"
-#import <mach/task.h>
-#import <mach/vm_map.h>
-#import <mach/mach_init.h>
-#import <mach/thread_act.h>
-#import <mach/thread_info.h>
+
+#include <mach/mach.h>
 
 #import "BSBacktraceLogger.h"
 
@@ -63,7 +60,6 @@
     vm_deallocate(mach_task_self(), (vm_offset_t)threadList, threadCount * sizeof(thread_t));
     
     float cpu = cpuUsage / (double)TH_USAGE_SCALE * 100.0;
-    NSLog(@" CPU使用率：%.2f%%",cpu);
     return cpu;
 }
 
