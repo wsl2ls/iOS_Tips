@@ -66,6 +66,8 @@
 		784C4BE124BC40D200D5C199 /* SLAPMViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 784C4BE024BC40D200D5C199 /* SLAPMViewController.m */; };
 		784C4BE424BC4C5E00D5C199 /* SLAPMManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 784C4BE324BC4C5E00D5C199 /* SLAPMManager.m */; };
 		784C4BE724BC53D500D5C199 /* SLAPMCpu.m in Sources */ = {isa = PBXBuildFile; fileRef = 784C4BE624BC53D500D5C199 /* SLAPMCpu.m */; };
+		784C4BEA24BDA2DE00D5C199 /* SLProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 784C4BE924BDA2DE00D5C199 /* SLProxy.m */; };
+		784C4BED24BDA5D700D5C199 /* SLAPMFps.m in Sources */ = {isa = PBXBuildFile; fileRef = 784C4BEC24BDA5D700D5C199 /* SLAPMFps.m */; };
 		7851CB362331CC87002295B5 /* SLDarkModeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7851CB332331CC87002295B5 /* SLDarkModeViewController.m */; };
 		7851CB372331CC87002295B5 /* SLDarkModeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7851CB352331CC87002295B5 /* SLDarkModeViewController.xib */; };
 		7851CB43233222E2002295B5 /* UIView+SLFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 7851CB41233222E2002295B5 /* UIView+SLFrame.m */; };
@@ -272,6 +274,10 @@
 		784C4BE324BC4C5E00D5C199 /* SLAPMManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLAPMManager.m; sourceTree = "<group>"; };
 		784C4BE524BC53D500D5C199 /* SLAPMCpu.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLAPMCpu.h; sourceTree = "<group>"; };
 		784C4BE624BC53D500D5C199 /* SLAPMCpu.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLAPMCpu.m; sourceTree = "<group>"; };
+		784C4BE824BDA2DE00D5C199 /* SLProxy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLProxy.h; sourceTree = "<group>"; };
+		784C4BE924BDA2DE00D5C199 /* SLProxy.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLProxy.m; sourceTree = "<group>"; };
+		784C4BEB24BDA5D700D5C199 /* SLAPMFps.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLAPMFps.h; sourceTree = "<group>"; };
+		784C4BEC24BDA5D700D5C199 /* SLAPMFps.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLAPMFps.m; sourceTree = "<group>"; };
 		7851CB332331CC87002295B5 /* SLDarkModeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLDarkModeViewController.m; sourceTree = "<group>"; };
 		7851CB342331CC87002295B5 /* SLDarkModeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLDarkModeViewController.h; sourceTree = "<group>"; };
 		7851CB352331CC87002295B5 /* SLDarkModeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SLDarkModeViewController.xib; sourceTree = "<group>"; };
@@ -611,6 +617,8 @@
 				784C4BE324BC4C5E00D5C199 /* SLAPMManager.m */,
 				784C4BE524BC53D500D5C199 /* SLAPMCpu.h */,
 				784C4BE624BC53D500D5C199 /* SLAPMCpu.m */,
+				784C4BEB24BDA5D700D5C199 /* SLAPMFps.h */,
+				784C4BEC24BDA5D700D5C199 /* SLAPMFps.m */,
 			);
 			path = APM;
 			sourceTree = "<group>";
@@ -785,6 +793,8 @@
 				788424C624978E9200C2E505 /* SLKeyChain.m */,
 				2CEBE85C24A6E65600BA21F3 /* SLTimer.h */,
 				2CEBE85B24A6E65600BA21F3 /* SLTimer.m */,
+				784C4BE824BDA2DE00D5C199 /* SLProxy.h */,
+				784C4BE924BDA2DE00D5C199 /* SLProxy.m */,
 			);
 			path = Tool;
 			sourceTree = "<group>";
@@ -1379,6 +1389,7 @@
 				7811F76F24B2C791000AA044 /* SLBinaryResetViewController.m in Sources */,
 				788ACD652390EA3A00737EC2 /* SLCubeViewController.m in Sources */,
 				7884248E24963FD200C2E505 /* SLReusableManager.m in Sources */,
+				784C4BEA24BDA2DE00D5C199 /* SLProxy.m in Sources */,
 				7857FD4B24729E8500D3D986 /* BSBacktraceLogger.m in Sources */,
 				78E72D8224811F6600751373 /* SLWebCacheViewController.m in Sources */,
 				78E72D8F2483DC2600751373 /* SLWebCacheManager.m in Sources */,
@@ -1417,6 +1428,7 @@
 				780F5306236D8570000D0EA8 /* SLImageClipController.m in Sources */,
 				782CFB6A239E68D5001B5528 /* SLSpecialEffectsViewController.m in Sources */,
 				7884248B2493851B00C2E505 /* SLViewController.m in Sources */,
+				784C4BED24BDA5D700D5C199 /* SLAPMFps.m in Sources */,
 				78E72D5124766E4B00751373 /* SLWebViewController.m in Sources */,
 				78B10493232F57C50051579F /* main.m in Sources */,
 				788424C724978E9200C2E505 /* SLKeyChain.m in Sources */,

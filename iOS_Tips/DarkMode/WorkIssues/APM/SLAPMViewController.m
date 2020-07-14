@@ -9,6 +9,11 @@
 #import "SLAPMViewController.h"
 #import "SLAPMManager.h"
 
+
+/*
+ 参考资料：https://www.jianshu.com/p/95df83780c8f
+ */
+
 @interface SLAPMViewController ()
 
 @end
@@ -23,19 +28,18 @@
     [self setupNavigationBar];
 }
 
-
 #pragma mark - UI
 - (void)setupNavigationBar {
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:([SLAPMManager sharedInstance].isMonitoring ? @"停止":@"开始") style:UIBarButtonItemStyleDone target:self action:@selector(changeMonitorState)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:([SLAPMManager manager].isMonitoring ? @"停止":@"开始") style:UIBarButtonItemStyleDone target:self action:@selector(changeMonitorState)];
 }
 
 #pragma mark - Events Handle
 ///改变监听状态
 - (void)changeMonitorState{
-    if ([SLAPMManager sharedInstance].isMonitoring) {
-        [[SLAPMManager sharedInstance] stopMonitoring];
+    if ([SLAPMManager manager].isMonitoring) {
+        [[SLAPMManager manager] stopMonitoring];
     }else {
-        [[SLAPMManager sharedInstance] startMonitoring];
+        [[SLAPMManager manager] startMonitoring];
     }
     [self setupNavigationBar];
 }

@@ -10,10 +10,11 @@
 #import "SLTimer.h"
 
 #import "SLAPMCpu.h"
+#import "SLAPMFps.h"
 
 #include <mach/mach.h>
 
-@interface SLAPMManager ()<NSCopying>
+@interface SLAPMManager ()<SLAPMFpsDelegate>
 ///任务名称
 @property (nonatomic, copy) NSString *taskName;
 
@@ -24,14 +25,15 @@
 #pragma mark - Override
 /// 重写allocWithZone方法，保证alloc或者init创建的实例不会产生新实例，因为该类覆盖了allocWithZone方法，所以只能通过其父类分配内存，即[super allocWithZone]
 + (instancetype)allocWithZone:(struct _NSZone *)zone {
-    return [self sharedInstance];
+    return [self manager];
 }
+/// 重写copyWithZone方法，保证复制返回的是同一份实例
 - (nonnull id)copyWithZone:(nullable NSZone *)zone {
-    return [SLAPMManager sharedInstance];
+    return [SLAPMManager manager];
 }
 
 #pragma mark - Public
-+ (instancetype)sharedInstance {
++ (instancetype)manager {
     static SLAPMManager *manager = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -43,7 +45,10 @@
 - (void)startMonitoring {
     if (_isMonitoring) return;
     _isMonitoring = YES;
-    _taskName = [SLTimer execTask:self selector:@selector(monitoring) start:0 interval:1.0 repeats:YES async:YES];
+    _taskName = [SLTimer execTask:self selector:@selector(monitoring) start:0 interval:1.0/60 repeats:YES async:YES];
+    
+    [SLAPMFps sharedInstance].delegate = self;
+    [[SLAPMFps sharedInstance] play];
     
 }
 ///结束监控
@@ -51,24 +56,22 @@
     if (!_isMonitoring) return;
     _isMonitoring = NO;
     [SLTimer cancelTask:_taskName];
+    [[SLAPMFps sharedInstance] paused];
 }
 
 #pragma mark - Monitoring
 ///监控中
 - (void)monitoring {
-    @autoreleasepool {
-        
-        float CPU = [SLAPMCpu getCpuUsage];
-        NSLog(@" CPU使用率：%.2f%%",CPU);
-        
-        double useMemory = [SLAPMManager getUsageMemory];
-        double freeMemory = [SLAPMManager getFreeMemory];
-        double totalMemory = [SLAPMManager getTotalMemory];
-        NSLog(@" Memory占用：%.1fM  空闲：%.1fM 总共：%.1fM",useMemory, freeMemory, totalMemory);
-        
-    }
+    
+    float CPU = [SLAPMCpu getCpuUsage];
+    NSLog(@" CPU使用率：%.2f%%",CPU);
+    
+    double useMemory = [SLAPMManager getUsageMemory];
+    double freeMemory = [SLAPMManager getFreeMemory];
+    double totalMemory = [SLAPMManager getTotalMemory];
+    NSLog(@" Memory占用：%.1fM  空闲：%.1fM 总共：%.1fM",useMemory, freeMemory, totalMemory);
+    
 }
-
 
 #pragma mark - Memory / Disk
 ///当前应用的内存占用情况，和Xcode数值相近 单位MB
@@ -133,6 +136,12 @@
     NSDictionary *fattributes = [[NSFileManager defaultManager] attributesOfFileSystemForPath:NSHomeDirectory() error:nil];
     NSNumber *totalSize = [fattributes objectForKey:NSFileSystemSize];
     return [totalSize integerValue] / (1024*1024*1024);
+}
+
+#pragma mark - FPS
+///FPS值改变回调
+- (void)APMFps:(SLAPMFps *)APMFps didChangedFps:(float)fps {
+    NSLog(@" FPS：%.2f",fps);
 }
 
 @end

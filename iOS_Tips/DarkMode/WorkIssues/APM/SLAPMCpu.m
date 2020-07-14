@@ -68,7 +68,6 @@
 /// @param callback 超出边界后的回调方法  返回此时的堆栈信息
 + (double)getCpuUsageWithMax:(float)max outOfBoundsCallback:(void(^)(NSString *string))callback {
     float cpu= [SLAPMCpu getCpuUsage];
-    
     if (cpu/100.0 >= max) {
         NSString *callbackString =  [BSBacktraceLogger bs_backtraceOfAllThread];
         callback(callbackString);

@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///是否正在监控
 @property (nonatomic, assign) BOOL isMonitoring;
 
-+ (instancetype)sharedInstance;
++ (instancetype)manager;
 
 ///开始监控
 - (void)startMonitoring;
