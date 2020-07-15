@@ -52,11 +52,12 @@
     // 在子线程监控时长
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
         while (YES) {   // 有信号的话 就查询当前runloop的状态
+            
             // 假定连续5次超时50ms认为卡顿(当然也包含了单次超时250ms)
             // 因为下面 runloop 状态改变回调方法runLoopObserverCallBack中会将信号量递增 1,所以每次 runloop 状态改变后,下面的语句都会执行一次
-            // dispatch_semaphore_wait:Returns zero on success, or non-zero if the timeout occurred.
+            // 当其返回0时表示在timeout之前，该函数所处的线程被成功唤醒。当其返回不为0时，表示timeout发生。
             long st = dispatch_semaphore_wait(self->_semaphore, dispatch_time(DISPATCH_TIME_NOW, 50*NSEC_PER_MSEC));
-            NSLog(@"dispatch_semaphore_wait:st=%ld,time:%@",st,getCurTime());
+            
             if (st != 0) {  // 信号量超时了 - 即 runloop 的状态长时间没有发生变更,长期处于某一个状态下
                 if (!self->_observer) {
                     self->_timeoutCount = 0;
@@ -64,7 +65,7 @@
                     self->_activity = 0;
                     return;
                 }
-                NSLog(@"st = %ld,activity = %lu,timeoutCount = %d,time:%@",st,self->_activity,self->_timeoutCount,getCurTime());
+                
                 // kCFRunLoopBeforeSources - 即将处理source kCFRunLoopAfterWaiting - 刚从休眠中唤醒
                 // 获取kCFRunLoopBeforeSources到kCFRunLoopBeforeWaiting再到kCFRunLoopAfterWaiting的状态就可以知道是否有卡顿的情况。
                 // kCFRunLoopBeforeSources:停留在这个状态,表示在做很多事情
@@ -73,19 +74,10 @@
                         continue;   // 不足 5 次,直接 continue 当次循环,不将timeoutCount置为0
                     }
                     
-                    // 收集Crash信息也可用于实时获取各线程的调用堆栈
-                    //                    PLCrashReporterConfig *config = [[PLCrashReporterConfig alloc] initWithSignalHandlerType:PLCrashReporterSignalHandlerTypeBSD symbolicationStrategy:PLCrashReporterSymbolicationStrategyAll];
-                    //
-                    //                    PLCrashReporter *crashReporter = [[PLCrashReporter alloc] initWithConfiguration:config];
-                    //
-                    //                    NSData *data = [crashReporter generateLiveReport];
-                    //                    PLCrashReport *reporter = [[PLCrashReport alloc] initWithData:data error:NULL];
-                    //                    NSString *report = [PLCrashReportTextFormatter stringValueForCrashReport:reporter withTextFormat:PLCrashReportTextFormatiOS];
-                    //
-                    //                    NSLog(@"---------卡顿信息\n%@\n--------------",report);
+                    // 收集此时卡顿的调用堆栈
+                    NSLog(@"---------卡顿了--------------");
                 }
             }
-            NSLog(@"dispatch_semaphore_wait timeoutCount = 0，time:%@",getCurTime());
             self->_timeoutCount = 0;
         }
     });
@@ -123,21 +115,22 @@ static void runLoopObserverCallBack(CFRunLoopObserverRef observer, CFRunLoopActi
     
     // 发送信号
     dispatch_semaphore_t semaphore = monitor->_semaphore;
+    // 当返回值为0时表示当前并没有线程等待其处理的信号量，其处理的信号量的值加1即可。当返回值不为0时，表示其当前有（一个或多个）线程等待其处理的信号量，并且该函数唤醒了一个等待的线程（当线程有优先级时，唤醒优先级最高的线程；否则随机唤醒）
     long st = dispatch_semaphore_signal(semaphore);
-    NSLog(@"dispatch_semaphore_signal:st=%ld,time:%@",st,getCurTime());
+    //    NSLog(@"dispatch_semaphore_signal:st=%ld,time:%@",st,getCurTime());
     
-    if (activity == kCFRunLoopEntry) {  // 即将进入RunLoop
-        NSLog(@"runLoopObserverCallBack - %@",@"kCFRunLoopEntry");
-    } else if (activity == kCFRunLoopBeforeTimers) {    // 即将处理Timer
-        NSLog(@"runLoopObserverCallBack - %@",@"kCFRunLoopBeforeTimers");
-    } else if (activity == kCFRunLoopBeforeSources) {   // 即将处理Source
-        NSLog(@"runLoopObserverCallBack - %@",@"kCFRunLoopBeforeSources");
-    } else if (activity == kCFRunLoopBeforeWaiting) {   //即将进入休眠
-        NSLog(@"runLoopObserverCallBack - %@",@"kCFRunLoopBeforeWaiting");
-    } else if (activity == kCFRunLoopAfterWaiting) {    // 刚从休眠中唤醒
-        NSLog(@"runLoopObserverCallBack - %@",@"kCFRunLoopAfterWaiting");
-    } else if (activity == kCFRunLoopExit) {    // 即将退出RunLoop
-        NSLog(@"runLoopObserverCallBack - %@",@"kCFRunLoopExit");
+    if (activity == kCFRunLoopEntry) {
+        NSLog(@"runLoopObserverCallBack - %@",@"即将进入RunLoop");
+    } else if (activity == kCFRunLoopBeforeTimers) {
+        NSLog(@"runLoopObserverCallBack - %@",@"即将处理Timer");
+    } else if (activity == kCFRunLoopBeforeSources) {
+        NSLog(@"runLoopObserverCallBack - %@",@"即将处理Source");
+    } else if (activity == kCFRunLoopBeforeWaiting) {
+        NSLog(@"runLoopObserverCallBack - %@",@"即将进入休眠");
+    } else if (activity == kCFRunLoopAfterWaiting) {
+        NSLog(@"runLoopObserverCallBack - %@",@"刚从休眠中唤醒");
+    } else if (activity == kCFRunLoopExit) {
+        NSLog(@"runLoopObserverCallBack - %@",@"即将退出RunLoop");
     } else if (activity == kCFRunLoopAllActivities) {
         NSLog(@"runLoopObserverCallBack - %@",@"kCFRunLoopAllActivities");
     }
@@ -249,17 +242,16 @@ NSString * getCurTime(void) {
     });
     return luency;
 }
-///开始
-- (void)play {
-    //    [self.displayLink setPaused:NO];
+
+///开始监听
+- (void)startMonitoring {
+    [self.fps play];
+    [self.runLoop startRunning];
 }
-///暂停
-- (void)paused {
-    //    [self.displayLink setPaused:YES];
-}
-///销毁
-- (void)invalidate {
-    
+///结束监听
+- (void)stopMonitoring {
+    [self.fps paused];
+    [self.runLoop stopRunning];
 }
 
 #pragma mark - Getter

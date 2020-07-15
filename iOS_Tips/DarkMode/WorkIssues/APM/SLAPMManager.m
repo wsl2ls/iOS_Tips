@@ -45,18 +45,21 @@
 - (void)startMonitoring {
     if (_isMonitoring) return;
     _isMonitoring = YES;
+    
     _taskName = [SLTimer execTask:self selector:@selector(monitoring) start:0 interval:1.0/60 repeats:YES async:YES];
     
-//    [SLAPMFps sharedInstance].delegate = self;
-//    [[SLAPMFps sharedInstance] play];
+    [SLAPMFluency sharedInstance].delegate = self;
+    [[SLAPMFluency sharedInstance] startMonitoring];
     
 }
 ///结束监控
 - (void)stopMonitoring {
     if (!_isMonitoring) return;
     _isMonitoring = NO;
+    
     [SLTimer cancelTask:_taskName];
-//    [[SLAPMFps sharedInstance] paused];
+    
+    [[SLAPMFluency sharedInstance] stopMonitoring];
 }
 
 #pragma mark - Monitoring

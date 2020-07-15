@@ -21,12 +21,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, weak) id<SLAPMFpsDelegate> delegate;
 
 + (instancetype)sharedInstance;
-///开始
-- (void)play;
-///暂停
-- (void)paused;
-///销毁
-- (void)invalidate;
+///开始监听
+- (void)startMonitoring;
+///结束监听
+- (void)stopMonitoring;
 
 @end
 
