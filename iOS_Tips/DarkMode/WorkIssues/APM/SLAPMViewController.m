@@ -32,9 +32,7 @@
 //测试卡顿
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     //耗时任务
-    for (int i = 0; i < 1000; i++) {
-        sleep(1);
-    }
+    sleep(1);
 }
 
 #pragma mark - UI

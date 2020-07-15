@@ -51,7 +51,7 @@
         _taskName = [SLTimer execTask:self selector:@selector(monitoring) start:0 interval:1.0/60 repeats:YES async:YES];
     }
     
-    if ((self.type & SLAPMTypeFluency) == SLAPMTypeFluency) {
+    if ((self.type & SLAPMTypeFluency) == SLAPMTypeFluency || (self.type & SLAPMTypeAll) == SLAPMTypeAll) {
         [SLAPMFluency sharedInstance].delegate = self;
         [[SLAPMFluency sharedInstance] startMonitoring];
     }
@@ -150,6 +150,9 @@
 }
 
 #pragma mark - Fluency/卡顿监测
-
+///卡顿监控回调 当callStack不为nil时，表示发生卡顿并捕捉到卡顿时的调用栈
+- (void)APMFluency:(SLAPMFluency *)fluency didChangedFps:(float)fps callStackOfStuck:(nullable NSString *)callStack {
+    NSLog(@" 卡顿监测  fps：%f \n %@", fps, callStack == nil ? @"流畅":[NSString stringWithFormat:@"卡住了 %@",callStack]);
+}
 
 @end

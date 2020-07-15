@@ -19,6 +19,9 @@
     dispatch_semaphore_t _semaphore; // 信号
     CFRunLoopActivity _activity; // 状态
 }
+///卡顿时的调用堆栈信息
+@property (nonatomic, copy) NSString *callStack;
+@property (nonatomic, copy) void (^showStuckInfo)(NSString *callStack);
 @end
 
 @implementation SLAPMRunLoop
@@ -77,7 +80,12 @@
                     }
                     
                     // 收集此时卡顿的调用堆栈
-                    NSLog(@" 卡顿了 \n %@", [BSBacktraceLogger bs_backtraceOfMainThread]);
+                    NSString *callStack = [BSBacktraceLogger bs_backtraceOfMainThread];
+                    self.callStack = callStack;
+                    if(self.showStuckInfo) {
+                        self.showStuckInfo(callStack);
+                    }
+                    //                    NSLog(@" 卡顿了 \n %@", callStack);
                 }
             }
             self->_timeoutCount = 0;
@@ -110,21 +118,21 @@ static void runLoopObserverCallBack(CFRunLoopObserverRef observer, CFRunLoopActi
     long st = dispatch_semaphore_signal(semaphore);
     //    NSLog(@"dispatch_semaphore_signal:st=%ld,time:%@",st,getCurTime());
     
-//    if (activity == kCFRunLoopEntry) {
-//        NSLog(@"runLoopObserverCallBack - %@",@"即将进入RunLoop");
-//    } else if (activity == kCFRunLoopBeforeTimers) {
-//        NSLog(@"runLoopObserverCallBack - %@",@"即将处理Timer");
-//    } else if (activity == kCFRunLoopBeforeSources) {
-//        NSLog(@"runLoopObserverCallBack - %@",@"即将处理Source");
-//    } else if (activity == kCFRunLoopBeforeWaiting) {
-//        NSLog(@"runLoopObserverCallBack - %@",@"即将进入休眠");
-//    } else if (activity == kCFRunLoopAfterWaiting) {
-//        NSLog(@"runLoopObserverCallBack - %@",@"刚从休眠中唤醒");
-//    } else if (activity == kCFRunLoopExit) {
-//        NSLog(@"runLoopObserverCallBack - %@",@"即将退出RunLoop");
-//    } else if (activity == kCFRunLoopAllActivities) {
-//        NSLog(@"runLoopObserverCallBack - %@",@"kCFRunLoopAllActivities");
-//    }
+    //    if (activity == kCFRunLoopEntry) {
+    //        NSLog(@"runLoopObserverCallBack - %@",@"即将进入RunLoop");
+    //    } else if (activity == kCFRunLoopBeforeTimers) {
+    //        NSLog(@"runLoopObserverCallBack - %@",@"即将处理Timer");
+    //    } else if (activity == kCFRunLoopBeforeSources) {
+    //        NSLog(@"runLoopObserverCallBack - %@",@"即将处理Source");
+    //    } else if (activity == kCFRunLoopBeforeWaiting) {
+    //        NSLog(@"runLoopObserverCallBack - %@",@"即将进入休眠");
+    //    } else if (activity == kCFRunLoopAfterWaiting) {
+    //        NSLog(@"runLoopObserverCallBack - %@",@"刚从休眠中唤醒");
+    //    } else if (activity == kCFRunLoopExit) {
+    //        NSLog(@"runLoopObserverCallBack - %@",@"即将退出RunLoop");
+    //    } else if (activity == kCFRunLoopAllActivities) {
+    //        NSLog(@"runLoopObserverCallBack - %@",@"kCFRunLoopAllActivities");
+    //    }
 }
 
 #pragma mark - private function
@@ -137,13 +145,15 @@ NSString * getCurTime(void) {
 
 @end
 
-///监测帧频，抖动比较大，所以结合runloop检测主线程消息循环执行的时间来作为卡顿的衡量指标
+///监测帧频，抖动比较大，无法获取卡顿时的调用栈，所以结合runloop检测主线程消息循环执行的时间来作为卡顿的衡量指标
 @interface SLAPMFps : NSObject
 {
     NSTimeInterval _lastTime; //上次屏幕刷新时间
     int _count;  //FPS
 }
 @property (nonatomic, strong) CADisplayLink *displayLink;
+@property (nonatomic, assign) float fps;
+@property (nonatomic, copy) void (^fpsChanged)(float fps);
 @end
 @implementation SLAPMFps
 
@@ -195,16 +205,16 @@ NSString * getCurTime(void) {
     }
     //刷新频率
     float fps = _count / interval;
+    _fps = fps;
     
     //1秒之后，初始化时间和次数，重新开始监测
     _lastTime = link.timestamp;
     _count = 0;
     
-    //    if([self.delegate respondsToSelector:@selector(APMFps:didChangedFps:)]) {
-    //        [self.delegate APMFps:self didChangedFps:fps];
-    //    }
+    if (self.fpsChanged) {
+        self.fpsChanged(fps);
+    }
 }
-
 @end
 
 
@@ -230,14 +240,42 @@ NSString * getCurTime(void) {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         luency = [[super allocWithZone:NULL] init];
+        luency.type =  SLAPMFluencyTypeRunloop;
     });
     return luency;
 }
 
 ///开始监听
 - (void)startMonitoring {
-    [self.fps play];
-    [self.runLoop startRunning];
+    __weak typeof(self) weakSelf = self;
+    if (self.type == SLAPMFluencyTypeRunloop) {
+        [self.runLoop startRunning];
+        //防止跟 self.fps.fpsChanged的回调重复执行
+        self.runLoop.showStuckInfo = ^(NSString *callStack) {
+            if ([weakSelf.delegate respondsToSelector:@selector(APMFluency:didChangedFps:callStackOfStuck:)]) {
+                [weakSelf.delegate APMFluency:weakSelf didChangedFps:weakSelf.fps.fps callStackOfStuck:callStack];
+            }
+        };
+        
+    }else  if (self.type == SLAPMFluencyTypeFps) {
+        [self.fps play];
+        self.fps.fpsChanged = ^(float fps) {
+            if ([weakSelf.delegate respondsToSelector:@selector(APMFluency:didChangedFps:callStackOfStuck:)]) {
+                [weakSelf.delegate APMFluency:weakSelf didChangedFps:fps callStackOfStuck:[weakSelf.runLoop.callStack copy]];
+                weakSelf.runLoop.callStack = nil;
+            }
+        };
+    }else if (self.type == SLAPMFluencyTypeAll) {
+        [self.fps play];
+        [self.runLoop startRunning];
+        self.fps.fpsChanged = ^(float fps) {
+            if ([weakSelf.delegate respondsToSelector:@selector(APMFluency:didChangedFps:callStackOfStuck:)]) {
+                [weakSelf.delegate APMFluency:weakSelf didChangedFps:fps callStackOfStuck:[weakSelf.runLoop.callStack copy]];
+                weakSelf.runLoop.callStack = nil;
+            }
+        };
+    }
+    
 }
 ///结束监听
 - (void)stopMonitoring {
