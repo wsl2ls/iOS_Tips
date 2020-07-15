@@ -26,6 +26,15 @@
     self.view.backgroundColor = [UIColor whiteColor];
     self.navigationItem.title = @"APM监控";
     [self setupNavigationBar];
+    [SLAPMManager manager].type = SLAPMTypeFluency;
+}
+
+//测试卡顿
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    //耗时任务
+    for (int i = 0; i < 1000; i++) {
+        sleep(1);
+    }
 }
 
 #pragma mark - UI

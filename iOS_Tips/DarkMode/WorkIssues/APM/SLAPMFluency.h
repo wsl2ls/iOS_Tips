@@ -9,16 +9,16 @@
 #import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
-@class SLAPMFps;
-@protocol SLAPMFpsDelegate <NSObject>
-///FPS值改变回调
-- (void)APMFps:(SLAPMFps *)APMFps didChangedFps:(float)fps;
+@class SLAPMFluency;
+@protocol SLAPMFluencyDelegate <NSObject>
+///卡顿监控回调 当callStack不为nil时，表示卡顿并捕捉到卡顿时的调用栈
+- (void)APMFluency:(SLAPMFluency *)fluency didChangedFps:(float)fps callback:(void(^)(NSString *callStack))callback;
 @end
 
 ///流畅度监听 是否卡顿
 @interface SLAPMFluency : NSObject
 
-@property (nonatomic, weak) id<SLAPMFpsDelegate> delegate;
+@property (nonatomic, weak) id<SLAPMFluencyDelegate> delegate;
 
 + (instancetype)sharedInstance;
 ///开始监听

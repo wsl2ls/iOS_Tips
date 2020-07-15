@@ -9,6 +9,8 @@
 #import "SLAPMFluency.h"
 #import "SLProxy.h"
 
+#import "BSBacktraceLogger.h"
+
 /// 利用runloop 检测主线程每次执行消息循环的时间，当这一时间大于阈值时，就记为发生一次卡顿。
 @interface SLAPMRunLoop : NSObject
 {
@@ -75,7 +77,7 @@
                     }
                     
                     // 收集此时卡顿的调用堆栈
-                    NSLog(@"---------卡顿了--------------");
+                    NSLog(@" 卡顿了 \n %@", [BSBacktraceLogger bs_backtraceOfMainThread]);
                 }
             }
             self->_timeoutCount = 0;
@@ -94,17 +96,6 @@
     _observer = NULL;
 }
 
-/* Run Loop Observer Activities
- typedef CF_OPTIONS(CFOptionFlags, CFRunLoopActivity) {
- kCFRunLoopEntry = (1UL << 0),    // 进入RunLoop循环(这里其实还没进入)
- kCFRunLoopBeforeTimers = (1UL << 1),  // RunLoop 要处理timer了
- kCFRunLoopBeforeSources = (1UL << 2), // RunLoop 要处理source了
- kCFRunLoopBeforeWaiting = (1UL << 5), // RunLoop要休眠了
- kCFRunLoopAfterWaiting = (1UL << 6),   // RunLoop醒了
- kCFRunLoopExit = (1UL << 7),           // RunLoop退出（和kCFRunLoopEntry对应）
- kCFRunLoopAllActivities = 0x0FFFFFFFU
- };
- */
 #pragma mark - runloop observer callback
 ///runloop状态改变回调 就记录一下
 static void runLoopObserverCallBack(CFRunLoopObserverRef observer, CFRunLoopActivity activity, void *info) {
@@ -119,21 +110,21 @@ static void runLoopObserverCallBack(CFRunLoopObserverRef observer, CFRunLoopActi
     long st = dispatch_semaphore_signal(semaphore);
     //    NSLog(@"dispatch_semaphore_signal:st=%ld,time:%@",st,getCurTime());
     
-    if (activity == kCFRunLoopEntry) {
-        NSLog(@"runLoopObserverCallBack - %@",@"即将进入RunLoop");
-    } else if (activity == kCFRunLoopBeforeTimers) {
-        NSLog(@"runLoopObserverCallBack - %@",@"即将处理Timer");
-    } else if (activity == kCFRunLoopBeforeSources) {
-        NSLog(@"runLoopObserverCallBack - %@",@"即将处理Source");
-    } else if (activity == kCFRunLoopBeforeWaiting) {
-        NSLog(@"runLoopObserverCallBack - %@",@"即将进入休眠");
-    } else if (activity == kCFRunLoopAfterWaiting) {
-        NSLog(@"runLoopObserverCallBack - %@",@"刚从休眠中唤醒");
-    } else if (activity == kCFRunLoopExit) {
-        NSLog(@"runLoopObserverCallBack - %@",@"即将退出RunLoop");
-    } else if (activity == kCFRunLoopAllActivities) {
-        NSLog(@"runLoopObserverCallBack - %@",@"kCFRunLoopAllActivities");
-    }
+//    if (activity == kCFRunLoopEntry) {
+//        NSLog(@"runLoopObserverCallBack - %@",@"即将进入RunLoop");
+//    } else if (activity == kCFRunLoopBeforeTimers) {
+//        NSLog(@"runLoopObserverCallBack - %@",@"即将处理Timer");
+//    } else if (activity == kCFRunLoopBeforeSources) {
+//        NSLog(@"runLoopObserverCallBack - %@",@"即将处理Source");
+//    } else if (activity == kCFRunLoopBeforeWaiting) {
+//        NSLog(@"runLoopObserverCallBack - %@",@"即将进入休眠");
+//    } else if (activity == kCFRunLoopAfterWaiting) {
+//        NSLog(@"runLoopObserverCallBack - %@",@"刚从休眠中唤醒");
+//    } else if (activity == kCFRunLoopExit) {
+//        NSLog(@"runLoopObserverCallBack - %@",@"即将退出RunLoop");
+//    } else if (activity == kCFRunLoopAllActivities) {
+//        NSLog(@"runLoopObserverCallBack - %@",@"kCFRunLoopAllActivities");
+//    }
 }
 
 #pragma mark - private function
