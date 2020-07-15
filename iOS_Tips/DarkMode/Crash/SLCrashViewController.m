@@ -11,6 +11,9 @@
 
 @interface SLCrashViewController ()
 
+@property (nonatomic, strong) UITextView *textView;
+
+
 @property (nonatomic, copy) void(^testBlock)(void); //测试循环引用
 @property (nonatomic, strong) NSMutableArray *testMArray; //测试循环引用
 
@@ -28,15 +31,23 @@
     [super viewDidLoad];
     [self setupUI];
 }
+- (void)dealloc {
+    
+}
 
 #pragma mark - UI
 - (void)setupUI {
     self.navigationItem.title = @"iOS Crash防护";
     self.view.backgroundColor = [UIColor whiteColor];
+    self.textView = [[UITextView alloc] initWithFrame:self.view.bounds];
+    self.textView.editable = NO;
+    [self.view addSubview:self.textView];
+    
+    SL_WeakSelf;
     [SLCrashHandler defaultCrashHandler].crashHandlerBlock = ^(SLCrashError * _Nonnull crashError) {
-//        NSLog(@"%@/%@" ,crashError.errorDesc, [BSBacktraceLogger bs_backtraceOfCurrentThread]);
+        weakSelf.textView.text = [NSString stringWithFormat:@" 错误描述：%@ \n 调用栈：%@" ,crashError.errorDesc, crashError.callStackSymbol];
     };
-    [self testCallStack];
+    [self testArray];
 }
 
 #pragma mark - Container Crash

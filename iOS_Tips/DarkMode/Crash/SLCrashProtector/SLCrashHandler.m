@@ -26,11 +26,11 @@
 - (void)catchCrashException:(NSException *)exception type:(SLCrashErrorType)errorType errorDesc:(NSString *)errorDesc {
     SLCrashError *crashError = [SLCrashError new];
     crashError.errorDesc = errorDesc;
-    crashError.errorType = SLCrashErrorTypeArray;
+    crashError.errorType = errorType;
     crashError.exception = exception;
     //获取当前线程的函数调用栈
     crashError.callStackSymbol = [NSThread callStackSymbols];
-    NSLog(@"%@" ,errorDesc);
+//    NSLog(@"%@" ,errorDesc);
     if (self.crashHandlerBlock) {
         self.crashHandlerBlock(crashError);
     }
