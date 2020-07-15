@@ -10,7 +10,7 @@
 #import "SLTimer.h"
 
 #import "SLAPMCpu.h"
-#import "SLAPMFps.h"
+#import "SLAPMFluency.h"
 
 #include <mach/mach.h>
 
@@ -47,8 +47,8 @@
     _isMonitoring = YES;
     _taskName = [SLTimer execTask:self selector:@selector(monitoring) start:0 interval:1.0/60 repeats:YES async:YES];
     
-    [SLAPMFps sharedInstance].delegate = self;
-    [[SLAPMFps sharedInstance] play];
+//    [SLAPMFps sharedInstance].delegate = self;
+//    [[SLAPMFps sharedInstance] play];
     
 }
 ///结束监控
@@ -56,7 +56,7 @@
     if (!_isMonitoring) return;
     _isMonitoring = NO;
     [SLTimer cancelTask:_taskName];
-    [[SLAPMFps sharedInstance] paused];
+//    [[SLAPMFps sharedInstance] paused];
 }
 
 #pragma mark - Monitoring

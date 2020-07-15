@@ -1,44 +1,36 @@
 //
-//  SLAPMFps.m
+//  SLAPMFluency.m
 //  DarkMode
 //
 //  Created by wsl on 2020/7/14.
 //  Copyright © 2020 https://github.com/wsl2ls   ----- . All rights reserved.
 //
 
-#import "SLAPMFps.h"
+#import "SLAPMFluency.h"
 #import "SLProxy.h"
 
-
+/// 利用runloop 检测主线程每次执行消息循环的时间，当这一时间大于阈值时，就记为发生一次卡顿。
 @interface SLAPMRunLoop : NSObject
 {
-    int timeoutCount;   // 耗时次数
-    CFRunLoopObserverRef observer;  // 观察者
-    dispatch_semaphore_t semaphore; // 信号
-    CFRunLoopActivity activity; // 状态
+    int _timeoutCount;   // 耗时次数
+    CFRunLoopObserverRef _observer;  // 观察者
+    dispatch_semaphore_t _semaphore; // 信号
+    CFRunLoopActivity _activity; // 状态
 }
 @end
+
 @implementation SLAPMRunLoop
 
-// 单例
-+ (instancetype)shareInstance {
-    static id instance = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        instance = [[self alloc] init];
-    });
-    return instance;
-}
-
+#pragma mark - Public
 // 开始监听
-- (void)startMonitor {
-    if (observer) {
+- (void)startRunning {
+    if (_observer) {
         return;
     }
     
     // 创建信号
-    semaphore = dispatch_semaphore_create(0);
-    NSLog(@"dispatch_semaphore_create:%@",[SLAPMRunLoop getCurTime]);
+    _semaphore = dispatch_semaphore_create(0);
+    NSLog(@"dispatch_semaphore_create:%@",getCurTime());
     
     // 注册RunLoop状态观察
     CFRunLoopObserverContext context = {0,(__bridge void*)self,NULL,NULL};
@@ -49,13 +41,13 @@
     //第四个参数用于设置该observer的优先级
     //第五个参数用于设置该observer的回调函数
     //第六个参数用于设置该observer的运行环境
-    observer = CFRunLoopObserverCreate(kCFAllocatorDefault,
-                                       kCFRunLoopAllActivities,
-                                       YES,
-                                       0,
-                                       &runLoopObserverCallBack,
-                                       &context);
-    CFRunLoopAddObserver(CFRunLoopGetMain(), observer, kCFRunLoopCommonModes);
+    _observer = CFRunLoopObserverCreate(kCFAllocatorDefault,
+                                        kCFRunLoopAllActivities,
+                                        YES,
+                                        0,
+                                        &runLoopObserverCallBack,
+                                        &context);
+    CFRunLoopAddObserver(CFRunLoopGetMain(), _observer, kCFRunLoopCommonModes);
     
     // 在子线程监控时长
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
@@ -63,78 +55,76 @@
             // 假定连续5次超时50ms认为卡顿(当然也包含了单次超时250ms)
             // 因为下面 runloop 状态改变回调方法runLoopObserverCallBack中会将信号量递增 1,所以每次 runloop 状态改变后,下面的语句都会执行一次
             // dispatch_semaphore_wait:Returns zero on success, or non-zero if the timeout occurred.
-            long st = dispatch_semaphore_wait(semaphore, dispatch_time(DISPATCH_TIME_NOW, 50*NSEC_PER_MSEC));
-            NSLog(@"dispatch_semaphore_wait:st=%ld,time:%@",st,[self getCurTime]);
+            long st = dispatch_semaphore_wait(self->_semaphore, dispatch_time(DISPATCH_TIME_NOW, 50*NSEC_PER_MSEC));
+            NSLog(@"dispatch_semaphore_wait:st=%ld,time:%@",st,getCurTime());
             if (st != 0) {  // 信号量超时了 - 即 runloop 的状态长时间没有发生变更,长期处于某一个状态下
-                if (!observer) {
-                    timeoutCount = 0;
-                    semaphore = 0;
-                    activity = 0;
+                if (!self->_observer) {
+                    self->_timeoutCount = 0;
+                    self->_semaphore = 0;
+                    self->_activity = 0;
                     return;
                 }
-                NSLog(@"st = %ld,activity = %lu,timeoutCount = %d,time:%@",st,activity,timeoutCount,[self getCurTime]);
+                NSLog(@"st = %ld,activity = %lu,timeoutCount = %d,time:%@",st,self->_activity,self->_timeoutCount,getCurTime());
                 // kCFRunLoopBeforeSources - 即将处理source kCFRunLoopAfterWaiting - 刚从休眠中唤醒
                 // 获取kCFRunLoopBeforeSources到kCFRunLoopBeforeWaiting再到kCFRunLoopAfterWaiting的状态就可以知道是否有卡顿的情况。
                 // kCFRunLoopBeforeSources:停留在这个状态,表示在做很多事情
-                if (activity == kCFRunLoopBeforeSources || activity == kCFRunLoopAfterWaiting) {    // 发生卡顿,记录卡顿次数
-                    if (++timeoutCount < 5) {
+                if (self->_activity == kCFRunLoopBeforeSources || self->_activity == kCFRunLoopAfterWaiting) {    // 发生卡顿,记录卡顿次数
+                    if (++self->_timeoutCount < 5) {
                         continue;   // 不足 5 次,直接 continue 当次循环,不将timeoutCount置为0
                     }
                     
                     // 收集Crash信息也可用于实时获取各线程的调用堆栈
-//                    PLCrashReporterConfig *config = [[PLCrashReporterConfig alloc] initWithSignalHandlerType:PLCrashReporterSignalHandlerTypeBSD symbolicationStrategy:PLCrashReporterSymbolicationStrategyAll];
-//
-//                    PLCrashReporter *crashReporter = [[PLCrashReporter alloc] initWithConfiguration:config];
-//
-//                    NSData *data = [crashReporter generateLiveReport];
-//                    PLCrashReport *reporter = [[PLCrashReport alloc] initWithData:data error:NULL];
-//                    NSString *report = [PLCrashReportTextFormatter stringValueForCrashReport:reporter withTextFormat:PLCrashReportTextFormatiOS];
-//
-//                    NSLog(@"---------卡顿信息\n%@\n--------------",report);
+                    //                    PLCrashReporterConfig *config = [[PLCrashReporterConfig alloc] initWithSignalHandlerType:PLCrashReporterSignalHandlerTypeBSD symbolicationStrategy:PLCrashReporterSymbolicationStrategyAll];
+                    //
+                    //                    PLCrashReporter *crashReporter = [[PLCrashReporter alloc] initWithConfiguration:config];
+                    //
+                    //                    NSData *data = [crashReporter generateLiveReport];
+                    //                    PLCrashReport *reporter = [[PLCrashReport alloc] initWithData:data error:NULL];
+                    //                    NSString *report = [PLCrashReportTextFormatter stringValueForCrashReport:reporter withTextFormat:PLCrashReportTextFormatiOS];
+                    //
+                    //                    NSLog(@"---------卡顿信息\n%@\n--------------",report);
                 }
             }
-            NSLog(@"dispatch_semaphore_wait timeoutCount = 0，time:%@",[self getCurTime]);
-            timeoutCount = 0;
+            NSLog(@"dispatch_semaphore_wait timeoutCount = 0，time:%@",getCurTime());
+            self->_timeoutCount = 0;
         }
     });
 }
 
 // 停止监听
-- (void)stopMonitor {
-    if (!observer) {
+- (void)stopRunning  {
+    if (!_observer) {
         return;
     }
-    
     // 移除观察并释放资源
-    CFRunLoopRemoveObserver(CFRunLoopGetMain(), observer, kCFRunLoopCommonModes);
-    CFRelease(observer);
-    observer = NULL;
+    CFRunLoopRemoveObserver(CFRunLoopGetMain(), _observer, kCFRunLoopCommonModes);
+    CFRelease(_observer);
+    _observer = NULL;
 }
 
+/* Run Loop Observer Activities
+ typedef CF_OPTIONS(CFOptionFlags, CFRunLoopActivity) {
+ kCFRunLoopEntry = (1UL << 0),    // 进入RunLoop循环(这里其实还没进入)
+ kCFRunLoopBeforeTimers = (1UL << 1),  // RunLoop 要处理timer了
+ kCFRunLoopBeforeSources = (1UL << 2), // RunLoop 要处理source了
+ kCFRunLoopBeforeWaiting = (1UL << 5), // RunLoop要休眠了
+ kCFRunLoopAfterWaiting = (1UL << 6),   // RunLoop醒了
+ kCFRunLoopExit = (1UL << 7),           // RunLoop退出（和kCFRunLoopEntry对应）
+ kCFRunLoopAllActivities = 0x0FFFFFFFU
+ };
+ */
 #pragma mark - runloop observer callback
-
-// 就是runloop有一个状态改变 就记录一下
+///runloop状态改变回调 就记录一下
 static void runLoopObserverCallBack(CFRunLoopObserverRef observer, CFRunLoopActivity activity, void *info) {
-    SLAPMRunLoop *monitor = (__bridge SLAPMRunLoop*)info;
     
+    SLAPMRunLoop *monitor = (__bridge SLAPMRunLoop*)info;
     // 记录状态值
-    monitor->activity = activity;
+    monitor->_activity = activity;
     
     // 发送信号
-    dispatch_semaphore_t semaphore = monitor->semaphore;
+    dispatch_semaphore_t semaphore = monitor->_semaphore;
     long st = dispatch_semaphore_signal(semaphore);
-    NSLog(@"dispatch_semaphore_signal:st=%ld,time:%@",st,[SLAPMRunLoop getCurTime]);
-    
-    /* Run Loop Observer Activities */
-//    typedef CF_OPTIONS(CFOptionFlags, CFRunLoopActivity) {
-//        kCFRunLoopEntry = (1UL << 0),    // 进入RunLoop循环(这里其实还没进入)
-//        kCFRunLoopBeforeTimers = (1UL << 1),  // RunLoop 要处理timer了
-//        kCFRunLoopBeforeSources = (1UL << 2), // RunLoop 要处理source了
-//        kCFRunLoopBeforeWaiting = (1UL << 5), // RunLoop要休眠了
-//        kCFRunLoopAfterWaiting = (1UL << 6),   // RunLoop醒了
-//        kCFRunLoopExit = (1UL << 7),           // RunLoop退出（和kCFRunLoopEntry对应）
-//        kCFRunLoopAllActivities = 0x0FFFFFFFU
-//    };
+    NSLog(@"dispatch_semaphore_signal:st=%ld,time:%@",st,getCurTime());
     
     if (activity == kCFRunLoopEntry) {  // 即将进入RunLoop
         NSLog(@"runLoopObserverCallBack - %@",@"kCFRunLoopEntry");
@@ -154,27 +144,17 @@ static void runLoopObserverCallBack(CFRunLoopObserverRef observer, CFRunLoopActi
 }
 
 #pragma mark - private function
-
-- (NSString *)getCurTime {
+NSString * getCurTime(void) {
     NSDateFormatter *format = [[NSDateFormatter alloc] init];
     [format setDateFormat:@"YYYY/MM/dd hh:mm:ss:SSS"];
     NSString *curTime = [format stringFromDate:[NSDate date]];
-    
-    return curTime;
-}
-
-+ (NSString *) getCurTime {
-    NSDateFormatter *format = [[NSDateFormatter alloc] init];
-    [format setDateFormat:@"YYYY/MM/dd hh:mm:ss:SSS"];
-    NSString *curTime = [format stringFromDate:[NSDate date]];
-    
     return curTime;
 }
 
 @end
 
-
-@interface SLAPMFps ()
+///监测帧频，抖动比较大，所以结合runloop检测主线程消息循环执行的时间来作为卡顿的衡量指标
+@interface SLAPMFps : NSObject
 {
     NSTimeInterval _lastTime; //上次屏幕刷新时间
     int _count;  //FPS
@@ -183,25 +163,7 @@ static void runLoopObserverCallBack(CFRunLoopObserverRef observer, CFRunLoopActi
 @end
 @implementation SLAPMFps
 
-#pragma mark - Override
-/// 重写allocWithZone方法，保证alloc或者init创建的实例不会产生新实例，因为该类覆盖了allocWithZone方法，所以只能通过其父类分配内存，即[super allocWithZone]
-+ (instancetype)allocWithZone:(struct _NSZone *)zone {
-    return [self sharedInstance];
-}
-/// 重写copyWithZone方法，保证复制返回的是同一份实例
-- (nonnull id)copyWithZone:(nullable NSZone *)zone {
-    return [SLAPMFps sharedInstance];
-}
-
 #pragma mark - Public
-+ (instancetype)sharedInstance {
-    static SLAPMFps *fps = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        fps = [[super allocWithZone:NULL] init];
-    });
-    return fps;
-}
 ///开始
 - (void)play {
     [self.displayLink setPaused:NO];
@@ -254,9 +216,64 @@ static void runLoopObserverCallBack(CFRunLoopObserverRef observer, CFRunLoopActi
     _lastTime = link.timestamp;
     _count = 0;
     
-    if([self.delegate respondsToSelector:@selector(APMFps:didChangedFps:)]) {
-        [self.delegate APMFps:self didChangedFps:fps];
+    //    if([self.delegate respondsToSelector:@selector(APMFps:didChangedFps:)]) {
+    //        [self.delegate APMFps:self didChangedFps:fps];
+    //    }
+}
+
+@end
+
+
+@interface SLAPMFluency ()
+@property (nonatomic, strong) SLAPMFps *fps;
+@property (nonatomic, strong) SLAPMRunLoop *runLoop;
+@end
+
+@implementation SLAPMFluency
+#pragma mark - Override
+/// 重写allocWithZone方法，保证alloc或者init创建的实例不会产生新实例，因为该类覆盖了allocWithZone方法，所以只能通过其父类分配内存，即[super allocWithZone]
++ (instancetype)allocWithZone:(struct _NSZone *)zone {
+    return [self sharedInstance];
+}
+/// 重写copyWithZone方法，保证复制返回的是同一份实例
+- (nonnull id)copyWithZone:(nullable NSZone *)zone {
+    return [SLAPMFluency sharedInstance];
+}
+
+#pragma mark - Public
++ (instancetype)sharedInstance {
+    static SLAPMFluency *luency = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        luency = [[super allocWithZone:NULL] init];
+    });
+    return luency;
+}
+///开始
+- (void)play {
+    //    [self.displayLink setPaused:NO];
+}
+///暂停
+- (void)paused {
+    //    [self.displayLink setPaused:YES];
+}
+///销毁
+- (void)invalidate {
+    
+}
+
+#pragma mark - Getter
+- (SLAPMFps *)fps {
+    if (!_fps) {
+        _fps = [[SLAPMFps alloc] init];
     }
+    return _fps;
+}
+- (SLAPMRunLoop *)runLoop {
+    if (!_runLoop) {
+        _runLoop = [[SLAPMRunLoop alloc] init];
+    }
+    return _runLoop;;
 }
 
 @end

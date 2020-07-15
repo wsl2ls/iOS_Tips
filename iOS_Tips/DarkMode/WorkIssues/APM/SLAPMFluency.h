@@ -1,5 +1,5 @@
 //
-//  SLAPMFps.h
+//  SLAPMFluency.h
 //  DarkMode
 //
 //  Created by wsl on 2020/7/14.
@@ -15,7 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)APMFps:(SLAPMFps *)APMFps didChangedFps:(float)fps;
 @end
 
-@interface SLAPMFps : NSObject
+///流畅度监听 是否卡顿
+@interface SLAPMFluency : NSObject
 
 @property (nonatomic, weak) id<SLAPMFpsDelegate> delegate;
 
