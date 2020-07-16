@@ -23,7 +23,7 @@ static inline void SL_ExchangeInstanceMethod(Class _originalClass ,SEL _original
     BOOL didAddMethod = class_addMethod(_originalClass, _originalSel, method_getImplementation(methodNew), method_getTypeEncoding(methodNew));
     if (didAddMethod) {
         // 进行方法的替换
-        class_replaceMethod(_originalClass, _targetSel, method_getImplementation(methodOriginal), method_getTypeEncoding(methodOriginal));
+        class_replaceMethod(_targetClass, _targetSel, method_getImplementation(methodOriginal), method_getTypeEncoding(methodOriginal));
     }else{
         // 交换 IMP 指针
         method_exchangeImplementations(methodOriginal, methodNew);
