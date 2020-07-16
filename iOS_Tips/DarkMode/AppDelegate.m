@@ -31,7 +31,7 @@ void HandleException(NSException *exception) {
     // 异常名称
     NSString *name = [exception name];
     NSString *exceptionInfo = [NSString stringWithFormat:@"程序异常：%@ \nException reason：%@ \nException stack：%@",name, reason, stackArray];
-//    NSLog(@"%@", exceptionInfo);
+    NSLog(@"%@", exceptionInfo);
 }
 //设置异常捕获处理方法
 void SLSetUncaughtExceptionHandler(void) {

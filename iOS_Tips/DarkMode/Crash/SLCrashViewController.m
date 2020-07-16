@@ -177,12 +177,13 @@
 ///野指针  随机性太强，不方便复现和定位问题，我们需要做的就是把随机变为必现，并且定位到对应的代码，方便查找解决
 ///思路来源： https://www.jianshu.com/p/9fd4dc046046?utm_source=oschina-app
 - (void)testWildPointer {
-    //开启僵尸对象嗅探定位
+    //开启僵尸对象嗅探定位 可以打开或关闭此开关看看效果就知道了
     [SLZombieFinder startSniffer];
     
     UILabel *label = [[UILabel alloc] init];
     //-fno-objc-arc 记得设置此类编译方式支持MRC
     //testObj对象所在的内存空间已释放
+    label.text = @"";
     [label release];
     
     //这时新建一个示例对象，覆盖掉了野指针label所指向的内存空间，如果此时没有创建此同类，就会崩溃
@@ -190,7 +191,7 @@
     newView.backgroundColor = [UIColor greenColor];
     [self.view addSubview:newView];
     
-    //向野指针label指向的内存对象发送修改颜色的消息，结果是newView接收到了，因为newView和label是同类，可以处理此消息,所以没有崩溃
+    //向野指针label指向的内存对象发送修改颜色的消息，结果是newView接收到了，因为newView和label是同类，可以处理此消息,所以没有崩溃； 在不开启startSniffer时，就把newView的backgroundColor修改了，开启startSniffer后，阻断了向野指针发消息的过程
     label.backgroundColor = [UIColor orangeColor];
     
 }
