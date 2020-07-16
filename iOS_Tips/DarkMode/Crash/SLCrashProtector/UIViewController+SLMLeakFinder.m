@@ -7,6 +7,7 @@
 //
 
 #import "UIViewController+SLMLeakFinder.h"
+#import "SLCrashProtector.h"
 #import "NSObject+SLMLeakFinder.h"
 
 const void *const kSLHasBeenPoppedKey = &kSLHasBeenPoppedKey;

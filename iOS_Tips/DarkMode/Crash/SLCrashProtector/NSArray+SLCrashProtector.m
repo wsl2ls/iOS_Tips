@@ -10,7 +10,6 @@
 #import "SLCrashProtector.h"
 
 
-
 @implementation NSArray (SLCrashProtector)
 
 + (void)load {

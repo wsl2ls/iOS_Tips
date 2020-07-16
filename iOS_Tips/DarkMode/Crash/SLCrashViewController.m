@@ -7,6 +7,7 @@
 //
 
 #import "SLCrashViewController.h"
+#import "SLCrashProtector.h"
 #import "BSBacktraceLogger.h"
 
 @interface SLCrashViewController ()

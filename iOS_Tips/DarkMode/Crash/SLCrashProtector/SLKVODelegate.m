@@ -7,6 +7,7 @@
 //
 
 #import "SLKVODelegate.h"
+#import "SLCrashProtector.h"
 
 @interface SLKVODelegate ()
 {
