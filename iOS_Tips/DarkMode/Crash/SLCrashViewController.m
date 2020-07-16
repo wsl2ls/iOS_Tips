@@ -10,7 +10,7 @@
 #import "SLCrashProtector.h"
 #import "BSBacktraceLogger.h"
 
-@interface SLCrashViewController ()
+@interface SLCrashViewController ()<SLCrashHandlerDelegate>
 
 @property (nonatomic, strong) UITextView *textView;
 
@@ -81,13 +81,17 @@
     }
     self.textView = [[UITextView alloc] initWithFrame:CGRectMake(0, SL_TopNavigationBarHeight+ i/4*size.height, self.view.sl_width, self.view.sl_height - (SL_TopNavigationBarHeight+ i/4*size.height))];
     self.textView.editable = NO;
+    self.textView.text = @"点击上方测试内容按钮，在此输出异常捕获结果...";
     [self.view addSubview:self.textView];
     
-    
-    SL_WeakSelf;
-    [SLCrashHandler defaultCrashHandler].crashHandlerBlock = ^(SLCrashError * _Nonnull crashError) {
-        weakSelf.textView.text = [NSString stringWithFormat:@" 错误描述：%@ \n 调用栈：%@" ,crashError.errorDesc, crashError.callStackSymbol];
-    };
+    [SLCrashHandler defaultCrashHandler].delegate = self;
+}
+
+#pragma mark - SLCrashHandlerDelegate
+///异常捕获回调 提供给外界实现自定义处理 ，日志上报等（注意线程安全）
+- (void)crashHandlerDidOutputCrashError:(SLCrashError *)crashError {
+    [self.textView scrollsToTop];
+    self.textView.text = [NSString stringWithFormat:@" 错误描述：%@ \n 调用栈：%@" ,crashError.errorDesc, crashError.callStackSymbol];
 }
 
 #pragma mark - Container Crash

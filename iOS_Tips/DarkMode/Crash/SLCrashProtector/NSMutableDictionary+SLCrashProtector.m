@@ -29,7 +29,8 @@
             [self sl_setObject:anObject forKey:aKey];
         }
         @catch (NSException *exception) {
-            [[SLCrashHandler defaultCrashHandler] catchCrashException:exception type:SLCrashErrorTypeMDictionary errorDesc:[@"异常:字典nil值 " stringByAppendingString:exception.reason]];
+            SLCrashError *crashError = [SLCrashError errorWithErrorType:SLCrashErrorTypeMDictionary errorDesc:[@"异常:字典nil值 " stringByAppendingString:exception.reason] exception:exception callStack:[NSThread callStackSymbols]];
+            [[SLCrashHandler defaultCrashHandler].delegate crashHandlerDidOutputCrashError:crashError];
         }
     }else{
         [self sl_setObject:anObject forKey:aKey];
@@ -42,7 +43,8 @@
             [self sl_removeObjectForKey:aKey];
         }
         @catch (NSException *exception) {
-            [[SLCrashHandler defaultCrashHandler] catchCrashException:exception type:SLCrashErrorTypeMDictionary errorDesc:[@"异常:字典nil值 " stringByAppendingString:exception.reason]];
+            SLCrashError *crashError = [SLCrashError errorWithErrorType:SLCrashErrorTypeMDictionary errorDesc:[@"异常:字典nil值 " stringByAppendingString:exception.reason] exception:exception callStack:[NSThread callStackSymbols]];
+            [[SLCrashHandler defaultCrashHandler].delegate crashHandlerDidOutputCrashError:crashError];
         }
     }else{
         [self sl_removeObjectForKey:aKey];
@@ -55,7 +57,8 @@
             [self sl_setObject:anObject forKeyedSubscript:key];
         }
         @catch (NSException *exception) {
-            [[SLCrashHandler defaultCrashHandler] catchCrashException:exception type:SLCrashErrorTypeMDictionary errorDesc:[@"异常:字典nil值 " stringByAppendingString:exception.reason]];
+            SLCrashError *crashError = [SLCrashError errorWithErrorType:SLCrashErrorTypeMDictionary errorDesc:[@"异常:字典nil值 " stringByAppendingString:exception.reason] exception:exception callStack:[NSThread callStackSymbols]];
+            [[SLCrashHandler defaultCrashHandler].delegate crashHandlerDidOutputCrashError:crashError];
         }
     }else{
         [self sl_setObject:anObject forKeyedSubscript:key];
@@ -75,7 +78,8 @@
             index ++;
         }else{
             NSString *errorInfo = [NSString stringWithFormat:@"异常:字典nil值 *** -[__NSPlaceholderDictionary initWithObjects:forKeys:count:]: attempt to insert nil object from objects[%d]",i];
-            [[SLCrashHandler defaultCrashHandler] catchCrashException:nil type:SLCrashErrorTypeMDictionary errorDesc:errorInfo];
+            SLCrashError *crashError = [SLCrashError errorWithErrorType:SLCrashErrorTypeMDictionary errorDesc:errorInfo exception:nil callStack:[NSThread callStackSymbols]];
+            [[SLCrashHandler defaultCrashHandler].delegate crashHandlerDidOutputCrashError:crashError];
         }
     }
     return [self sl_initWithObjects:objectsNew forKeys:keysNew count:index];

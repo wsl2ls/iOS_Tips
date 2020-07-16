@@ -111,7 +111,8 @@
             [observer observeValueForKeyPath:keyPath ofObject:object change:change context:context];
         } @catch (NSException *exception) {
             NSString *reason = [NSString stringWithFormat:@"异常 KVO: %@",[exception description]];
-            [[SLCrashHandler defaultCrashHandler] catchCrashException:exception type:SLCrashErrorTypeArray errorDesc:reason];
+            SLCrashError *crashError = [SLCrashError errorWithErrorType:SLCrashErrorTypeKVO errorDesc:reason exception:nil callStack:[NSThread callStackSymbols]];
+            [[SLCrashHandler defaultCrashHandler].delegate crashHandlerDidOutputCrashError:crashError];
         }
     }
 }

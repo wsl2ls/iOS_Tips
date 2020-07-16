@@ -37,7 +37,8 @@
     NSString *desc = [NSString stringWithFormat:@"内存泄漏/循环引用：如果%@不应该被释放, 请重写[%@ -willDealloc] 并 returning NO .\n", className, className];
     NSLog(@"%@",desc);
     NSException *exception = [NSException exceptionWithName:NSInternalInconsistencyException reason:desc userInfo:nil];
-    [[SLCrashHandler defaultCrashHandler] catchCrashException:exception type:SLCrashErrorTypeLeak errorDesc:desc];
+    SLCrashError *crashError = [SLCrashError errorWithErrorType:SLCrashErrorTypeLeak errorDesc:desc exception:exception callStack:[NSThread callStackSymbols]];
+    [[SLCrashHandler defaultCrashHandler].delegate crashHandlerDidOutputCrashError:crashError];
 }
 
 //不需要监测内存泄漏的白名单类

@@ -34,7 +34,8 @@
             return [self sl_mObjectAtIndex:index];
         }
         @catch (NSException *exception) {
-            [[SLCrashHandler defaultCrashHandler] catchCrashException:exception type:SLCrashErrorTypeMArray errorDesc:[NSString stringWithFormat:@"异常:数组越界 %@",exception.reason]];
+            SLCrashError *crashError = [SLCrashError errorWithErrorType:SLCrashErrorTypeMArray errorDesc:[NSString stringWithFormat:@"异常:数组越界 %@",exception.reason] exception:exception callStack:[NSThread callStackSymbols]];
+            [[SLCrashHandler defaultCrashHandler].delegate crashHandlerDidOutputCrashError:crashError];
             return nil;
         }
     }else {
@@ -50,7 +51,8 @@
             return [self sl_mObjectAtIndexedSubscript:index];
         }
         @catch (NSException *exception) {
-            [[SLCrashHandler defaultCrashHandler] catchCrashException:exception type:SLCrashErrorTypeMArray errorDesc:[NSString stringWithFormat:@"异常:数组越界 %@",exception.reason]];
+            SLCrashError *crashError = [SLCrashError errorWithErrorType:SLCrashErrorTypeMArray errorDesc:[NSString stringWithFormat:@"异常:数组越界 %@",exception.reason] exception:exception callStack:[NSThread callStackSymbols]];
+            [[SLCrashHandler defaultCrashHandler].delegate crashHandlerDidOutputCrashError:crashError];
             return nil;
         }
     }
@@ -60,7 +62,8 @@
 - (void)sl_removeObjectsInRange:(NSRange)range {
     if (range.location+range.length>self.count) {
         NSString *errorInfo = [NSString stringWithFormat:@"异常:数组越界 *** -[__NSArrayM removeObjectsInRange:]: range {%ld, %ld} extends beyond bounds [0 .. %ld]",(unsigned long)range.location,(unsigned long)range.length,(unsigned long)self.count];
-        [[SLCrashHandler defaultCrashHandler] catchCrashException:nil type:SLCrashErrorTypeMArray errorDesc:errorInfo];
+        SLCrashError *crashError = [SLCrashError errorWithErrorType:SLCrashErrorTypeMArray errorDesc:errorInfo exception:nil callStack:[NSThread callStackSymbols]];
+        [[SLCrashHandler defaultCrashHandler].delegate crashHandlerDidOutputCrashError:crashError];
         return;
     }
     [self sl_removeObjectsInRange:range];
@@ -68,7 +71,8 @@
 //越界 nil值
 - (void)sl_replaceObjectAtIndex:(NSInteger)index withObject:(id)object {
     if (object == nil) {
-        [[SLCrashHandler defaultCrashHandler] catchCrashException:nil type:SLCrashErrorTypeMArray errorDesc:@"异常:数组nil值 ***  -[__NSArrayM replaceObjectAtIndex:withObject:]: object cannot be nil"];
+        SLCrashError *crashError = [SLCrashError errorWithErrorType:SLCrashErrorTypeMArray errorDesc:@"异常:数组nil值 ***  -[__NSArrayM replaceObjectAtIndex:withObject:]: object cannot be nil" exception:nil callStack:[NSThread callStackSymbols]];
+        [[SLCrashHandler defaultCrashHandler].delegate crashHandlerDidOutputCrashError:crashError];
         return;
     }
     if (index >= self.count) {
@@ -76,7 +80,8 @@
             return [self sl_replaceObjectAtIndex:index withObject:object];
         }
         @catch (NSException *exception) {
-            [[SLCrashHandler defaultCrashHandler] catchCrashException:exception type:SLCrashErrorTypeMArray errorDesc:[NSString stringWithFormat:@"异常:数组越界 %@",exception.reason]];
+            SLCrashError *crashError = [SLCrashError errorWithErrorType:SLCrashErrorTypeMArray errorDesc:[NSString stringWithFormat:@"异常:数组越界 %@",exception.reason] exception:exception callStack:[NSThread callStackSymbols]];
+            [[SLCrashHandler defaultCrashHandler].delegate crashHandlerDidOutputCrashError:crashError];
         }
     }else {
         [self sl_replaceObjectAtIndex:index withObject:object];
@@ -89,7 +94,8 @@
             return [self sl_replaceObjectsInRange:range withObjectsFromArray:otherArray];
         }
         @catch (NSException *exception) {
-            [[SLCrashHandler defaultCrashHandler] catchCrashException:exception type:SLCrashErrorTypeMArray errorDesc:[NSString stringWithFormat:@"异常:数组越界 %@",exception.reason]];
+            SLCrashError *crashError = [SLCrashError errorWithErrorType:SLCrashErrorTypeMArray errorDesc:[NSString stringWithFormat:@"异常:数组越界 %@",exception.reason] exception:exception callStack:[NSThread callStackSymbols]];
+            [[SLCrashHandler defaultCrashHandler].delegate crashHandlerDidOutputCrashError:crashError];
         }
     }else{
         [self sl_replaceObjectsInRange:range withObjectsFromArray:otherArray];
@@ -99,7 +105,10 @@
 //越界 nil值
 - (void)sl_insertObject:(id)object atIndex:(NSInteger)index {
     if (object == nil) {
-        [[SLCrashHandler defaultCrashHandler] catchCrashException:nil type:SLCrashErrorTypeMArray errorDesc:@"异常:数组nil值 ***  -[__NSArrayM insertObject:atIndex:]: object cannot be nil"];
+        
+        SLCrashError *crashError = [SLCrashError errorWithErrorType:SLCrashErrorTypeMArray errorDesc:@"异常:数组nil值 ***  -[__NSArrayM insertObject:atIndex:]: object cannot be nil" exception:nil callStack:[NSThread callStackSymbols]];
+        [[SLCrashHandler defaultCrashHandler].delegate crashHandlerDidOutputCrashError:crashError];
+        
         return;
     }
     if (index > self.count) {
@@ -107,7 +116,8 @@
             return [self sl_insertObject:object atIndex:index];
         }
         @catch (NSException *exception) {
-            [[SLCrashHandler defaultCrashHandler] catchCrashException:exception type:SLCrashErrorTypeMArray errorDesc:[NSString stringWithFormat:@"异常:数组越界 %@",exception.reason]];
+            SLCrashError *crashError = [SLCrashError errorWithErrorType:SLCrashErrorTypeMArray errorDesc:[NSString stringWithFormat:@"异常:数组越界 %@",exception.reason] exception:exception callStack:[NSThread callStackSymbols]];
+            [[SLCrashHandler defaultCrashHandler].delegate crashHandlerDidOutputCrashError:crashError];
         }
     }else {
         [self sl_insertObject:object atIndex:index];;
@@ -120,7 +130,8 @@
             return [self sl_insertObjects:objects atIndexes:indexes];
         }
         @catch (NSException *exception) {
-            [[SLCrashHandler defaultCrashHandler] catchCrashException:exception type:SLCrashErrorTypeMArray errorDesc:[NSString stringWithFormat:@"异常:数组越界 %@",exception.reason]];
+            SLCrashError *crashError = [SLCrashError errorWithErrorType:SLCrashErrorTypeMArray errorDesc:[NSString stringWithFormat:@"异常:数组越界 %@",exception.reason] exception:exception callStack:[NSThread callStackSymbols]];
+            [[SLCrashHandler defaultCrashHandler].delegate crashHandlerDidOutputCrashError:crashError];
         }
         return;
     }
@@ -137,7 +148,8 @@
         }else{
             //记录错误
             NSString *errorInfo = [NSString stringWithFormat:@"异常:数组nil值 *** -[__NSPlaceholderArray initWithObjects:count:]: attempt to insert nil object from objects[%d]",i];
-            [[SLCrashHandler defaultCrashHandler] catchCrashException:nil type:SLCrashErrorTypeMArray errorDesc:errorInfo];
+            SLCrashError *crashError = [SLCrashError errorWithErrorType:SLCrashErrorTypeMArray errorDesc:errorInfo exception:nil callStack:[NSThread callStackSymbols]];
+            [[SLCrashHandler defaultCrashHandler].delegate crashHandlerDidOutputCrashError:crashError];
         }
     }
     return [self sl_initWithObjects:objectsNew count:index];

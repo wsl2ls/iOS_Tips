@@ -124,7 +124,8 @@
 - (void)_throwMessageSentExceptionWithSelector: (SEL)selector
 {
     NSException *exception = [NSException exceptionWithName:NSInternalInconsistencyException reason:[NSString stringWithFormat:@"( 野指针必现定位：-[%@ %@]) was sent to a zombie object at address: %p", NSStringFromClass(self.originClass), NSStringFromSelector(selector), self] userInfo:nil];
-    [[SLCrashHandler defaultCrashHandler] catchCrashException:exception type:SLCrashErrorTypeZombie errorDesc:exception.reason];
+   SLCrashError *crashError = [SLCrashError errorWithErrorType:SLCrashErrorTypeZombie errorDesc:exception.reason exception:exception callStack:[NSThread callStackSymbols]];
+      [[SLCrashHandler defaultCrashHandler].delegate crashHandlerDidOutputCrashError:crashError];
     //是否需要强制抛出异常
 //    @throw exception;
 }

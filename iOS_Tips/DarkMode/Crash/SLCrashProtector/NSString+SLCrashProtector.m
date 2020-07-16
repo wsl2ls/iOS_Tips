@@ -31,7 +31,8 @@
             [self sl_characterAtIndex:index];
         }
         @catch (NSException *exception) {
-            [[SLCrashHandler defaultCrashHandler] catchCrashException:exception type:SLCrashErrorTypeString errorDesc:[@"异常:String越界 " stringByAppendingString:exception.reason]];
+            SLCrashError *crashError = [SLCrashError errorWithErrorType:SLCrashErrorTypeString errorDesc:[@"异常:String越界 " stringByAppendingString:exception.reason] exception:exception callStack:[NSThread callStackSymbols]];
+            [[SLCrashHandler defaultCrashHandler].delegate crashHandlerDidOutputCrashError:crashError];
         }
         return 0;
     }
@@ -44,8 +45,8 @@
         instance = [self sl_substringFromIndex:from];
     }
     @catch (NSException *exception) {
-        [[SLCrashHandler defaultCrashHandler] catchCrashException:exception type:SLCrashErrorTypeString errorDesc:[@"异常:String越界 " stringByAppendingString:exception.reason]];
-        
+        SLCrashError *crashError = [SLCrashError errorWithErrorType:SLCrashErrorTypeString errorDesc:[@"异常:String越界 " stringByAppendingString:exception.reason] exception:exception callStack:[NSThread callStackSymbols]];
+        [[SLCrashHandler defaultCrashHandler].delegate crashHandlerDidOutputCrashError:crashError];
     }
     @finally {
         return instance;
@@ -58,8 +59,8 @@
         instance = [self sl_substringToIndex:to];
     }
     @catch (NSException *exception) {
-        [[SLCrashHandler defaultCrashHandler] catchCrashException:exception type:SLCrashErrorTypeString errorDesc:[@"异常:String越界 " stringByAppendingString:exception.reason]];
-        
+        SLCrashError *crashError = [SLCrashError errorWithErrorType:SLCrashErrorTypeString errorDesc:[@"异常:String越界 " stringByAppendingString:exception.reason] exception:exception callStack:[NSThread callStackSymbols]];
+        [[SLCrashHandler defaultCrashHandler].delegate crashHandlerDidOutputCrashError:crashError];
     }
     @finally {
         return instance;
@@ -72,8 +73,8 @@
         instance = [self sl_substringWithRange:range];
     }
     @catch (NSException *exception) {
-        [[SLCrashHandler defaultCrashHandler] catchCrashException:exception type:SLCrashErrorTypeString errorDesc:[@"异常:String越界 " stringByAppendingString:exception.reason]];
-        
+        SLCrashError *crashError = [SLCrashError errorWithErrorType:SLCrashErrorTypeString errorDesc:[@"异常:String越界 " stringByAppendingString:exception.reason] exception:exception callStack:[NSThread callStackSymbols]];
+        [[SLCrashHandler defaultCrashHandler].delegate crashHandlerDidOutputCrashError:crashError];
     }
     @finally {
         return instance;

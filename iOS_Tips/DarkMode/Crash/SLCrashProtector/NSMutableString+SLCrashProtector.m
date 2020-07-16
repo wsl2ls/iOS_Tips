@@ -29,7 +29,8 @@
             [self sl_insertString:aString atIndex:loc];
         }
         @catch (NSException *exception) {
-            [[SLCrashHandler defaultCrashHandler] catchCrashException:exception type:SLCrashErrorTypeMString errorDesc:[@"异常:MutableString越界 " stringByAppendingString:exception.reason]];
+            SLCrashError *crashError = [SLCrashError errorWithErrorType:SLCrashErrorTypeMString errorDesc:[@"异常:MutableString越界 " stringByAppendingString:exception.reason] exception:exception callStack:[NSThread callStackSymbols]];
+            [[SLCrashHandler defaultCrashHandler].delegate crashHandlerDidOutputCrashError:crashError];
         }
     }else{
         [self sl_insertString:aString atIndex:loc];
@@ -42,7 +43,8 @@
             [self sl_deleteCharactersInRange:range];
         }
         @catch (NSException *exception) {
-            [[SLCrashHandler defaultCrashHandler] catchCrashException:exception type:SLCrashErrorTypeMString errorDesc:[@"异常:MutableString越界 " stringByAppendingString:exception.reason]];
+            SLCrashError *crashError = [SLCrashError errorWithErrorType:SLCrashErrorTypeMString errorDesc:[@"异常:MutableString越界 " stringByAppendingString:exception.reason] exception:exception callStack:[NSThread callStackSymbols]];
+            [[SLCrashHandler defaultCrashHandler].delegate crashHandlerDidOutputCrashError:crashError];
         }
         if (range.location < self.length) {
             [self sl_deleteCharactersInRange:NSMakeRange(range.location, self.length-range.location)];
