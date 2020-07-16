@@ -30,7 +30,9 @@ typedef NS_ENUM(NSInteger, SLCrashErrorType) {
     /*KVC异常*/
     SLCrashErrorTypeKVC,
     /*野指针*/
-     SLCrashErrorTypeZombie,
+    SLCrashErrorTypeZombie,
+    /*内存泄漏/循环引用*/
+    SLCrashErrorTypeLeak
 };
 
 /// 崩溃信息

@@ -40,15 +40,54 @@
 - (void)setupUI {
     self.navigationItem.title = @"iOS Crash防护";
     self.view.backgroundColor = [UIColor whiteColor];
-    self.textView = [[UITextView alloc] initWithFrame:self.view.bounds];
+    
+    NSArray *methods = @[@"testArray",
+                         @"testMutableArray",
+                         @"testDictionary",
+                         @"testMutableDictionary",
+                         @"testString",
+                         @"testMutableString",
+                         @"testUnrecognizedSelector",
+                         @"testKVO",
+                         @"testKVC",
+                         @"testWildPointer",
+                         @"testMemoryLeak",
+                         @"testCallStack"];
+    NSArray *titles = @[@"数组越界、空值",
+                        @"可变数组越界、空值",
+                        @"字典越界、空值",
+                        @"可变字典越界、空值",
+                        @"字符串越界、空值",
+                        @"可变字符串越界、空值",
+                        @"未实现方法",
+                        @"KVO",
+                        @"KVC",
+                        @"野指针",
+                        @"内存泄漏/循环引用",
+                        @"回调栈"];
+    CGSize size = CGSizeMake(self.view.sl_width/4.0, 66);
+    int i = 0;
+    for (NSString *method in methods) {
+        UIButton *testBtn = [[UIButton alloc] initWithFrame:CGRectMake(i%4*size.width, SL_TopNavigationBarHeight+ i/4*size.height, size.width, size.height)];
+        [testBtn setTitle:titles[i] forState:UIControlStateNormal];
+        testBtn.backgroundColor = UIColor.orangeColor;
+        testBtn.titleLabel.numberOfLines = 0;
+        testBtn.titleLabel.textAlignment = NSTextAlignmentCenter;
+        testBtn.layer.borderColor = [UIColor blackColor].CGColor;
+        testBtn.layer.borderWidth = 1.0;
+        [testBtn addTarget:self action:NSSelectorFromString(method) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:testBtn];
+        i++;
+    }
+    self.textView = [[UITextView alloc] initWithFrame:CGRectMake(0, SL_TopNavigationBarHeight+ i/4*size.height, self.view.sl_width, self.view.sl_height - (SL_TopNavigationBarHeight+ i/4*size.height))];
     self.textView.editable = NO;
     [self.view addSubview:self.textView];
+    
     
     SL_WeakSelf;
     [SLCrashHandler defaultCrashHandler].crashHandlerBlock = ^(SLCrashError * _Nonnull crashError) {
         weakSelf.textView.text = [NSString stringWithFormat:@" 错误描述：%@ \n 调用栈：%@" ,crashError.errorDesc, crashError.callStackSymbol];
     };
-    [self testArray];
 }
 
 #pragma mark - Container Crash
@@ -183,17 +222,22 @@
     UILabel *label = [[UILabel alloc] init];
     //-fno-objc-arc 记得设置此类编译方式支持MRC
     //testObj对象所在的内存空间已释放
-    label.text = @"";
     [label release];
     
     //这时新建一个示例对象，覆盖掉了野指针label所指向的内存空间，如果此时没有创建此同类，就会崩溃
-    UILabel* newView = [[UILabel alloc] initWithFrame:CGRectMake(0,200,SL_kScreenWidth, 60)];
+    UILabel* newView = [[UILabel alloc] initWithFrame:CGRectMake(0,SL_kScreenHeight- 60,SL_kScreenWidth, 60)];
     newView.backgroundColor = [UIColor greenColor];
+    newView.text = @"startSniffer开启 显示正常";
     [self.view addSubview:newView];
     
     //向野指针label指向的内存对象发送修改颜色的消息，结果是newView接收到了，因为newView和label是同类，可以处理此消息,所以没有崩溃； 在不开启startSniffer时，就把newView的backgroundColor修改了，开启startSniffer后，阻断了向野指针发消息的过程
     label.backgroundColor = [UIColor orangeColor];
+    label.text = @"startSniffer关闭 我是野指针，显示错误";
     
+    
+    [SLDelayPerform sl_startDelayPerform:^{
+        [newView removeFromSuperview];
+    } afterDelay:2.0];
 }
 
 #pragma mark - 内存泄漏/循环引用
@@ -201,23 +245,25 @@
 //思路来源：https://github.com/Tencent/MLeaksFinder.git
 //查找循引用连 FBRetainCycleDetector  https://yq.aliyun.com/articles/66857  、 https://blog.csdn.net/majiakun1/article/details/78747226
 - (void)testMemoryLeak {
-        self.testBlock = ^{
-            self;
-        };
-//        self.testMArray = [[NSMutableArray alloc] initWithObjects:self, nil];
+    
+    //执行此方法后，返回上一级界面，发现SLCrashViewController对象没释放
+    self.testBlock = ^{
+        self;
+    };
+    //        self.testMArray = [[NSMutableArray alloc] initWithObjects:self, nil];
 }
 
 #pragma mark - 函数调用栈
 ///获取任意线程的函数调用栈  https://toutiao.io/posts/aveig6/preview
 - (void)testCallStack {
     //打印当前线程调用栈
-//    BSLOG;
+    BSLOG;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-         //在子线程中 打印主线程调用栈，会发现栈基本是空的，因为都已释放了
-//           BSLOG_MAIN
-         BSLOG;
+        //在子线程中 打印主线程调用栈，会发现栈基本是空的，因为都已释放了
+        //           BSLOG_MAIN
+        //        BSLOG;
     });
-//    BSLOG_MAIN
+    //    BSLOG_MAIN
 }
 
 @end
