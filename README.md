@@ -61,13 +61,8 @@
 > 主要类：SLAvCaptureTool(音视频采集录制工具)、SLAvEditExport(导出编辑的音视频)。关于视频的压缩问题，可以通过降低采集时的分辨率sessionPreset、降低写入文件时的分辨率(AVVideoWidthKey宽AVVideoHeightKey高)和码率(AVVideoCodecKey)、指定高的FormatProfile(AVVideoProfileLevelKey)等方法来实现，同时也要保证一定的清晰度满足业务的需求， 可以看看这篇文章https://www.jianshu.com/p/4f69c22c6dce 
 
 |![拍摄视频.gif](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/3、小视频1.gif)|![拍摄照片](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/3、小视频2.gif)|![横屏视频](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/3、小视频3.gif)|
-
-*****
-
+| ----  | ----  | ----  |
 |![视频编辑](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/3、小视频4.gif)|![视频编辑](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/3、小视频5.gif)|![图片编辑](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/3、小视频6.gif)|
-
-****
-
 |![图片编辑](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/3、小视频7.gif)|![图片裁剪](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/3、小视频8.gif)|
 
 
@@ -136,6 +131,8 @@
 ## 7-iOSCrash防护 
 
 >  Crash防护内容涉及 NSArray/NSMutableArray、NSDictionary/NSMutableDictionary、NSString/NSMutableString、Unrecognized Selector、KVO、KVC 、野指针定位、内存泄漏/循环引用；主要是对常见易错的地方进行容错处理，避免崩溃，并保存出错时的函数调用栈，以方便快速定位代码，主要是利用的runtime和fishook知识。
+
+![iOS Crash防护](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/iOS Crash防护.gif)
 
 ## 8-WKWebView相关
 
