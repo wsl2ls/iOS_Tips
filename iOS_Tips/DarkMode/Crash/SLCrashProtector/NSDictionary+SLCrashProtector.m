@@ -27,7 +27,9 @@
 - (id)sl_initWithObjects:(NSArray *)objects forKeys:(NSArray<id<NSCopying>> *)keys {
     if (objects.count != keys.count) {
         NSString *errorInfo = [NSString stringWithFormat:@"异常:字典key/value个数不匹配 *** -[NSDictionary initWithObjects:forKeys:]: count of objects (%ld) differs from count of keys (%ld)",(unsigned long)objects.count,(unsigned long)keys.count];
-        [[SLCrashHandler defaultCrashHandler] catchCrashException:nil type:SLCrashErrorTypeDictionary errorDesc:errorInfo];
+        SLCrashError *crashError = [SLCrashError errorWithErrorType:SLCrashErrorTypeDictionary errorDesc:errorInfo exception:nil callStack:[NSThread callStackSymbols]];
+        [[SLCrashHandler defaultCrashHandler].delegate crashHandlerDidOutputCrashError:crashError];
+        
         return nil;//huicha
     }
     NSUInteger index = 0;
@@ -40,7 +42,8 @@
             index ++;
         }else{
             NSString *errorInfo = [NSString stringWithFormat:@"异常:字典nil值 *** -[NSDictionary initWithObjects:forKeys]: attempt to insert nil object from objects[%d]",i];
-            [[SLCrashHandler defaultCrashHandler] catchCrashException:nil type:SLCrashErrorTypeDictionary errorDesc:errorInfo];
+            SLCrashError *crashError = [SLCrashError errorWithErrorType:SLCrashErrorTypeDictionary errorDesc:errorInfo exception:nil callStack:[NSThread callStackSymbols]];
+            [[SLCrashHandler defaultCrashHandler].delegate crashHandlerDidOutputCrashError:crashError];
         }
     }
     return [self sl_initWithObjects:[NSArray arrayWithObjects:objectsNew count:index] forKeys: [NSArray arrayWithObjects:keysNew count:index]];
@@ -58,7 +61,8 @@
             index ++;
         }else{
             NSString *errorInfo = [NSString stringWithFormat:@"异常:字典nil值 *** -[__NSPlaceholderDictionary initWithObjects:forKeys:count:]: attempt to insert nil object from objects[%d]",i];
-            [[SLCrashHandler defaultCrashHandler] catchCrashException:nil type:SLCrashErrorTypeDictionary errorDesc:errorInfo];
+            SLCrashError *crashError = [SLCrashError errorWithErrorType:SLCrashErrorTypeDictionary errorDesc:errorInfo exception:nil callStack:[NSThread callStackSymbols]];
+            [[SLCrashHandler defaultCrashHandler].delegate crashHandlerDidOutputCrashError:crashError];
         }
     }
     return [self sl_initWithObjects:objectsNew forKeys:keysNew count:index];

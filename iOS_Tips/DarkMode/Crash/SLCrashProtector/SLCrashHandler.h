@@ -30,7 +30,9 @@ typedef NS_ENUM(NSInteger, SLCrashErrorType) {
     /*KVC异常*/
     SLCrashErrorTypeKVC,
     /*野指针*/
-     SLCrashErrorTypeZombie,
+    SLCrashErrorTypeZombie,
+    /*内存泄漏/循环引用*/
+    SLCrashErrorTypeLeak
 };
 
 /// 崩溃信息
@@ -43,19 +45,25 @@ typedef NS_ENUM(NSInteger, SLCrashErrorType) {
 @property (nonatomic, strong) NSException *exception;
 /// 当前线程的函数调用栈
 @property (nonatomic, copy) NSArray<NSString *> *callStackSymbol;
+///初始化
++ (instancetype)errorWithErrorType:(SLCrashErrorType)errorType errorDesc:(NSString *)errorDesc exception:(nullable NSException *)exception callStack:(NSArray*)callStackSymbol;
+@end
 
+
+@class SLCrashHandler;
+@protocol SLCrashHandlerDelegate <NSObject>
+///捕获到错误信息，交给外界delegate处理
+- (void)crashHandlerDidOutputCrashError:(SLCrashError *)crashError;
 @end
 
 /// 崩溃处理程序
 @interface SLCrashHandler : NSObject
-/// 异常捕获回调 提供给外界初始化实现自定义处理 ，日志上报等（注意线程安全和循环引用）
-@property (nonatomic, copy) void(^crashHandlerBlock)(SLCrashError *crashError);
+
+///异常捕获回调 提供给外界实现自定义处理 ，日志上报等（注意线程安全）
+@property (nonatomic, weak) id<SLCrashHandlerDelegate>delegate;
 
 /// 单例
 + (instancetype)defaultCrashHandler;
-
-/// 捕获崩溃异常信息 Private
-- (void)catchCrashException:(NSException * _Nullable )exception type:(SLCrashErrorType)errorType errorDesc:(NSString *)errorDesc;
 
 @end
 

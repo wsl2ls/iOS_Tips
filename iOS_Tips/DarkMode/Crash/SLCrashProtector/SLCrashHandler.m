@@ -9,6 +9,15 @@
 #import "SLCrashHandler.h"
 
 @implementation SLCrashError
++ (instancetype)errorWithErrorType:(SLCrashErrorType)errorType errorDesc:(NSString *)errorDesc exception:(NSException *)exception callStack:(NSArray*)callStackSymbol {
+    SLCrashError *crashError = [SLCrashError new];
+    crashError.errorDesc = errorDesc;
+    crashError.errorType = errorType;
+    crashError.exception = exception;
+    //获取当前线程的函数调用栈
+    crashError.callStackSymbol = callStackSymbol;
+    return crashError;
+}
 @end
 
 @implementation SLCrashHandler
@@ -21,20 +30,5 @@
     });
     return crashHandler;
 }
-
-/// 捕获崩溃异常
-- (void)catchCrashException:(NSException *)exception type:(SLCrashErrorType)errorType errorDesc:(NSString *)errorDesc {
-    SLCrashError *crashError = [SLCrashError new];
-    crashError.errorDesc = errorDesc;
-    crashError.errorType = errorType;
-    crashError.exception = exception;
-    //获取当前线程的函数调用栈
-    crashError.callStackSymbol = [NSThread callStackSymbols];
-//    NSLog(@"%@" ,errorDesc);
-    if (self.crashHandlerBlock) {
-        self.crashHandlerBlock(crashError);
-    }
-}
-
 
 @end
