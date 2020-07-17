@@ -6,7 +6,7 @@ GitHub：https://github.com/wsl2ls/iOS_Tips.git
 ### 目录 
 > 1、[暗黑模式](#1-暗黑模式适配)  
 > 2、[AppleID登录应用](#2-AppleID登录应用)  
-> 3、AVFoundation相关(#3-AVFoundation相关)
+> 3、[AVFoundation相关](#3-AVFoundation相关)
 >> 3.1、AVFoundation 高仿微信相机拍摄和编辑(#3.1-AVFoundation 高仿微信相机拍摄和编辑)   
 >> 3.2、[AVFoundation 人脸检测](#3.2-AVFoundation 人脸检测)  
 >> 3.3、[AVFoundation 实时滤镜](#3.3-AVFoundation 实时滤镜)  
