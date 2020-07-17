@@ -10,21 +10,21 @@ GitHub：https://github.com/wsl2ls/iOS_Tips.git
 >> 3.1、AVFoundation 高仿微信相机拍摄和编辑   
 >> 3.2、AVFoundation 人脸检测  
 >> 3.3、AVFoundation 实时滤镜  
->> 3.4、GPUImage框架的使用 
+>> 3.4、GPUImage框架的使用  
 >> 3.5、VideoToolBox和AudioToolBox音视频编解码  
->> 3.6、AVFoundation 利用摄像头实时识别物体颜色
+>> 3.6、AVFoundation 利用摄像头实时识别物体颜色  
 >> 3.7、AVFoundation 原生二维码扫描识别和生成
 
 > 4、[OpenGL ES学习](#4-OpenGL ES学习)  
 > 5、[LeetCode算法练习](#5-LeetCode算法练习)  
 > 6、[工作中踩过的坑](#6-工作中踩过的坑)
->> 6.1、键盘和UIMenuController不能同时存在的问题 
+>> 6.1、键盘和UIMenuController不能同时存在的问题  
 >> 6.2、全屏侧滑手势/UIScrollView/UISlider间滑动手势冲突]  
 >> 6.3、UITableView/UICollectionView获取特定位置的cell  
 >> 6.4、UIScrollView视觉差动画](#6.4-UIScrollView视觉差动画)  
->> 6.5、iOS 传感器集锦 
->> 6.6、iOS 自定义转场动画
->> 6.7、二进制重排优化启动速度 
+>> 6.5、iOS 传感器集锦  
+>> 6.6、iOS 自定义转场动画  
+>> 6.7、二进制重排优化启动速度  
 >> 6.8、iOS APM应用性能监控管理(doing)
 
 > 7、[iOS Crash防护](#7-iOS Crash防护)  
