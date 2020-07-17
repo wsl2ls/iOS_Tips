@@ -5,30 +5,30 @@ GitHub：https://github.com/wsl2ls/iOS_Tips.git
 
 ### 目录 
 > 1、[暗黑模式](#1-暗黑模式适配)  
-> 2、AppleID登录应用  
-> 3、AVFoundation相关
->> 3.1、AVFoundation 高仿微信相机拍摄和编辑   
->> 3.2、AVFoundation 人脸检测  
->> 3.3、AVFoundation 实时滤镜  
->> 3.4、GPUImage框架的使用  
->> 3.5、VideoToolBox和AudioToolBox音视频编解码  
->> 3.6、AVFoundation 利用摄像头实时识别物体颜色  
->> 3.7、AVFoundation 原生二维码扫描识别和生成
+> 2、[AppleID登录应用](#2-AppleID登录应用)  
+> 3、AVFoundation相关(#3-AVFoundation相关)
+>> 3.1、AVFoundation 高仿微信相机拍摄和编辑(#3.1-AVFoundation 高仿微信相机拍摄和编辑)   
+>> 3.2、[AVFoundation 人脸检测](#3.2-AVFoundation 人脸检测)  
+>> 3.3、[AVFoundation 实时滤镜](#3.3-AVFoundation 实时滤镜)  
+>> 3.4、[GPUImage框架的使用](#3.4-GPUImage框架的使用)  
+>> 3.5、[VideoToolBox和AudioToolBox音视频编解码](#3.5-VideoToolBox和AudioToolBox音视频编解码)  
+>> 3.6、[AVFoundation 利用摄像头实时识别物体颜色](#3.6-AVFoundation 利用摄像头实时识别物体颜色)  
+>> 3.7、[AVFoundation 原生二维码扫描识别和生成](#3.7-AVFoundation 原生二维码扫描识别和生成)
 
-> 4、OpenGL ES学习   
-> 5、LeetCode算法练习  
-> 6、工作中踩过的坑
->> 6.1、键盘和UIMenuController不能同时存在的问题  
->> 6.2、全屏侧滑手势/UIScrollView/UISlider间滑动手势冲突  
->> 6.3、UITableView/UICollectionView获取特定位置的cell  
->> 6.4、UIScrollView视觉差动画  
->> 6.5、iOS 传感器集锦  
->> 6.6、iOS 自定义转场动画  
->> 6.7、二进制重排优化启动速度  
->> 6.8、iOS APM应用性能监控管理(doing)
+> 4、[OpenGL ES学习](#4-OpenGL ES学习)  
+> 5、[LeetCode算法练习](#5-LeetCode算法练习)  
+> 6、[工作中踩过的坑](#6-工作中踩过的坑)
+>> 6.1、[键盘和UIMenuController不能同时存在的问题](#6.1-键盘和UIMenuController不能同时存在的问题])  
+>> 6.2、[全屏侧滑手势/UIScrollView/UISlider间滑动手势冲突](#6.2-全屏侧滑手势/UIScrollView/UISlider间滑动手势冲突)  
+>> 6.3、[UITableView/UICollectionView获取特定位置的cell](#6.3-UITableView/UICollectionView获取特定位置的cell)  
+>> 6.4、[UIScrollView视觉差动画](#6.4-UIScrollView视觉差动画)  
+>> 6.5、[iOS 传感器集锦](#6.5-iOS 传感器集锦)  
+>> 6.6、[iOS 自定义转场动画](#6.6-iOS 自定义转场动画)  
+>> 6.7、[二进制重排优化启动速度](#6.7-二进制重排优化启动速度)  
+>> 6.8、[iOS APM应用性能监控管理(doing)](#6.8-iOS APM应用性能监控管理)
 
-> 7、iOS Crash防护  
-> 8、WKWebView相关  
+> 7、[iOS Crash防护](#7-iOS Crash防护)  
+> 8、[WKWebView相关](#8-WKWebView相关) 
 >> 8.1、WKWebView的使用  
 >> 8.2、WKWebView+UITableView混排    
 >> 8.3、WKWebView离线缓存功能  
@@ -43,13 +43,13 @@ GitHub：https://github.com/wsl2ls/iOS_Tips.git
 
 ![暗黑模式](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/暗黑模式.gif)
   
-## 2、AppleID登录应用
+## 2-AppleID登录应用
 
 * 查看本仓库下的AddingTheSignInWithAppleFlowToYourApp
 
-## 3、AVFoundation相关
+## 3-AVFoundation相关
 
-#### 3.1、[微信相机拍摄照片、小视频以及编辑功能](https://www.jianshu.com/p/a2a04cabb98d)  
+#### 3.1-[微信相机拍摄照片、小视频以及编辑功能](https://www.jianshu.com/p/a2a04cabb98d)  
 > 效果描述：  
 > * 1、自定义相机 拍摄视频和照片
 > * 2、切换前后摄像头、调整焦距/设置聚焦点、横屏拍摄
@@ -69,17 +69,17 @@ GitHub：https://github.com/wsl2ls/iOS_Tips.git
 |![图片编辑](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/3、小视频7.gif)|![图片裁剪](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/3、小视频8.gif)|
 
 
-#### 3.2、[人脸检测](https://www.jianshu.com/p/f236dc161a90) 
+#### 3.2-[人脸检测](https://www.jianshu.com/p/f236dc161a90) 
 
 ![人脸识别](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/4、人脸识别.gif)
 
-#### 3.3、[实时滤镜拍摄和导出](https://www.jianshu.com/p/f236dc161a90)
+#### 3.3-[实时滤镜拍摄和导出](https://www.jianshu.com/p/f236dc161a90)
 
 >  主要类: 是由SLAvCaptureTool拆分的 SLAvCaptureSession（采集） + SLAvWriterInput（录制） 两个工具类，方便扩展，录制写入实现的方式也略有不同
 
 ![人脸识别](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/5、实时滤镜拍摄.gif)
 
-#### 3.4、[GPUImage框架的使用](https://www.jianshu.com/p/97740cd381f7)
+#### 3.4-[GPUImage框架的使用](https://www.jianshu.com/p/97740cd381f7)
 
 > 效果描述：实时拍摄添加水印和滤镜、本地视频添加水印、GIF图水印
 
@@ -87,21 +87,21 @@ GitHub：https://github.com/wsl2ls/iOS_Tips.git
 
 ![GPUImage框架的使用](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/6、GPUImage.gif)
 
-#### 3.5、VideoToolBox和AudioToolBox音视频编解码
+#### 3.5-VideoToolBox和AudioToolBox音视频编解码
 
 > 请查看本仓库下的 VideoEncoder&Decoder 文件
 
 ![音视频编码](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/7、音视频编码.gif)
 
-#### 3.6、AVFoundation 利用摄像头实时识别物体颜色 
+#### 3.6-AVFoundation 利用摄像头实时识别物体颜色 
 
 ![音视频编码](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/3.6、拾色器.gif)
 
-#### 3.7、[AVFoundation 原生二维码扫描识别和生成](https://juejin.im/post/5c0e1db651882539c60d0434)
+#### 3.7-[AVFoundation 原生二维码扫描识别和生成](https://juejin.im/post/5c0e1db651882539c60d0434)
 
   > 该代码地址在：https://github.com/wsl2ls/ScanQRcode
 
-## 4、[OpenGL ES学习](https://www.jianshu.com/p/9259689cac06)
+## 4-[OpenGL ES学习](https://www.jianshu.com/p/9259689cac06)
 
 > 示例描述：
 > * 1、GLKit 绘制图片和正方体
@@ -111,31 +111,31 @@ GitHub：https://github.com/wsl2ls/iOS_Tips.git
 
 |![OpenGLES学习.gif](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/8、OpenGLES学习1.gif)|![OpenGLES学习](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/8、OpenGLES学习2.gif)|![OpenGLES学习](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/8、OpenGLES学习3.gif)|
 
-## 5、[LeetCode算法练习](https://github.com/wsl2ls/AlgorithmSet.git)
+## 5-[LeetCode算法练习](https://github.com/wsl2ls/AlgorithmSet.git)
 
 > [LeetCode算法练习集合(Swift版) ~ 每天一道算法题](https://github.com/wsl2ls/AlgorithmSet.git)  
 
-## 6、工作中踩过的坑
+## 6-工作中踩过的坑
 
-#### 6.1、[键盘和UIMenuController的并存问题](https://www.jianshu.com/p/ed1b57c4ecea)  
+#### 6.1-[键盘和UIMenuController的并存问题](https://www.jianshu.com/p/ed1b57c4ecea)  
 
 | ![问题描述.gif](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/10、键盘和UIMenuController不能同时出现的问题描述.gif) | ![并存问题解决](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/10、键盘和UIMenuController并存问题解决.gif) |
 
-#### 6.2、[全屏侧滑手势/UIScrollView/UISlider间滑动手势冲突](https://juejin.im/post/5c0e1e73f265da616413d828)
-#### 6.3、[UITableView/UICollectionView获取特定位置的cell](https://juejin.im/post/5c0e1df95188250d2722a3bc)
-#### 6.4、[UIScrollView视觉差动画](https://juejin.im/post/5c088b45f265da610e7fe156)  
-#### 6.5、[iOS 传感器集锦](https://juejin.im/post/5c088a1051882517165dd15d)  
-#### 6.6、[iOS 自定义转场动画](https://juejin.im/post/5c088ba36fb9a049fb43737b)
-#### 6.7、[二进制重排优化启动速度](https://juejin.im/post/5ea79839f265da7bba509590)
-#### 6.8、[iOS APM应用性能监控管理(doing)]()
+#### 6.2-[全屏侧滑手势/UIScrollView/UISlider间滑动手势冲突](https://juejin.im/post/5c0e1e73f265da616413d828)
+#### 6.3-[UITableView/UICollectionView获取特定位置的cell](https://juejin.im/post/5c0e1df95188250d2722a3bc)
+#### 6.4-[UIScrollView视觉差动画](https://juejin.im/post/5c088b45f265da610e7fe156)  
+#### 6.5-[iOS 传感器集锦](https://juejin.im/post/5c088a1051882517165dd15d)  
+#### 6.6-[iOS 自定义转场动画](https://juejin.im/post/5c088ba36fb9a049fb43737b)
+#### 6.7-[二进制重排优化启动速度](https://juejin.im/post/5ea79839f265da7bba509590)
+#### 6.8-[iOS APM应用性能监控管理(doing)]()
 
 > CPU占用率、内存/磁盘使用率、卡顿监控定位 ......
 
-## 7、iOS Crash防护 
+## 7-iOS Crash防护 
 
 >  Crash防护内容涉及 NSArray/NSMutableArray、NSDictionary/NSMutableDictionary、NSString/NSMutableString、Unrecognized Selector、KVO、KVC 、野指针定位、内存泄漏/循环引用；主要是对常见易错的地方进行容错处理，避免崩溃，并保存出错时的函数调用栈，以方便快速定位代码，主要是利用的runtime和fishook知识。
 
-## 8、[WKWebView相关](https://juejin.im/post/5ed999fd51882542f9389949) 
+## 8-[WKWebView相关](https://juejin.im/post/5ed999fd51882542f9389949) 
 
 > [WKWebView的使用](https://juejin.im/post/5c0e1e2ae51d451d971743a1)、[WKWebView+UITableView混排](https://juejin.im/post/5ed999fd51882542f9389949)、WKWebView离线缓存功能、HTML非文本元素替换为原生组件展示、UIScrollView实现原理、UITableView的实现原理
 
