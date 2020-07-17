@@ -15,11 +15,11 @@ GitHub：https://github.com/wsl2ls/iOS_Tips.git
 >> 3.6、AVFoundation 利用摄像头实时识别物体颜色  
 >> 3.7、AVFoundation 原生二维码扫描识别和生成
 
-> 4、[OpenGL ES学习](#4-OpenGL ES学习)  
+> 4、[OpenGL ES学习](#4-OpenGLES学习)  
 > 5、[LeetCode算法练习](#5-LeetCode算法练习)  
 > 6、[工作中踩过的坑](#6-工作中踩过的坑)
 >> 6.1、键盘和UIMenuController不能同时存在的问题  
->> 6.2、全屏侧滑手势/UIScrollView/UISlider间滑动手势冲突]  
+>> 6.2、全屏侧滑手势/UIScrollView/UISlider间滑动手势冲突  
 >> 6.3、UITableView/UICollectionView获取特定位置的cell  
 >> 6.4、UIScrollView视觉差动画](#6.4-UIScrollView视觉差动画)  
 >> 6.5、iOS 传感器集锦  
@@ -27,7 +27,7 @@ GitHub：https://github.com/wsl2ls/iOS_Tips.git
 >> 6.7、二进制重排优化启动速度  
 >> 6.8、iOS APM应用性能监控管理(doing)
 
-> 7、[iOS Crash防护](#7-iOS Crash防护)  
+> 7、[iOS Crash防护](#7-iOSCrash防护)  
 > 8、[WKWebView相关](#8-WKWebView相关) 
 >> 8.1、WKWebView的使用  
 >> 8.2、WKWebView+UITableView混排    
@@ -36,7 +36,7 @@ GitHub：https://github.com/wsl2ls/iOS_Tips.git
 >> 8.5、UIScrollView实现原理  
 >> 8.6、UITableView的实现原理 
  
-> 问题说明
+> [问题说明](#问题说明)
  
  
 ## 1-暗黑模式适配
@@ -101,7 +101,7 @@ GitHub：https://github.com/wsl2ls/iOS_Tips.git
 
   > 该代码地址在：https://github.com/wsl2ls/ScanQRcode
 
-## 4-OpenGL ES学习
+## 4-OpenGLES学习
 
 > 示例描述：
 > * 1、GLKit 绘制图片和正方体
@@ -131,7 +131,7 @@ GitHub：https://github.com/wsl2ls/iOS_Tips.git
 
 > CPU占用率、内存/磁盘使用率、卡顿监控定位 ......
 
-## 7-iOS Crash防护 
+## 7-iOSCrash防护 
 
 >  Crash防护内容涉及 NSArray/NSMutableArray、NSDictionary/NSMutableDictionary、NSString/NSMutableString、Unrecognized Selector、KVO、KVC 、野指针定位、内存泄漏/循环引用；主要是对常见易错的地方进行容错处理，避免崩溃，并保存出错时的函数调用栈，以方便快速定位代码，主要是利用的runtime和fishook知识。
 
