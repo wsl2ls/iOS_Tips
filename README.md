@@ -7,13 +7,13 @@ GitHub：https://github.com/wsl2ls/iOS_Tips.git
 > 1、[暗黑模式](#1-暗黑模式适配)  
 > 2、[AppleID登录应用](#2-AppleID登录应用)  
 > 3、[AVFoundation相关](#3-AVFoundation相关)
->> 3.1、AVFoundation 高仿微信相机拍摄和编辑(#3.1-AVFoundation 高仿微信相机拍摄和编辑)   
->> 3.2、[AVFoundation 人脸检测](#3.2-AVFoundation 人脸检测)  
->> 3.3、[AVFoundation 实时滤镜](#3.3-AVFoundation 实时滤镜)  
->> 3.4、[GPUImage框架的使用](#3.4-GPUImage框架的使用)  
->> 3.5、[VideoToolBox和AudioToolBox音视频编解码](#3.5-VideoToolBox和AudioToolBox音视频编解码)  
->> 3.6、[AVFoundation 利用摄像头实时识别物体颜色](#3.6-AVFoundation 利用摄像头实时识别物体颜色)  
->> 3.7、[AVFoundation 原生二维码扫描识别和生成](#3.7-AVFoundation 原生二维码扫描识别和生成)
+>> 3.1、AVFoundation 高仿微信相机拍摄和编辑   
+>> 3.2、AVFoundation 人脸检测  
+>> 3.3、AVFoundation 实时滤镜  
+>> 3.4、GPUImage框架的使用 
+>> 3.5、VideoToolBox和AudioToolBox音视频编解码  
+>> 3.6、AVFoundation 利用摄像头实时识别物体颜色
+>> 3.7、AVFoundation 原生二维码扫描识别和生成
 
 > 4、[OpenGL ES学习](#4-OpenGL ES学习)  
 > 5、[LeetCode算法练习](#5-LeetCode算法练习)  
