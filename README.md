@@ -4,7 +4,7 @@ GitHub：https://github.com/wsl2ls/iOS_Tips.git
 掘金：https://juejin.im/user/5c00d97b6fb9a049fb436288
 
 ### 目录 
-> 1、[暗黑模式](#1暗黑模式适配)  
+> 1、[暗黑模式](#1、暗黑模式适配)  
 > 2、AppleID登录应用  
 > 3、AVFoundation相关
 >> 3.1、AVFoundation 高仿微信相机拍摄和编辑   
@@ -39,7 +39,7 @@ GitHub：https://github.com/wsl2ls/iOS_Tips.git
 > 问题说明
  
  
-## 1暗黑模式适配
+## 1、暗黑模式适配
 
 ![暗黑模式](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/暗黑模式.gif)
   
