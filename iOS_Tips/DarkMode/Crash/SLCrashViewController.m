@@ -32,9 +32,6 @@
     [super viewDidLoad];
     [self setupUI];
 }
-- (void)dealloc {
-    
-}
 
 #pragma mark - UI
 - (void)setupUI {
@@ -223,6 +220,7 @@
     //开启僵尸对象嗅探定位 可以打开或关闭此开关看看效果就知道了
     [SLZombieFinder startSniffer];
     
+    
     UILabel *label = [[UILabel alloc] init];
     //-fno-objc-arc 记得设置此类编译方式支持MRC
     //testObj对象所在的内存空间已释放
@@ -242,6 +240,7 @@
     [SLDelayPerform sl_startDelayPerform:^{
         [newView removeFromSuperview];
     } afterDelay:2.0];
+    
 }
 
 #pragma mark - 内存泄漏/循环引用
