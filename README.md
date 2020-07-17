@@ -18,14 +18,14 @@ GitHub：https://github.com/wsl2ls/iOS_Tips.git
 > 4、[OpenGL ES学习](#4-OpenGL ES学习)  
 > 5、[LeetCode算法练习](#5-LeetCode算法练习)  
 > 6、[工作中踩过的坑](#6-工作中踩过的坑)
->> 6.1、[键盘和UIMenuController不能同时存在的问题](#6.1-键盘和UIMenuController不能同时存在的问题])  
->> 6.2、[全屏侧滑手势/UIScrollView/UISlider间滑动手势冲突](#6.2-全屏侧滑手势/UIScrollView/UISlider间滑动手势冲突)  
->> 6.3、[UITableView/UICollectionView获取特定位置的cell](#6.3-UITableView/UICollectionView获取特定位置的cell)  
->> 6.4、[UIScrollView视觉差动画](#6.4-UIScrollView视觉差动画)  
->> 6.5、[iOS 传感器集锦](#6.5-iOS 传感器集锦)  
->> 6.6、[iOS 自定义转场动画](#6.6-iOS 自定义转场动画)  
->> 6.7、[二进制重排优化启动速度](#6.7-二进制重排优化启动速度)  
->> 6.8、[iOS APM应用性能监控管理(doing)](#6.8-iOS APM应用性能监控管理)
+>> 6.1、键盘和UIMenuController不能同时存在的问题 
+>> 6.2、全屏侧滑手势/UIScrollView/UISlider间滑动手势冲突]  
+>> 6.3、UITableView/UICollectionView获取特定位置的cell  
+>> 6.4、UIScrollView视觉差动画](#6.4-UIScrollView视觉差动画)  
+>> 6.5、iOS 传感器集锦 
+>> 6.6、iOS 自定义转场动画
+>> 6.7、二进制重排优化启动速度 
+>> 6.8、iOS APM应用性能监控管理(doing)
 
 > 7、[iOS Crash防护](#7-iOS Crash防护)  
 > 8、[WKWebView相关](#8-WKWebView相关) 
@@ -101,7 +101,7 @@ GitHub：https://github.com/wsl2ls/iOS_Tips.git
 
   > 该代码地址在：https://github.com/wsl2ls/ScanQRcode
 
-## 4-[OpenGL ES学习](https://www.jianshu.com/p/9259689cac06)
+## 4-OpenGL ES学习
 
 > 示例描述：
 > * 1、GLKit 绘制图片和正方体
@@ -111,7 +111,7 @@ GitHub：https://github.com/wsl2ls/iOS_Tips.git
 
 |![OpenGLES学习.gif](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/8、OpenGLES学习1.gif)|![OpenGLES学习](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/8、OpenGLES学习2.gif)|![OpenGLES学习](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/8、OpenGLES学习3.gif)|
 
-## 5-[LeetCode算法练习](https://github.com/wsl2ls/AlgorithmSet.git)
+## 5-LeetCode算法练习
 
 > [LeetCode算法练习集合(Swift版) ~ 每天一道算法题](https://github.com/wsl2ls/AlgorithmSet.git)  
 
