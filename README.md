@@ -1,7 +1,9 @@
 # iOS_Tips
 > iOS的一些示例，不定时更新~  
-GitHub：https://github.com/wsl2ls/iOS_Tips.git  
-掘金：https://juejin.im/user/5c00d97b6fb9a049fb436288
+
+| [简书 ](https://www.jianshu.com/u/e15d1f644bea) | [掘金](https://juejin.im/user/5c00d97b6fb9a049fb436288) |  
+| ---- | ---- | 
+| [CSDN](https://blog.csdn.net/wsl2ls) | [微博](https://weibo.com/5732733120/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1) |
 
 ### 目录 
 > 1、[暗黑模式](#1-暗黑模式适配)  
@@ -148,12 +150,13 @@ GitHub：https://github.com/wsl2ls/iOS_Tips.git
 avCaptureTool.videoSize = CGSizeMake(self.view.width * 0.8, self.view.height * 0.8);
 
 
-
 #### Welcome to you 👏 您的follow和start，是我前进的动力，Thanks♪(･ω･)ﾉ 🤝
 
 | [简书 ](https://www.jianshu.com/u/e15d1f644bea) | [掘金](https://juejin.im/user/5c00d97b6fb9a049fb436288) |  QQ交流群 | 微信公众号 |  微信号 |
 | ---- | ---- | ---- | ---- | ---- |
 | [CSDN](https://blog.csdn.net/wsl2ls) | [微博](https://weibo.com/5732733120/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1) | [835303405](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/QQ交流群.png) |  [iOS2679114653](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/微信公众号.png) | w2679114653 |
+
+[回到顶部](#iOS_Tips)
 
 ![QQ交流群: 835303405](QQ交流群.png)
 
