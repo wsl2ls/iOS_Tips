@@ -178,22 +178,6 @@ static void *KVODefenderKey = &KVODefenderKey;
     //        }
     [self sl_KVODealloc];
 }
-/*是否是系统类*/
-static inline BOOL IsSystemClass(Class cls){
-    __block BOOL isSystem = NO;
-    NSString *className = NSStringFromClass(cls);
-    if ([className hasPrefix:@"NS"]) {
-        isSystem = YES;
-        return isSystem;
-    }
-    NSBundle *mainBundle = [NSBundle bundleForClass:cls];
-    if (mainBundle == [NSBundle mainBundle]) {
-        isSystem = NO;
-    }else{
-        isSystem = YES;
-    }
-    return isSystem;
-}
 
 #pragma mark - KVC
 /// KVC  防护

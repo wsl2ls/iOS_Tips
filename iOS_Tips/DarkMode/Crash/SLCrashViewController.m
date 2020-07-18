@@ -218,6 +218,7 @@
 ///思路来源： https://www.jianshu.com/p/9fd4dc046046?utm_source=oschina-app
 - (void)testWildPointer {
     //开启僵尸对象嗅探定位 可以打开或关闭此开关看看效果就知道了
+    // 目前还不完善，不推荐使用 ，仅做交流学习
     [SLZombieFinder startSniffer];
     
     
