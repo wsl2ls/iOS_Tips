@@ -68,6 +68,7 @@
 		784C4BE724BC53D500D5C199 /* SLAPMCpu.m in Sources */ = {isa = PBXBuildFile; fileRef = 784C4BE624BC53D500D5C199 /* SLAPMCpu.m */; };
 		784C4BEA24BDA2DE00D5C199 /* SLProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 784C4BE924BDA2DE00D5C199 /* SLProxy.m */; };
 		784C4BED24BDA5D700D5C199 /* SLAPMFluency.m in Sources */ = {isa = PBXBuildFile; fileRef = 784C4BEC24BDA5D700D5C199 /* SLAPMFluency.m */; };
+		784C4C3A24C2EE6600D5C199 /* SLAPMMemoryDisk.m in Sources */ = {isa = PBXBuildFile; fileRef = 784C4C3924C2EE6600D5C199 /* SLAPMMemoryDisk.m */; };
 		7851CB362331CC87002295B5 /* SLDarkModeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7851CB332331CC87002295B5 /* SLDarkModeViewController.m */; };
 		7851CB372331CC87002295B5 /* SLDarkModeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7851CB352331CC87002295B5 /* SLDarkModeViewController.xib */; };
 		7851CB43233222E2002295B5 /* UIView+SLFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 7851CB41233222E2002295B5 /* UIView+SLFrame.m */; };
@@ -278,6 +279,8 @@
 		784C4BE924BDA2DE00D5C199 /* SLProxy.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLProxy.m; sourceTree = "<group>"; };
 		784C4BEB24BDA5D700D5C199 /* SLAPMFluency.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLAPMFluency.h; sourceTree = "<group>"; };
 		784C4BEC24BDA5D700D5C199 /* SLAPMFluency.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLAPMFluency.m; sourceTree = "<group>"; };
+		784C4C3824C2EE6600D5C199 /* SLAPMMemoryDisk.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLAPMMemoryDisk.h; sourceTree = "<group>"; };
+		784C4C3924C2EE6600D5C199 /* SLAPMMemoryDisk.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLAPMMemoryDisk.m; sourceTree = "<group>"; };
 		7851CB332331CC87002295B5 /* SLDarkModeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLDarkModeViewController.m; sourceTree = "<group>"; };
 		7851CB342331CC87002295B5 /* SLDarkModeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLDarkModeViewController.h; sourceTree = "<group>"; };
 		7851CB352331CC87002295B5 /* SLDarkModeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SLDarkModeViewController.xib; sourceTree = "<group>"; };
@@ -617,6 +620,8 @@
 				784C4BE324BC4C5E00D5C199 /* SLAPMManager.m */,
 				784C4BE524BC53D500D5C199 /* SLAPMCpu.h */,
 				784C4BE624BC53D500D5C199 /* SLAPMCpu.m */,
+				784C4C3824C2EE6600D5C199 /* SLAPMMemoryDisk.h */,
+				784C4C3924C2EE6600D5C199 /* SLAPMMemoryDisk.m */,
 				784C4BEB24BDA5D700D5C199 /* SLAPMFluency.h */,
 				784C4BEC24BDA5D700D5C199 /* SLAPMFluency.m */,
 			);
@@ -1447,6 +1452,7 @@
 				782CFB57239E5FE6001B5528 /* SLShaderFilterViewController.m in Sources */,
 				7822CCF8235B054200E70C29 /* SLPaddingLabel.m in Sources */,
 				784C4BE424BC4C5E00D5C199 /* SLAPMManager.m in Sources */,
+				784C4C3A24C2EE6600D5C199 /* SLAPMMemoryDisk.m in Sources */,
 				78842468248FAED100C2E505 /* SLColorPickerViewController.m in Sources */,
 				787C7DCF2462B03D005DF7ED /* UINavigationController+SLMLeakFinder.m in Sources */,
 				788ACD622390BFD400737EC2 /* SLLoadImageVC.m in Sources */,
