@@ -92,7 +92,7 @@ static inline IMP sl_swizzleMethodWithBlock(Method method, void *block) {
             Class currentClass = [obj class];
             NSString *clsName = NSStringFromClass(currentClass);
             //_UITextSizeCache 这个私有类的实例对象在dispatch_after里释放会崩溃，故排除
-            if ([sl_sniff_white_list() containsObject:clsName] || [clsName isEqualToString:@"_UITextSizeCache"]) {
+            if ([sl_sniff_white_list() containsObject:clsName] || [clsName isEqualToString:@"_UITextSizeCache"] || [clsName isEqualToString:@"NSConcreteValue"] || [clsName isEqualToString:@"SLZombieCatcher"] ) {
                 sl_dealloc(obj);
             } else {
                 NSValue *objVal = [NSValue valueWithBytes: &obj objCType: @encode(typeof(obj))];
