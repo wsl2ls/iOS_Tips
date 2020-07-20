@@ -36,7 +36,7 @@
         @catch (NSException *exception) {
             SLCrashError *crashError = [SLCrashError errorWithErrorType:SLCrashErrorTypeMArray errorDesc:[NSString stringWithFormat:@"异常:数组越界 %@",exception.reason] exception:exception callStack:[NSThread callStackSymbols]];
             [[SLCrashHandler defaultCrashHandler].delegate crashHandlerDidOutputCrashError:crashError];
-            return nil;
+            return self.lastObject;
         }
     }else {
         return [self sl_mObjectAtIndex:index];
@@ -53,7 +53,7 @@
         @catch (NSException *exception) {
             SLCrashError *crashError = [SLCrashError errorWithErrorType:SLCrashErrorTypeMArray errorDesc:[NSString stringWithFormat:@"异常:数组越界 %@",exception.reason] exception:exception callStack:[NSThread callStackSymbols]];
             [[SLCrashHandler defaultCrashHandler].delegate crashHandlerDidOutputCrashError:crashError];
-            return nil;
+            return self.lastObject;
         }
     }
     return [self sl_mObjectAtIndexedSubscript:index];
