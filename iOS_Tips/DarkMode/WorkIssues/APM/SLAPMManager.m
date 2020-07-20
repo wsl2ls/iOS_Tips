@@ -48,16 +48,16 @@
     if (_isMonitoring) return;
     _isMonitoring = YES;
     
-    if ((self.type & SLAPMTypeCpu) == SLAPMTypeCpu || (self.type & SLAPMTypeMemory) == SLAPMTypeMemory || (self.type & SLAPMTypeAll) == SLAPMTypeAll) {
+    if ((self.type & SLAPMTypeCpu) == SLAPMTypeCpu || (self.type & SLAPMTypeMemory) == SLAPMTypeMemory || self.type == SLAPMTypeAll) {
         _taskName = [SLTimer execTask:self selector:@selector(monitoring) start:0 interval:1.0/60 repeats:YES async:YES];
     }
     
     
-    if ((self.type & SLAPMTypeCpu) == SLAPMTypeCrash || (self.type & SLAPMTypeMemory) == SLAPMTypeMemory) {
+    if ((self.type & SLAPMTypeCpu) == SLAPMTypeCrash || self.type == SLAPMTypeAll) {
         [SLCrashHandler defaultCrashHandler].delegate = self;
     }
     
-    if ((self.type & SLAPMTypeFluency) == SLAPMTypeFluency || (self.type & SLAPMTypeAll) == SLAPMTypeAll) {
+    if ((self.type & SLAPMTypeFluency) == SLAPMTypeFluency || self.type == SLAPMTypeAll) {
         [SLAPMFluency sharedInstance].delegate = self;
         [[SLAPMFluency sharedInstance] startMonitoring];
     }
@@ -77,12 +77,12 @@
 ///监控中
 - (void)monitoring {
     
-    if ((self.type & SLAPMTypeCpu) == SLAPMTypeCpu || (self.type & SLAPMTypeAll) == SLAPMTypeAll) {
+    if ((self.type & SLAPMTypeCpu) == SLAPMTypeCpu || self.type == SLAPMTypeAll) {
         float CPU = [SLAPMCpu getCpuUsage];
         NSLog(@" CPU使用率：%.2f%%",CPU);
     }
     
-    if ((self.type & SLAPMTypeMemory) == SLAPMTypeMemory || (self.type & SLAPMTypeAll) == SLAPMTypeAll) {
+    if ((self.type & SLAPMTypeMemory) == SLAPMTypeMemory || self.type == SLAPMTypeAll) {
         double useMemory = [SLAPMMemoryDisk getUsageMemory];
         double freeMemory = [SLAPMMemoryDisk getFreeMemory];
         double totalMemory = [SLAPMMemoryDisk getTotalMemory];
