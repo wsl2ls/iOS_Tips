@@ -12,9 +12,10 @@
 #import "SLAPMCpu.h"
 #import "SLAPMMemoryDisk.h"
 #import "SLAPMFluency.h"
+#import "SLCrashProtector.h"
 
 
-@interface SLAPMManager ()<SLAPMFluencyDelegate>
+@interface SLAPMManager ()<SLAPMFluencyDelegate, SLCrashHandlerDelegate>
 ///任务名称
 @property (nonatomic, copy) NSString *taskName;
 
@@ -47,11 +48,16 @@
     if (_isMonitoring) return;
     _isMonitoring = YES;
     
-    if ((self.type & SLAPMTypeCpu) == SLAPMTypeCpu || (self.type & SLAPMTypeMemory) == SLAPMTypeMemory || (self.type & SLAPMTypeAll) == SLAPMTypeAll) {
+    if ((self.type & SLAPMTypeCpu) == SLAPMTypeCpu || (self.type & SLAPMTypeMemory) == SLAPMTypeMemory || self.type == SLAPMTypeAll) {
         _taskName = [SLTimer execTask:self selector:@selector(monitoring) start:0 interval:1.0/60 repeats:YES async:YES];
     }
     
-    if ((self.type & SLAPMTypeFluency) == SLAPMTypeFluency || (self.type & SLAPMTypeAll) == SLAPMTypeAll) {
+    
+    if ((self.type & SLAPMTypeCpu) == SLAPMTypeCrash || self.type == SLAPMTypeAll) {
+        [SLCrashHandler defaultCrashHandler].delegate = self;
+    }
+    
+    if ((self.type & SLAPMTypeFluency) == SLAPMTypeFluency || self.type == SLAPMTypeAll) {
         [SLAPMFluency sharedInstance].delegate = self;
         [[SLAPMFluency sharedInstance] startMonitoring];
     }
@@ -63,6 +69,7 @@
     _isMonitoring = NO;
     
     [SLTimer cancelTask:_taskName];
+    [SLAPMFluency sharedInstance].delegate = nil;
     [[SLAPMFluency sharedInstance] stopMonitoring];
 }
 
@@ -70,12 +77,12 @@
 ///监控中
 - (void)monitoring {
     
-    if ((self.type & SLAPMTypeCpu) == SLAPMTypeCpu || (self.type & SLAPMTypeAll) == SLAPMTypeAll) {
+    if ((self.type & SLAPMTypeCpu) == SLAPMTypeCpu || self.type == SLAPMTypeAll) {
         float CPU = [SLAPMCpu getCpuUsage];
         NSLog(@" CPU使用率：%.2f%%",CPU);
     }
     
-    if ((self.type & SLAPMTypeMemory) == SLAPMTypeMemory || (self.type & SLAPMTypeAll) == SLAPMTypeAll) {
+    if ((self.type & SLAPMTypeMemory) == SLAPMTypeMemory || self.type == SLAPMTypeAll) {
         double useMemory = [SLAPMMemoryDisk getUsageMemory];
         double freeMemory = [SLAPMMemoryDisk getFreeMemory];
         double totalMemory = [SLAPMMemoryDisk getTotalMemory];
@@ -88,6 +95,13 @@
 ///卡顿监控回调 当callStack不为nil时，表示发生卡顿并捕捉到卡顿时的调用栈
 - (void)APMFluency:(SLAPMFluency *)fluency didChangedFps:(float)fps callStackOfStuck:(nullable NSString *)callStack {
     NSLog(@" 卡顿监测  fps：%f \n %@", fps, callStack == nil ? @"流畅":[NSString stringWithFormat:@"卡住了 %@",callStack]);
+}
+
+#pragma mark - SLCrashHandlerDelegate
+///异常捕获回调 提供给外界实现自定义处理 ，日志上报等
+- (void)crashHandlerDidOutputCrashError:(SLCrashError *)crashError {
+   NSString *errorInfo = [NSString stringWithFormat:@" 错误描述：%@ \n 调用栈：%@" ,crashError.errorDesc, crashError.callStackSymbol];
+   NSLog(@"%@",errorInfo);
 }
 
 @end

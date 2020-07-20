@@ -69,6 +69,8 @@
 		784C4BEA24BDA2DE00D5C199 /* SLProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 784C4BE924BDA2DE00D5C199 /* SLProxy.m */; };
 		784C4BED24BDA5D700D5C199 /* SLAPMFluency.m in Sources */ = {isa = PBXBuildFile; fileRef = 784C4BEC24BDA5D700D5C199 /* SLAPMFluency.m */; };
 		784C4C3A24C2EE6600D5C199 /* SLAPMMemoryDisk.m in Sources */ = {isa = PBXBuildFile; fileRef = 784C4C3924C2EE6600D5C199 /* SLAPMMemoryDisk.m */; };
+		784C4C6E24C5B4F500D5C199 /* 笔记.md in Resources */ = {isa = PBXBuildFile; fileRef = 784C4C6D24C5B4F500D5C199 /* 笔记.md */; };
+		784C4C7024C5B5DD00D5C199 /* 高质量技术博客.md in Resources */ = {isa = PBXBuildFile; fileRef = 784C4C6F24C5B5DD00D5C199 /* 高质量技术博客.md */; };
 		7851CB362331CC87002295B5 /* SLDarkModeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7851CB332331CC87002295B5 /* SLDarkModeViewController.m */; };
 		7851CB372331CC87002295B5 /* SLDarkModeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7851CB352331CC87002295B5 /* SLDarkModeViewController.xib */; };
 		7851CB43233222E2002295B5 /* UIView+SLFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 7851CB41233222E2002295B5 /* UIView+SLFrame.m */; };
@@ -281,6 +283,8 @@
 		784C4BEC24BDA5D700D5C199 /* SLAPMFluency.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLAPMFluency.m; sourceTree = "<group>"; };
 		784C4C3824C2EE6600D5C199 /* SLAPMMemoryDisk.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLAPMMemoryDisk.h; sourceTree = "<group>"; };
 		784C4C3924C2EE6600D5C199 /* SLAPMMemoryDisk.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLAPMMemoryDisk.m; sourceTree = "<group>"; };
+		784C4C6D24C5B4F500D5C199 /* 笔记.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = "笔记.md"; sourceTree = "<group>"; };
+		784C4C6F24C5B5DD00D5C199 /* 高质量技术博客.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = "高质量技术博客.md"; sourceTree = "<group>"; };
 		7851CB332331CC87002295B5 /* SLDarkModeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLDarkModeViewController.m; sourceTree = "<group>"; };
 		7851CB342331CC87002295B5 /* SLDarkModeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLDarkModeViewController.h; sourceTree = "<group>"; };
 		7851CB352331CC87002295B5 /* SLDarkModeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SLDarkModeViewController.xib; sourceTree = "<group>"; };
@@ -862,6 +866,8 @@
 		7884247C24920FCA00C2E505 /* WorkIssues */ = {
 			isa = PBXGroup;
 			children = (
+				784C4C6F24C5B5DD00D5C199 /* 高质量技术博客.md */,
+				784C4C6D24C5B4F500D5C199 /* 笔记.md */,
 				7884247D2492102900C2E505 /* SLWorkIssuesViewController.h */,
 				7884247E2492102900C2E505 /* SLWorkIssuesViewController.m */,
 				784C4BDE24BC409600D5C199 /* APM */,
@@ -1268,6 +1274,7 @@
 				782CFB6E239E69F3001B5528 /* Scale.vsh in Resources */,
 				78BDE04D248BFBD7002ED386 /* wsl.png in Resources */,
 				782CFB37239E22AC001B5528 /* SplitScreen_9.fsh in Resources */,
+				784C4C7024C5B5DD00D5C199 /* 高质量技术博客.md in Resources */,
 				7811F7AF24B32A1E000AA044 /* Order File.png in Resources */,
 				782CFB76239E6A02001B5528 /* SoulOut.vsh in Resources */,
 				782CFB54239E4587001B5528 /* SplitScreen_16.fsh in Resources */,
@@ -1282,6 +1289,7 @@
 				783FB4612394A76B0039AEFD /* shaderf.fsh in Resources */,
 				7811F7AD24B32A1E000AA044 /* Write Link Map File.png in Resources */,
 				782CFB2F239E04A2001B5528 /* SplitScreen_4.vsh in Resources */,
+				784C4C6E24C5B4F500D5C199 /* 笔记.md in Resources */,
 				782CFB67239E6651001B5528 /* HexagonMosaic.vsh in Resources */,
 				782CFB2B239E0479001B5528 /* SplitScreen_3.vsh in Resources */,
 				782CFB5B239E6227001B5528 /* Gray.vsh in Resources */,
