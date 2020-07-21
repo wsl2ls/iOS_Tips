@@ -38,7 +38,7 @@
 >> 8.5、UIScrollView实现原理  
 >> 8.6、UITableView的实现原理 
  
-> [问题说明](#问题说明)
+> [ 结尾](#结尾)
  
  
 ## 1-暗黑模式适配
@@ -140,10 +140,11 @@
 
 ![WKWebView相关](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/12、WKWebView.gif)
 
-## 问题说明：
+## 结尾
 
-> * 1、主工程就是iOS_Tips下的DarkMode，别怀疑🤣，历史遗留问题😁😀，大部分内容都在里面，run一下就明白了🤝
-> * 2、小视频拍摄录制失败，主要集中在plus和X系列手机上：可能是由于写入的视频宽高videoSize设置的问题，各位可以先试试这样设置
+> * 1、主工程就是iOS_Tips下的DarkMode，别怀疑🤣，历史遗留问题😁😀，大部分内容都在里面，run一下就明白了🤝；
+> * 2、该demo里面有些功能还没有写博客介绍，后期有时间会补上，不过代码我一般喜欢写注释，所以我相信大家读起来应该也容易理解，建议大家看完之后，自己也可以写写，把整个流程过一遍，也许会比我写的更好哟；
+> * 3、小视频拍摄录制失败，主要集中在plus和X系列手机上：可能是由于写入的视频宽高videoSize设置的问题，各位可以先试试这样设置
 avCaptureTool.videoSize = CGSizeMake(self.view.width * 0.8, self.view.height * 0.8);
 
 
