@@ -23,7 +23,7 @@
 >> 6.1、键盘和UIMenuController不能同时存在的问题  
 >> 6.2、全屏侧滑手势/UIScrollView/UISlider间滑动手势冲突  
 >> 6.3、UITableView/UICollectionView获取特定位置的cell  
->> 6.4、UIScrollView视觉差动画](#6.4-UIScrollView视觉差动画)  
+>> 6.4、UIScrollView视觉差动画  
 >> 6.5、iOS 传感器集锦  
 >> 6.6、iOS 自定义转场动画  
 >> 6.7、二进制重排优化启动速度  
