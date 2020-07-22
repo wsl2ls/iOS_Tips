@@ -82,6 +82,7 @@
     [self.view addSubview:self.textView];
     
     [SLCrashHandler defaultCrashHandler].delegate = self;
+    
 }
 
 #pragma mark - SLCrashHandlerDelegate
@@ -124,6 +125,7 @@
     strings[1] = nilStr;
     NSArray *array2 = [NSArray arrayWithObjects:strings count:2];
     NSArray *array3 = [NSArray arrayWithObject:nil];
+    
 }
 ///可变数组防护 越界和nil值
 - (void)testMutableArray {

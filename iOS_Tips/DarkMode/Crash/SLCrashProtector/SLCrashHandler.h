@@ -11,8 +11,10 @@
 NS_ASSUME_NONNULL_BEGIN
 
 typedef NS_ENUM(NSInteger, SLCrashErrorType) {
+    /*未知错误*/
+    SLCrashErrorTypeUnknow = 0,
     /*Array*/
-    SLCrashErrorTypeArray = 0,
+    SLCrashErrorTypeArray,
     /*NSMutableArray*/
     SLCrashErrorTypeMArray,
     /*NSDictionary*/
