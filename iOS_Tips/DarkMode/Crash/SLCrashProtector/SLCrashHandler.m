@@ -43,19 +43,21 @@ static NSUncaughtExceptionHandler *otherUncaughtExceptionHandler = NULL;
     ///先获取保留其他三方的异常Handler
     otherUncaughtExceptionHandler = NSGetUncaughtExceptionHandler();
     ///注册自己的异常Handler
-    NSSetUncaughtExceptionHandler (SL_HandleException);
+    NSSetUncaughtExceptionHandler (SL_UncaughtExceptionHandler);
     
     ///注册信号Handler
-    signal(SIGABRT, sl_uncaughtSignalHandler);
-    signal(SIGILL, sl_uncaughtSignalHandler);
-    signal(SIGSEGV, sl_uncaughtSignalHandler);
-    signal(SIGFPE, sl_uncaughtSignalHandler);
-    signal(SIGBUS, sl_uncaughtSignalHandler);
-    signal(SIGPIPE, sl_uncaughtSignalHandler);
+    signal(SIGABRT, SL_UncaughtSignalHandler);
+    signal(SIGILL, SL_UncaughtSignalHandler);
+    signal(SIGSEGV, SL_UncaughtSignalHandler);
+    signal(SIGFPE, SL_UncaughtSignalHandler);
+    signal(SIGBUS, SL_UncaughtSignalHandler);
+    signal(SIGPIPE, SL_UncaughtSignalHandler);
+    signal(SIGKILL, SL_UncaughtSignalHandler);
+    signal(SIGTRAP, SL_UncaughtSignalHandler);
     
 }
 ///异常捕获处理
-void SL_HandleException(NSException *exception) {
+void SL_UncaughtExceptionHandler(NSException *exception) {
     if (otherUncaughtExceptionHandler) {
         //如果其他三方也有注册，则也执行其他三方的Handle，然后在执行自己的
         otherUncaughtExceptionHandler(exception);
@@ -67,7 +69,7 @@ void SL_HandleException(NSException *exception) {
 
 
 ///异常信号处理回调
-void sl_uncaughtSignalHandler(int signal) {
+void SL_UncaughtSignalHandler(int signal) {
     NSString *exceptionInfo = [NSString stringWithFormat:@"异常信号：%@ Crash",signalName(signal)];
        SLCrashError *crashError = [SLCrashError errorWithErrorType:SLCrashErrorTypeUnknow errorDesc:exceptionInfo exception:nil callStack:[NSThread callStackSymbols]];
     [[SLCrashHandler defaultCrashHandler].delegate crashHandlerDidOutputCrashError:crashError];
