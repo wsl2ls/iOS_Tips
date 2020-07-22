@@ -110,6 +110,19 @@
 #define SL_IS_EMPTY_STRING(x)            (SL_IS_NULL(x) || [x isEqual:@""] || [x isEqual:@"(null)"])
 #define SL_DEFUSE_EMPTY_STRING(x)        (!SL_IS_EMPTY_STRING(x) ? x : @"")
 
+
+//沙河目录
+///获取沙盒主目录路径
+#define SL_HomeDir  NSHomeDirectory();
+/// 获取Documents目录路径
+#define SL_DocumentDir  [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject]
+/// 获取Library的目录路径
+#define SL_LibraryDir  [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) lastObject]
+/// 获取Caches目录路径
+#define SL_CachesDir  [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) firstObject]
+/// 获取tmp目录路径
+#define SL_TmpDir  NSTemporaryDirectory()
+
 //---------------------- About Color 颜色 ----------------------------
 /// 随机颜色
 #define SL_UIColorFromRandomColor [UIColor colorWithRed:arc4random()%255/255.0 green:arc4random()%255/255.0 blue:arc4random()%255/255.0 alpha:1.0]
