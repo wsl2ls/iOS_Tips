@@ -20,18 +20,19 @@ if (dispatch_queue_get_label(DISPATCH_CURRENT_QUEUE_LABEL) == dispatch_queue_get
 #endif
 
 static pthread_introspection_hook_t old_pthread_introspection_hook_t = NULL;
-static int threadCount = 0;
-#define KK_THRESHOLD 40
-static const int threadIncreaseThreshold = 10;
+static int threadCount = 0; //线程数量
+#define KK_THRESHOLD 40   //线程数量阈值
+static const int threadIncreaseThreshold = 10;  //线程增量阈值
 
 //线程数量超过40，就会弹窗警告，并且控制台打印所有线程的堆栈；之后阈值每增加5条(45、50、55...)同样警告+打印堆栈；如果线程数量再次少于40条，阈值恢复到40
 static int maxThreadCountThreshold = KK_THRESHOLD;
-static dispatch_semaphore_t global_semaphore;
-static int threadCountIncrease = 0;
+static dispatch_semaphore_t global_semaphore;   //信号量 保证线程安全
+static int threadCountIncrease = 0; //线程增长数量
 static bool isMonitor = false;
 
 @implementation SLAPMThreadCount
 
+//调用startMonitor函数，开始监控线程数量。在这个函数里用global_semaphore来保证，task_threads获取的线程数量，到hook完成，线程数量不会变化（加解锁之间，没有线程新建跟销毁）。
 + (void)startMonitor {
     global_semaphore = dispatch_semaphore_create(1);
     dispatch_semaphore_wait(global_semaphore, DISPATCH_TIME_FOREVER);
@@ -47,6 +48,7 @@ static bool isMonitor = false;
         [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(clearThreadCountIncrease) userInfo:nil repeats:YES];
     });
 }
+//定时器每一秒都将线程增长数置0
 + (void)clearThreadCountIncrease
 {
     threadCountIncrease = 0;
