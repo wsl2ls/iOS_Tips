@@ -10,10 +10,15 @@
 #import "SLCrashProtector.h"
 #import "BSBacktraceLogger.h"
 
+/*
+ 参考资料：
+ https://www.jianshu.com/p/29051908c74b  iOS Crash分析
+ https://juejin.im/post/5d81fac66fb9a06af7126a44  iOS获取任意线程调用栈
+ https://blog.csdn.net/jasonblog/article/details/49909209  iOS中线程Call Stack的捕获和解析（二）
+ */
 @interface SLCrashViewController ()<SLCrashHandlerDelegate>
 
 @property (nonatomic, strong) UITextView *textView;
-
 
 @property (nonatomic, copy) void(^testBlock)(void); //测试循环引用
 @property (nonatomic, strong) NSMutableArray *testMArray; //测试循环引用
