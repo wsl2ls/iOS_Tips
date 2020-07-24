@@ -146,6 +146,7 @@
 > * 3、[看过的高质量技术博客集合](iOS_Tips/DarkMode/WorkIssues/高质量技术博客.md)，这些博客质量都挺高的，都出自各个大厂、大佬之手，认真看完绝对干活满满；
 > * 4、小视频拍摄录制失败，主要集中在plus和X系列手机上：可能是由于写入的视频宽高videoSize设置的问题，各位可以先试试这样设置
 avCaptureTool.videoSize = CGSizeMake(self.view.width * 0.8, self.view.height * 0.8);
+> * 5、当你编译的时候，XCode出现Unable to load contents of file list 错误，导致出现此原因是pods版本不一致，请更新pods版本或者重新安装。
 
 
 #### Welcome to you 👏 您的follow和start，是我前进的动力，Thanks♪(･ω･)ﾉ 🤝
