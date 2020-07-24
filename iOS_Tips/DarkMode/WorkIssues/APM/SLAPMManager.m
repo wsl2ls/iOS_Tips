@@ -13,6 +13,7 @@
 #import "SLAPMMemoryDisk.h"
 #import "SLAPMFluency.h"
 #import "SLCrashProtector.h"
+#import "SLAPMThreadCount.h"
 
 
 @interface SLAPMManager ()<SLAPMFluencyDelegate, SLCrashHandlerDelegate>
@@ -49,9 +50,8 @@
     _isMonitoring = YES;
     
     if ((self.type & SLAPMTypeCpu) == SLAPMTypeCpu || (self.type & SLAPMTypeMemory) == SLAPMTypeMemory || self.type == SLAPMTypeAll) {
-        _taskName = [SLTimer execTask:self selector:@selector(monitoring) start:0 interval:1.0/60 repeats:YES async:YES];
+        _taskName = [SLTimer execTask:self selector:@selector(monitoring) start:0.5 interval:1.0/60 repeats:YES async:YES];
     }
-    
     
     if ((self.type & SLAPMTypeCpu) == SLAPMTypeCrash || self.type == SLAPMTypeAll) {
         [SLCrashHandler defaultCrashHandler].delegate = self;
@@ -59,7 +59,11 @@
     
     if ((self.type & SLAPMTypeFluency) == SLAPMTypeFluency || self.type == SLAPMTypeAll) {
         [SLAPMFluency sharedInstance].delegate = self;
-        [[SLAPMFluency sharedInstance] startMonitoring];
+        [[SLAPMFluency sharedInstance] startMonitorFluency];
+    }
+    
+    if ((self.type & SLAPMTypeThreadCount) == SLAPMTypeThreadCount || self.type == SLAPMTypeAll) {
+        [SLAPMThreadCount startMonitorThreadCount];
     }
     
 }
@@ -70,7 +74,8 @@
     
     [SLTimer cancelTask:_taskName];
     [SLAPMFluency sharedInstance].delegate = nil;
-    [[SLAPMFluency sharedInstance] stopMonitoring];
+    [[SLAPMFluency sharedInstance] stopMonitorFluency];
+    [SLAPMThreadCount stopMonitorThreadCount];
 }
 
 #pragma mark - Monitoring

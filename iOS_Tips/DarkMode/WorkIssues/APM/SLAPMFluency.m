@@ -246,7 +246,7 @@ NSString * getCurTime(void) {
 }
 
 ///开始监听
-- (void)startMonitoring {
+- (void)startMonitorFluency {
     __weak typeof(self) weakSelf = self;
     if (self.type == SLAPMFluencyTypeRunloop) {
         [self.runLoop startRunning];
@@ -278,7 +278,7 @@ NSString * getCurTime(void) {
     
 }
 ///结束监听
-- (void)stopMonitoring {
+- (void)stopMonitorFluency {
     [self.fps paused];
     [self.runLoop stopRunning];
 }

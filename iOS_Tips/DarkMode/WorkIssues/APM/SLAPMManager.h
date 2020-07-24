@@ -22,8 +22,10 @@ typedef NS_ENUM(NSInteger, SLAPMType) {
     SLAPMTypeFluency = 1 << 2,
     /*iOS Crash防护模块*/
     SLAPMTypeCrash   = 1 << 3,
+    /*线程数量监控，防止线程爆炸*/
+    SLAPMTypeThreadCount   = 1 << 4,
     /*所有策略*/
-    SLAPMTypeAll     = 1 << 4
+    SLAPMTypeAll     = 1 << 5
 };
 
 

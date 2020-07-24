@@ -10,8 +10,13 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-///监控线程数量      参考：https://juejin.im/post/5e92a113e51d4547134bdadb
+///监控线程数量      来源：https://juejin.im/post/5e92a113e51d4547134bdadb
 @interface SLAPMThreadCount : NSObject
+
+///开始监听
++ (void)startMonitorThreadCount;
+///结束监听
++ (void)stopMonitorThreadCount;
 
 @end
 

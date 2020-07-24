@@ -10,6 +10,7 @@
 #import <dlfcn.h>
 #import <libkern/OSAtomic.h>
 
+static BOOL isBecomeActive = NO;  //是否启动完成，即首页渲染完毕
 @interface SLBinaryResetViewController ()
 @property (nonatomic, strong) UITextView *textView;
 @end
@@ -42,7 +43,7 @@
         BOOL  isObjc = [name hasPrefix:@"+["] || [name hasPrefix:@"-["];
         NSString * symbolName = isObjc ? name: [@"_" stringByAppendingString:name];
         [symbolNames addObject:symbolName];
-//        NSLog(@"%@",symbolName);
+        //        NSLog(@"%@",symbolName);
     }
     //取反
     NSEnumerator * emt = [symbolNames reverseObjectEnumerator];
@@ -99,9 +100,14 @@ void __sanitizer_cov_trace_pc_guard_init(uint32_t *start,
  静态插桩，相当于此函数在编译时插在了每一个函数体里，这个函数会捕获到所有程序运行过程中执行的方法。
  我们只需要捕获应用启动时执行的方法就行，把启动过程中执行的函数地址存储在symbolList中。
  */
+static void*previousPc;
 void __sanitizer_cov_trace_pc_guard(uint32_t *guard) {
     //    if (!*guard) return;  // Duplicate the guard check.
     /*  精确定位 哪里开始 到哪里结束!  在这里面做判断写条件!*/
+    if(isBecomeActive) {
+        //如果启动完成，后序的函数执行顺序完全取决于用户的操作，就不需要捕获了，只要捕获启动时首页渲染完毕时即可
+        return;
+    }
     
     //它的作用其实就是去读取 x30寄存器 中所存储的要返回时下一条指令的地址. 所以他名称叫做 __builtin_return_address . 换句话说 , 这个地址就是我当前这个函数执行完毕后 , 要返回到哪里去的函数地址 .
     void *PC = __builtin_return_address(0);
@@ -109,14 +115,19 @@ void __sanitizer_cov_trace_pc_guard(uint32_t *guard) {
     SLSymbolNode *node = malloc(sizeof(SLSymbolNode));
     *node = (SLSymbolNode){PC,NULL};
     
-    //根据内存地址获取函数名称
+    //防止循环引用，故在此过滤
+    if (previousPc == PC) { return; }
+    previousPc = PC;
+    
     Dl_info info;
     dladdr(node->pc, &info);
+    //根据内存地址获取函数名称
     NSString * name = @(info.dli_sname);
-    //这个方法会导致循环引用，故在此过滤
-    if ([name isEqualToString:@"-[NSMutableArray(SLCrashProtector) sl_insertObject:atIndex:]"] || [name isEqualToString:@"-[NSObject(SLCrashProtector) sl_KVODealloc]"]) {
-        return;
+    //首页渲染完毕，即-[SceneDelegate sceneDidBecomeActive:]执行完毕后
+    if ([name isEqualToString:@"-[SceneDelegate sceneDidBecomeActive:]"]) {
+        isBecomeActive = YES;
     }
+    
     //入队
     // offsetof 用在这里是为了入队添加下一个节点找到 前一个节点next指针的位置
     OSAtomicEnqueue(&symbolList, node, offsetof(SLSymbolNode, next));

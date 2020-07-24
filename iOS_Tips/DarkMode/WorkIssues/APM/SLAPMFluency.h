@@ -34,9 +34,9 @@ typedef NS_ENUM(NSInteger, SLAPMFluencyType) {
 
 + (instancetype)sharedInstance;
 ///开始监听
-- (void)startMonitoring;
+- (void)startMonitorFluency;
 ///结束监听
-- (void)stopMonitoring;
+- (void)stopMonitorFluency;
 
 @end
 
