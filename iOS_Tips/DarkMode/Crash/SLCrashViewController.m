@@ -15,6 +15,9 @@
  https://www.jianshu.com/p/29051908c74b  iOS Crash分析
  https://juejin.im/post/5d81fac66fb9a06af7126a44  iOS获取任意线程调用栈
  https://blog.csdn.net/jasonblog/article/details/49909209  iOS中线程Call Stack的捕获和解析（二）
+ https://www.jianshu.com/p/b5304d3412e4  iOS app崩溃捕获
+ https://www.jianshu.com/p/8d43b4b47913  Crash产生原因
+ https://developer.aliyun.com/article/499180 iOS Mach异常和signal信号
  */
 @interface SLCrashViewController ()<SLCrashHandlerDelegate>
 
@@ -130,7 +133,6 @@
     strings[1] = nilStr;
     NSArray *array2 = [NSArray arrayWithObjects:strings count:2];
     NSArray *array3 = [NSArray arrayWithObject:nil];
-    
 }
 ///可变数组防护 越界和nil值
 - (void)testMutableArray {
@@ -149,6 +151,7 @@
     NSMutableArray *mArray1 = [NSMutableArray arrayWithObject:nil];
     NSMutableArray *mArray2 = [NSMutableArray arrayWithObject:@[nilObj]];
     [mArray addObject:nilObj];
+    
 }
 
 ///不可变字典防护 nil值
@@ -292,6 +295,14 @@
         //        BSLOG;
     });
     //    BSLOG_MAIN
+}
+
+
+
+// 构造BAD MEM ACCESS Crash
+- (void)makeCrash {
+  NSLog(@"********** Make a [BAD MEM ACCESS] now. **********");
+  *((int *)(0x1234)) = 122;
 }
 
 @end
