@@ -7,6 +7,7 @@
 //
 
 #import "SLCrashHandler.h"
+#import "BSBacktraceLogger.h"
 
 #import <mach/mach.h>
 #import <mach/exc.h>
@@ -22,7 +23,6 @@
     return crashError;
 }
 @end
-
 
 @interface SLCrashHandler ()
 @end
@@ -99,10 +99,10 @@
                   local_port,
                   mach_message.exception);
             
-            dispatch_async(dispatch_get_main_queue(), ^{
-                
-                
-            });
+            NSString * callStack = [BSBacktraceLogger bs_backtraceOfAllThread];
+            NSString *exceptionInfo = [NSString stringWithFormat:@"mach异常：%@",callStack];
+            SLCrashError *crashError = [SLCrashError errorWithErrorType:SLCrashErrorTypeUnknow errorDesc:exceptionInfo exception:nil callStack:@[callStack]];
+            [[SLCrashHandler defaultCrashHandler].delegate crashHandlerDidOutputCrashError:crashError];
             
             abort();
         }
@@ -200,7 +200,5 @@ void SL_UncaughtExceptionHandler(NSException *exception) {
     SLCrashError *crashError = [SLCrashError errorWithErrorType:SLCrashErrorTypeUnknow errorDesc:exceptionInfo exception:exception callStack:exception.callStackSymbols];
     [[SLCrashHandler defaultCrashHandler].delegate crashHandlerDidOutputCrashError:crashError];
 }
-
-
 
 @end

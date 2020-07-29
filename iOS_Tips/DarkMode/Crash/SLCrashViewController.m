@@ -96,17 +96,19 @@
 #pragma mark - SLCrashHandlerDelegate
 ///异常捕获回调 提供给外界实现自定义处理 ，日志上报等（注意线程安全）
 - (void)crashHandlerDidOutputCrashError:(SLCrashError *)crashError {
-    [self.textView scrollsToTop];
     NSString *errorInfo = [NSString stringWithFormat:@" 错误描述：%@ \n 调用栈：%@" ,crashError.errorDesc, crashError.callStackSymbol];
-    self.textView.text = errorInfo;
-    
+
+    SL_DISPATCH_ON_MAIN_THREAD((^{
+        [self.textView scrollsToTop];
+        self.textView.text = errorInfo;
+    }));
     ///日志写入缓存，适当时机上传后台
     NSString *logPath = [SL_CachesDir stringByAppendingFormat:@"/com.wsl2ls.CrashLog"];
     if(![[NSFileManager defaultManager] fileExistsAtPath:logPath]) {
         [[NSFileManager defaultManager] createDirectoryAtPath:logPath withIntermediateDirectories:NO attributes:nil error:nil];
     }
     if(![[NSFileManager defaultManager] fileExistsAtPath:[logPath stringByAppendingFormat:@"/log"]]) {
-         NSError *error;
+        NSError *error;
         [errorInfo writeToFile:[logPath stringByAppendingFormat:@"/log"] atomically:YES encoding:NSUTF8StringEncoding error:&error];
     }else {
         NSFileHandle * fileHandle = [NSFileHandle fileHandleForWritingAtPath:[logPath stringByAppendingFormat:@"/log"]];
@@ -295,14 +297,6 @@
         //        BSLOG;
     });
     //    BSLOG_MAIN
-}
-
-
-
-// 构造BAD MEM ACCESS Crash
-- (void)makeCrash {
-  NSLog(@"********** Make a [BAD MEM ACCESS] now. **********");
-  *((int *)(0x1234)) = 122;
 }
 
 @end
