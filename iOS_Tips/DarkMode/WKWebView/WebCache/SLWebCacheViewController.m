@@ -10,7 +10,10 @@
 #import <WebKit/WebKit.h>
 #import "SLWebCacheManager.h"
 
-//实现原理参考 戴明大神：https://github.com/ming1016/STMURLCache
+/*
+  https://zhuanlan.zhihu.com/p/148931732  WKWebView离线化方案——实现Service Worker API
+  https://github.com/ming1016/STMURLCache   戴明大神
+ */
 @interface SLWebCacheViewController ()<WKNavigationDelegate>
 
 @property (nonatomic, strong) WKWebView * webView;
