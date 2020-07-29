@@ -15,6 +15,9 @@
  https://www.jianshu.com/p/29051908c74b  iOS Crash分析
  https://juejin.im/post/5d81fac66fb9a06af7126a44  iOS获取任意线程调用栈
  https://blog.csdn.net/jasonblog/article/details/49909209  iOS中线程Call Stack的捕获和解析（二）
+ https://www.jianshu.com/p/b5304d3412e4  iOS app崩溃捕获
+ https://www.jianshu.com/p/8d43b4b47913  Crash产生原因
+ https://developer.aliyun.com/article/499180 iOS Mach异常和signal信号
  */
 @interface SLCrashViewController ()<SLCrashHandlerDelegate>
 
@@ -93,17 +96,19 @@
 #pragma mark - SLCrashHandlerDelegate
 ///异常捕获回调 提供给外界实现自定义处理 ，日志上报等（注意线程安全）
 - (void)crashHandlerDidOutputCrashError:(SLCrashError *)crashError {
-    [self.textView scrollsToTop];
     NSString *errorInfo = [NSString stringWithFormat:@" 错误描述：%@ \n 调用栈：%@" ,crashError.errorDesc, crashError.callStackSymbol];
-    self.textView.text = errorInfo;
-    
+
+    SL_DISPATCH_ON_MAIN_THREAD((^{
+        [self.textView scrollsToTop];
+        self.textView.text = errorInfo;
+    }));
     ///日志写入缓存，适当时机上传后台
     NSString *logPath = [SL_CachesDir stringByAppendingFormat:@"/com.wsl2ls.CrashLog"];
     if(![[NSFileManager defaultManager] fileExistsAtPath:logPath]) {
         [[NSFileManager defaultManager] createDirectoryAtPath:logPath withIntermediateDirectories:NO attributes:nil error:nil];
     }
     if(![[NSFileManager defaultManager] fileExistsAtPath:[logPath stringByAppendingFormat:@"/log"]]) {
-         NSError *error;
+        NSError *error;
         [errorInfo writeToFile:[logPath stringByAppendingFormat:@"/log"] atomically:YES encoding:NSUTF8StringEncoding error:&error];
     }else {
         NSFileHandle * fileHandle = [NSFileHandle fileHandleForWritingAtPath:[logPath stringByAppendingFormat:@"/log"]];
@@ -130,7 +135,6 @@
     strings[1] = nilStr;
     NSArray *array2 = [NSArray arrayWithObjects:strings count:2];
     NSArray *array3 = [NSArray arrayWithObject:nil];
-    
 }
 ///可变数组防护 越界和nil值
 - (void)testMutableArray {
@@ -149,6 +153,7 @@
     NSMutableArray *mArray1 = [NSMutableArray arrayWithObject:nil];
     NSMutableArray *mArray2 = [NSMutableArray arrayWithObject:@[nilObj]];
     [mArray addObject:nilObj];
+    
 }
 
 ///不可变字典防护 nil值
