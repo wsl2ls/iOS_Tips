@@ -623,16 +623,7 @@
 			children = (
 				784C4BDF24BC40D200D5C199 /* SLAPMViewController.h */,
 				784C4BE024BC40D200D5C199 /* SLAPMViewController.m */,
-				784C4BE224BC4C5E00D5C199 /* SLAPMManager.h */,
-				784C4BE324BC4C5E00D5C199 /* SLAPMManager.m */,
-				784C4BE524BC53D500D5C199 /* SLAPMCpu.h */,
-				784C4BE624BC53D500D5C199 /* SLAPMCpu.m */,
-				784C4C3824C2EE6600D5C199 /* SLAPMMemoryDisk.h */,
-				784C4C3924C2EE6600D5C199 /* SLAPMMemoryDisk.m */,
-				784C4BEB24BDA5D700D5C199 /* SLAPMFluency.h */,
-				784C4BEC24BDA5D700D5C199 /* SLAPMFluency.m */,
-				789AD16124C99DCA00CB0B4C /* SLAPMThreadCount.h */,
-				789AD16224C99DCA00CB0B4C /* SLAPMThreadCount.m */,
+				789AD1C524D43A3700CB0B4C /* APMMonitor */,
 			);
 			path = APM;
 			sourceTree = "<group>";
@@ -890,6 +881,31 @@
 				788ADB362441F48F00302CD9 /* SLCrashViewController.m */,
 			);
 			path = Crash;
+			sourceTree = "<group>";
+		};
+		789AD1C424D439EF00CB0B4C /* Network */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		789AD1C524D43A3700CB0B4C /* APMMonitor */ = {
+			isa = PBXGroup;
+			children = (
+				784C4BE224BC4C5E00D5C199 /* SLAPMManager.h */,
+				784C4BE324BC4C5E00D5C199 /* SLAPMManager.m */,
+				784C4BE524BC53D500D5C199 /* SLAPMCpu.h */,
+				784C4BE624BC53D500D5C199 /* SLAPMCpu.m */,
+				784C4C3824C2EE6600D5C199 /* SLAPMMemoryDisk.h */,
+				784C4C3924C2EE6600D5C199 /* SLAPMMemoryDisk.m */,
+				784C4BEB24BDA5D700D5C199 /* SLAPMFluency.h */,
+				784C4BEC24BDA5D700D5C199 /* SLAPMFluency.m */,
+				789AD16124C99DCA00CB0B4C /* SLAPMThreadCount.h */,
+				789AD16224C99DCA00CB0B4C /* SLAPMThreadCount.m */,
+				789AD1C424D439EF00CB0B4C /* Network */,
+			);
+			path = APMMonitor;
 			sourceTree = "<group>";
 		};
 		78AA10F32371A1EF0044A6F8 /* FaceDetect */ = {
