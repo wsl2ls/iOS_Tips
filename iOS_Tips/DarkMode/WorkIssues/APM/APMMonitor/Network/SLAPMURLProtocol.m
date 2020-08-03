@@ -8,17 +8,87 @@
 
 #import "SLAPMURLProtocol.h"
 
+@interface NSURLRequest (SLDataLength)
+@end
+@implementation NSURLRequest (SLDataLength)
+- (NSUInteger)sl_getLineLength {
+    NSString *lineStr = [NSString stringWithFormat:@"%@ %@ %@\n", self.HTTPMethod, self.URL.path, @"HTTP/1.1"];
+    NSData *lineData = [lineStr dataUsingEncoding:NSUTF8StringEncoding];
+    return lineData.length;
+}
+- (NSUInteger)sl_getHeadersLengthWithCookie {
+    NSUInteger headersLength = 0;
+    
+    NSDictionary<NSString *, NSString *> *headerFields = self.allHTTPHeaderFields;
+    NSDictionary<NSString *, NSString *> *cookiesHeader = [self sl_getCookies];
+    
+    // 添加 cookie 信息
+    if (cookiesHeader.count) {
+        NSMutableDictionary *headerFieldsWithCookies = [NSMutableDictionary dictionaryWithDictionary:headerFields];
+        [headerFieldsWithCookies addEntriesFromDictionary:cookiesHeader];
+        headerFields = [headerFieldsWithCookies copy];
+    }
+    //    NSLog(@"%@", headerFields);
+    NSString *headerStr = @"";
+    
+    for (NSString *key in headerFields.allKeys) {
+        headerStr = [headerStr stringByAppendingString:key];
+        headerStr = [headerStr stringByAppendingString:@": "];
+        if ([headerFields objectForKey:key]) {
+            headerStr = [headerStr stringByAppendingString:headerFields[key]];
+        }
+        headerStr = [headerStr stringByAppendingString:@"\n"];
+    }
+    NSData *headerData = [headerStr dataUsingEncoding:NSUTF8StringEncoding];
+    headersLength = headerData.length;
+    return headersLength;
+}
+- (NSDictionary<NSString *, NSString *> *)sl_getCookies {
+    NSDictionary<NSString *, NSString *> *cookiesHeader;
+    NSHTTPCookieStorage *cookieStorage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+    NSArray<NSHTTPCookie *> *cookies = [cookieStorage cookiesForURL:self.URL];
+    if (cookies.count) {
+        cookiesHeader = [NSHTTPCookie requestHeaderFieldsWithCookies:cookies];
+    }
+    return cookiesHeader;
+}
+- (NSUInteger)sl_getBodyLength {
+    NSDictionary<NSString *, NSString *> *headerFields = self.allHTTPHeaderFields;
+    NSUInteger bodyLength = [self.HTTPBody length];
+    if ([headerFields objectForKey:@"Content-Encoding"]) {
+        NSData *bodyData;
+        if (self.HTTPBody == nil) {
+            uint8_t d[1024] = {0};
+            NSInputStream *stream = self.HTTPBodyStream;
+            NSMutableData *data = [[NSMutableData alloc] init];
+            [stream open];
+            while ([stream hasBytesAvailable]) {
+                NSInteger len = [stream read:d maxLength:1024];
+                if (len > 0 && stream.streamError == nil) {
+                    [data appendBytes:(void *)d length:len];
+                }
+            }
+            bodyData = [data copy];
+            [stream close];
+        } else {
+            bodyData = self.HTTPBody;
+        }
+        bodyLength = bodyData.length;
+    }
+    return bodyLength;
+}
+@end
+
+
 //为了避免 canInitWithRequest 和 canonicalRequestForRequest 出现死循环
 static NSString * const SLHTTPHandledIdentifier = @"SLHTTPHandledIdentifier";
-
 @interface SLAPMURLProtocol () <NSURLSessionTaskDelegate, NSURLSessionDataDelegate>
 
+@property (nonatomic, strong) NSURLSession *session;   //会话
 @property (nonatomic, strong) NSURLSessionDataTask *dataTask;
-@property (nonatomic, strong) NSOperationQueue     *sessionDelegateQueue;
-@property (nonatomic, strong) NSURLResponse        *response;
-@property (nonatomic, strong) NSMutableData        *data;
-@property (nonatomic, strong) NSDate               *startDate;
-//@property (nonatomic, strong) HJHTTPModel          *httpModel;
+
+@property (nonatomic, strong) NSURLResponse *response;  //响应头
+@property (nonatomic, strong) NSMutableData *data;  //返回的数据
 
 @end
 
@@ -40,45 +110,48 @@ static NSString * const SLHTTPHandledIdentifier = @"SLHTTPHandledIdentifier";
         ![request.URL.scheme isEqualToString:@"https"]) {
         return NO;
     }
+    //拦截过的请求不再拦截
     if ([NSURLProtocol propertyForKey:SLHTTPHandledIdentifier inRequest:request] ) {
         return NO;
     }
     return YES;
 }
 + (NSURLRequest *)canonicalRequestForRequest:(NSURLRequest *)request {
-    return request;
+    //标示该request已经处理过了，防止无限循环
+    NSMutableURLRequest *mutableReqeust = [request mutableCopy];
+    [NSURLProtocol setProperty:@YES
+                        forKey:SLHTTPHandledIdentifier
+                     inRequest:mutableReqeust];
+    return [mutableReqeust copy];
 }
 - (void)startLoading {
-    NSMutableURLRequest *mutableReqeust = [[self request] mutableCopy];
-    //标示该request已经处理过了，防止无限循环
-    [NSURLProtocol setProperty:@(YES) forKey:SLHTTPHandledIdentifier inRequest:mutableReqeust];
-    
-    self.startDate = [NSDate date];
-    self.data = [NSMutableData data];
     NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
-    self.sessionDelegateQueue = [[NSOperationQueue alloc] init];
-    self.sessionDelegateQueue.maxConcurrentOperationCount = 1;
-    self.sessionDelegateQueue.name                        = @"com.wsl2ls.APMURLProtocol.queue";
-    NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:self.sessionDelegateQueue];
-    self.dataTask = [session dataTaskWithRequest:self.request];
-    [self.dataTask resume];
-    
-    //    httpModel                                             = [[NEHTTPModel alloc] init];
-    //    httpModel.request                                     = self.request;
-    //    httpModel.startDateString                             = [self stringWithDate:[NSDate date]];
-    //
-    //    NSTimeInterval myID                                   = [[NSDate date] timeIntervalSince1970];
-    //    double randomNum                                      = ((double)(arc4random() % 100))/10000;
-    //    httpModel.myID                                        = myID+randomNum;
+    NSOperationQueue *sessionDelegateQueue = [[NSOperationQueue alloc] init];
+    sessionDelegateQueue.maxConcurrentOperationCount = 1;
+    sessionDelegateQueue.name = @"com.wsl2ls.APMURLProtocol.queue";
+    _session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:sessionDelegateQueue];
+    _dataTask = [_session dataTaskWithRequest:self.request];
+    [_dataTask resume];
 }
 - (void)stopLoading {
-    [self.dataTask cancel];
-    self.dataTask = nil;
-    //    httpModel.response      = (NSHTTPURLResponse *)self.response;
-    //    httpModel.endDateString = [self stringWithDate:[NSDate date]];
-    NSString *mimeType = self.response.MIMEType;
+    [_dataTask cancel];
+    _dataTask = nil;
+    [_session invalidateAndCancel];
+    _session = nil;
     
-    // 解析 response，流量统计等
+    //接收流量 不包括响应头NSURLResponse
+    NSLog(@"接收流量大小：%.2fM",self.data.length/(1024.0*1024.0));
+    
+    NSUInteger sendLength = [self.request sl_getLineLength] + [self.request sl_getBodyLength] + [self.request sl_getHeadersLengthWithCookie];
+    NSLog(@"发送流量大小：%ldB",sendLength);
+}
+
+#pragma mark - Getter
+- (NSMutableData *)data {
+    if (!_data) {
+        _data = [NSMutableData data];
+    }
+    return _data;
 }
 
 #pragma mark - NSURLSessionDataDelegate
@@ -91,6 +164,7 @@ static NSString * const SLHTTPHandledIdentifier = @"SLHTTPHandledIdentifier";
 //接收到服务器返回的数据 调用多次，数据是分批返回的
 - (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask
     didReceiveData:(NSData *)data {
+    [self.data appendData:data];
     [self.client URLProtocol:self didLoadData:data];
 }
 
@@ -103,7 +177,6 @@ static NSString * const SLHTTPHandledIdentifier = @"SLHTTPHandledIdentifier";
     } else {
         [self.client URLProtocol:self didFailWithError:error];
     }
-    self.dataTask = nil;
 }
 //告诉代理，远程服务器请求了HTTP重定向
 - (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task willPerformHTTPRedirection:(NSHTTPURLResponse *)response newRequest:(NSURLRequest *)request completionHandler:(void (^)(NSURLRequest * _Nullable))completionHandler {
