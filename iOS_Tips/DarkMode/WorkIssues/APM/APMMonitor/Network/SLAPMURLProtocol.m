@@ -170,6 +170,42 @@ static NSString * const SLHTTPHandledIdentifier = @"SLHTTPHandledIdentifier";
 }
 
 #pragma mark - NSURLSessionTaskDelegate
+///告诉代理会话已收集完任务的度量   实现对网络请求中 DNS 查询/TCP 建立连接/TLS 握手/请求响应等各环节时间的统计
+- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didFinishCollectingMetrics:(NSURLSessionTaskMetrics *)metrics API_AVAILABLE(macosx(10.12), ios(10.0), watchos(3.0), tvos(10.0)) {
+    
+    //数组包含了在执行任务时产生的每个请求/响应事务中收集的指标。
+    NSArray *array = metrics.transactionMetrics;
+    //任务从创建到完成花费的总时间，任务的创建时间是任务被实例化时的时间；任务完成时间是任务的内部状态将要变为完成的时间。
+    NSDateInterval *taskInterval = metrics.taskInterval;
+    NSLog(@"请求时长：%f",taskInterval.duration);
+    
+    for (NSURLSessionTaskTransactionMetrics*transactionMetrics in array) {
+        NSLog(@"请求开始：%@",transactionMetrics.fetchStartDate);
+        NSLog(@"请求完成：%@",transactionMetrics.responseEndDate);
+        NSLog(@"请求协议：%@",transactionMetrics.networkProtocolName);
+        NSLog(@"DNS 解析开始时间：%@",transactionMetrics.domainLookupStartDate);
+        NSLog(@"DNS 解析完成时间：%@",transactionMetrics.domainLookupEndDate);
+        NSLog(@"客户端与服务器开始建立 TCP 连接的时间：%@",transactionMetrics.connectStartDate);
+        NSLog(@"HTTPS 的 TLS 握手开始时间：%@",transactionMetrics.secureConnectionStartDate);
+        NSLog(@"HTTPS 的 TLS 握手结束时间：%@",transactionMetrics.secureConnectionEndDate);
+        NSLog(@"客户端与服务器建立 TCP 连接完成时间：%@",transactionMetrics.connectEndDate);
+        
+        NSLog(@"开始传输 HTTP请求header 第一个字节的时间：%@",transactionMetrics.requestStartDate);
+        NSLog(@"HTTP请求最后一个字节传输完成的时间：%@",transactionMetrics.requestEndDate);
+        NSLog(@"客户端从服务器接收到响应的第一个字节的时间：%@",transactionMetrics.responseStartDate);
+        NSLog(@"客户端从服务器接收到最后一个字节的时间：%@",transactionMetrics.responseEndDate);
+    }
+}
+
+- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task
+   didSendBodyData:(int64_t)bytesSent
+    totalBytesSent:(int64_t)totalBytesSent
+totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend {
+    
+    
+}
+
+
 //请求结束或者是失败的时候调用
 - (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error {
     if (!error) {
