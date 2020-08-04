@@ -14,7 +14,7 @@
 #import "SLAPMFluency.h"
 #import "SLCrashProtector.h"
 #import "SLAPMThreadCount.h"
-
+#import "SLAPMURLProtocol.h"
 
 @interface SLAPMManager ()<SLAPMFluencyDelegate, SLCrashHandlerDelegate>
 ///任务名称
@@ -66,6 +66,10 @@
         [SLAPMThreadCount startMonitorThreadCount];
     }
     
+    if ((self.type & SLAPMTypeNetwork) == SLAPMTypeNetwork || self.type == SLAPMTypeAll) {
+        [SLAPMURLProtocol startMonitorNetwork];
+    }
+    
 }
 ///结束监控
 - (void)stopMonitoring {
@@ -76,6 +80,7 @@
     [SLAPMFluency sharedInstance].delegate = nil;
     [[SLAPMFluency sharedInstance] stopMonitorFluency];
     [SLAPMThreadCount stopMonitorThreadCount];
+    [SLAPMURLProtocol stopMonitorNetwork];
 }
 
 #pragma mark - Monitoring

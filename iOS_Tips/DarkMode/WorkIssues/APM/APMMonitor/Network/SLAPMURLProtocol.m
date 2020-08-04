@@ -8,6 +8,7 @@
 
 #import "SLAPMURLProtocol.h"
 
+///计算请求报文的大小   即上行流量
 @interface NSURLRequest (SLDataLength)
 @end
 @implementation NSURLRequest (SLDataLength)

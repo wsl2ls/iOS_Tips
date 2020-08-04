@@ -9,8 +9,6 @@
 #import "SLAPMViewController.h"
 #import "SLAPMManager.h"
 
-#import "SLAPMURLProtocol.h"
-
 /*
  参考资料：
  https://www.jianshu.com/p/95df83780c8f
@@ -30,9 +28,7 @@
     self.view.backgroundColor = [UIColor whiteColor];
     self.navigationItem.title = @"APM监控";
     [self setupNavigationBar];
-    [SLAPMManager manager].type = SLAPMTypeThreadCount;
-    
-    [self testNetworkMonitor];
+    [SLAPMManager manager].type = SLAPMTypeNetwork;
 }
 
 //测试卡顿
@@ -47,6 +43,8 @@
 #pragma mark - UI
 - (void)setupNavigationBar {
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:([SLAPMManager manager].isMonitoring ? @"停止":@"开始") style:UIBarButtonItemStyleDone target:self action:@selector(changeMonitorState)];
+    
+    [self testNetworkMonitor];
 }
 
 #pragma mark - Help Methods
@@ -58,8 +56,7 @@
     [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.right.bottom.mas_equalTo(0);
     }];
-    
-    [SLAPMURLProtocol startMonitorNetwork];
+
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
         UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:@"http://b-ssl.duitang.com/uploads/item/201507/13/20150713182820_5mHce.jpeg"]]];
         dispatch_async(dispatch_get_main_queue(), ^{

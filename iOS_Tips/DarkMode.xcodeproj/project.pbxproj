@@ -123,6 +123,7 @@
 		788ADB382441F48F00302CD9 /* SLCrashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 788ADB362441F48F00302CD9 /* SLCrashViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		789AD16324C99DCA00CB0B4C /* SLAPMThreadCount.m in Sources */ = {isa = PBXBuildFile; fileRef = 789AD16224C99DCA00CB0B4C /* SLAPMThreadCount.m */; };
 		789AD1C824D7FA5F00CB0B4C /* SLAPMURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 789AD1C724D7FA5F00CB0B4C /* SLAPMURLProtocol.m */; };
+		789AD1CF24D9024300CB0B4C /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 789AD1CD24D9024300CB0B4C /* Reachability.m */; };
 		78A179A8249B0AA8006F52E3 /* NSDictionary+SLExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 78A179A6249B0AA8006F52E3 /* NSDictionary+SLExtension.m */; };
 		78A1998C2451BEE7005B2B4B /* UIButton+SLTitleImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 78A1998B2451BEE7005B2B4B /* UIButton+SLTitleImage.m */; };
 		78A1998F2451C049005B2B4B /* SLButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 78A1998E2451C049005B2B4B /* SLButton.m */; };
@@ -384,6 +385,8 @@
 		789AD16224C99DCA00CB0B4C /* SLAPMThreadCount.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLAPMThreadCount.m; sourceTree = "<group>"; };
 		789AD1C624D7FA5F00CB0B4C /* SLAPMURLProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLAPMURLProtocol.h; sourceTree = "<group>"; };
 		789AD1C724D7FA5F00CB0B4C /* SLAPMURLProtocol.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLAPMURLProtocol.m; sourceTree = "<group>"; };
+		789AD1CD24D9024300CB0B4C /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
+		789AD1CE24D9024300CB0B4C /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		78A179A6249B0AA8006F52E3 /* NSDictionary+SLExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+SLExtension.m"; sourceTree = "<group>"; };
 		78A179A7249B0AA8006F52E3 /* NSDictionary+SLExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+SLExtension.h"; sourceTree = "<group>"; };
 		78A1998A2451BEE7005B2B4B /* UIButton+SLTitleImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+SLTitleImage.h"; sourceTree = "<group>"; };
@@ -564,6 +567,7 @@
 		7835047E24586BA30071283E /* ThirdLibary */ = {
 			isa = PBXGroup;
 			children = (
+				789AD1CC24D9024300CB0B4C /* Reachability */,
 				7857FD4824729E8500D3D986 /* BSBacktraceLogger */,
 				78D3095D239688EF00DC373A /* OpenGLUtils */,
 				7835047F24586BAC0071283E /* Fishhook */,
@@ -911,6 +915,15 @@
 				789AD1C424D439EF00CB0B4C /* Network */,
 			);
 			path = APMMonitor;
+			sourceTree = "<group>";
+		};
+		789AD1CC24D9024300CB0B4C /* Reachability */ = {
+			isa = PBXGroup;
+			children = (
+				789AD1CE24D9024300CB0B4C /* Reachability.h */,
+				789AD1CD24D9024300CB0B4C /* Reachability.m */,
+			);
+			path = Reachability;
 			sourceTree = "<group>";
 		};
 		78AA10F32371A1EF0044A6F8 /* FaceDetect */ = {
@@ -1455,6 +1468,7 @@
 				783504642452C20B0071283E /* SLMethod.m in Sources */,
 				784C4BE124BC40D200D5C199 /* SLAPMViewController.m in Sources */,
 				787C7E4524656524005DF7ED /* UIView+SLMLeakFinder.m in Sources */,
+				789AD1CF24D9024300CB0B4C /* Reachability.m in Sources */,
 				7862533F24599D420017F8F1 /* NSObject+SLCrashProtector.m in Sources */,
 				787C7DC2245D74E4005DF7ED /* NSMutableString+SLCrashProtector.m in Sources */,
 				782E3EB12373D889001E0DF9 /* SLAvCaptureSession.m in Sources */,
