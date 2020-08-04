@@ -890,15 +890,6 @@
 			path = Crash;
 			sourceTree = "<group>";
 		};
-		789AD1C424D439EF00CB0B4C /* Network */ = {
-			isa = PBXGroup;
-			children = (
-				789AD1C624D7FA5F00CB0B4C /* SLAPMURLProtocol.h */,
-				789AD1C724D7FA5F00CB0B4C /* SLAPMURLProtocol.m */,
-			);
-			path = Network;
-			sourceTree = "<group>";
-		};
 		789AD1C524D43A3700CB0B4C /* APMMonitor */ = {
 			isa = PBXGroup;
 			children = (
@@ -912,7 +903,8 @@
 				784C4BEC24BDA5D700D5C199 /* SLAPMFluency.m */,
 				789AD16124C99DCA00CB0B4C /* SLAPMThreadCount.h */,
 				789AD16224C99DCA00CB0B4C /* SLAPMThreadCount.m */,
-				789AD1C424D439EF00CB0B4C /* Network */,
+				789AD1C624D7FA5F00CB0B4C /* SLAPMURLProtocol.h */,
+				789AD1C724D7FA5F00CB0B4C /* SLAPMURLProtocol.m */,
 			);
 			path = APMMonitor;
 			sourceTree = "<group>";

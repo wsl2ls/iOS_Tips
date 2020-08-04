@@ -42,9 +42,7 @@
 
 #pragma mark - UI
 - (void)setupNavigationBar {
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:([SLAPMManager manager].isMonitoring ? @"停止":@"开始") style:UIBarButtonItemStyleDone target:self action:@selector(changeMonitorState)];
-    
-    [self testNetworkMonitor];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:([SLAPMManager manager].isMonitoring ? @"停止监控":@"开始监控") style:UIBarButtonItemStyleDone target:self action:@selector(changeMonitorState)];
 }
 
 #pragma mark - Help Methods

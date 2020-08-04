@@ -78,4 +78,16 @@
     return [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
 }
 
+/// 图片缩放，针对大图片处理
++ (UIImage *)sl_scaledImageWithData:(NSData *)data withSize:(CGSize)size scale:(CGFloat)scale orientation:(UIImageOrientation)orientation {
+    CGFloat maxPixelSize = MAX(size.width, size.height);
+    CGImageSourceRef sourceRef = CGImageSourceCreateWithData((__bridge CFDataRef)data,nil);
+    NSDictionary *optoins = @{(__bridge id)kCGImageSourceCreateThumbnailFromImageAlways:(__bridge id)kCFBooleanTrue,(__bridge id)kCGImageSourceThumbnailMaxPixelSize:[NSNumber numberWithFloat:maxPixelSize]};
+    CGImageRef imageRef = CGImageSourceCreateThumbnailAtIndex(sourceRef, 0, (__bridge CFDictionaryRef)optoins);
+    UIImage *image = [UIImage imageWithCGImage:imageRef scale:scale orientation:orientation];
+    CGImageRelease(imageRef);
+    CFRelease(sourceRef);
+    return image;
+}
+
 @end

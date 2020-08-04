@@ -10,6 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+///网络监控   TCP 建立连接时间 、DNS 时间、 SSL时间、首包时间、响应时间 、流量
 @interface SLAPMURLProtocol : NSURLProtocol
 
 ///开始监听网络

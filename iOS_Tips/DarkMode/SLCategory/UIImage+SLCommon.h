@@ -15,8 +15,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// 将图片旋转弧度radians 
 - (UIImage *)sl_imageRotatedByRadians:(CGFloat)radians;
+
 /// 提取图片上某位置像素的颜色
 - (UIColor *)sl_colorAtPixel:(CGPoint)point;
+
+/// 图片缩放，针对大图片处理
++ (UIImage *)sl_scaledImageWithData:(NSData *)data withSize:(CGSize)size scale:(CGFloat)scale orientation:(UIImageOrientation)orientation;
 
 @end
 
