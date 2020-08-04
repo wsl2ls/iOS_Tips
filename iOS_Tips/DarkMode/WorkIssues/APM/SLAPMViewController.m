@@ -17,12 +17,19 @@
  */
 
 @interface SLAPMViewController ()
-
+{
+    NSDate *_date;
+}
 @end
 
 @implementation SLAPMViewController
 
 #pragma mark - Override
+
+- (void)loadView {
+    [super loadView];
+    _date = [NSDate date];
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
@@ -30,14 +37,18 @@
     [self setupNavigationBar];
     [SLAPMManager manager].type = SLAPMTypeNetwork;
 }
-
-//测试卡顿
-- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    //耗时任务
-    //    sleep(1);
-    dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        sleep(1);
-    });
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+}
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    NSLog(@"Time: %f",-[_date timeIntervalSinceNow]);
+}
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+}
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
 }
 
 #pragma mark - UI
@@ -46,6 +57,14 @@
 }
 
 #pragma mark - Help Methods
+///测试卡顿/流畅度
+- (void)testFluency {
+    //耗时任务
+    //    sleep(1);
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        sleep(1);
+    });
+}
 ///测试网络监控
 - (void)testNetworkMonitor {
     UIImageView *imageView = [[UIImageView alloc] init];

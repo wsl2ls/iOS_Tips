@@ -98,12 +98,12 @@
 
 /** 快速查询一段代码的执行时间 */
 /** 用法
- TICK
+ SL_StartTime
  do your work here
- TOCK
+ SL_EndDuration
  */
-#define TICK NSDate *startTime = [NSDate date];
-#define TOCK NSLog(@"Time:%f", -[startTime timeIntervalSinceNow]);
+#define SL_StartTime NSDate *startTime = [NSDate date]
+#define SL_EndDuration -[startTime timeIntervalSinceNow]
 
 // STRING容错机制
 #define SL_IS_NULL(x)                    (!x || [x isKindOfClass:[NSNull class]])

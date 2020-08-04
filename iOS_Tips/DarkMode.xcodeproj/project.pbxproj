@@ -124,6 +124,8 @@
 		789AD16324C99DCA00CB0B4C /* SLAPMThreadCount.m in Sources */ = {isa = PBXBuildFile; fileRef = 789AD16224C99DCA00CB0B4C /* SLAPMThreadCount.m */; };
 		789AD1C824D7FA5F00CB0B4C /* SLAPMURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 789AD1C724D7FA5F00CB0B4C /* SLAPMURLProtocol.m */; };
 		789AD1CF24D9024300CB0B4C /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 789AD1CD24D9024300CB0B4C /* Reachability.m */; };
+		789AD1D224D9622B00CB0B4C /* UIViewController+SLAPMTime.m in Sources */ = {isa = PBXBuildFile; fileRef = 789AD1D124D9622B00CB0B4C /* UIViewController+SLAPMTime.m */; };
+		789AD1D524D97F8500CB0B4C /* SLSystemAppInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 789AD1D424D97F8500CB0B4C /* SLSystemAppInfo.m */; };
 		78A179A8249B0AA8006F52E3 /* NSDictionary+SLExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 78A179A6249B0AA8006F52E3 /* NSDictionary+SLExtension.m */; };
 		78A1998C2451BEE7005B2B4B /* UIButton+SLTitleImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 78A1998B2451BEE7005B2B4B /* UIButton+SLTitleImage.m */; };
 		78A1998F2451C049005B2B4B /* SLButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 78A1998E2451C049005B2B4B /* SLButton.m */; };
@@ -387,6 +389,10 @@
 		789AD1C724D7FA5F00CB0B4C /* SLAPMURLProtocol.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLAPMURLProtocol.m; sourceTree = "<group>"; };
 		789AD1CD24D9024300CB0B4C /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		789AD1CE24D9024300CB0B4C /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		789AD1D024D9622B00CB0B4C /* UIViewController+SLAPMTime.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+SLAPMTime.h"; sourceTree = "<group>"; };
+		789AD1D124D9622B00CB0B4C /* UIViewController+SLAPMTime.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+SLAPMTime.m"; sourceTree = "<group>"; };
+		789AD1D324D97F8500CB0B4C /* SLSystemAppInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLSystemAppInfo.h; sourceTree = "<group>"; };
+		789AD1D424D97F8500CB0B4C /* SLSystemAppInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLSystemAppInfo.m; sourceTree = "<group>"; };
 		78A179A6249B0AA8006F52E3 /* NSDictionary+SLExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+SLExtension.m"; sourceTree = "<group>"; };
 		78A179A7249B0AA8006F52E3 /* NSDictionary+SLExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+SLExtension.h"; sourceTree = "<group>"; };
 		78A1998A2451BEE7005B2B4B /* UIButton+SLTitleImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+SLTitleImage.h"; sourceTree = "<group>"; };
@@ -905,6 +911,10 @@
 				789AD16224C99DCA00CB0B4C /* SLAPMThreadCount.m */,
 				789AD1C624D7FA5F00CB0B4C /* SLAPMURLProtocol.h */,
 				789AD1C724D7FA5F00CB0B4C /* SLAPMURLProtocol.m */,
+				789AD1D024D9622B00CB0B4C /* UIViewController+SLAPMTime.h */,
+				789AD1D124D9622B00CB0B4C /* UIViewController+SLAPMTime.m */,
+				789AD1D324D97F8500CB0B4C /* SLSystemAppInfo.h */,
+				789AD1D424D97F8500CB0B4C /* SLSystemAppInfo.m */,
 			);
 			path = APMMonitor;
 			sourceTree = "<group>";
@@ -1415,6 +1425,7 @@
 				784B72062334685E006AEE47 /* SLAvPlayer.m in Sources */,
 				78DAA113235FF61E00A60F64 /* SLEditVideoClipping.m in Sources */,
 				782E3EB42373D8C7001E0DF9 /* SLAvWriterInput.m in Sources */,
+				789AD1D524D97F8500CB0B4C /* SLSystemAppInfo.m in Sources */,
 				78804A7E237D5E3E0087E152 /* SLWaterMarkController.m in Sources */,
 				78EF8B6024162B96008D0CD7 /* SLMenuViewController.m in Sources */,
 				7869C72224A8B6D200527546 /* SLPictureBrowseController.m in Sources */,
@@ -1495,6 +1506,7 @@
 				784C4BE424BC4C5E00D5C199 /* SLAPMManager.m in Sources */,
 				784C4C3A24C2EE6600D5C199 /* SLAPMMemoryDisk.m in Sources */,
 				78842468248FAED100C2E505 /* SLColorPickerViewController.m in Sources */,
+				789AD1D224D9622B00CB0B4C /* UIViewController+SLAPMTime.m in Sources */,
 				787C7DCF2462B03D005DF7ED /* UINavigationController+SLMLeakFinder.m in Sources */,
 				789AD16324C99DCA00CB0B4C /* SLAPMThreadCount.m in Sources */,
 				788ACD622390BFD400737EC2 /* SLLoadImageVC.m in Sources */,
