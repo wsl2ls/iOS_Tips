@@ -12,6 +12,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface SLSystemAppInfo : NSObject
 
++ (void)test;
+
+///获取手机型号
++ (NSString *)iphoneType;
+
 @end
 
 NS_ASSUME_NONNULL_END

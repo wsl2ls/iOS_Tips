@@ -93,7 +93,7 @@
     }
     
     if ((self.type & SLAPMTypeMemory) == SLAPMTypeMemory || self.type == SLAPMTypeAll) {
-        double useMemory = [SLAPMMemoryDisk getUsageMemory];
+        double useMemory = [SLAPMMemoryDisk getAppUsageMemory];
         double freeMemory = [SLAPMMemoryDisk getFreeMemory];
         double totalMemory = [SLAPMMemoryDisk getTotalMemory];
         NSLog(@" Memory占用：%.1fM  空闲：%.1fM 总共：%.1fM",useMemory, freeMemory, totalMemory);
