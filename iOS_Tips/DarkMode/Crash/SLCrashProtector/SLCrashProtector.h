@@ -17,6 +17,7 @@
 
 /*交换实例方法*/
 static inline void SL_ExchangeInstanceMethod(Class _originalClass ,SEL _originalSel, Class _targetClass, SEL _targetSel){
+    //此处获得的方法可能是父类对象的
     Method methodOriginal = class_getInstanceMethod(_originalClass, _originalSel);
     Method methodNew = class_getInstanceMethod(_targetClass, _targetSel);
     // class_addMethod 返回成功表示被替换的方法没实现，然后会通过 class_addMethod 方法先实现；返回失败则表示被替换方法已存在，可以直接进行 IMP 指针交换

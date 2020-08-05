@@ -1,5 +1,5 @@
 //
-//  UIViewController+SLAPMTime.h
+//  UIViewController+SLAPMVCTime.h
 //  DarkMode
 //
 //  Created by wsl on 2020/8/4.
@@ -10,7 +10,13 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface UIViewController (SLAPMTime)
+///ViewController启动耗时监测
+@interface UIViewController (SLAPMVCTime)
+
+///开始监听网络
++ (void)startMonitorVC;
+///结束监听网络
++ (void)stopMonitorVC;
 
 @end
 

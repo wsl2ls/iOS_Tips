@@ -17,19 +17,11 @@
  */
 
 @interface SLAPMViewController ()
-{
-    NSDate *_date;
-}
 @end
 
 @implementation SLAPMViewController
 
 #pragma mark - Override
-
-- (void)loadView {
-    [super loadView];
-    _date = [NSDate date];
-}
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
@@ -39,16 +31,10 @@
 }
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    sleep(3);
 }
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    NSLog(@"Time: %f",-[_date timeIntervalSinceNow]);
-}
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-}
-- (void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
 }
 
 #pragma mark - UI
