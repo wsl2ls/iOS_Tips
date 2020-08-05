@@ -10,13 +10,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-///ViewController启动耗时监测
+///ViewController启动耗时监测   -loadView --> -viewDidAppear
 @interface UIViewController (SLAPMVCTime)
-
-///开始监听网络
-+ (void)startMonitorVC;
-///结束监听网络
-+ (void)stopMonitorVC;
 
 @end
 

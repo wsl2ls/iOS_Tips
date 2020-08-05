@@ -26,8 +26,10 @@ typedef NS_ENUM(NSInteger, SLAPMType) {
     SLAPMTypeThreadCount   = 1 << 4,
     /*网络监控*/
     SLAPMTypeNetwork   = 1 << 5,
+    /*VC启动耗时监测*/
+    SLAPMTypeVCTime   = 1 << 6,
     /*所有策略*/
-    SLAPMTypeAll     = 1 << 6
+    SLAPMTypeAll     = 1 << 7
 };
 
 

@@ -39,20 +39,14 @@ static NSString *const kSLFakeKeyPath = @"SL_FakeKeyPath";  //假冒的被观察
 
 @implementation UIViewController (SLAPMVCTime)
 
-#pragma mark - Public
-///开始监听网络
-+ (void)startMonitorVC {
-    
-}
-///结束监听网络
-+ (void)stopMonitorVC {
-    
-}
-
 + (void)load {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         Class class = [UIViewController class];
+        if (![NSStringFromClass(class) hasPrefix:@"SL"]) {
+            //仅仅测自己创建的VC
+            return;
+        }
         ///hook vc的初始化方法
         [self swizzleMethodInClass:class originalMethod:@selector(initWithNibName:bundle:) swizzledSelector:@selector(apm_initWithNibName:bundle:)];
         [self swizzleMethodInClass:class originalMethod:@selector(initWithCoder:) swizzledSelector:@selector(apm_initWithCoder:)];
@@ -95,14 +89,12 @@ static NSString *const kSLFakeKeyPath = @"SL_FakeKeyPath";  //假冒的被观察
     const char *originViewDidLoadEncoding = method_getTypeEncoding(class_getInstanceMethod(originCls, @selector(viewDidLoad)));
     const char *originViewWillAppearEncoding = method_getTypeEncoding(class_getInstanceMethod(originCls, @selector(viewWillAppear:)));
     const char *originViewDidAppearEncoding = method_getTypeEncoding(class_getInstanceMethod(originCls, @selector(viewDidAppear:)));
-    const char *originViewDidDisappearEncoding = method_getTypeEncoding(class_getInstanceMethod(originCls, @selector(viewDidDisappear:)));
     
     // 添加方法，因为生成的KVO子类本身并没有实现loadView等方法，如果已实现了会添加失败。
     class_addMethod(kvoClass, @selector(loadView), (IMP)apm_loadView, originLoadViewEncoding);
     class_addMethod(kvoClass, @selector(viewDidLoad), (IMP)apm_viewDidLoad, originViewDidLoadEncoding);
     class_addMethod(kvoClass, @selector(viewWillAppear:), (IMP)apm_viewWillAppear, originViewWillAppearEncoding);
     class_addMethod(kvoClass, @selector(viewDidAppear:), (IMP)apm_viewDidAppear, originViewDidAppearEncoding);
-    class_addMethod(kvoClass, @selector(viewDidDisappear:), (IMP)apm_viewDidDisappear, originViewDidDisappearEncoding);
 }
 ///方法实现交换
 + (void)swizzleMethodInClass:(Class) class originalMethod:(SEL)originalSelector swizzledSelector:(SEL)swizzledSelector {
@@ -123,7 +115,7 @@ static NSString *const kSLFakeKeyPath = @"SL_FakeKeyPath";  //假冒的被观察
     }
 }
 
-#pragma mark - IMP of hook
+#pragma mark - IMP of Hook
 static void apm_loadView(UIViewController *kvo_self, SEL _sel) {
     IMP origin_imp = apm_originalMethodImplementation(kvo_self, _sel);
     void (*func)(UIViewController *, SEL) = (void (*)(UIViewController *, SEL))origin_imp;
@@ -150,16 +142,11 @@ static void apm_viewDidAppear(UIViewController *kvo_self, SEL _sel, BOOL animate
     func(kvo_self, _sel, animated);
     
     NSDate *beginDate = objc_getAssociatedObject(kvo_self,  &kSLVCBeginDateKey);
-    //计算方法耗时
-    NSTimeInterval duration = -[beginDate timeIntervalSinceNow];
     if (beginDate) {
+        //计算方法耗时
+        NSTimeInterval duration = -[beginDate timeIntervalSinceNow];
         NSLog(@"VC: %@ -loadView --> -viewDidAppear 用时: %f", [kvo_self class], duration);
     }
-}
-static void apm_viewDidDisappear(UIViewController *kvo_self, SEL _sel, BOOL animated) {
-    IMP origin_imp = apm_originalMethodImplementation(kvo_self, _sel);
-    void (*func)(UIViewController *, SEL, BOOL) = (void (*)(UIViewController *, SEL, BOOL))origin_imp;
-    func(kvo_self, _sel, animated);
     //重置记录的开始时间
     objc_setAssociatedObject(kvo_self, &kSLVCBeginDateKey, nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
