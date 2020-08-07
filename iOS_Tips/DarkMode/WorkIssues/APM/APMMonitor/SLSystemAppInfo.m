@@ -52,10 +52,10 @@
     [self appName];
     
     [self checkPushAuthorization];
-    [self checkPhotoLibraryAuthorization];
+    [self checkPhotoLibraryAuthorization:nil];
     [self checkLocationAuthorization];
-    [self checkCameraAuthorization];
-    [self checkMicrophoneAuthorization];
+    [self checkCameraAuthorization:nil];
+    [self checkMicrophoneAuthorization:nil];
     
 }
 
@@ -299,9 +299,10 @@
 }
 
 #pragma mark - 隐私权限
+/*资料：https://www.jianshu.com/p/5f05bc8395f1 */
 
 ///检测推送通知权限
-+ (SLAuthorizationStatus)checkPushAuthorization{
++ (SLAuthorizationStatus)checkPushAuthorization {
     __block SLAuthorizationStatus authorizationStatus = SLAuthorizationStatusUnknow;
 #if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_10_0
     if ([[UIApplication sharedApplication] currentUserNotificationSettings].types  == UIUserNotificationTypeNone) {
@@ -340,16 +341,31 @@
     return authorizationStatus;
 }
 
-///检查相册访问权限
-+ (SLAuthorizationStatus)checkPhotoLibraryAuthorization {
-    SLAuthorizationStatus authorizationStatus = SLAuthorizationStatusUnknow;
+///检查相册访问权限  handler 用户授权结果的回调
++ (SLAuthorizationStatus)checkPhotoLibraryAuthorization:(void(^)(SLAuthorizationStatus status))handler {
+    __block SLAuthorizationStatus authorizationStatus = SLAuthorizationStatusUnknow;
 #if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_8_0 //iOS 8.0以下使用AssetsLibrary.framework
     ALAuthorizationStatus status = [ALAssetsLibrary authorizationStatus];
     authorizationStatus = (SLAuthorizationStatus)status;
 #else   //iOS 8.0以上使用Photos.framework
     PHAuthorizationStatus current = [PHPhotoLibrary authorizationStatus];
     authorizationStatus = (SLAuthorizationStatus)current;
+    //用户还没有做出过是否授权的选择时
+    if (current == PHAuthorizationStatusNotDetermined) {
+        //只有第一次请求授权时才会自动出现系统弹窗，之后再请求授权时也不会弹出系统询问弹窗
+        [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (handler) {
+                    authorizationStatus = (SLAuthorizationStatus)status;
+                    handler(authorizationStatus);
+                }
+            });
+        }];
+    }
 #endif
+    if (handler) {
+        handler(authorizationStatus);
+    }
     return authorizationStatus;
 }
 
@@ -378,49 +394,134 @@
 }
 
 ///检查相机/摄像头权限
-+ (SLAuthorizationStatus)checkCameraAuthorization  {
-    SLAuthorizationStatus authorizationStatus = SLAuthorizationStatusUnknow;
++ (SLAuthorizationStatus)checkCameraAuthorization:(void(^)(SLAuthorizationStatus status))handler {
+    __block SLAuthorizationStatus authorizationStatus = SLAuthorizationStatusUnknow;
     NSString *mediaType = AVMediaTypeVideo;//读取媒体类型
     AVAuthorizationStatus authStatus = [AVCaptureDevice authorizationStatusForMediaType:mediaType];//读取设备授权状态
     authorizationStatus = (SLAuthorizationStatus)authStatus;
+    if (authStatus == AVAuthorizationStatusNotDetermined) {
+        [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted) {
+            if (granted) {
+                authorizationStatus = SLAuthorizationStatusAuthorized;
+            }else{
+                authorizationStatus = SLAuthorizationStatusDenied;
+            }
+            if (handler) {
+                handler(authorizationStatus);
+            }
+        }];
+    }
+    if (handler) {
+        handler(authorizationStatus);
+    }
     return authorizationStatus;
 }
 
 ///检查话筒/麦克风权限
-+ (SLAuthorizationStatus)checkMicrophoneAuthorization {
-    SLAuthorizationStatus authorizationStatus = SLAuthorizationStatusUnknow;
++ (SLAuthorizationStatus)checkMicrophoneAuthorization:(void(^)(SLAuthorizationStatus status))handler {
+    __block SLAuthorizationStatus authorizationStatus = SLAuthorizationStatusUnknow;
     NSString *mediaType = AVMediaTypeAudio;//读取媒体类型
     AVAuthorizationStatus authStatus = [AVCaptureDevice authorizationStatusForMediaType:mediaType];//读取设备授权状态
     authorizationStatus = (SLAuthorizationStatus)authStatus;
+    if (authStatus == AVAuthorizationStatusNotDetermined) {
+        [[AVAudioSession sharedInstance] requestRecordPermission:^(BOOL granted) {
+            if (granted) {
+                authorizationStatus = SLAuthorizationStatusAuthorized;
+            } else {
+                authorizationStatus = SLAuthorizationStatusDenied;
+            }
+            if (handler) {
+                handler(authorizationStatus);
+            }
+        }];
+    }
+    if (handler) {
+        handler(authorizationStatus);
+    }
     return authorizationStatus;
 }
 
 ///检测通讯录权限
-+ (SLAuthorizationStatus)checkContactsAuthorization{
-    SLAuthorizationStatus authorizationStatus = SLAuthorizationStatusUnknow;
++ (SLAuthorizationStatus)checkContactsAuthorization:(void(^)(SLAuthorizationStatus status))handler {
+    __block  SLAuthorizationStatus authorizationStatus = SLAuthorizationStatusUnknow;
     if (@available(iOS 9.0, *)) {//iOS9.0之后
         CNAuthorizationStatus authStatus = [CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts];
         authorizationStatus = (SLAuthorizationStatus)authStatus;
+        if (authStatus == CNAuthorizationStatusNotDetermined) {
+            CNContactStore *contactStore = [[CNContactStore alloc] init];
+            [contactStore requestAccessForEntityType:CNEntityTypeContacts completionHandler:^(BOOL granted, NSError *error) {
+                if (!error){
+                    if (granted) {
+                        authorizationStatus = SLAuthorizationStatusAuthorized;
+                    } else {
+                        authorizationStatus = SLAuthorizationStatusDenied;
+                    }
+                    if (handler) {
+                        handler(authorizationStatus);
+                    }
+                }
+                
+            }];
+        }
     }else{//iOS9.0之前
         ABAuthorizationStatus authorStatus = ABAddressBookGetAuthorizationStatus();
         authorizationStatus = (SLAuthorizationStatus)authorStatus;
+    }
+    if (handler) {
+        handler(authorizationStatus);
     }
     return authorizationStatus;
 }
 
 ///检测日历权限
-+ (SLAuthorizationStatus)checkCalendarAuthorization {
-    SLAuthorizationStatus authorizationStatus = SLAuthorizationStatusUnknow;
++ (SLAuthorizationStatus)checkCalendarAuthorization:(void(^)(SLAuthorizationStatus status))handler {
+    __block SLAuthorizationStatus authorizationStatus = SLAuthorizationStatusUnknow;
     EKAuthorizationStatus status = [EKEventStore authorizationStatusForEntityType:EKEntityTypeEvent];
     authorizationStatus = (SLAuthorizationStatus)status;
+    if (status == EKAuthorizationStatusNotDetermined) {
+        EKEventStore *store = [[EKEventStore alloc] init];
+        [store requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError *error) {
+            if (error) {} else {
+                if (granted) {
+                    authorizationStatus = SLAuthorizationStatusAuthorized;
+                } else {
+                    authorizationStatus = SLAuthorizationStatusDenied;
+                }
+                if (handler) {
+                    handler(authorizationStatus);
+                }
+            }
+        }];
+    }
+    if (handler) {
+        handler(authorizationStatus);
+    }
     return authorizationStatus;
 }
 
 ///检测提醒事项权限
-+ (SLAuthorizationStatus)checkRemindAuthorization {
-    SLAuthorizationStatus authorizationStatus = SLAuthorizationStatusUnknow;
++ (SLAuthorizationStatus)checkRemindAuthorization:(void(^)(SLAuthorizationStatus status))handler {
+    __block SLAuthorizationStatus authorizationStatus = SLAuthorizationStatusUnknow;
     EKAuthorizationStatus status = [EKEventStore authorizationStatusForEntityType:EKEntityTypeReminder];
     authorizationStatus = (SLAuthorizationStatus)status;
+    if (status == EKAuthorizationStatusNotDetermined) {
+        EKEventStore *store = [[EKEventStore alloc] init];
+        [store requestAccessToEntityType:EKEntityTypeReminder completion:^(BOOL granted, NSError * _Nullable error) {
+            if (!error){
+                if (granted) {
+                    authorizationStatus = SLAuthorizationStatusAuthorized;
+                } else {
+                    authorizationStatus = SLAuthorizationStatusDenied;
+                }
+                if (handler) {
+                    handler(authorizationStatus);
+                }
+            }
+        }];
+    }
+    if (handler) {
+        handler(authorizationStatus);
+    }
     return authorizationStatus;
 }
 
@@ -472,15 +573,14 @@
             if (authenticationContext.biometryType == LABiometryTypeFaceID) {
                 //验证当前人脸数据
                 [authenticationContext evaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics localizedReason:@"开始验证" reply:^(BOOL success, NSError * _Nullable error) {
-                    if (error) {
-                    } else {
+                    if (!error) {
                         if (success) {
-                            
+                            //验证通过
+                        }else {
+                            //验证失败
                         }
                     }
                 }];
-            } else {
-                
             }
         }else {
             if (error.code == -8) {
@@ -494,35 +594,5 @@
     }
     
 }
-
-
-
-///请求相册权限
-+ (void)requestAuthorizationLibrary {
-    ///相册授权状态
-    PHAuthorizationStatus status = [PHPhotoLibrary authorizationStatus];
-    if (status == PHAuthorizationStatusNotDetermined) {
-        // 用户还没有做出过是否授权的选择
-        // 只有第一次请求授权时才会自动出现系统弹窗，之后再请求授权时也不会弹出系统询问弹窗
-        [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if (status == PHAuthorizationStatusAuthorized) {
-                    // 用户第一次同意了访问相册权限
-                    NSLog(@"用户同意授权");
-                }else if (status == PHAuthorizationStatusDenied){
-                    NSLog(@"用户拒绝授权");
-                }
-            });
-        }];
-        NSLog(@"用户还没有过选择");
-    }else if (status == PHAuthorizationStatusRestricted) {
-        NSLog(@"用户无法授予此类权限,比如家长控制");
-    }else if (status == PHAuthorizationStatusDenied) {
-        NSLog(@"用户已拒绝授权");
-    }else if (status == PHAuthorizationStatusAuthorized) {
-        NSLog(@"用户已同意授权");
-    }
-}
-
 
 @end

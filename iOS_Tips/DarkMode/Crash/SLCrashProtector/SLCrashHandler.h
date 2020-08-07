@@ -31,6 +31,8 @@ typedef NS_ENUM(NSInteger, SLCrashErrorType) {
     SLCrashErrorTypeKVO,
     /*KVC异常*/
     SLCrashErrorTypeKVC,
+    /*异步线程更新UI*/
+    SLCrashErrorTypeAsynUpdateUI,
     /*野指针*/
     SLCrashErrorTypeZombie,
     /*内存泄漏/循环引用*/

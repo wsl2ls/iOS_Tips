@@ -10,7 +10,7 @@
 
 typedef NS_ENUM(NSInteger, SLAuthorizationStatus) {
     SLAuthorizationStatusUnknow = -1, //未知的
-    SLAuthorizationStatusNotDetermined = 0, //用户还没有选择过(第一次)
+    SLAuthorizationStatusNotDetermined = 0, //用户还没有选择过(第一次) 这时会自动出现系统询问授权弹窗，之后不会
     SLAuthorizationStatusRestricted,  //家长控制，限制用户授权的权限
     SLAuthorizationStatusDenied,    //用户拒绝授权
     SLAuthorizationStatusAuthorized,  //已授权
@@ -27,9 +27,41 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SLSystemAppInfo : NSObject
 
 + (instancetype)manager;
-
-
 + (void)test;
+
+#pragma mark - System Info
+///获取手机型号 iPhone 8...
++ (NSString *)iphoneType;
+///获取手机系统版本 13.4
++ (NSString *)systemVersion;
+///获取设备类型  iPhone/iPad/iPod touch
++ (NSString *)deviceModel;
+///根据地区语言返回设备类型字符串 （国际化区域名称）
++(NSString *)localDeviceModel;
+///操作系统名称 iOS
++ (NSString *)systemName;
+///获取用户手机别名  用户定义的名称 通用-关于本机-名称  wsl的iphone
++ (NSString *)userPhoneName;
+///设备唯一标识的字母数字字符串  C5668446-C443-4898-A213-209AECE3626C
++ (NSString *)uuidString;
+///是否是iPhoneX系列/刘海屏
++ (BOOL)isIPhoneXSeries;
+/// 获取电话运营商信息
++ (NSString *)telephonyInfo;
+/// 获取网络类型
++(NSString*)networkType;
+///获取设备当前网络IP地址
++ (NSString *)getIPAddress:(BOOL)preferIPv4;
+
+#pragma mark - App Info
+///获取APP名字  SLTips
++ (NSString *)appName;
+///获取APP bundle id    com.wsl2ls.tips
++ (NSString *)appBundleId;
+///获取当前App版本号 1.1.0
++ (NSString *)appVersion;
+///获取当前App编译版本号 1
++ (NSString *)appBuild;
 
 @end
 

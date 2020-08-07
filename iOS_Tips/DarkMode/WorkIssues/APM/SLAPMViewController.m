@@ -31,8 +31,6 @@
     [self setupNavigationBar];
     [SLAPMManager manager].type = SLAPMTypeNetwork;
     
-//    [SLSystemAppInfo test];
-    
 }
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];

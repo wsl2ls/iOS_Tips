@@ -55,9 +55,9 @@
                          @"testUnrecognizedSelector",
                          @"testKVO",
                          @"testKVC",
+                         @"testAsynUpdateUI",
                          @"testWildPointer",
-                         @"testMemoryLeak",
-                         @"testCallStack"];
+                         @"testMemoryLeak"];
     NSArray *titles = @[@"数组越界、空值",
                         @"可变数组越界、空值",
                         @"字典越界、空值",
@@ -67,9 +67,9 @@
                         @"未实现方法",
                         @"KVO",
                         @"KVC",
+                        @"异步刷新UI",
                         @"野指针",
-                        @"内存泄漏/循环引用",
-                        @"回调栈"];
+                        @"内存泄漏/循环引用"];
     CGSize size = CGSizeMake(self.view.sl_width/4.0, 66);
     int i = 0;
     for (NSString *method in methods) {
@@ -97,7 +97,7 @@
 ///异常捕获回调 提供给外界实现自定义处理 ，日志上报等（注意线程安全）
 - (void)crashHandlerDidOutputCrashError:(SLCrashError *)crashError {
     NSString *errorInfo = [NSString stringWithFormat:@" 错误描述：%@ \n 调用栈：%@" ,crashError.errorDesc, crashError.callStackSymbol];
-
+    
     SL_DISPATCH_ON_MAIN_THREAD((^{
         [self.textView scrollsToTop];
         self.textView.text = errorInfo;
@@ -242,6 +242,21 @@
     [self setValue:@"wsl" forKeyPath:@"self.noProperty"];
 }
 
+#pragma mark - 异步刷新UI
+///异步刷新UI
+- (void)testAsynUpdateUI {
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        UILabel* newView = [[UILabel alloc] initWithFrame:CGRectMake(0,0,150, 88)];
+        newView.center = CGPointMake(self.view.sl_width/2.0, self.view.sl_height/2.0);
+        newView.backgroundColor = [UIColor greenColor];
+        newView.text = @"异步刷新UI";
+        [self.view addSubview:newView];
+        [SLDelayPerform sl_startDelayPerform:^{
+            [newView removeFromSuperview];
+        } afterDelay:2.0];
+    });
+}
+
 #pragma mark - 野指针
 ///野指针  随机性太强，不方便复现和定位问题，我们需要做的就是把随机变为必现，并且定位到对应的代码，方便查找解决
 ///思路来源： https://www.jianshu.com/p/9fd4dc046046?utm_source=oschina-app
@@ -286,7 +301,7 @@
     //        self.testMArray = [[NSMutableArray alloc] initWithObjects:self, nil];
 }
 
-#pragma mark - 函数调用栈
+#pragma mark - 获取函数调用栈
 ///获取任意线程的函数调用栈  https://toutiao.io/posts/aveig6/preview
 - (void)testCallStack {
     //打印当前线程调用栈
