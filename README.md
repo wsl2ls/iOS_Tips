@@ -129,7 +129,7 @@
 
 ## 7-iOSCrash防护 
 
->  Crash防护内容涉及 NSArray/NSMutableArray、NSDictionary/NSMutableDictionary、NSString/NSMutableString、Unrecognized Selector、KVO、KVC 、野指针定位、内存泄漏/循环引用；主要是对常见易错的地方进行容错处理，避免崩溃，并保存出错时的函数调用栈，以方便快速定位代码，主要是利用的runtime和fishook知识。
+>  Crash防护内容涉及 NSArray/NSMutableArray、NSDictionary/NSMutableDictionary、NSString/NSMutableString、Unrecognized Selector、KVO、KVC 、异步线程刷新UI、野指针定位、内存泄漏/循环引用；主要是对常见易错的地方进行容错处理，避免崩溃，并保存出错时的函数调用栈，以方便快速定位代码，主要是利用的runtime和fishook知识。
 
 ![iOSCrash防护](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/iOSCrash防护.gif)
 
