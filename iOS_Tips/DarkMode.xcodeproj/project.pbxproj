@@ -15,6 +15,7 @@
 		7811F7AD24B32A1E000AA044 /* Write Link Map File.png in Resources */ = {isa = PBXBuildFile; fileRef = 7811F7AA24B32A1E000AA044 /* Write Link Map File.png */; };
 		7811F7AE24B32A1E000AA044 /* Other c Flags.png in Resources */ = {isa = PBXBuildFile; fileRef = 7811F7AB24B32A1E000AA044 /* Other c Flags.png */; };
 		7811F7AF24B32A1E000AA044 /* Order File.png in Resources */ = {isa = PBXBuildFile; fileRef = 7811F7AC24B32A1E000AA044 /* Order File.png */; };
+		781D9D0624DD662E00FAE73D /* UIView+SLAsynUpdateUI.m in Sources */ = {isa = PBXBuildFile; fileRef = 781D9D0524DD662E00FAE73D /* UIView+SLAsynUpdateUI.m */; };
 		7822CCF8235B054200E70C29 /* SLPaddingLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7822CCF7235B054200E70C29 /* SLPaddingLabel.m */; };
 		782CFB1D239DDE95001B5528 /* SLSplitScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 782CFB1C239DDE95001B5528 /* SLSplitScreenViewController.m */; };
 		782CFB20239DEA05001B5528 /* SLSplitScreenCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 782CFB1F239DEA05001B5528 /* SLSplitScreenCell.m */; };
@@ -212,6 +213,8 @@
 		7811F7AA24B32A1E000AA044 /* Write Link Map File.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Write Link Map File.png"; sourceTree = "<group>"; };
 		7811F7AB24B32A1E000AA044 /* Other c Flags.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Other c Flags.png"; sourceTree = "<group>"; };
 		7811F7AC24B32A1E000AA044 /* Order File.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Order File.png"; sourceTree = "<group>"; };
+		781D9D0424DD662E00FAE73D /* UIView+SLAsynUpdateUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+SLAsynUpdateUI.h"; sourceTree = "<group>"; };
+		781D9D0524DD662E00FAE73D /* UIView+SLAsynUpdateUI.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+SLAsynUpdateUI.m"; sourceTree = "<group>"; };
 		7822CCF6235B054200E70C29 /* SLPaddingLabel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLPaddingLabel.h; sourceTree = "<group>"; };
 		7822CCF7235B054200E70C29 /* SLPaddingLabel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLPaddingLabel.m; sourceTree = "<group>"; };
 		782CFB1B239DDE95001B5528 /* SLSplitScreenViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLSplitScreenViewController.h; sourceTree = "<group>"; };
@@ -712,6 +715,8 @@
 				787C7DBA245D74E4005DF7ED /* NSMutableString+SLCrashProtector.m */,
 				7862533724599D420017F8F1 /* NSObject+SLCrashProtector.h */,
 				7862532C24599D420017F8F1 /* NSObject+SLCrashProtector.m */,
+				781D9D0424DD662E00FAE73D /* UIView+SLAsynUpdateUI.h */,
+				781D9D0524DD662E00FAE73D /* UIView+SLAsynUpdateUI.m */,
 				7862532F24599D420017F8F1 /* SLKVODelegate.h */,
 				7862533A24599D420017F8F1 /* SLKVODelegate.m */,
 				787C7DC4245D77D8005DF7ED /* SLZombieCatcher.h */,
@@ -1519,6 +1524,7 @@
 				787C7DCC2462ADE5005DF7ED /* NSObject+SLMLeakFinder.m in Sources */,
 				78E72D792480B36800751373 /* SLScrollViewController.m in Sources */,
 				782CFB20239DEA05001B5528 /* SLSplitScreenCell.m in Sources */,
+				781D9D0624DD662E00FAE73D /* UIView+SLAsynUpdateUI.m in Sources */,
 				7830A59E2358520200BC79BA /* SLEditTextView.m in Sources */,
 				7860D78E2398D34E008C53EC /* SLMixColorTextureVC.m in Sources */,
 				78E72D7F24810ECC00751373 /* UIScrollView+SLCommon.m in Sources */,
