@@ -10,7 +10,7 @@
 
 typedef NS_ENUM(NSInteger, SLAuthorizationStatus) {
     SLAuthorizationStatusUnknow = -1, //未知的
-    SLAuthorizationStatusNotDetermined = 0, //用户还没有选择过(第一次)
+    SLAuthorizationStatusNotDetermined = 0, //用户还没有选择过(第一次) 这时会自动出现系统询问授权弹窗，之后不会
     SLAuthorizationStatusRestricted,  //家长控制，限制用户授权的权限
     SLAuthorizationStatusDenied,    //用户拒绝授权
     SLAuthorizationStatusAuthorized,  //已授权
