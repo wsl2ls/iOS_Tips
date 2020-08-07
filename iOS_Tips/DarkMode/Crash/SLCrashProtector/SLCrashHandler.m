@@ -103,8 +103,8 @@
             NSString *exceptionInfo = [NSString stringWithFormat:@"mach异常：%@",callStack];
             SLCrashError *crashError = [SLCrashError errorWithErrorType:SLCrashErrorTypeUnknow errorDesc:exceptionInfo exception:nil callStack:@[callStack]];
             [[SLCrashHandler defaultCrashHandler].delegate crashHandlerDidOutputCrashError:crashError];
-            
-            abort();
+            //mach异常就终止当前程序
+//            abort();
         }
     });
 }

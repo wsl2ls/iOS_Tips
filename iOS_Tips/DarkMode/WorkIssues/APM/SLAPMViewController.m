@@ -9,6 +9,8 @@
 #import "SLAPMViewController.h"
 #import "SLAPMManager.h"
 
+#import "SLSystemAppInfo.h"
+
 /*
  参考资料：
  https://www.jianshu.com/p/95df83780c8f
@@ -28,10 +30,12 @@
     self.navigationItem.title = @"APM监控";
     [self setupNavigationBar];
     [SLAPMManager manager].type = SLAPMTypeNetwork;
+    
+//    [SLSystemAppInfo test];
+    
 }
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    sleep(3);
 }
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];

@@ -1713,7 +1713,7 @@
 				NEW_SETTING = "";
 				ORDER_FILE = "$(SRCROOT)/DarkMode/WorkIssues/二进制重排/wsl.order";
 				OTHER_CFLAGS = "-fsanitize-coverage=func,trace-pc-guard";
-				PRODUCT_BUNDLE_IDENTIFIER = com.wsl2ls.tip;
+				PRODUCT_BUNDLE_IDENTIFIER = com.wsl2ls.tips;
 				PRODUCT_NAME = SLTips;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1744,7 +1744,7 @@
 				NEW_SETTING = "";
 				ORDER_FILE = "$(SRCROOT)/DarkMode/WorkIssues/二进制重排/wsl.order";
 				OTHER_CFLAGS = "-fsanitize-coverage=func,trace-pc-guard";
-				PRODUCT_BUNDLE_IDENTIFIER = com.wsl2ls.tip;
+				PRODUCT_BUNDLE_IDENTIFIER = com.wsl2ls.tips;
 				PRODUCT_NAME = SLTips;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";

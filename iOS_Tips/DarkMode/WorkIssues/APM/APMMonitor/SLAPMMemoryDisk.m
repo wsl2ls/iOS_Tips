@@ -14,7 +14,7 @@
 
 #pragma mark - Memory / Disk
 ///当前应用的内存占用情况，和Xcode数值相近 单位MB
-+ (double)getUsageMemory {
++ (double)getAppUsageMemory {
     task_vm_info_data_t vmInfo;
     mach_msg_type_number_t count = TASK_VM_INFO_COUNT;
     if(task_info(mach_task_self(), TASK_VM_INFO, (task_info_t) &vmInfo, &count) == KERN_SUCCESS) {
@@ -45,7 +45,7 @@
 }
 
 ///filePath目录下的文件 占用的磁盘大小  单位MB  默认沙盒Caches目录
-+ (double)getUsageDisk:(NSString *)filePath {
++ (double)getFileUsageDisk:(NSString *)filePath {
     if (filePath.length == 0)  filePath = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES).lastObject;
     ///定时执行时，此句代码会导致内存不断增长？0.1M   合理安排执行时机
     NSArray *filesArray = [[NSFileManager defaultManager] subpathsOfDirectoryAtPath:filePath error:nil] ;
