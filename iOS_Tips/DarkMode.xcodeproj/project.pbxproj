@@ -1706,6 +1706,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/DarkMode/General/SLAnimateImageView",
+					"$(PROJECT_DIR)/DarkMode/WorkIssues/APM/APMMonitor",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/DarkMode/General/Tool/PrefixHeader.pch";
@@ -1737,6 +1738,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/DarkMode/General/SLAnimateImageView",
+					"$(PROJECT_DIR)/DarkMode/WorkIssues/APM/APMMonitor",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/DarkMode/General/Tool/PrefixHeader.pch";
