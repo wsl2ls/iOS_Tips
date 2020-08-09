@@ -163,7 +163,7 @@
     NSDate *date = [NSDate date];
     NSDictionary *info = @{@"time" : [NSString stringWithFormat:@"%f",[date timeIntervalSince1970]],
                            @"MIMEType" : cachedURLResponse.response.MIMEType,
-                           @"textEncodingName" : cachedURLResponse.response.textEncodingName};
+                           @"textEncodingName" : cachedURLResponse.response.textEncodingName == nil ? @"": cachedURLResponse.response.textEncodingName};
     
     //写入磁盘
     BOOL result1 = [info writeToFile:[self filePathFromRequest:request isInfo:YES] atomically:YES];
