@@ -17,6 +17,7 @@
 		7811F7AF24B32A1E000AA044 /* Order File.png in Resources */ = {isa = PBXBuildFile; fileRef = 7811F7AC24B32A1E000AA044 /* Order File.png */; };
 		781D9D0624DD662E00FAE73D /* UIView+SLAsynUpdateUI.m in Sources */ = {isa = PBXBuildFile; fileRef = 781D9D0524DD662E00FAE73D /* UIView+SLAsynUpdateUI.m */; };
 		781DA28B24DFD52500FAE73D /* SLAPMLoadTime.m in Sources */ = {isa = PBXBuildFile; fileRef = 781DA28924DFD52400FAE73D /* SLAPMLoadTime.m */; };
+		781DA28E24E00F9E00FAE73D /* QiCallTraceCore.c in Sources */ = {isa = PBXBuildFile; fileRef = 781DA28C24E00F9E00FAE73D /* QiCallTraceCore.c */; };
 		7822CCF8235B054200E70C29 /* SLPaddingLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7822CCF7235B054200E70C29 /* SLPaddingLabel.m */; };
 		782CFB1D239DDE95001B5528 /* SLSplitScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 782CFB1C239DDE95001B5528 /* SLSplitScreenViewController.m */; };
 		782CFB20239DEA05001B5528 /* SLSplitScreenCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 782CFB1F239DEA05001B5528 /* SLSplitScreenCell.m */; };
@@ -218,6 +219,8 @@
 		781D9D0524DD662E00FAE73D /* UIView+SLAsynUpdateUI.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+SLAsynUpdateUI.m"; sourceTree = "<group>"; };
 		781DA28924DFD52400FAE73D /* SLAPMLoadTime.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLAPMLoadTime.m; sourceTree = "<group>"; };
 		781DA28A24DFD52500FAE73D /* SLAPMLoadTime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLAPMLoadTime.h; sourceTree = "<group>"; };
+		781DA28C24E00F9E00FAE73D /* QiCallTraceCore.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = QiCallTraceCore.c; sourceTree = "<group>"; };
+		781DA28D24E00F9E00FAE73D /* QiCallTraceCore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QiCallTraceCore.h; sourceTree = "<group>"; };
 		7822CCF6235B054200E70C29 /* SLPaddingLabel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLPaddingLabel.h; sourceTree = "<group>"; };
 		7822CCF7235B054200E70C29 /* SLPaddingLabel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLPaddingLabel.m; sourceTree = "<group>"; };
 		782CFB1B239DDE95001B5528 /* SLSplitScreenViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLSplitScreenViewController.h; sourceTree = "<group>"; };
@@ -923,6 +926,8 @@
 				789AD1D124D9622B00CB0B4C /* UIViewController+SLAPMVCTime.m */,
 				781DA28A24DFD52500FAE73D /* SLAPMLoadTime.h */,
 				781DA28924DFD52400FAE73D /* SLAPMLoadTime.m */,
+				781DA28C24E00F9E00FAE73D /* QiCallTraceCore.c */,
+				781DA28D24E00F9E00FAE73D /* QiCallTraceCore.h */,
 				789AD1D324D97F8500CB0B4C /* SLSystemAppInfo.h */,
 				789AD1D424D97F8500CB0B4C /* SLSystemAppInfo.m */,
 			);
@@ -1530,6 +1535,7 @@
 				787C7DCC2462ADE5005DF7ED /* NSObject+SLMLeakFinder.m in Sources */,
 				78E72D792480B36800751373 /* SLScrollViewController.m in Sources */,
 				782CFB20239DEA05001B5528 /* SLSplitScreenCell.m in Sources */,
+				781DA28E24E00F9E00FAE73D /* QiCallTraceCore.c in Sources */,
 				781D9D0624DD662E00FAE73D /* UIView+SLAsynUpdateUI.m in Sources */,
 				7830A59E2358520200BC79BA /* SLEditTextView.m in Sources */,
 				7860D78E2398D34E008C53EC /* SLMixColorTextureVC.m in Sources */,
