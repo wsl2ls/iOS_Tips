@@ -499,6 +499,7 @@
 		78EF8B6324188767008D0CD7 /* SLAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLAlertView.m; sourceTree = "<group>"; };
 		78F42021237915730093497C /* SLGPUImageController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLGPUImageController.h; sourceTree = "<group>"; };
 		78F42022237915730093497C /* SLGPUImageController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLGPUImageController.m; sourceTree = "<group>"; };
+		78F4E41224E5404A000B2ADE /* SLToolMacro.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLToolMacro.h; sourceTree = "<group>"; };
 		78F54914233383D800910215 /* SLBlurView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLBlurView.h; sourceTree = "<group>"; };
 		78F54915233383D800910215 /* SLBlurView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLBlurView.m; sourceTree = "<group>"; };
 		78FA0F9B235407E6003E456B /* SLDrawView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLDrawView.h; sourceTree = "<group>"; };
@@ -810,6 +811,7 @@
 			isa = PBXGroup;
 			children = (
 				78AA10F42371A7B50044A6F8 /* PrefixHeader.pch */,
+				78F4E41224E5404A000B2ADE /* SLToolMacro.h */,
 				78777CE4238FF65C006FA671 /* SLDelayPerform.h */,
 				78777CE5238FF65C006FA671 /* SLDelayPerform.m */,
 				783504622452C20B0071283E /* SLMethod.h */,
