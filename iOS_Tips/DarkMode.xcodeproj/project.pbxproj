@@ -862,6 +862,13 @@
 			path = UI;
 			sourceTree = "<group>";
 		};
+		78799E7E24ED11A400DA8C7A /* 设计模式 */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "设计模式";
+			sourceTree = "<group>";
+		};
 		78842455248F92D400C2E505 /* AVFoundation */ = {
 			isa = PBXGroup;
 			children = (
@@ -995,8 +1002,9 @@
 				7884247C24920FCA00C2E505 /* WorkIssues */,
 				788ADB342441F46500302CD9 /* Crash */,
 				78E72D4E24766E1300751373 /* WKWebView */,
-				78B10489232F57C30051579F /* Main.storyboard */,
+				78799E7E24ED11A400DA8C7A /* 设计模式 */,
 				78B1048C232F57C50051579F /* Assets.xcassets */,
+				78B10489232F57C30051579F /* Main.storyboard */,
 				78B1048E232F57C50051579F /* LaunchScreen.storyboard */,
 				78B10491232F57C50051579F /* Info.plist */,
 				78B10492232F57C50051579F /* main.m */,
