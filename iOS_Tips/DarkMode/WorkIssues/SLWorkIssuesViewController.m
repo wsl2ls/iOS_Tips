@@ -11,6 +11,7 @@
 #import "SLWebViewController.h"
 #import "SLBinaryResetViewController.h"
 #import "SLAPMViewController.h"
+#import "SLUnusedResourceViewController.h"
 
 @interface SLWorkIssuesViewController ()
 @property (nonatomic, strong) NSMutableArray *titlesArray;
@@ -51,7 +52,8 @@
         @"iOS 传感器集锦",
         @"iOS 自定义转场动画",
         @"二进制重排优化启动时间",
-        @"iOS APM应用性能监控管理(doing)"]];
+        @"iOS APM应用性能监控管理(doing)",
+        @"ipa瘦身之查找无用图片资源"]];
     [self.urlArray addObjectsFromArray:@[@"",
                                           @"https://juejin.im/post/5c0e1e73f265da616413d828",
                                           @"https://juejin.im/post/5c0e1df95188250d2722a3bc",
@@ -59,7 +61,8 @@
                                           @"https://juejin.im/post/5c088a1051882517165dd15d",
                                           @"https://juejin.im/post/5c088ba36fb9a049fb43737b",
                                           @"二进制重排",
-                                          @"APM"]];
+                                          @"APM",
+                                          @"ipa瘦身"]];
     [self.classArray addObjectsFromArray:@[[SLMenuViewController class],
                                            [SLWebViewController class],
                                            [SLWebViewController class],
@@ -67,7 +70,8 @@
                                            [SLWebViewController class],
                                            [SLWebViewController class],
                                            [SLBinaryResetViewController class],
-                                           [SLAPMViewController class]]];
+                                           [SLAPMViewController class],
+                                           [SLUnusedResourceViewController class]]];
     [self.tableView reloadData];
 }
 
@@ -105,6 +109,7 @@
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     UIViewController *nextVc = [[self.classArray[indexPath.row] alloc] init];
     NSString *urlString = self.urlArray[indexPath.row];
+    nextVc.navigationItem.title = self.titlesArray[indexPath.row];
     switch (indexPath.row) {
         default:
             if (urlString.length > 0 && [urlString hasPrefix:@"http"]) {

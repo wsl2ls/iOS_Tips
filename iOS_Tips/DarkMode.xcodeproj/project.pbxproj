@@ -97,6 +97,7 @@
 		7869C72324A8B6D200527546 /* SLPictureTransitionAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 7869C72124A8B6D200527546 /* SLPictureTransitionAnimation.m */; };
 		78777CE0238FEA48006FA671 /* SLOpenGLController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78777CDF238FEA48006FA671 /* SLOpenGLController.m */; };
 		78777CE6238FF65C006FA671 /* SLDelayPerform.m in Sources */ = {isa = PBXBuildFile; fileRef = 78777CE5238FF65C006FA671 /* SLDelayPerform.m */; };
+		78799EA224EE7EEC00DA8C7A /* SLUnusedResourceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78799EA124EE7EEC00DA8C7A /* SLUnusedResourceViewController.m */; };
 		787C7DBE245D74E4005DF7ED /* NSMutableArray+SLCrashProtector.m in Sources */ = {isa = PBXBuildFile; fileRef = 787C7DB2245D74E3005DF7ED /* NSMutableArray+SLCrashProtector.m */; };
 		787C7DBF245D74E4005DF7ED /* NSMutableDictionary+SLCrashProtector.m in Sources */ = {isa = PBXBuildFile; fileRef = 787C7DB3245D74E3005DF7ED /* NSMutableDictionary+SLCrashProtector.m */; };
 		787C7DC0245D74E4005DF7ED /* NSDictionary+SLCrashProtector.m in Sources */ = {isa = PBXBuildFile; fileRef = 787C7DB5245D74E3005DF7ED /* NSDictionary+SLCrashProtector.m */; };
@@ -338,6 +339,8 @@
 		78777CDF238FEA48006FA671 /* SLOpenGLController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLOpenGLController.m; sourceTree = "<group>"; };
 		78777CE4238FF65C006FA671 /* SLDelayPerform.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLDelayPerform.h; sourceTree = "<group>"; };
 		78777CE5238FF65C006FA671 /* SLDelayPerform.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLDelayPerform.m; sourceTree = "<group>"; };
+		78799EA024EE7EEC00DA8C7A /* SLUnusedResourceViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLUnusedResourceViewController.h; sourceTree = "<group>"; };
+		78799EA124EE7EEC00DA8C7A /* SLUnusedResourceViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLUnusedResourceViewController.m; sourceTree = "<group>"; };
 		787C7DB2245D74E3005DF7ED /* NSMutableArray+SLCrashProtector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableArray+SLCrashProtector.m"; sourceTree = "<group>"; };
 		787C7DB3245D74E3005DF7ED /* NSMutableDictionary+SLCrashProtector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableDictionary+SLCrashProtector.m"; sourceTree = "<group>"; };
 		787C7DB4245D74E3005DF7ED /* NSString+SLCrashProtector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+SLCrashProtector.h"; sourceTree = "<group>"; };
@@ -869,6 +872,15 @@
 			path = "设计模式";
 			sourceTree = "<group>";
 		};
+		78799E9F24EE7E7F00DA8C7A /* 查找项目无用资源 */ = {
+			isa = PBXGroup;
+			children = (
+				78799EA024EE7EEC00DA8C7A /* SLUnusedResourceViewController.h */,
+				78799EA124EE7EEC00DA8C7A /* SLUnusedResourceViewController.m */,
+			);
+			path = "查找项目无用资源";
+			sourceTree = "<group>";
+		};
 		78842455248F92D400C2E505 /* AVFoundation */ = {
 			isa = PBXGroup;
 			children = (
@@ -899,6 +911,7 @@
 				784C4C6D24C5B4F500D5C199 /* 笔记.md */,
 				7884247D2492102900C2E505 /* SLWorkIssuesViewController.h */,
 				7884247E2492102900C2E505 /* SLWorkIssuesViewController.m */,
+				78799E9F24EE7E7F00DA8C7A /* 查找项目无用资源 */,
 				784C4BDE24BC409600D5C199 /* APM */,
 				7811F76C24B2C70D000AA044 /* 二进制重排 */,
 				78EF8B5C24162B07008D0CD7 /* UIMenuController */,
@@ -1518,6 +1531,7 @@
 				7869C72324A8B6D200527546 /* SLPictureTransitionAnimation.m in Sources */,
 				78E179372351A40D0007E4BB /* SLShotFocusView.m in Sources */,
 				787C7DC8245D77D9005DF7ED /* SLZombieCatcher.m in Sources */,
+				78799EA224EE7EEC00DA8C7A /* SLUnusedResourceViewController.m in Sources */,
 				78A4BD45236C5DF20021AE32 /* SLEditVideoController.m in Sources */,
 				78B10485232F57C30051579F /* SceneDelegate.m in Sources */,
 				783FB45C2394A4E10039AEFD /* SLShaderLanguageViewController.m in Sources */,
