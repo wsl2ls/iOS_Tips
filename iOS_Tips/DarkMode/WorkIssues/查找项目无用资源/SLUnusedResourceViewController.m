@@ -8,6 +8,10 @@
 
 #import "SLUnusedResourceViewController.h"
 
+/* 资料：
+   https://www.jianshu.com/p/cef2f6becbe6
+   https://github.com/tinymind/LSUnusedResources
+*/
 @interface SLUnusedResourceViewController ()
 
 @end
@@ -19,6 +23,7 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
    
+    [self test];
     
 }
 
@@ -29,6 +34,13 @@
 #pragma mark - Getter
 
 #pragma mark - HelpMethods
+
+- (void)test {
+    
+    
+    
+    
+}
 
 #pragma mark - EventsHandle
 
