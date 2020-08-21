@@ -98,6 +98,7 @@
 		78777CE0238FEA48006FA671 /* SLOpenGLController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78777CDF238FEA48006FA671 /* SLOpenGLController.m */; };
 		78777CE6238FF65C006FA671 /* SLDelayPerform.m in Sources */ = {isa = PBXBuildFile; fileRef = 78777CE5238FF65C006FA671 /* SLDelayPerform.m */; };
 		78799EA224EE7EEC00DA8C7A /* SLUnusedResourceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78799EA124EE7EEC00DA8C7A /* SLUnusedResourceViewController.m */; };
+		78799EAB24EFC60C00DA8C7A /* SLResourceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 78799EAA24EFC60C00DA8C7A /* SLResourceInfo.m */; };
 		787C7DBE245D74E4005DF7ED /* NSMutableArray+SLCrashProtector.m in Sources */ = {isa = PBXBuildFile; fileRef = 787C7DB2245D74E3005DF7ED /* NSMutableArray+SLCrashProtector.m */; };
 		787C7DBF245D74E4005DF7ED /* NSMutableDictionary+SLCrashProtector.m in Sources */ = {isa = PBXBuildFile; fileRef = 787C7DB3245D74E3005DF7ED /* NSMutableDictionary+SLCrashProtector.m */; };
 		787C7DC0245D74E4005DF7ED /* NSDictionary+SLCrashProtector.m in Sources */ = {isa = PBXBuildFile; fileRef = 787C7DB5245D74E3005DF7ED /* NSDictionary+SLCrashProtector.m */; };
@@ -341,6 +342,8 @@
 		78777CE5238FF65C006FA671 /* SLDelayPerform.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLDelayPerform.m; sourceTree = "<group>"; };
 		78799EA024EE7EEC00DA8C7A /* SLUnusedResourceViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLUnusedResourceViewController.h; sourceTree = "<group>"; };
 		78799EA124EE7EEC00DA8C7A /* SLUnusedResourceViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLUnusedResourceViewController.m; sourceTree = "<group>"; };
+		78799EA924EFC60C00DA8C7A /* SLResourceInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLResourceInfo.h; sourceTree = "<group>"; };
+		78799EAA24EFC60C00DA8C7A /* SLResourceInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLResourceInfo.m; sourceTree = "<group>"; };
 		787C7DB2245D74E3005DF7ED /* NSMutableArray+SLCrashProtector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableArray+SLCrashProtector.m"; sourceTree = "<group>"; };
 		787C7DB3245D74E3005DF7ED /* NSMutableDictionary+SLCrashProtector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableDictionary+SLCrashProtector.m"; sourceTree = "<group>"; };
 		787C7DB4245D74E3005DF7ED /* NSString+SLCrashProtector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+SLCrashProtector.h"; sourceTree = "<group>"; };
@@ -877,6 +880,8 @@
 			children = (
 				78799EA024EE7EEC00DA8C7A /* SLUnusedResourceViewController.h */,
 				78799EA124EE7EEC00DA8C7A /* SLUnusedResourceViewController.m */,
+				78799EA924EFC60C00DA8C7A /* SLResourceInfo.h */,
+				78799EAA24EFC60C00DA8C7A /* SLResourceInfo.m */,
 			);
 			path = "查找项目无用资源";
 			sourceTree = "<group>";
@@ -1556,6 +1561,7 @@
 				787C7DD22462C5F3005DF7ED /* UIViewController+SLMLeakFinder.m in Sources */,
 				788ADB382441F48F00302CD9 /* SLCrashViewController.m in Sources */,
 				78DAA1162360256200A60F64 /* SLEditSelectedBox.m in Sources */,
+				78799EAB24EFC60C00DA8C7A /* SLResourceInfo.m in Sources */,
 				787C7DCC2462ADE5005DF7ED /* NSObject+SLMLeakFinder.m in Sources */,
 				78E72D792480B36800751373 /* SLScrollViewController.m in Sources */,
 				782CFB20239DEA05001B5528 /* SLSplitScreenCell.m in Sources */,
