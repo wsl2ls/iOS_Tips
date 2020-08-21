@@ -26,7 +26,7 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     
-    [self searchUnderFilePath:@"/Users/wsl/GitHub/iOS_Tips/iOS_Tips/DarkMode" fileTypes:@"jpeg|jpg|png|gif|imageset"];
+    [self searchAllUnderFilePath:@"/Users/wsl/GitHub/iOS_Tips/iOS_Tips/DarkMode" fileTypes:@"jpeg|jpg|png|gif|imageset"];
     
 }
 
@@ -41,7 +41,7 @@
 /// 在FilePath路径下搜索所有suffixs类型的文件
 /// @param searchPath 搜索路径
 /// @param suffixs  文件后缀/格式 多种格式用|隔开即可 例如@"jpeg|jpg|png|gif|imageset"
-- (void)searchUnderFilePath:(NSString *)searchPath fileTypes:(NSString *)suffixs{
+- (void)searchAllUnderFilePath:(NSString *)searchPath fileTypes:(NSString *)suffixs{
     NSArray *filesArray = [[NSFileManager defaultManager] subpathsOfDirectoryAtPath:searchPath error:nil] ;
     NSEnumerator *filesEnumerator = [filesArray objectEnumerator];
     filesArray = nil;
