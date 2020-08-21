@@ -878,12 +878,20 @@
 		78799E9F24EE7E7F00DA8C7A /* 查找项目无用资源 */ = {
 			isa = PBXGroup;
 			children = (
+				78799EAC24EFE1B400DA8C7A /* png */,
 				78799EA024EE7EEC00DA8C7A /* SLUnusedResourceViewController.h */,
 				78799EA124EE7EEC00DA8C7A /* SLUnusedResourceViewController.m */,
 				78799EA924EFC60C00DA8C7A /* SLResourceInfo.h */,
 				78799EAA24EFC60C00DA8C7A /* SLResourceInfo.m */,
 			);
 			path = "查找项目无用资源";
+			sourceTree = "<group>";
+		};
+		78799EAC24EFE1B400DA8C7A /* png */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = png;
 			sourceTree = "<group>";
 		};
 		78842455248F92D400C2E505 /* AVFoundation */ = {

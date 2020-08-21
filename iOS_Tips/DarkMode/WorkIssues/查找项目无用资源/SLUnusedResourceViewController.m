@@ -12,7 +12,7 @@
 /* 资料：
  https://www.jianshu.com/p/cef2f6becbe6
  https://github.com/tinymind/LSUnusedResources
- https://www.jianshu.com/p/b25b05ef170d
+ http://www.regexlab.com/zh/regref.htm
  */
 @interface SLUnusedResourceViewController ()
 
@@ -51,6 +51,7 @@
         @autoreleasepool {
             //匹配对象
             NSString *fileName = subPath.lastPathComponent;
+            //            fileName = subPath;
             //匹配规则
             NSString *regularExpStr = [@"[a-zA-Z0-9_-]*\\." stringByAppendingFormat:@"%@", suffixs];
             //            NSString *regularExpStr = @"([a-zA-Z0-9_-]*)\\.m";
@@ -59,7 +60,7 @@
             if(resultArr.count == 0) continue;
             //取出匹配出来的字符串
             NSString *subStr = [fileName substringWithRange:resultArr.firstObject.range];
-            NSLog(@"%@",subStr);
+            NSLog(@"%@",fileName);
             
             //全路径
             NSString *fullPath = [searchPath stringByAppendingPathComponent:subPath];
