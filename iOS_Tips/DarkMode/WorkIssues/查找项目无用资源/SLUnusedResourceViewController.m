@@ -12,7 +12,8 @@
 /* 资料：
  https://www.jianshu.com/p/cef2f6becbe6
  https://github.com/tinymind/LSUnusedResources
- https://www.runoob.com/regexp/regexp-tutorial.html
+ 正则表达式入门：https://www.runoob.com/regexp/regexp-tutorial.html
+ 正则表达式在线工具： https://tool.oschina.net/regex/
  */
 @interface SLUnusedResourceViewController ()
 
