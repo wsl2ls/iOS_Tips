@@ -12,7 +12,7 @@
 /* 资料：
  https://www.jianshu.com/p/cef2f6becbe6
  https://github.com/tinymind/LSUnusedResources
- 正则表达式入门：https://www.runoob.com/regexp/regexp-tutorial.html
+ 正则表达式入门：http://www.regexlab.com/zh/regref.htm
  正则表达式在线工具： https://tool.oschina.net/regex/
  */
 @interface SLUnusedResourceViewController ()
@@ -54,14 +54,14 @@
             NSString *fileName = subPath.lastPathComponent;
             //            fileName = subPath;
             //匹配规则
-            NSString *regularExpStr = [@"[a-zA-Z0-9_-]*\\." stringByAppendingFormat:@"%@", suffixs];
+            NSString *regularExpStr =  [NSString stringWithFormat:@"[a-zA-Z0-9_-]*(@[23]x)?\\.(%@)",suffixs];
             //            NSString *regularExpStr = @"([a-zA-Z0-9_-]*)\\.m";
             NSRegularExpression *regularExp = [[NSRegularExpression alloc] initWithPattern:regularExpStr options:NSRegularExpressionCaseInsensitive error:nil];
             NSArray <NSTextCheckingResult *> *resultArr = [regularExp matchesInString:fileName options:NSMatchingReportProgress range:NSMakeRange(0, fileName.length)];
             if(resultArr.count == 0) continue;
             //取出匹配出来的字符串
-            NSString *subStr = [fileName substringWithRange:resultArr.firstObject.range];
-            NSLog(@"%@",fileName);
+//            NSString *subStr = [fileName substringWithRange:resultArr.firstObject.range];
+//            NSLog(@"%@",subStr);
             
             //全路径
             NSString *fullPath = [searchPath stringByAppendingPathComponent:subPath];
