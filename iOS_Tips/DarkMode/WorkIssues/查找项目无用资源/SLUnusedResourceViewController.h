@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-///查找项目无用的图片、类等文件资源，  此示例主要针对于此项目中的图片资源，其他类型资源实现原理相同
+///扫描项目无用的图片、类等文件资源，  此示例主要针对于此项目中的图片资源，其他类型资源实现原理相同
 @interface SLUnusedResourceViewController : UITableViewController
 
 @end

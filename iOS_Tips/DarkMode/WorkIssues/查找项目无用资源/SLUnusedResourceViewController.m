@@ -33,7 +33,7 @@
 - (void)setupUI {
     self.navigationController.navigationBar.translucent = YES;
     self.tableView.estimatedRowHeight = 1;
-    self.navigationItem.title = @"正在查找无用图片...";
+    self.navigationItem.title = @"正在扫描无用图片...";
 }
 
 #pragma mark - Data
@@ -101,7 +101,7 @@
         
         self.dataSource = unusedImgs;
         SL_DISPATCH_ON_MAIN_THREAD(^{
-            self.navigationItem.title = @"ipa瘦身之查找无用资源";
+            self.navigationItem.title = @"ipa瘦身之扫描无用资源";
             [self.tableView reloadData];
         });
         
