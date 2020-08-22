@@ -207,7 +207,7 @@ NSString *const kLFSplashViewData_frameArray = @"LFSplashViewData_frameArray";
         } else if (self.mosaicType == SLMosaicTypePaintbrush) {
             SLMosaicPointElement  *blur = [ SLMosaicPointElement  new];
             blur.rect = CGRectMake(point.x-self.paintSize.width/2, point.y-self.paintSize.height/2, self.paintSize.width, self.paintSize.height);
-            blur.imageName = @"EditMosaicBrush.png";
+            blur.imageName = @"EditMosaicBrush";
             blur.color = self.brushColor ? self.brushColor(blur.rect.origin) : nil;
             SLMosaicLineLayer *layer = [SLMosaicLineLayer layer];
             layer.frame = self.bounds;
@@ -257,7 +257,7 @@ NSString *const kLFSplashViewData_frameArray = @"LFSplashViewData_frameArray";
                 
                 //2、创建LFSplashBlur
                 SLMosaicPointElement *blur = [SLMosaicPointElement new];
-                blur.imageName = @"EditMosaicBrush.png";
+                blur.imageName = @"EditMosaicBrush";
                 blur.color = self.brushColor ? self.brushColor(point) : nil;
                 /** 新增随机位置 */
                 int x = self.paintSize.width + MIN(1, (int)(self.paintSize.width*0.4));

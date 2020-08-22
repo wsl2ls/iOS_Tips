@@ -99,6 +99,7 @@
 		78777CE6238FF65C006FA671 /* SLDelayPerform.m in Sources */ = {isa = PBXBuildFile; fileRef = 78777CE5238FF65C006FA671 /* SLDelayPerform.m */; };
 		78799EA224EE7EEC00DA8C7A /* SLUnusedResourceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78799EA124EE7EEC00DA8C7A /* SLUnusedResourceViewController.m */; };
 		78799EAB24EFC60C00DA8C7A /* SLResourceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 78799EAA24EFC60C00DA8C7A /* SLResourceInfo.m */; };
+		78799EB224F1027300DA8C7A /* unused.png in Resources */ = {isa = PBXBuildFile; fileRef = 78799EB124F1027300DA8C7A /* unused.png */; };
 		787C7DBE245D74E4005DF7ED /* NSMutableArray+SLCrashProtector.m in Sources */ = {isa = PBXBuildFile; fileRef = 787C7DB2245D74E3005DF7ED /* NSMutableArray+SLCrashProtector.m */; };
 		787C7DBF245D74E4005DF7ED /* NSMutableDictionary+SLCrashProtector.m in Sources */ = {isa = PBXBuildFile; fileRef = 787C7DB3245D74E3005DF7ED /* NSMutableDictionary+SLCrashProtector.m */; };
 		787C7DC0245D74E4005DF7ED /* NSDictionary+SLCrashProtector.m in Sources */ = {isa = PBXBuildFile; fileRef = 787C7DB5245D74E3005DF7ED /* NSDictionary+SLCrashProtector.m */; };
@@ -344,6 +345,7 @@
 		78799EA124EE7EEC00DA8C7A /* SLUnusedResourceViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLUnusedResourceViewController.m; sourceTree = "<group>"; };
 		78799EA924EFC60C00DA8C7A /* SLResourceInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLResourceInfo.h; sourceTree = "<group>"; };
 		78799EAA24EFC60C00DA8C7A /* SLResourceInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLResourceInfo.m; sourceTree = "<group>"; };
+		78799EB124F1027300DA8C7A /* unused.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = unused.png; sourceTree = "<group>"; };
 		787C7DB2245D74E3005DF7ED /* NSMutableArray+SLCrashProtector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableArray+SLCrashProtector.m"; sourceTree = "<group>"; };
 		787C7DB3245D74E3005DF7ED /* NSMutableDictionary+SLCrashProtector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableDictionary+SLCrashProtector.m"; sourceTree = "<group>"; };
 		787C7DB4245D74E3005DF7ED /* NSString+SLCrashProtector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+SLCrashProtector.h"; sourceTree = "<group>"; };
@@ -878,20 +880,13 @@
 		78799E9F24EE7E7F00DA8C7A /* 查找项目无用资源 */ = {
 			isa = PBXGroup;
 			children = (
-				78799EAC24EFE1B400DA8C7A /* png */,
+				78799EB124F1027300DA8C7A /* unused.png */,
 				78799EA024EE7EEC00DA8C7A /* SLUnusedResourceViewController.h */,
 				78799EA124EE7EEC00DA8C7A /* SLUnusedResourceViewController.m */,
 				78799EA924EFC60C00DA8C7A /* SLResourceInfo.h */,
 				78799EAA24EFC60C00DA8C7A /* SLResourceInfo.m */,
 			);
 			path = "查找项目无用资源";
-			sourceTree = "<group>";
-		};
-		78799EAC24EFE1B400DA8C7A /* png */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = png;
 			sourceTree = "<group>";
 		};
 		78842455248F92D400C2E505 /* AVFoundation */ = {
@@ -1377,6 +1372,7 @@
 				782CFB6D239E69F3001B5528 /* Scale.fsh in Resources */,
 				782CFB71239E69FA001B5528 /* Shake.vsh in Resources */,
 				78B1048B232F57C30051579F /* Main.storyboard in Resources */,
+				78799EB224F1027300DA8C7A /* unused.png in Resources */,
 				782CFB27239DFD89001B5528 /* SplitScreen_1.fsh in Resources */,
 				783FB4612394A76B0039AEFD /* shaderf.fsh in Resources */,
 				7811F7AD24B32A1E000AA044 /* Write Link Map File.png in Resources */,
