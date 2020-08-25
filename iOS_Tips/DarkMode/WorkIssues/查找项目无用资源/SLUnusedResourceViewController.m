@@ -47,7 +47,7 @@
     NSString *imgExpression = [NSString stringWithFormat:@"([a-zA-Z0-9_-]*)(@[23]x)?\\.(%@)",imgTypes];
     NSMutableArray *imgResources = [self searchAllUnderFolderPath:folderPath fileTypes:imgTypes regularExpression:imgExpression];
     
-    NSString *fileTypes = @"h|m$|swift|xib|storyboard";
+    NSString *fileTypes = @"h|m$|swift|xib|storyboard|plist";
     NSString *fileExpression = [NSString stringWithFormat:@"([a-zA-Z0-9_-]*)(\\.)(%@)",fileTypes];
     NSMutableArray *files = [self searchAllUnderFolderPath:folderPath fileTypes:fileTypes regularExpression:fileExpression];
     
