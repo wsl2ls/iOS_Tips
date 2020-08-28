@@ -53,7 +53,7 @@
     ///创建异常端口
     kern_return_t kr = mach_port_allocate(mach_task_self(), MACH_PORT_RIGHT_RECEIVE, &server_port);
     assert(kr == KERN_SUCCESS);
-    NSLog(@"create a port: %d", server_port);
+    NSLog(@"创建异常消息监听端口: %d", server_port);
     
     ///申请set_exception_ports 的权限
     kr = mach_port_insert_right(mach_task_self(), server_port, server_port, MACH_MSG_TYPE_MAKE_SEND);
