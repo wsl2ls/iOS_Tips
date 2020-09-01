@@ -117,6 +117,11 @@
         [fileHandle closeFile];
     }
     
+    //调试模式时，强制抛出异常，提醒开发者代码有问题
+    #if DEBUG
+        @throw crashError.exception;
+    #endif
+    
 }
 
 #pragma mark - Container Crash
