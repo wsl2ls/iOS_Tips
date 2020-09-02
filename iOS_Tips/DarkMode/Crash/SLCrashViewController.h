@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-//iOS Crash防护 
+//iOS Crash防护 注意：部分防护功能还不完善，比如野指针和内存泄漏/循环引用
 @interface SLCrashViewController : SLViewController
 
 @end

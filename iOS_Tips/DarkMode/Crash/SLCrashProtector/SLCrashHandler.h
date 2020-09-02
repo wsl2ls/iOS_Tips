@@ -60,7 +60,7 @@ typedef NS_ENUM(NSInteger, SLCrashErrorType) {
 - (void)crashHandlerDidOutputCrashError:(SLCrashError *)crashError;
 @end
 
-/// 崩溃处理程序
+/// 崩溃处理程序    注意：部分防护功能还不完善，比如野指针和内存泄漏/循环引用
 @interface SLCrashHandler : NSObject
 
 ///异常捕获回调 提供给外界实现自定义处理 ，日志上报等（注意线程安全）
