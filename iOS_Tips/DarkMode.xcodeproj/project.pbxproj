@@ -127,6 +127,7 @@
 		788ACD622390BFD400737EC2 /* SLLoadImageVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 788ACD612390BFD400737EC2 /* SLLoadImageVC.m */; };
 		788ACD652390EA3A00737EC2 /* SLCubeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 788ACD642390EA3A00737EC2 /* SLCubeViewController.m */; };
 		788ADB382441F48F00302CD9 /* SLCrashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 788ADB362441F48F00302CD9 /* SLCrashViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		78908DC324FFBE5D004164C2 /* SLScrollviewNesteVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78908DC224FFBE5D004164C2 /* SLScrollviewNesteVC.m */; };
 		789AD16324C99DCA00CB0B4C /* SLAPMThreadCount.m in Sources */ = {isa = PBXBuildFile; fileRef = 789AD16224C99DCA00CB0B4C /* SLAPMThreadCount.m */; };
 		789AD1C824D7FA5F00CB0B4C /* SLAPMURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 789AD1C724D7FA5F00CB0B4C /* SLAPMURLProtocol.m */; };
 		789AD1CF24D9024300CB0B4C /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 789AD1CD24D9024300CB0B4C /* Reachability.m */; };
@@ -400,6 +401,8 @@
 		788ACD642390EA3A00737EC2 /* SLCubeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLCubeViewController.m; sourceTree = "<group>"; };
 		788ADB352441F48F00302CD9 /* SLCrashViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLCrashViewController.h; sourceTree = "<group>"; };
 		788ADB362441F48F00302CD9 /* SLCrashViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLCrashViewController.m; sourceTree = "<group>"; };
+		78908DC124FFBE5D004164C2 /* SLScrollviewNesteVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLScrollviewNesteVC.h; sourceTree = "<group>"; };
+		78908DC224FFBE5D004164C2 /* SLScrollviewNesteVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLScrollviewNesteVC.m; sourceTree = "<group>"; };
 		789AD16124C99DCA00CB0B4C /* SLAPMThreadCount.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLAPMThreadCount.h; sourceTree = "<group>"; };
 		789AD16224C99DCA00CB0B4C /* SLAPMThreadCount.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLAPMThreadCount.m; sourceTree = "<group>"; };
 		789AD1C624D7FA5F00CB0B4C /* SLAPMURLProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLAPMURLProtocol.h; sourceTree = "<group>"; };
@@ -919,6 +922,7 @@
 				784C4C6D24C5B4F500D5C199 /* 笔记.md */,
 				7884247D2492102900C2E505 /* SLWorkIssuesViewController.h */,
 				7884247E2492102900C2E505 /* SLWorkIssuesViewController.m */,
+				78908DC024FFBD83004164C2 /* ScrollView嵌套 */,
 				78799E9F24EE7E7F00DA8C7A /* 查找项目无用资源 */,
 				784C4BDE24BC409600D5C199 /* APM */,
 				7811F76C24B2C70D000AA044 /* 二进制重排 */,
@@ -935,6 +939,15 @@
 				788ADB362441F48F00302CD9 /* SLCrashViewController.m */,
 			);
 			path = Crash;
+			sourceTree = "<group>";
+		};
+		78908DC024FFBD83004164C2 /* ScrollView嵌套 */ = {
+			isa = PBXGroup;
+			children = (
+				78908DC124FFBE5D004164C2 /* SLScrollviewNesteVC.h */,
+				78908DC224FFBE5D004164C2 /* SLScrollviewNesteVC.m */,
+			);
+			path = "ScrollView嵌套";
 			sourceTree = "<group>";
 		};
 		789AD1C524D43A3700CB0B4C /* APMMonitor */ = {
@@ -1487,6 +1500,7 @@
 				78B10482232F57C30051579F /* AppDelegate.m in Sources */,
 				78E72D7C24810E2D00751373 /* SLDynamicItem.m in Sources */,
 				78777CE0238FEA48006FA671 /* SLOpenGLController.m in Sources */,
+				78908DC324FFBE5D004164C2 /* SLScrollviewNesteVC.m in Sources */,
 				7851CB362331CC87002295B5 /* SLDarkModeViewController.m in Sources */,
 				78D30965239688EF00DC373A /* GLESMath.c in Sources */,
 				7811F76F24B2C791000AA044 /* SLBinaryResetViewController.m in Sources */,
