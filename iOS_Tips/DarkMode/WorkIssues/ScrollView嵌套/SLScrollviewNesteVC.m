@@ -8,6 +8,9 @@
 
 #import "SLScrollviewNesteVC.h"
 
+///mainScrollView头部高度
+static CGFloat  mainScrollViewHeadHeight = 300;
+
 @interface SLScrollviewNesteVC ()<UITableViewDataSource,UITableViewDelegate,UIScrollViewDelegate>
 
 @property (nonatomic, strong) UIScrollView *mainScrollView;
@@ -33,10 +36,14 @@
     self.view.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.mainScrollView];
     [self.mainScrollView addSubview:self.containerView];
-    self.containerView.frame = CGRectMake(0, 300, SL_kScreenWidth, SL_kScreenHeight-SL_TopNavigationBarHeight);
+    self.containerView.frame = CGRectMake(0, mainScrollViewHeadHeight, SL_kScreenWidth, SL_kScreenHeight-SL_TopNavigationBarHeight);
+    self.mainScrollView.contentSize = CGSizeMake(SL_kScreenWidth, self.containerView.sl_y+self.containerView.sl_height);
     
-    //    [self.containerView addSubview:self.tableView1];
-    //    [self.containerView addSubview:self.tableView2];
+    
+    
+//    self.containerView.contentSize = CGSizeMake(SL_kScreenWidth*2, self.containerView.sl_y+self.containerView.sl_height);
+//    [self.containerView addSubview:self.tableView1];
+//    [self.containerView addSubview:self.tableView2];
     
     
 }
