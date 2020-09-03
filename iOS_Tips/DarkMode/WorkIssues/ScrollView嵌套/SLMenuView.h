@@ -19,6 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, weak) id<SLMenuViewDelegate>delegate;
 @property (nonatomic, strong) NSArray *titles;
 @property (nonatomic, assign) NSInteger currentPage;
+
 @end
 
 NS_ASSUME_NONNULL_END

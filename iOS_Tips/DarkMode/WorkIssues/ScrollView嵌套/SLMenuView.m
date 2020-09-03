@@ -37,21 +37,31 @@
 
 @interface SLMenuView ()<UICollectionViewDelegate, UICollectionViewDataSource>
 @property (nonatomic, strong) UICollectionView *collectionView;
+@property (nonatomic, strong) UIView *indicatorView;
 @end
 @implementation SLMenuView
 
 #pragma mark - Override
 - (void)didMoveToSuperview {
     if (self.superview) {
-        [self addSubview:self.collectionView];
-        self.collectionView.frame = self.bounds;
+        [self setupUI];
     }
 }
 - (void)didMoveToWindow {
     if (self.superview) {
-        [self addSubview:self.collectionView];
-        self.collectionView.frame = self.bounds;
+        [self setupUI];
     }
+}
+- (void)layoutSubviews {
+    self.collectionView.frame = self.bounds;
+    NSInteger count = self.titles.count == 0 ? 1 : self.titles.count;
+    self.indicatorView.frame = CGRectMake(_currentPage*self.bounds.size.width/count, self.bounds.size.height-2, self.bounds.size.width/count, 2);
+}
+
+#pragma mark - UI
+- (void)setupUI {
+    [self addSubview:self.collectionView];
+    [self addSubview:self.indicatorView];
 }
 
 #pragma mark - Getter
@@ -68,10 +78,19 @@
     }
     return _collectionView;
 }
+- (UIView *)indicatorView {
+    if (!_indicatorView) {
+        _indicatorView = [[UIView alloc] init];
+        _indicatorView.backgroundColor = [UIColor blueColor];
+    }
+    return _indicatorView;
+}
 
 #pragma mark - Setter
 - (void)setCurrentPage:(NSInteger)currentPage {
     _currentPage = currentPage;
+    NSInteger count = self.titles.count == 0 ? 1 : self.titles.count;
+    self.indicatorView.frame = CGRectMake(_currentPage*self.bounds.size.width/count, self.bounds.size.height-2, self.bounds.size.width/count, 2);
     [self.collectionView reloadData];
 }
 

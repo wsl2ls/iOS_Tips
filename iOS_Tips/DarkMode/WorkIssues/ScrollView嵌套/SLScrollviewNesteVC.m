@@ -14,6 +14,11 @@ static CGFloat  mainScrollViewHeadHeight = 250;
 ///选项卡高度
 static CGFloat tabHeight = 50;
 
+@interface SLTableView : UITableView
+@end
+
+
+
 @interface SLScrollviewNesteVC ()<UITableViewDataSource,UITableViewDelegate,UIScrollViewDelegate, SLMenuViewDelegate>
 
 @property (nonatomic, strong) UIScrollView *mainScrollView;
@@ -33,7 +38,6 @@ static CGFloat tabHeight = 50;
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    
     [self setupUI];
 }
 - (void)viewWillAppear:(BOOL)animated {
@@ -76,6 +80,7 @@ static CGFloat tabHeight = 50;
     for (int i = 0; i < self.menuView.titles.count; i++) {
         UITableView *tableView = [self tableView];
         tableView.tag = i;
+        tableView.scrollEnabled = NO;
         tableView.frame = CGRectMake(i*self.tabScrollView.sl_width, 0,  self.tabScrollView.sl_width, self.tabScrollView.sl_height);
         [self.tabScrollView addSubview:tableView];
     }
@@ -100,6 +105,7 @@ static CGFloat tabHeight = 50;
         _headView = [[UIImageView alloc] init];
         _headView.image = [UIImage imageNamed:@"wsl"];
         _headView.contentMode = UIViewContentModeScaleAspectFit;
+        _headView.backgroundColor = [UIColor orangeColor];
     }
     return _headView;
 }
@@ -195,6 +201,14 @@ static CGFloat tabHeight = 50;
 
 #pragma mark - UIScrollViewDelegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    
+}
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    if (scrollView == self.tabScrollView) {
+        self.menuView.currentPage = roundf(self.tabScrollView.contentOffset.x/self.tabScrollView.sl_width);
+    }
+}
+- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView {
     if (scrollView == self.tabScrollView) {
         self.menuView.currentPage = roundf(self.tabScrollView.contentOffset.x/self.tabScrollView.sl_width);
     }
