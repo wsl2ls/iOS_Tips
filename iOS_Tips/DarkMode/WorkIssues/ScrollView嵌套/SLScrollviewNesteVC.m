@@ -201,6 +201,16 @@ static CGFloat tabHeight = 50;
 
 #pragma mark - UIScrollViewDelegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    if (scrollView == self.mainScrollView) {
+        if (self.mainScrollView.contentOffset.y >= mainScrollViewHeadHeight-SL_TopNavigationBarHeight) {
+            //滑到了顶部，悬停，开启子列表滑动功能
+            for (UIView *subView in self.tabScrollView.subviews) {
+                if ([subView isKindOfClass:[UITableView class]]) {
+                    [(UITableView *)subView setScrollEnabled:YES];
+                }
+            }
+        }
+    }
     
 }
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
