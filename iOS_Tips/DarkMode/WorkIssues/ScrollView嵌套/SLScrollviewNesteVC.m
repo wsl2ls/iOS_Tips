@@ -7,17 +7,21 @@
 //
 
 #import "SLScrollviewNesteVC.h"
+#import "SLMenuView.h"
 
 ///mainScrollView头部高度
-static CGFloat  mainScrollViewHeadHeight = 300;
+static CGFloat  mainScrollViewHeadHeight = 250;
+///选项卡高度
+static CGFloat tabHeight = 50;
 
-@interface SLScrollviewNesteVC ()<UITableViewDataSource,UITableViewDelegate,UIScrollViewDelegate>
+@interface SLScrollviewNesteVC ()<UITableViewDataSource,UITableViewDelegate,UIScrollViewDelegate, SLMenuViewDelegate>
 
 @property (nonatomic, strong) UIScrollView *mainScrollView;
+@property (nonatomic, strong) UIImageView *headView;
 
 @property (nonatomic, strong) UIView *containerView;
-@property (nonatomic, strong) UITableView *tableView1;
-@property (nonatomic, strong) UITableView *tableView2;
+@property (nonatomic, strong) SLMenuView *menuView;
+@property (nonatomic, strong) UIScrollView *tabScrollView;
 
 @property (nonatomic, strong) NSMutableArray *dataSource;
 
@@ -28,24 +32,53 @@ static CGFloat  mainScrollViewHeadHeight = 300;
 #pragma mark - Override
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.view.backgroundColor = [UIColor whiteColor];
+    
     [self setupUI];
+}
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    self.navigationController.navigationBar.hidden = YES;
+}
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    self.navigationController.navigationBar.hidden = NO;
 }
 
 #pragma mark - UI
 - (void)setupUI {
-    self.view.backgroundColor = [UIColor whiteColor];
+    
     [self.view addSubview:self.mainScrollView];
-    [self.mainScrollView addSubview:self.containerView];
+    
+    [self.mainScrollView addSubview:self.headView];
+    self.headView.frame = CGRectMake(0, 0, self.mainScrollView.sl_width, mainScrollViewHeadHeight);
+    
     self.containerView.frame = CGRectMake(0, mainScrollViewHeadHeight, SL_kScreenWidth, SL_kScreenHeight-SL_TopNavigationBarHeight);
-    self.mainScrollView.contentSize = CGSizeMake(SL_kScreenWidth, self.containerView.sl_y+self.containerView.sl_height);
+    [self.mainScrollView addSubview:self.containerView];
+    self.mainScrollView.contentSize = CGSizeMake(SL_kScreenWidth, mainScrollViewHeadHeight+self.containerView.sl_height);
     
+    [self.containerView addSubview:self.menuView];
+    [self.menuView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.top.mas_equalTo(0);
+        make.height.mas_equalTo(tabHeight);
+    }];
+    self.menuView.titles = @[@"你好",@"我好",@"大家好"];
+    self.menuView.currentPage = 0;
     
+    [self.containerView addSubview:self.tabScrollView];
+    [self.tabScrollView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.bottom.mas_equalTo(self.containerView);
+        make.top.mas_equalTo(tabHeight);
+    }];
+    [self.containerView layoutIfNeeded];
+    self.tabScrollView.contentSize = CGSizeMake(SL_kScreenWidth*self.menuView.titles.count,self.tabScrollView.frame.size.height);
     
-//    self.containerView.contentSize = CGSizeMake(SL_kScreenWidth*2, self.containerView.sl_y+self.containerView.sl_height);
-//    [self.containerView addSubview:self.tableView1];
-//    [self.containerView addSubview:self.tableView2];
-    
-    
+    for (int i = 0; i < self.menuView.titles.count; i++) {
+        UITableView *tableView = [self tableView];
+        tableView.tag = i;
+        tableView.frame = CGRectMake(i*self.tabScrollView.sl_width, 0,  self.tabScrollView.sl_width, self.tabScrollView.sl_height);
+        [self.tabScrollView addSubview:tableView];
+    }
 }
 
 #pragma mark - Data
@@ -54,14 +87,21 @@ static CGFloat  mainScrollViewHeadHeight = 300;
 - (UIScrollView *)mainScrollView {
     if (!_mainScrollView) {
         _mainScrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
-        _mainScrollView.backgroundColor = [UIColor orangeColor];
+        _mainScrollView.delegate = self;
         if (@available(iOS 11.0, *)) {
             _mainScrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
         } else {
-            // Fallback on earlier versions
         }
     }
     return _mainScrollView;
+}
+- (UIImageView *)headView {
+    if (!_headView) {
+        _headView = [[UIImageView alloc] init];
+        _headView.image = [UIImage imageNamed:@"wsl"];
+        _headView.contentMode = UIViewContentModeScaleAspectFit;
+    }
+    return _headView;
 }
 - (UIView *)containerView {
     if (!_containerView) {
@@ -70,35 +110,39 @@ static CGFloat  mainScrollViewHeadHeight = 300;
     }
     return _containerView;
 }
-- (UITableView *)tableView1 {
-    if (!_tableView1) {
-        _tableView1 = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, SL_kScreenWidth, SL_kScreenHeight) style:UITableViewStyleGrouped];
-        _tableView1.delegate = self;
-        _tableView1.dataSource = self;
-        _tableView1.estimatedRowHeight = 0;
-        if (@available(iOS 11.0, *)) {
-            _tableView1.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
-        } else {
-            // Fallback on earlier versions
-        }
-        [_tableView1 registerClass:[UITableViewCell class] forCellReuseIdentifier:@"cellId"];
+- (SLMenuView *)menuView {
+    if (!_menuView) {
+        _menuView = [[SLMenuView alloc] init];
+        _menuView.backgroundColor = [UIColor orangeColor];
+        _menuView.delegate = self;
     }
-    return _tableView1;
+    return _menuView;
 }
-- (UITableView *)tableView2 {
-    if (!_tableView2) {
-        _tableView2 = [[UITableView alloc] initWithFrame:CGRectMake(SL_kScreenWidth, 0, SL_kScreenWidth, SL_kScreenHeight) style:UITableViewStyleGrouped];
-        _tableView2.delegate = self;
-        _tableView2.dataSource = self;
-        _tableView2.estimatedRowHeight = 0;
+- (UIScrollView *)tabScrollView {
+    if (!_tabScrollView) {
+        _tabScrollView = [[UIScrollView alloc] init];
+        _tabScrollView.backgroundColor = [UIColor blueColor];
+        _tabScrollView.pagingEnabled = YES;
+        _tabScrollView.delegate = self;
+        _tabScrollView.bounces = NO;
         if (@available(iOS 11.0, *)) {
-            _tableView2.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+            _tabScrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
         } else {
-            // Fallback on earlier versions
         }
-        [_tableView2 registerClass:[UITableViewCell class] forCellReuseIdentifier:@"cellId"];
     }
-    return _tableView2;
+    return _tabScrollView;
+}
+- (UITableView *)tableView {
+    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
+    tableView.delegate = self;
+    tableView.dataSource = self;
+    tableView.estimatedRowHeight = 0;
+    if (@available(iOS 11.0, *)) {
+        tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+    } else {
+    }
+    [tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"cellId"];
+    return tableView;
 }
 - (NSMutableArray *)dataSource {
     if (_dataSource == nil) {
@@ -137,11 +181,23 @@ static CGFloat  mainScrollViewHeadHeight = 300;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"cellId" forIndexPath:indexPath];
-    cell.textLabel.text = tableView == self.tableView1 ? @"tableView1" : @"tableView2";
+    cell.textLabel.text = [NSString stringWithFormat:@"%ld",indexPath.row];
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+#pragma mark - SLMenuViewDelegate
+- (void)menuView:(SLMenuView *)menuView didSelectItemAtIndex:(NSInteger)index {
+    [self.tabScrollView setContentOffset:CGPointMake(index* self.tabScrollView.sl_width, 0) animated:YES];
+}
+
+#pragma mark - UIScrollViewDelegate
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    if (scrollView == self.tabScrollView) {
+        self.menuView.currentPage = roundf(self.tabScrollView.contentOffset.x/self.tabScrollView.sl_width);
+    }
 }
 
 
