@@ -10,17 +10,26 @@
 #import "SLMenuView.h"
 
 ///mainScrollView头部高度
-static CGFloat  mainScrollViewHeadHeight = 250;
+static CGFloat  mainScrollViewHeadHeight = 300;
 ///选项卡高度
 static CGFloat tabHeight = 50;
 
-@interface SLTableView : UITableView
+@interface SLPanTableView : UITableView
+@end
+@implementation SLPanTableView
+//是否允许多个手势识别器共同识别，一个控件的手势识别后是否阻断手势识别继续向下传播，默认返回NO，上层对象识别后则不再继续传播；如果为YES，响应者链上层对象触发手势识别后，如果下层对象也添加了手势并成功识别也会继续执行。
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+    return [gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]] && [otherGestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]];
+}
 @end
 
-
-
 @interface SLScrollviewNesteVC ()<UITableViewDataSource,UITableViewDelegate,UIScrollViewDelegate, SLMenuViewDelegate>
+{
+    UIImage *_backgroundImage;
+    UIImage *_shadowImage;
+}
 
+@property (nonatomic, strong) UIView *navigationView;
 @property (nonatomic, strong) UIScrollView *mainScrollView;
 @property (nonatomic, strong) UIImageView *headView;
 
@@ -78,21 +87,40 @@ static CGFloat tabHeight = 50;
     self.tabScrollView.contentSize = CGSizeMake(SL_kScreenWidth*self.menuView.titles.count,self.tabScrollView.frame.size.height);
     
     for (int i = 0; i < self.menuView.titles.count; i++) {
-        UITableView *tableView = [self tableView];
+        SLPanTableView *tableView = [self tableView];
         tableView.tag = i;
-        tableView.scrollEnabled = NO;
         tableView.frame = CGRectMake(i*self.tabScrollView.sl_width, 0,  self.tabScrollView.sl_width, self.tabScrollView.sl_height);
         [self.tabScrollView addSubview:tableView];
     }
+    
+    
+    [self.view addSubview:self.navigationView];
 }
 
 #pragma mark - Data
 
 #pragma mark - Getter
+- (UIView *)navigationView {
+    if (!_navigationView) {
+        _navigationView = [[UIView alloc] initWithFrame:CGRectMake(0, 0,SL_kScreenWidth , SL_TopNavigationBarHeight)];
+        _navigationView.backgroundColor = [UIColor clearColor];
+        UIButton *nav_return_white = [[UIButton alloc] init];
+        [nav_return_white setImage:[UIImage imageNamed:@"nav_return_white"] forState:UIControlStateNormal];
+        [nav_return_white addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+        [_navigationView addSubview:nav_return_white];
+        [nav_return_white mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.mas_equalTo(10);
+            make.size.mas_equalTo(CGSizeMake(15, 20));
+            make.bottom.mas_equalTo(-10);
+        }];
+    }
+    return _navigationView;
+}
 - (UIScrollView *)mainScrollView {
     if (!_mainScrollView) {
         _mainScrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
         _mainScrollView.delegate = self;
+        _mainScrollView.bounces = NO;
         if (@available(iOS 11.0, *)) {
             _mainScrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
         } else {
@@ -105,7 +133,7 @@ static CGFloat tabHeight = 50;
         _headView = [[UIImageView alloc] init];
         _headView.image = [UIImage imageNamed:@"wsl"];
         _headView.contentMode = UIViewContentModeScaleAspectFit;
-        _headView.backgroundColor = [UIColor orangeColor];
+        _headView.backgroundColor = [UIColor colorWithRed:11/255.0 green:112/255.0 blue:230/255.0 alpha:1.0];;
     }
     return _headView;
 }
@@ -119,8 +147,10 @@ static CGFloat tabHeight = 50;
 - (SLMenuView *)menuView {
     if (!_menuView) {
         _menuView = [[SLMenuView alloc] init];
-        _menuView.backgroundColor = [UIColor orangeColor];
+        _menuView.backgroundColor = [UIColor colorWithRed:248/255.0 green:248/255.0 blue:248/255.0 alpha:1.0];
         _menuView.delegate = self;
+        _menuView.layer.borderWidth = 1.0;
+        _menuView.layer.borderColor = [UIColor colorWithRed:228/255.0 green:228/255.0 blue:228/255.0 alpha:1.0].CGColor;
     }
     return _menuView;
 }
@@ -138,8 +168,8 @@ static CGFloat tabHeight = 50;
     }
     return _tabScrollView;
 }
-- (UITableView *)tableView {
-    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
+- (SLPanTableView *)tableView {
+    SLPanTableView *tableView = [[SLPanTableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
     tableView.delegate = self;
     tableView.dataSource = self;
     tableView.estimatedRowHeight = 0;
@@ -160,6 +190,9 @@ static CGFloat tabHeight = 50;
 #pragma mark - Data
 
 #pragma mark - EventsHandle
+- (void)back {
+    [self.navigationController popViewControllerAnimated:YES];
+}
 
 #pragma mark - HelpMethods
 
@@ -202,15 +235,26 @@ static CGFloat tabHeight = 50;
 #pragma mark - UIScrollViewDelegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     if (scrollView == self.mainScrollView) {
-        if (self.mainScrollView.contentOffset.y >= mainScrollViewHeadHeight-SL_TopNavigationBarHeight) {
+        //根据偏移量操作导航栏
+        if(self.mainScrollView.contentOffset.y == mainScrollViewHeadHeight-SL_TopNavigationBarHeight) {
+            self.navigationController.navigationBar.hidden = NO;
+        }else {
+            self.navigationController.navigationBar.hidden = YES;
+        }
+        if (self.mainScrollView.contentOffset.y > mainScrollViewHeadHeight-SL_TopNavigationBarHeight) {
             //滑到了顶部，悬停，开启子列表滑动功能
-            for (UIView *subView in self.tabScrollView.subviews) {
-                if ([subView isKindOfClass:[UITableView class]]) {
-                    [(UITableView *)subView setScrollEnabled:YES];
-                }
-            }
+            self.mainScrollView.contentOffset = CGPointMake(0, mainScrollViewHeadHeight-SL_TopNavigationBarHeight);
         }
     }
+    
+    //子列表
+    if (scrollView.superview == self.tabScrollView) {
+        if (self.mainScrollView.contentOffset.y < mainScrollViewHeadHeight-SL_TopNavigationBarHeight) {
+            scrollView.contentOffset = CGPointMake(0, 0);
+        }
+    }
+    
+    
     
 }
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
@@ -223,6 +267,5 @@ static CGFloat tabHeight = 50;
         self.menuView.currentPage = roundf(self.tabScrollView.contentOffset.x/self.tabScrollView.sl_width);
     }
 }
-
 
 @end

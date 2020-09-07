@@ -81,7 +81,7 @@
 - (UIView *)indicatorView {
     if (!_indicatorView) {
         _indicatorView = [[UIView alloc] init];
-        _indicatorView.backgroundColor = [UIColor blueColor];
+        _indicatorView.backgroundColor = [UIColor colorWithRed:11/255.0 green:112/255.0 blue:230/255.0 alpha:1.0];
     }
     return _indicatorView;
 }
@@ -106,7 +106,7 @@
     item.titleLabel.text = self.titles[indexPath.row];
     if (indexPath.row == self.currentPage) {
         item.titleLabel.font = [UIFont boldSystemFontOfSize:18];
-        item.titleLabel.textColor = [UIColor redColor];
+        item.titleLabel.textColor = [UIColor colorWithRed:11/255.0 green:112/255.0 blue:230/255.0 alpha:1.0];
     }else {
         item.titleLabel.font = [UIFont systemFontOfSize:15];
         item.titleLabel.textColor = [UIColor blackColor];
