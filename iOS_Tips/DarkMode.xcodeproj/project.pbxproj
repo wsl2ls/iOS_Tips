@@ -129,6 +129,9 @@
 		788ADB382441F48F00302CD9 /* SLCrashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 788ADB362441F48F00302CD9 /* SLCrashViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		78908DC324FFBE5D004164C2 /* SLScrollviewNesteVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78908DC224FFBE5D004164C2 /* SLScrollviewNesteVC.m */; };
 		78908DCD2500F099004164C2 /* SLMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78908DCC2500F099004164C2 /* SLMenuView.m */; };
+		78908DFA25078F84004164C2 /* SLScrollViewJuejin.m in Sources */ = {isa = PBXBuildFile; fileRef = 78908DF925078F84004164C2 /* SLScrollViewJuejin.m */; };
+		78908DFD25079323004164C2 /* SLScrollViewWeibo.m in Sources */ = {isa = PBXBuildFile; fileRef = 78908DFC25079323004164C2 /* SLScrollViewWeibo.m */; };
+		78908E0025079451004164C2 /* SLPanTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78908DFF25079451004164C2 /* SLPanTableView.m */; };
 		789AD16324C99DCA00CB0B4C /* SLAPMThreadCount.m in Sources */ = {isa = PBXBuildFile; fileRef = 789AD16224C99DCA00CB0B4C /* SLAPMThreadCount.m */; };
 		789AD1C824D7FA5F00CB0B4C /* SLAPMURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 789AD1C724D7FA5F00CB0B4C /* SLAPMURLProtocol.m */; };
 		789AD1CF24D9024300CB0B4C /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 789AD1CD24D9024300CB0B4C /* Reachability.m */; };
@@ -406,6 +409,12 @@
 		78908DC224FFBE5D004164C2 /* SLScrollviewNesteVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLScrollviewNesteVC.m; sourceTree = "<group>"; };
 		78908DCB2500F099004164C2 /* SLMenuView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLMenuView.h; sourceTree = "<group>"; };
 		78908DCC2500F099004164C2 /* SLMenuView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLMenuView.m; sourceTree = "<group>"; };
+		78908DF825078F84004164C2 /* SLScrollViewJuejin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLScrollViewJuejin.h; sourceTree = "<group>"; };
+		78908DF925078F84004164C2 /* SLScrollViewJuejin.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLScrollViewJuejin.m; sourceTree = "<group>"; };
+		78908DFB25079323004164C2 /* SLScrollViewWeibo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLScrollViewWeibo.h; sourceTree = "<group>"; };
+		78908DFC25079323004164C2 /* SLScrollViewWeibo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLScrollViewWeibo.m; sourceTree = "<group>"; };
+		78908DFE25079451004164C2 /* SLPanTableView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLPanTableView.h; sourceTree = "<group>"; };
+		78908DFF25079451004164C2 /* SLPanTableView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLPanTableView.m; sourceTree = "<group>"; };
 		789AD16124C99DCA00CB0B4C /* SLAPMThreadCount.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLAPMThreadCount.h; sourceTree = "<group>"; };
 		789AD16224C99DCA00CB0B4C /* SLAPMThreadCount.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLAPMThreadCount.m; sourceTree = "<group>"; };
 		789AD1C624D7FA5F00CB0B4C /* SLAPMURLProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLAPMURLProtocol.h; sourceTree = "<group>"; };
@@ -949,6 +958,12 @@
 			children = (
 				78908DC124FFBE5D004164C2 /* SLScrollviewNesteVC.h */,
 				78908DC224FFBE5D004164C2 /* SLScrollviewNesteVC.m */,
+				78908DF825078F84004164C2 /* SLScrollViewJuejin.h */,
+				78908DF925078F84004164C2 /* SLScrollViewJuejin.m */,
+				78908DFB25079323004164C2 /* SLScrollViewWeibo.h */,
+				78908DFC25079323004164C2 /* SLScrollViewWeibo.m */,
+				78908DFE25079451004164C2 /* SLPanTableView.h */,
+				78908DFF25079451004164C2 /* SLPanTableView.m */,
 				78908DCB2500F099004164C2 /* SLMenuView.h */,
 				78908DCC2500F099004164C2 /* SLMenuView.m */,
 			);
@@ -1492,6 +1507,7 @@
 				78DAA113235FF61E00A60F64 /* SLEditVideoClipping.m in Sources */,
 				782E3EB42373D8C7001E0DF9 /* SLAvWriterInput.m in Sources */,
 				789AD1D524D97F8500CB0B4C /* SLSystemAppInfo.m in Sources */,
+				78908DFD25079323004164C2 /* SLScrollViewWeibo.m in Sources */,
 				78804A7E237D5E3E0087E152 /* SLWaterMarkController.m in Sources */,
 				78EF8B6024162B96008D0CD7 /* SLMenuViewController.m in Sources */,
 				7869C72224A8B6D200527546 /* SLPictureBrowseController.m in Sources */,
@@ -1525,6 +1541,7 @@
 				787C7DBF245D74E4005DF7ED /* NSMutableDictionary+SLCrashProtector.m in Sources */,
 				7830A5A42358904600BC79BA /* UIView+SLImage.m in Sources */,
 				78A35B1C23978A5D004BCCB7 /* SLShaderCubeViewController.m in Sources */,
+				78908E0025079451004164C2 /* SLPanTableView.m in Sources */,
 				787C7DC0245D74E4005DF7ED /* NSDictionary+SLCrashProtector.m in Sources */,
 				78E1791723517F700007E4BB /* SLImageView.m in Sources */,
 				78E1791823517F700007E4BB /* SLImage.m in Sources */,
@@ -1536,6 +1553,7 @@
 				78E72D542477A4E700751373 /* SLWebTableViewController.m in Sources */,
 				2CEBE85D24A6E65600BA21F3 /* SLTimer.m in Sources */,
 				783504642452C20B0071283E /* SLMethod.m in Sources */,
+				78908DFA25078F84004164C2 /* SLScrollViewJuejin.m in Sources */,
 				784C4BE124BC40D200D5C199 /* SLAPMViewController.m in Sources */,
 				787C7E4524656524005DF7ED /* UIView+SLMLeakFinder.m in Sources */,
 				789AD1CF24D9024300CB0B4C /* Reachability.m in Sources */,

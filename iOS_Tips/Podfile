@@ -1,4 +1,5 @@
 source 'https://github.com/CocoaPods/Specs.git'
+#source 'https://gitee.com/mirrors/CocoaPods-Specs.git'
 platform :ios,’10.0’  
 target "DarkMode" do
 pod 'GPUImage'
@@ -8,4 +9,6 @@ pod 'Masonry'
 pod 'YYImage'
 pod 'YYWebImage'
 pod 'YYModel'
+pod 'YYModel'
+pod 'MJRefresh'
 end
