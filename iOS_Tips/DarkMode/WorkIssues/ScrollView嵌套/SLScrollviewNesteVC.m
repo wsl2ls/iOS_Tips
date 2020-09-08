@@ -41,7 +41,7 @@
 - (void)getData {
     [self.titlesArray addObjectsFromArray:@[
         @"掘金APP个人中心页样式",
-        @"微博发现页ScrollView嵌套样式"]];
+        @"微博发现页ScrollView嵌套样式doing"]];
     [self.classArray addObjectsFromArray:@[[SLScrollViewJuejin class],
                                            [SLScrollViewWeibo class]]];
     [self.tableView reloadData];
