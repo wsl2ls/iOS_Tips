@@ -28,7 +28,8 @@
 >> 6.6、iOS 自定义转场动画  
 >> 6.7、二进制重排优化启动速度  
 >> 6.8、iOS APM应用性能监控管理(doing)  
->> 6.9、ipa瘦身之扫描无用资源
+>> 6.9、ipa瘦身之扫描无用资源  
+>> 6.10、多个UIScrollView嵌套/个人中心页
 
 > 7、[iOS Crash防护](#7-iOSCrash防护)  
 > 8、[WKWebView相关](#8-WKWebView相关) 
