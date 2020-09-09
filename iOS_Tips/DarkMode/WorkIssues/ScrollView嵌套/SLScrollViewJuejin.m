@@ -27,9 +27,10 @@ static CGFloat tabHeight = 50;
 @property (nonatomic, strong) SLMenuView *menuView;
 @property (nonatomic, strong) UIScrollView *tabScrollView;
 
-@property (nonatomic, assign) NSInteger dataCount; //默认 20
-
-@property (nonatomic, assign) CGPoint lastContentOffset; //滑动到当前子列表时的偏移量
+//默认 20
+@property (nonatomic, assign) NSInteger dataCount;
+//滑动到当前子列表时的偏移量，主要处理顶部未悬停且子列表未置顶偏移量不为0时的情况
+@property (nonatomic, assign) CGPoint lastContentOffset;
 
 @end
 
@@ -266,6 +267,9 @@ static CGFloat tabHeight = 50;
     if (scrollView.superview == self.tabScrollView) {
         if(!_isTopHovering && self.mainScrollView.contentOffset.y > 0) {
             //如果主mainScrollView还未到顶部悬停，则选项子列表subTableView偏移量保持不变
+            if (scrollView.contentOffset.y < 0) {
+                self.lastContentOffset = CGPointZero;
+            }
             scrollView.contentOffset = self.lastContentOffset;
         }
         if(_isTopHovering && scrollView.contentOffset.y > 0) {
