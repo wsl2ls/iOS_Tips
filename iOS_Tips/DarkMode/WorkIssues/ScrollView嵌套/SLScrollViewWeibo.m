@@ -29,9 +29,6 @@ static CGFloat tabHeight = 64;
 
 @property (nonatomic, assign) NSInteger dataCount; //默认 20
 
-//滑动到当前子列表时的偏移量，主要处理顶部未悬停且子列表未置顶偏移量不为0时的情况
-@property (nonatomic, assign) CGPoint lastContentOffset;
-
 @end
 
 @implementation SLScrollViewWeibo
@@ -82,7 +79,7 @@ static CGFloat tabHeight = 64;
     self.tabScrollView.contentSize = CGSizeMake(SL_kScreenWidth*self.menuView.titles.count,self.tabScrollView.frame.size.height);
     
     for (int i = 0; i < self.menuView.titles.count; i++) {
-        SLPanTableView *tableView = [self subTableView];
+        UITableView *tableView = [self subTableView];
         tableView.tag = 10+i;
         tableView.scrollEnabled = NO;
         tableView.frame = CGRectMake(i*self.tabScrollView.sl_width, 0,  self.tabScrollView.sl_width, self.tabScrollView.sl_height);
@@ -100,14 +97,14 @@ static CGFloat tabHeight = 64;
 #pragma mark - Getter
 - (UIView *)navigationView {
     if (!_navigationView) {
-        _navigationView = [[UIView alloc] initWithFrame:CGRectMake(0, 0,SL_kScreenWidth , SL_TopNavigationBarHeight)];
+        _navigationView = [[UIView alloc] initWithFrame:CGRectMake(10,0,15 , SL_TopNavigationBarHeight)];
         _navigationView.backgroundColor = [UIColor clearColor];
         UIButton *nav_return_white = [[UIButton alloc] init];
         [nav_return_white setImage:[UIImage imageNamed:@"nav_return_white"] forState:UIControlStateNormal];
         [nav_return_white addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
         [_navigationView addSubview:nav_return_white];
         [nav_return_white mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.mas_equalTo(10);
+            make.left.mas_equalTo(0);
             make.size.mas_equalTo(CGSizeMake(15, 20));
             make.bottom.mas_equalTo(-20);
         }];
@@ -126,10 +123,10 @@ static CGFloat tabHeight = 64;
         }
         SL_WeakSelf
         _mainScrollView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-               dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                   weakSelf.dataCount = 20;
-                   [weakSelf.mainScrollView.mj_header endRefreshing];
-               });
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                weakSelf.dataCount = 20;
+                [weakSelf.mainScrollView.mj_header endRefreshing];
+            });
         }];
     }
     return _mainScrollView;
@@ -175,8 +172,8 @@ static CGFloat tabHeight = 64;
     }
     return _tabScrollView;
 }
-- (SLPanTableView *)subTableView {
-    SLPanTableView *tableView = [[SLPanTableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
+- (UITableView *)subTableView {
+    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
     tableView.delegate = self;
     tableView.dataSource = self;
     tableView.estimatedRowHeight = 0;
@@ -261,47 +258,43 @@ static CGFloat tabHeight = 64;
     
     if (scrollView == self.tabScrollView) return;
     
-//    if (scrollView == self.mainScrollView) {
-//        if (self.mainScrollView.contentOffset.y >= mainScrollViewHeadHeight || _isTopHovering) {
-//            //滑到顶部悬停
-//            _isTopHovering = YES;
-//            self.mainScrollView.contentOffset = CGPointMake(0, mainScrollViewHeadHeight);
-//        }
-//    }
-    
-    /*
-    //子列表
-    if (scrollView.superview == self.tabScrollView) {
-        if(!_isTopHovering && self.mainScrollView.contentOffset.y > 0) {
-            //如果主mainScrollView还未到顶部悬停，则选项子列表subTableView偏移量保持不变
-            //如果主mainScrollView还未到顶部悬停，则选项子列表subTableView偏移量保持不变
-            if (scrollView.contentOffset.y < 0) {
-                self.lastContentOffset = CGPointZero;
-            }
-            scrollView.contentOffset = self.lastContentOffset;
-            
-        }
-        if(_isTopHovering && scrollView.contentOffset.y > 0) {
-            //如果主mainScrollView在顶部悬停，而此时选项子列表subTableView还未到顶部，则保持mainScrollView继续悬停
+    if (scrollView == self.mainScrollView) {
+        if (self.mainScrollView.contentOffset.y >= mainScrollViewHeadHeight && !_isTopHovering) {
+            //滑到顶部悬停
+            _isTopHovering = YES;
+            self.mainScrollView.scrollEnabled = NO;
+            self.mainScrollView.bounces = NO;
             self.mainScrollView.contentOffset = CGPointMake(0, mainScrollViewHeadHeight);
+            for (int i = 0; i < self.menuView.titles.count; i++) {
+                UIView *subView = [self.tabScrollView viewWithTag:10+i];
+                if ([subView isKindOfClass:[UITableView class]]) {
+                    [(UITableView *)subView setScrollEnabled:YES];
+                }
+            }
         }
-//        if (scrollView.contentOffset.y < 0) {
-//            //如果subTableView滑动到了顶部，即将取消顶部悬停
-//            _isTopHovering = NO;
-//        }
     }
-     */
 }
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     if (scrollView == self.tabScrollView) {
         self.menuView.currentPage = roundf(self.tabScrollView.contentOffset.x/self.tabScrollView.sl_width);
-        self.lastContentOffset = [self currentSubListTabView].contentOffset;
     }
 }
 - (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView {
     if (scrollView == self.tabScrollView) {
         self.menuView.currentPage = roundf(self.tabScrollView.contentOffset.x/self.tabScrollView.sl_width);
-        self.lastContentOffset = [self currentSubListTabView].contentOffset;
+    }
+    
+    if (scrollView == self.mainScrollView && self.mainScrollView.contentOffset.y != mainScrollViewHeadHeight) {
+        _isTopHovering = NO;
+        self.mainScrollView.scrollEnabled = YES;
+        self.mainScrollView.bounces = YES;
+        for (int i = 0; i < self.menuView.titles.count; i++) {
+            UIView *subView = [self.tabScrollView viewWithTag:10+i];
+            if ([subView isKindOfClass:[UITableView class]]) {
+                [(UITableView *)subView setScrollEnabled:NO];
+                [(UITableView *)subView setContentOffset:CGPointZero];
+            }
+        }
     }
 }
 
