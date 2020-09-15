@@ -200,8 +200,6 @@ static CGFloat tabHeight = 64;
     return tableView;
 }
 
-#pragma mark - Data
-
 #pragma mark - EventsHandle
 - (void)back {
     if (self.isTopHovering) {

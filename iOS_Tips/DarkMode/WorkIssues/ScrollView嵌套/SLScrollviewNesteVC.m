@@ -9,6 +9,7 @@
 #import "SLScrollviewNesteVC.h"
 #import "SLScrollViewJuejin.h"
 #import "SLScrollViewWeibo.h"
+#import "SLScrollViewJianShu.h"
 
 @interface SLScrollviewNesteVC ()
 @property (nonatomic, strong) NSMutableArray *titlesArray;
@@ -41,9 +42,11 @@
 - (void)getData {
     [self.titlesArray addObjectsFromArray:@[
         @"掘金APP个人中心页样式",
-        @"微博发现页ScrollView嵌套样式doing"]];
+        @"微博发现页ScrollView嵌套样式",
+        @"简书APP个人中心页样式"]];
     [self.classArray addObjectsFromArray:@[[SLScrollViewJuejin class],
-                                           [SLScrollViewWeibo class]]];
+                                           [SLScrollViewWeibo class],
+                                           [SLScrollViewJianShu class]]];
     [self.tableView reloadData];
 }
 

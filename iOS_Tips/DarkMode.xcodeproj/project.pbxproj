@@ -161,6 +161,7 @@
 		78D30965239688EF00DC373A /* GLESMath.c in Sources */ = {isa = PBXBuildFile; fileRef = 78D30960239688EF00DC373A /* GLESMath.c */; };
 		78DAA113235FF61E00A60F64 /* SLEditVideoClipping.m in Sources */ = {isa = PBXBuildFile; fileRef = 78DAA112235FF61E00A60F64 /* SLEditVideoClipping.m */; };
 		78DAA1162360256200A60F64 /* SLEditSelectedBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 78DAA1152360256200A60F64 /* SLEditSelectedBox.m */; };
+		78DF7F652510B45000F6C007 /* SLScrollViewJianShu.m in Sources */ = {isa = PBXBuildFile; fileRef = 78DF7F642510B45000F6C007 /* SLScrollViewJianShu.m */; };
 		78E1791723517F700007E4BB /* SLImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E1791223517F700007E4BB /* SLImageView.m */; };
 		78E1791823517F700007E4BB /* SLImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E1791323517F700007E4BB /* SLImage.m */; };
 		78E1791923517F700007E4BB /* SLImageDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E1791423517F700007E4BB /* SLImageDecoder.m */; };
@@ -473,6 +474,8 @@
 		78DAA112235FF61E00A60F64 /* SLEditVideoClipping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLEditVideoClipping.m; sourceTree = "<group>"; };
 		78DAA1142360256200A60F64 /* SLEditSelectedBox.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLEditSelectedBox.h; sourceTree = "<group>"; };
 		78DAA1152360256200A60F64 /* SLEditSelectedBox.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLEditSelectedBox.m; sourceTree = "<group>"; };
+		78DF7F632510B45000F6C007 /* SLScrollViewJianShu.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLScrollViewJianShu.h; sourceTree = "<group>"; };
+		78DF7F642510B45000F6C007 /* SLScrollViewJianShu.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLScrollViewJianShu.m; sourceTree = "<group>"; };
 		78E1791123517F700007E4BB /* SLImageDecoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLImageDecoder.h; sourceTree = "<group>"; };
 		78E1791223517F700007E4BB /* SLImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLImageView.m; sourceTree = "<group>"; };
 		78E1791323517F700007E4BB /* SLImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLImage.m; sourceTree = "<group>"; };
@@ -962,6 +965,8 @@
 				78908DF925078F84004164C2 /* SLScrollViewJuejin.m */,
 				78908DFB25079323004164C2 /* SLScrollViewWeibo.h */,
 				78908DFC25079323004164C2 /* SLScrollViewWeibo.m */,
+				78DF7F632510B45000F6C007 /* SLScrollViewJianShu.h */,
+				78DF7F642510B45000F6C007 /* SLScrollViewJianShu.m */,
 				78908DFE25079451004164C2 /* SLPanTableView.h */,
 				78908DFF25079451004164C2 /* SLPanTableView.m */,
 				78908DCB2500F099004164C2 /* SLMenuView.h */,
@@ -1500,6 +1505,7 @@
 				78FA0FA02354141E003E456B /* SLAvEditExport.m in Sources */,
 				78A179A8249B0AA8006F52E3 /* NSDictionary+SLExtension.m in Sources */,
 				78BDE050248E0AFB002ED386 /* SLWebNativeViewController.m in Sources */,
+				78DF7F652510B45000F6C007 /* SLScrollViewJianShu.m in Sources */,
 				78F42023237915730093497C /* SLGPUImageController.m in Sources */,
 				7860D791239922B4008C53EC /* SLGLKPyramidVC.m in Sources */,
 				787C7DC3245D74E4005DF7ED /* NSString+SLCrashProtector.m in Sources */,

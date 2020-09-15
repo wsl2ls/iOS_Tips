@@ -1,12 +1,12 @@
 //
-//  SLScrollViewJuejin.m
+//  SLScrollViewJianShu.m
 //  DarkMode
 //
-//  Created by wsl on 2020/9/8.
+//  Created by wsl on 2020/9/15.
 //  Copyright © 2020 https://github.com/wsl2ls   ----- . All rights reserved.
 //
 
-#import "SLScrollViewJuejin.h"
+#import "SLScrollViewJianShu.h"
 #import "SLMenuView.h"
 #import <MJRefresh.h>
 #import "SLPanTableView.h"
@@ -16,7 +16,8 @@ static CGFloat  mainScrollViewHeadHeight = 250;
 ///选项卡/菜单栏高度
 static CGFloat tabHeight = 50;
 
-@interface SLScrollViewJuejin () <UITableViewDataSource,UITableViewDelegate,UIScrollViewDelegate, SLMenuViewDelegate>
+@interface SLScrollViewJianShu ()
+<UITableViewDataSource,UITableViewDelegate,UIScrollViewDelegate, SLMenuViewDelegate>
 
 @property (nonatomic, strong) UIView *navigationView;
 @property (nonatomic, strong) UIScrollView *mainScrollView;
@@ -31,10 +32,9 @@ static CGFloat tabHeight = 50;
 @property (nonatomic, assign) NSInteger dataCount;
 //滑动到当前子列表时的偏移量，主要处理顶部未悬停且子列表未置顶偏移量不为0时的情况
 @property (nonatomic, assign) CGPoint lastContentOffset;
-
 @end
 
-@implementation SLScrollViewJuejin
+@implementation SLScrollViewJianShu
 
 #pragma mark - Override
 - (void)viewDidLoad {
@@ -118,7 +118,7 @@ static CGFloat tabHeight = 50;
     if (!_mainScrollView) {
         _mainScrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
         _mainScrollView.delegate = self;
-        _mainScrollView.bounces = NO;
+        _mainScrollView.bounces = YES;
         _mainScrollView.showsVerticalScrollIndicator = NO;
         _mainScrollView.backgroundColor = [UIColor colorWithRed:11/255.0 green:112/255.0 blue:230/255.0 alpha:1.0];
         if (@available(iOS 11.0, *)) {
@@ -260,11 +260,16 @@ static CGFloat tabHeight = 50;
         }else {
             self.navigationController.navigationBar.hidden = YES;
         }
+        
+        if (self.mainScrollView.contentOffset.y <= 0 ) {
+            //头部放大
+            self.headView.transform = CGAffineTransformMakeScale(fabs(self.mainScrollView.contentOffset.y)/self.headView.sl_height+1, fabs(self.mainScrollView.contentOffset.y)/self.headView.sl_height+1);
+        }
     }
     
     //子列表
     if (scrollView.superview == self.tabScrollView) {
-        if(!_isTopHovering && self.mainScrollView.contentOffset.y > 0) {
+        if((!_isTopHovering && self.mainScrollView.contentOffset.y > 0) || (self.mainScrollView.contentOffset.y < 0 ) ) {
             //如果主mainScrollView还未到顶部悬停，则选项子列表subTableView偏移量保持不变
             if (scrollView.contentOffset.y < 0) {
                 self.lastContentOffset = CGPointZero;
@@ -295,4 +300,3 @@ static CGFloat tabHeight = 50;
 }
 
 @end
-
