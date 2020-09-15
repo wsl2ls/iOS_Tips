@@ -135,6 +135,10 @@
 
 > 扫描项目中无用的图片、类等文件资源, 此示例主要针对于此项目中的图片资源，其他类型资源实现原理相同。
 
+#### 6.10、多个UIScrollView嵌套/个人中心页
+
+![多个UIScrollView嵌套](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/多个UIScrollView嵌套.gif)
+
 ## 7-iOSCrash防护 
 
 >  Crash防护内容涉及 NSArray/NSMutableArray、NSDictionary/NSMutableDictionary、NSString/NSMutableString、Unrecognized Selector、KVO、KVC 、异步线程刷新UI、野指针定位、内存泄漏/循环引用；主要是对常见易错的地方进行容错处理，避免崩溃，并保存出错时的函数调用栈，以方便快速定位代码，主要是利用的runtime和fishook知识。
