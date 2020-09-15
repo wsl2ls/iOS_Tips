@@ -260,7 +260,7 @@
 // 页面加载完成之后调用
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
     [self.frameArray removeAllObjects];
-    //根据服务器下发的标签相关的数据，用原生组件展示，这里原生组件的创建要注意按需加载和复用，类似于tableView，否则对内存还是有不小的消耗的。目前还没做处理
+    //根据服务器下发的标签相关的数据，用原生组件展示，这里原生组件的创建要注意按需加载和复用，类似于tableView，否则对内存还是有不小的消耗的。
     int i = 0;
     SL_WeakSelf;
     for (SLWebNativeModel *model in self.dataSource) {
