@@ -18,7 +18,8 @@
 @property(nonatomic, assign) CGFloat maxBounceDistance;
 
 
-/*  UIKit 动力学/仿真物理学：https://blog.csdn.net/meiwenjie110/article/details/46771299 */
+/*  UIKit 动力学/仿真物理学：https://blog.csdn.net/meiwenjie110/article/details/46771299
+    iOS UIScrollView 动画的力学原理  https://mp.weixin.qq.com/s/5JSiTywD0r3_O7l2OxWZxw */
 /// 动力装置  启动力
 @property(nonatomic, strong) UIDynamicAnimator *dynamicAnimator;
 /// 惯性力    手指滑动松开后，scrollView借助于惯性力，以手指松开时的初速度以及设置的resistance动力减速度运动，直至停止
