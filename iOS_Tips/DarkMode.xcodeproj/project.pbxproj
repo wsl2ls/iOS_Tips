@@ -79,6 +79,7 @@
 		7851CB43233222E2002295B5 /* UIView+SLFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 7851CB41233222E2002295B5 /* UIView+SLFrame.m */; };
 		7857977823725C21004CD664 /* SLFaceDetectController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7857977723725C21004CD664 /* SLFaceDetectController.m */; };
 		7857FD4B24729E8500D3D986 /* BSBacktraceLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 7857FD4A24729E8500D3D986 /* BSBacktraceLogger.m */; };
+		785D06642522C32700F174BA /* 面试题.md in Resources */ = {isa = PBXBuildFile; fileRef = 785D06632522C32700F174BA /* 面试题.md */; };
 		7860D78E2398D34E008C53EC /* SLMixColorTextureVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7860D78D2398D34E008C53EC /* SLMixColorTextureVC.m */; };
 		7860D791239922B4008C53EC /* SLGLKPyramidVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7860D790239922B4008C53EC /* SLGLKPyramidVC.m */; };
 		786147F12362A39500C5424C /* Resources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 786147F02362A39500C5424C /* Resources.bundle */; };
@@ -317,6 +318,7 @@
 		7857977723725C21004CD664 /* SLFaceDetectController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLFaceDetectController.m; sourceTree = "<group>"; };
 		7857FD4924729E8500D3D986 /* BSBacktraceLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSBacktraceLogger.h; sourceTree = "<group>"; };
 		7857FD4A24729E8500D3D986 /* BSBacktraceLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSBacktraceLogger.m; sourceTree = "<group>"; };
+		785D06632522C32700F174BA /* 面试题.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = "面试题.md"; sourceTree = "<group>"; };
 		7860D78C2398D34E008C53EC /* SLMixColorTextureVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLMixColorTextureVC.h; sourceTree = "<group>"; };
 		7860D78D2398D34E008C53EC /* SLMixColorTextureVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLMixColorTextureVC.m; sourceTree = "<group>"; };
 		7860D78F239922B4008C53EC /* SLGLKPyramidVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLGLKPyramidVC.h; sourceTree = "<group>"; };
@@ -935,6 +937,7 @@
 			children = (
 				784C4C6F24C5B5DD00D5C199 /* 高质量技术博客.md */,
 				784C4C6D24C5B4F500D5C199 /* 笔记.md */,
+				785D06632522C32700F174BA /* 面试题.md */,
 				7884247D2492102900C2E505 /* SLWorkIssuesViewController.h */,
 				7884247E2492102900C2E505 /* SLWorkIssuesViewController.m */,
 				78908DC024FFBD83004164C2 /* ScrollView嵌套 */,
@@ -1410,6 +1413,7 @@
 				782CFB6D239E69F3001B5528 /* Scale.fsh in Resources */,
 				782CFB71239E69FA001B5528 /* Shake.vsh in Resources */,
 				78B1048B232F57C30051579F /* Main.storyboard in Resources */,
+				785D06642522C32700F174BA /* 面试题.md in Resources */,
 				78799EB224F1027300DA8C7A /* unused.png in Resources */,
 				782CFB27239DFD89001B5528 /* SplitScreen_1.fsh in Resources */,
 				783FB4612394A76B0039AEFD /* shaderf.fsh in Resources */,
