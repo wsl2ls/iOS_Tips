@@ -890,13 +890,6 @@
 			path = UI;
 			sourceTree = "<group>";
 		};
-		78799E7E24ED11A400DA8C7A /* 设计模式 */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "设计模式";
-			sourceTree = "<group>";
-		};
 		78799E9F24EE7E7F00DA8C7A /* 查找项目无用资源 */ = {
 			isa = PBXGroup;
 			children = (
@@ -1064,7 +1057,6 @@
 				7884247C24920FCA00C2E505 /* WorkIssues */,
 				788ADB342441F46500302CD9 /* Crash */,
 				78E72D4E24766E1300751373 /* WKWebView */,
-				78799E7E24ED11A400DA8C7A /* 设计模式 */,
 				78B1048C232F57C50051579F /* Assets.xcassets */,
 				78B10489232F57C30051579F /* Main.storyboard */,
 				78B1048E232F57C50051579F /* LaunchScreen.storyboard */,
