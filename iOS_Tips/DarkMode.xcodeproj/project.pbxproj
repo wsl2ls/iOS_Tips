@@ -235,8 +235,8 @@
 		7822CCF7235B054200E70C29 /* SLPaddingLabel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLPaddingLabel.m; sourceTree = "<group>"; };
 		782CFB1B239DDE95001B5528 /* SLSplitScreenViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLSplitScreenViewController.h; sourceTree = "<group>"; };
 		782CFB1C239DDE95001B5528 /* SLSplitScreenViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SLSplitScreenViewController.m; sourceTree = "<group>"; };
-		782CFB1E239DEA05001B5528 /* SLSplitScreenCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SLSplitScreenCell.h; path = DarkMode/OpenGL/Controller/SLSplitScreenCell.h; sourceTree = SOURCE_ROOT; };
-		782CFB1F239DEA05001B5528 /* SLSplitScreenCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = SLSplitScreenCell.m; path = DarkMode/OpenGL/Controller/SLSplitScreenCell.m; sourceTree = SOURCE_ROOT; };
+		782CFB1E239DEA05001B5528 /* SLSplitScreenCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SLSplitScreenCell.h; path = DarkMode/OpenGL/View/SLSplitScreenCell.h; sourceTree = SOURCE_ROOT; };
+		782CFB1F239DEA05001B5528 /* SLSplitScreenCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = SLSplitScreenCell.m; path = DarkMode/OpenGL/View/SLSplitScreenCell.m; sourceTree = SOURCE_ROOT; };
 		782CFB21239DFD0F001B5528 /* SplitScreen_2.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = SplitScreen_2.fsh; sourceTree = "<group>"; };
 		782CFB22239DFD0F001B5528 /* SplitScreen_2.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = SplitScreen_2.vsh; sourceTree = "<group>"; };
 		782CFB25239DFD88001B5528 /* SplitScreen_1.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = SplitScreen_1.fsh; sourceTree = "<group>"; };
@@ -593,6 +593,15 @@
 			path = "设计模式";
 			sourceTree = "<group>";
 		};
+		2C09ED95254011A2009E96B6 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				782CFB1E239DEA05001B5528 /* SLSplitScreenCell.h */,
+				782CFB1F239DEA05001B5528 /* SLSplitScreenCell.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		7811F76C24B2C70D000AA044 /* 二进制重排 */ = {
 			isa = PBXGroup;
 			children = (
@@ -799,6 +808,7 @@
 		78777CDB238FEA15006FA671 /* OpenGL */ = {
 			isa = PBXGroup;
 			children = (
+				2C09ED95254011A2009E96B6 /* View */,
 				783FB45D2394A7580039AEFD /* ShaderLanguage */,
 				78777CDC238FEA15006FA671 /* Controller */,
 			);
@@ -808,8 +818,6 @@
 		78777CDC238FEA15006FA671 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				782CFB1E239DEA05001B5528 /* SLSplitScreenCell.h */,
-				782CFB1F239DEA05001B5528 /* SLSplitScreenCell.m */,
 				78777CDE238FEA48006FA671 /* SLOpenGLController.h */,
 				78777CDF238FEA48006FA671 /* SLOpenGLController.m */,
 				788ACD602390BFD400737EC2 /* SLLoadImageVC.h */,
