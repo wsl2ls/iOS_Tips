@@ -326,7 +326,7 @@ lowp, mediump和highp：精度修饰符声明了底层实现存储这些变量�
     [self setupTexture];
     
     //11. 设置纹理采样器 sampler2D  纹理单元GL_TEXTURE0 - GL_TEXTURE15 总共有16个纹理单元
-    glUniform1i(glGetUniformLocation(self.myPrograme, "colorMap"), 0);
+    glUniform1i(glGetUniformLocation(self.myPrograme, "colorMap"), GL_TEXTURE0);
     
     //12.不使用索引数组 绘图  从第0个顶点开始，共六个顶点
     glDrawArrays(GL_TRIANGLES, 0, 6);

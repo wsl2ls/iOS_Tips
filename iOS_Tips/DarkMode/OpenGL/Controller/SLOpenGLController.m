@@ -47,8 +47,23 @@
 #pragma mark - Data
 - (void)getData {
     //tableView、UIAlertView等系统控件，在不自定义颜色的情况下，默认颜色都是动态的，支持暗黑模式
-    [self.dataSource addObjectsFromArray:@[@" GLKit 加载图片", @" GLKit 绘制正方体", @" GLKit 颜色和纹理混合金字塔",@" OpenGL ShaderLanguage（GLSL） 加载图片", @" GLSL 绘制金字塔", @" GLSL 颜色和纹理混合", @" GLSL 分屏特效", @" GLSL 滤镜集合", @"GLSL 抖音部分特效集合"]];
-    [self.classArray addObjectsFromArray:@[[SLLoadImageVC class], [SLCubeViewController class], [SLGLKPyramidVC class], [SLShaderLanguageViewController class], [SLShaderCubeViewController class], [SLMixColorTextureVC class], [SLSplitScreenViewController class], [SLShaderFilterViewController class], [SLSpecialEffectsViewController class]]];
+    [self.dataSource addObjectsFromArray:@[@" GLKit 加载图片",
+                                           @" GLKit 绘制正方体",
+                                           @" GLKit 颜色和纹理混合金字塔",
+                                           @" OpenGL ShaderLanguage（GLSL） 加载图片",
+                                           @" GLSL 绘制金字塔", @" GLSL 颜色和纹理混合",
+                                           @" GLSL 分屏特效",
+                                           @" GLSL 滤镜集合",
+                                           @"GLSL 抖音部分特效集合"]];
+    [self.classArray addObjectsFromArray:@[[SLLoadImageVC class],
+                                           [SLCubeViewController class],
+                                           [SLGLKPyramidVC class],
+                                           [SLShaderLanguageViewController class],
+                                           [SLShaderCubeViewController class],
+                                           [SLMixColorTextureVC class],
+                                           [SLSplitScreenViewController class],
+                                           [SLShaderFilterViewController class],
+                                           [SLSpecialEffectsViewController class]]];
     [self.tableView reloadData];
 }
 #pragma mark - Getter
