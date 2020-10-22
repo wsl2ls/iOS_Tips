@@ -21,8 +21,8 @@
  OpenGL ES 3种变量修饰符（varying, attribute, uniform）   https://blog.csdn.net/hgl868/article/details/7846269
  
  uniform: 由外部客户端传入，由函数glUniform** 提供赋值功能，类似于const, 被uniform 修饰变量在顶点/片元着色器中 只能用，不能修改 一般用来修饰矩阵
- attribute：只能在顶点着色器出现
- varying：中间传递，顶点和片元着色器之间传递数据
+ attribute：只能在顶点着色器出现，
+ varying：中间传递，由顶点着色器传向片元着色器的数据变量
  
 lowp, mediump和highp：精度修饰符声明了底层实现存储这些变量必须要使用的最小范围和精度。实现可能会使用比要求更大的范围和精度，但绝对不会比要求少。
  
@@ -325,8 +325,8 @@ lowp, mediump和highp：精度修饰符声明了底层实现存储这些变量�
     //10.加载纹理
     [self setupTexture];
     
-    //11. 设置纹理采样器 sampler2D  纹理单元GL_TEXTURE0 - GL_TEXTURE15 总共有16个纹理单元
-    glUniform1i(glGetUniformLocation(self.myPrograme, "colorMap"), GL_TEXTURE0);
+    //11. 设置纹理采样器sampler2D  纹理单元GL_TEXTURE0 - GL_TEXTURE15 总共有16个纹理单元
+    glUniform1i(glGetUniformLocation(self.myPrograme, "colorMap"), 0);
     
     //12.不使用索引数组 绘图  从第0个顶点开始，共六个顶点
     glDrawArrays(GL_TRIANGLES, 0, 6);
@@ -424,7 +424,7 @@ lowp, mediump和highp：精度修饰符声明了底层实现存储这些变量�
     //7、画图完毕就释放上下文
     CGContextRelease(spriteContext);
     
-    //8、绑定纹理到默认的纹理ID（
+    //8、绑定纹理到默认的纹理ID: 0（
     glBindTexture(GL_TEXTURE_2D, 0);
     
     //9.设置纹理属性
