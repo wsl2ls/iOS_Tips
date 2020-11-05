@@ -83,8 +83,6 @@
 
 > 效果描述：实时拍摄添加水印和滤镜、本地视频添加水印、GIF图水印
 
-* 遗留问题：一个启动周期内，第一次启动摄像头时打开特慢，之后就特别块，还没找到原因，望知道到的告知一下🤝
-
 ![GPUImage框架的使用](https://github.com/wsl2ls/iOS_TipsPreview/blob/master/PrviewPicture/6、GPUImage.gif)
 
 #### 3.5-VideoToolBox和AudioToolBox音视频编解码
