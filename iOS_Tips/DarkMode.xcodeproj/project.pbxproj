@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2CC813682553CE88009DAC9B /* 已浏览.md in Resources */ = {isa = PBXBuildFile; fileRef = 2CC813672553CE88009DAC9B /* 已浏览.md */; };
 		2CEBE85D24A6E65600BA21F3 /* SLTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CEBE85B24A6E65600BA21F3 /* SLTimer.m */; };
 		780F5303236D8462000D0EA8 /* SLGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = 780F5302236D8462000D0EA8 /* SLGridView.m */; };
 		780F5306236D8570000D0EA8 /* SLImageClipController.m in Sources */ = {isa = PBXBuildFile; fileRef = 780F5305236D8570000D0EA8 /* SLImageClipController.m */; };
@@ -213,6 +214,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2CC813672553CE88009DAC9B /* 已浏览.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = "已浏览.md"; sourceTree = "<group>"; };
+		2CC8137925540CB8009DAC9B /* HMLog.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HMLog.h; sourceTree = "<group>"; };
 		2CEBE85B24A6E65600BA21F3 /* SLTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLTimer.m; sourceTree = "<group>"; };
 		2CEBE85C24A6E65600BA21F3 /* SLTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLTimer.h; sourceTree = "<group>"; };
 		780F5301236D845B000D0EA8 /* SLGridView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SLGridView.h; sourceTree = "<group>"; };
@@ -846,6 +849,7 @@
 			isa = PBXGroup;
 			children = (
 				78AA10F42371A7B50044A6F8 /* PrefixHeader.pch */,
+				2CC8137925540CB8009DAC9B /* HMLog.h */,
 				78F4E41224E5404A000B2ADE /* SLToolMacro.h */,
 				78777CE4238FF65C006FA671 /* SLDelayPerform.h */,
 				78777CE5238FF65C006FA671 /* SLDelayPerform.m */,
@@ -938,6 +942,7 @@
 				784C4C6F24C5B5DD00D5C199 /* 高质量技术博客.md */,
 				784C4C6D24C5B4F500D5C199 /* 笔记.md */,
 				785D06632522C32700F174BA /* 面试题.md */,
+				2CC813672553CE88009DAC9B /* 已浏览.md */,
 				7884247D2492102900C2E505 /* SLWorkIssuesViewController.h */,
 				7884247E2492102900C2E505 /* SLWorkIssuesViewController.m */,
 				78908DC024FFBD83004164C2 /* ScrollView嵌套 */,
@@ -1427,6 +1432,7 @@
 				7811F77124B2C818000AA044 /* wsl.order in Resources */,
 				78E72D59247BA29600751373 /* WebTableView.html in Resources */,
 				782CFB7A239E6A11001B5528 /* Glitch.vsh in Resources */,
+				2CC813682553CE88009DAC9B /* 已浏览.md in Resources */,
 				782CFB5A239E6227001B5528 /* Gray.fsh in Resources */,
 				782CFB66239E6651001B5528 /* HexagonMosaic.fsh in Resources */,
 				782CFB79239E6A11001B5528 /* Glitch.fsh in Resources */,
@@ -1814,7 +1820,7 @@
 				NEW_SETTING = "";
 				ORDER_FILE = "$(SRCROOT)/DarkMode/WorkIssues/二进制重排/wsl.order";
 				OTHER_CFLAGS = "-fsanitize-coverage=func,trace-pc-guard";
-				PRODUCT_BUNDLE_IDENTIFIER = com.wsl2ls.tips;
+				PRODUCT_BUNDLE_IDENTIFIER = com.wsl2ls.iostip;
 				PRODUCT_NAME = SLTips;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1846,7 +1852,7 @@
 				NEW_SETTING = "";
 				ORDER_FILE = "$(SRCROOT)/DarkMode/WorkIssues/二进制重排/wsl.order";
 				OTHER_CFLAGS = "-fsanitize-coverage=func,trace-pc-guard";
-				PRODUCT_BUNDLE_IDENTIFIER = com.wsl2ls.tips;
+				PRODUCT_BUNDLE_IDENTIFIER = com.wsl2ls.iostip;
 				PRODUCT_NAME = SLTips;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
