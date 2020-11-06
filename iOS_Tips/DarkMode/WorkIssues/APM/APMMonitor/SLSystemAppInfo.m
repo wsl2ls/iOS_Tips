@@ -150,7 +150,7 @@
     NSString* userPhoneName = [[UIDevice currentDevice] name];
     return userPhoneName;
 }
-///设备唯一标识的字母数字字符串  C5668446-C443-4898-A213-209AECE3626C
+///设备唯一标识的字母数字字符串，但如果用户重新安装，那么这个 UUID 就会发生变化。  C5668446-C443-4898-A213-209AECE3626C
 + (NSString *)uuidString {
     NSString *UUIDString = [[UIDevice currentDevice] identifierForVendor].UUIDString;
     return UUIDString;
