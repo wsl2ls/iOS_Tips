@@ -42,7 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSString *)systemName;
 ///获取用户手机别名  用户定义的名称 通用-关于本机-名称  wsl的iphone
 + (NSString *)userPhoneName;
-///设备唯一标识的字母数字字符串  C5668446-C443-4898-A213-209AECE3626C
+///设备唯一标识的字母数字字符串 但如果用户重新安装，那么这个 UUID 就会发生变化。 C5668446-C443-4898-A213-209AECE3626C
 + (NSString *)uuidString;
 ///是否是iPhoneX系列/刘海屏
 + (BOOL)isIPhoneXSeries;
