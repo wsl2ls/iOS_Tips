@@ -36,6 +36,7 @@ static NSMutableArray *_loadInfoArray;
         
         const char* path = _dyld_get_image_name((unsigned)iImg);
         NSString *imagePath = [NSString stringWithUTF8String:path];
+//        NSLog(@"映像 %@",imagePath);
         
         NSBundle* mainBundle = [NSBundle mainBundle];
         NSString* bundlePath = [mainBundle bundlePath];
