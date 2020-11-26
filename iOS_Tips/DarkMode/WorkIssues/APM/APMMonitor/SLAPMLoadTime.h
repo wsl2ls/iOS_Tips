@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-///监测+load方法耗时   引自： https://www.jianshu.com/p/c14987eee107
+///监测+load方法耗时   引自： https://www.jianshu.com/p/c14987eee107、https://www.cnblogs.com/feng9exe/p/12487662.html
 @interface SLAPMLoadTime : NSObject
 
 @end
