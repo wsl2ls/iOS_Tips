@@ -30,6 +30,8 @@ static NSMutableArray *_loadInfoArray;
     
     CFAbsoluteTime time1 =CFAbsoluteTimeGetCurrent();
     
+//    [深入iOS系统底层之程序映像](https://www.jianshu.com/p/3b83193ff851)
+    
     int imageCount = (int)_dyld_image_count();
     
     for(int iImg = 0; iImg < imageCount; iImg++) {
