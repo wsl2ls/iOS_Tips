@@ -96,6 +96,7 @@ static NSMutableArray *_loadInfoArray;
     };
     
     [_loadInfoArray addObject:infoDic];
+    NSLog(@"loadTime %@",infoDic.description);
 }
 
 @end
