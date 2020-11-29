@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-//参考：https://juejin.im/post/5e97c3c751882573b86f9d00#heading-17
+//参考：https://juejin.cn/post/6844904130406793224
 // https://github.com/rhythmkay/PGOAnalyzer
 ///二进制重排优化启动时间
 @interface SLBinaryResetViewController : SLViewController
