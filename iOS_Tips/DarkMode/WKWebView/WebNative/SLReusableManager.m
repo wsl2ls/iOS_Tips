@@ -225,6 +225,7 @@
             self.willDisplayIndexTop = self.willDisplayIndexTop+1;
             NSLog(@"上 第 %ld 个cell消失",self.willDisplayIndexTop);
             SLReusableCell *cell = self.visibleCells.firstObject;
+            cell.layer.contents = nil;
             NSHashTable * hashTable= self.reusablePool[cell.cellID];
             [hashTable addObject:cell];
             [self.visibleCells removeObjectAtIndex:0];
@@ -236,6 +237,7 @@
             self.willDisplayIndexBottom = self.willDisplayIndexBottom-1;
             NSLog(@"下 第 %ld 个cell消失",self.willDisplayIndexBottom);
             SLReusableCell *cell = self.visibleCells.lastObject;
+            cell.layer.contents = nil;
             NSHashTable * hashTable= self.reusablePool[cell.cellID];
             [hashTable addObject:cell];
             [self.visibleCells removeLastObject];
