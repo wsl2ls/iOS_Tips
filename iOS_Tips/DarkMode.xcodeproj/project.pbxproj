@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2C5F11A7257BCB7000904B70 /* YYAnimatedImageView+iOS14.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C5F11A6257BCB7000904B70 /* YYAnimatedImageView+iOS14.m */; };
 		2CC813682553CE88009DAC9B /* 已浏览.md in Resources */ = {isa = PBXBuildFile; fileRef = 2CC813672553CE88009DAC9B /* 已浏览.md */; };
 		2CEBE85D24A6E65600BA21F3 /* SLTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CEBE85B24A6E65600BA21F3 /* SLTimer.m */; };
 		780F5303236D8462000D0EA8 /* SLGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = 780F5302236D8462000D0EA8 /* SLGridView.m */; };
@@ -214,6 +215,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2C5F11A5257BCB7000904B70 /* YYAnimatedImageView+iOS14.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "YYAnimatedImageView+iOS14.h"; sourceTree = "<group>"; };
+		2C5F11A6257BCB7000904B70 /* YYAnimatedImageView+iOS14.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "YYAnimatedImageView+iOS14.m"; sourceTree = "<group>"; };
 		2CC813672553CE88009DAC9B /* 已浏览.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = "已浏览.md"; sourceTree = "<group>"; };
 		2CC8137925540CB8009DAC9B /* HMLog.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HMLog.h; sourceTree = "<group>"; };
 		2CEBE85B24A6E65600BA21F3 /* SLTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLTimer.m; sourceTree = "<group>"; };
@@ -605,6 +608,15 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		2C5F115C257BC96A00904B70 /* YYAnimatedImageViewCategory */ = {
+			isa = PBXGroup;
+			children = (
+				2C5F11A5257BCB7000904B70 /* YYAnimatedImageView+iOS14.h */,
+				2C5F11A6257BCB7000904B70 /* YYAnimatedImageView+iOS14.m */,
+			);
+			path = YYAnimatedImageViewCategory;
+			sourceTree = "<group>";
+		};
 		7811F76C24B2C70D000AA044 /* 二进制重排 */ = {
 			isa = PBXGroup;
 			children = (
@@ -630,6 +642,7 @@
 		7835047E24586BA30071283E /* ThirdLibary */ = {
 			isa = PBXGroup;
 			children = (
+				2C5F115C257BC96A00904B70 /* YYAnimatedImageViewCategory */,
 				789AD1CC24D9024300CB0B4C /* Reachability */,
 				7857FD4824729E8500D3D986 /* BSBacktraceLogger */,
 				78D3095D239688EF00DC373A /* OpenGLUtils */,
@@ -1537,6 +1550,7 @@
 				78B10482232F57C30051579F /* AppDelegate.m in Sources */,
 				78E72D7C24810E2D00751373 /* SLDynamicItem.m in Sources */,
 				78777CE0238FEA48006FA671 /* SLOpenGLController.m in Sources */,
+				2C5F11A7257BCB7000904B70 /* YYAnimatedImageView+iOS14.m in Sources */,
 				78908DC324FFBE5D004164C2 /* SLScrollviewNesteVC.m in Sources */,
 				7851CB362331CC87002295B5 /* SLDarkModeViewController.m in Sources */,
 				78D30965239688EF00DC373A /* GLESMath.c in Sources */,

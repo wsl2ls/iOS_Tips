@@ -8,7 +8,7 @@
 
 #import "SLWebNativeViewController.h"
 #import <WebKit/WebKit.h>
-#import <YYImage.h>
+#import "YYImage.h"
 #import <YYWebImage.h>
 #import "SLAvPlayer.h"
 #import <YYModel.h>

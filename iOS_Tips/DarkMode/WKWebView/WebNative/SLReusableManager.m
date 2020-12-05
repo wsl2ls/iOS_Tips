@@ -28,7 +28,7 @@
 @property (nonatomic, strong) NSMutableArray <SLReusableCell *>*visibleCells;
 ///记录最后一次的偏移量，用来判断滑动方向
 @property (nonatomic, assign) CGFloat lastContentOffsetY;
-///顶部即将展示的索引1
+///顶部即将展示的索引
 @property (nonatomic, assign) NSInteger willDisplayIndexTop;
 ///底部即将展示的索引
 @property (nonatomic, assign) NSInteger willDisplayIndexBottom;
@@ -216,7 +216,7 @@
         }
     }
 }
-//即将消失的cell，在消失时放入缓冲池里   top:YES上/NO下
+//即将消失的cell，在消失时放入缓冲池里，并且重置视图cell的内容   top:YES上/NO下
 - (void)willDisappearCellWithDirection:(BOOL)top {
     if(top) {
         if (self.willDisplayIndexTop+1 >= self.frameArray.count) return;
@@ -225,7 +225,13 @@
             self.willDisplayIndexTop = self.willDisplayIndexTop+1;
             NSLog(@"上 第 %ld 个cell消失",self.willDisplayIndexTop);
             SLReusableCell *cell = self.visibleCells.firstObject;
-            cell.layer.contents = nil;
+            
+            //进入缓冲池后，要清空重置cell上的内容，防止下一个取出时显示之前的内容，我这里重置时用了自己的默认logo，你可以自己重绘默认时的cell内容
+            for (UIView *subView in cell.subviews) {
+                subView.layer.contents = (__bridge id)[UIImage imageNamed:@"wsl"].CGImage;
+            }
+            cell.layer.contents = (__bridge id)[UIImage imageNamed:@"wsl"].CGImage;
+            
             NSHashTable * hashTable= self.reusablePool[cell.cellID];
             [hashTable addObject:cell];
             [self.visibleCells removeObjectAtIndex:0];
@@ -237,7 +243,13 @@
             self.willDisplayIndexBottom = self.willDisplayIndexBottom-1;
             NSLog(@"下 第 %ld 个cell消失",self.willDisplayIndexBottom);
             SLReusableCell *cell = self.visibleCells.lastObject;
-            cell.layer.contents = nil;
+            
+            //进入缓冲池后，要清空重置cell上的内容，防止下一个取出时显示之前的内容，我这里重置时用了自己的默认logo，你可以自己重绘默认时的cell内容
+            for (UIView *subView in cell.subviews) {
+                subView.layer.contents = (__bridge id)[UIImage imageNamed:@"wsl"].CGImage;
+            }
+            cell.layer.contents = (__bridge id)[UIImage imageNamed:@"wsl"].CGImage;
+            
             NSHashTable * hashTable= self.reusablePool[cell.cellID];
             [hashTable addObject:cell];
             [self.visibleCells removeLastObject];
