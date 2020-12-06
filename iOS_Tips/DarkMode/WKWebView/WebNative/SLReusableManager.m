@@ -227,10 +227,10 @@
             SLReusableCell *cell = self.visibleCells.firstObject;
             
             //进入缓冲池后，要清空重置cell上的内容，防止下一个取出时显示之前的内容，我这里重置时用了自己的默认logo，你可以自己重绘默认时的cell内容
-            for (UIView *subView in cell.subviews) {
-                subView.layer.contents = (__bridge id)[UIImage imageNamed:@"wsl"].CGImage;
-            }
-            cell.layer.contents = (__bridge id)[UIImage imageNamed:@"wsl"].CGImage;
+//            for (UIView *subView in cell.subviews) {
+//                subView.layer.contents = (__bridge id)[UIImage imageNamed:@"wsl"].CGImage;
+//            }
+//            cell.layer.contents = (__bridge id)[UIImage imageNamed:@"wsl"].CGImage;
             
             NSHashTable * hashTable= self.reusablePool[cell.cellID];
             [hashTable addObject:cell];
@@ -245,10 +245,10 @@
             SLReusableCell *cell = self.visibleCells.lastObject;
             
             //进入缓冲池后，要清空重置cell上的内容，防止下一个取出时显示之前的内容，我这里重置时用了自己的默认logo，你可以自己重绘默认时的cell内容
-            for (UIView *subView in cell.subviews) {
-                subView.layer.contents = (__bridge id)[UIImage imageNamed:@"wsl"].CGImage;
-            }
-            cell.layer.contents = (__bridge id)[UIImage imageNamed:@"wsl"].CGImage;
+//            for (UIView *subView in cell.subviews) {
+//                subView.layer.contents = (__bridge id)[UIImage imageNamed:@"wsl"].CGImage;
+//            }
+//            cell.layer.contents = (__bridge id)[UIImage imageNamed:@"wsl"].CGImage;
             
             NSHashTable * hashTable= self.reusablePool[cell.cellID];
             [hashTable addObject:cell];
